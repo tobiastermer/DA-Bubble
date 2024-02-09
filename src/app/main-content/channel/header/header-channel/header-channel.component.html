@@ -1,0 +1,21 @@
+<header>
+    <div class="channel-info" #channleInfo (mouseover)="changeImgBl()"
+    (mouseleave)="changeImgBk()">
+        <img style="width: 24px; height: 24px;" src="./../../../../../assets/img/icons/hash_bk_22.png" alt="hash">
+        <mat-card-title>Channel Name</mat-card-title>
+        <img src="./../../../../../assets/img/icons/expand_more_bk.png" alt="hash">
+    </div>
+    <div class="users-info">
+        <div class="users" #membersInfo (click)="openDialogMembers()">
+            <div class="users-list">
+                <img src="../../../../../assets/img/avatars/1.svg" alt="userName" class="user-avatar">
+                <img src="../../../../../assets/img/avatars/2.svg" alt="userName" class="user-avatar">
+                <img src="../../../../../assets/img/avatars/3.svg" alt="userName" class="user-avatar">
+            </div>
+            <span>3</span>
+        </div>
+        <button mat-icon-button class="icon-button" #addUser>
+            <mat-icon>person_add_alt</mat-icon>
+        </button>
+    </div>
+</header>

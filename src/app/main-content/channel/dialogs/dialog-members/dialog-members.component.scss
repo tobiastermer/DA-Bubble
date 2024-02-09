@@ -1,0 +1,29 @@
+@import './../../channel.component.scss';
+
+mat-card {
+    padding: 40px;
+    width: 100%;
+    min-width: 450px;
+    height: 100%;
+
+    @include dFlex($fd: column, $ai: flex-start, $gap:20px);
+
+}
+
+.card-header {
+    @include dFlex($jc: space-between);
+    width: 100%;
+
+    button{
+    @include iButton($bgC:unset, $hBgIC: #000);
+    }
+}
+
+.add-member {
+    @include dFlex($gap: 15px);
+    padding-left: 30px;
+
+    button{
+        @include iButton($w: 32px, $h:32px ,$p:3px, $hBgIC:$dkBlue)
+    }
+}

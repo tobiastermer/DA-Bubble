@@ -1,0 +1,68 @@
+@import './../../channel.component.scss';
+
+header {
+    @include dFlex($jc: space-between);
+    padding: 25px 45px;
+    box-shadow: $boxShadow;
+}
+
+.channel-info {
+    @include dFlex($gap: 10px);
+    padding-inline: 10px;
+    height: 40px;
+
+    mat-card-title{
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        border-radius: 30px;
+        color: $dkBlue;
+    }
+
+}
+
+.users-info {
+    @include dFlex();
+
+    .users {
+        @include dFlex($gap: 10px);
+        padding-inline: 10px;
+        margin-right: 10px;
+        height: 40px;
+
+        &:hover{
+            cursor: pointer;
+            background-color: $bgGrey;
+            border-radius: 30px;
+        }
+
+        span{
+            font-size: 20px;
+            font-weight: 600;
+        }
+    }
+
+}
+
+.users-list {
+    display: flex;
+
+    .user-avatar {
+        margin-left: -10px;
+
+        &:first-child {
+            margin: 0;
+        }
+    }
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border: 2px solid white;
+    border-radius: 100%;
+}
