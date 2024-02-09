@@ -1,0 +1,177 @@
+$primary-gradient-start: #313ae6;
+$primary-gradient-end: #797ef3;
+$background-fade-end: #eceefe;
+$login-area-background: #f2f2f2d1;
+$link-color: #797ef3;
+$text-color-white: white;
+$text-color-black: black;
+
+.start-screen {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    1.46deg,
+    $primary-gradient-start 1.22%,
+    $primary-gradient-end 98%
+  );
+  animation: fadeOutBackground 1s ease-in-out 2s forwards;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &_content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    transform: translate(-50%, -50%);
+    animation: moveToCorner 1s ease-in 1s forwards;
+  }
+
+  &_logo {
+    height: 150px;
+    width: 150px;
+    animation: sizeDown 1s ease-in 1s forwards, spin 1s linear 1s;
+  }
+}
+
+.title {
+  height: 100px;
+  z-index: 15;
+  font-size: 64px;
+  font-weight: 700;
+  color: $text-color-white;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  overflow: hidden;
+  animation: revealText 2s ease-in forwards;
+}
+
+@keyframes spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(-360deg);
+  }
+}
+
+@keyframes revealText {
+  0%,
+  50% {
+    width: 0%;
+    font-size: 64px;
+    color: $text-color-white;
+  }
+  50%,
+  95% {
+    width: 100%;
+  }
+  95%,
+  100% {
+    font-size: 32px;
+    color: $text-color-black;
+  }
+}
+
+@keyframes sizeDown {
+  from {
+    height: 150px;
+    width: 150px;
+  }
+  to {
+    height: 85px;
+    width: 85px;
+  }
+}
+
+@keyframes fadeOutBackground {
+  0% {
+    background: linear-gradient(
+      1.46deg,
+      $primary-gradient-start 1.22%,
+      $primary-gradient-end 98.76%
+    );
+  }
+  100% {
+    background: $background-fade-end;
+  }
+}
+
+@keyframes moveToCorner {
+  to {
+    top: 7%;
+    left: 10%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.login-area {
+  z-index: 20;
+  margin-left: auto;
+  margin-right: auto;
+  width: 420px;
+  height: 600px;
+  background-color: $login-area-background;
+  opacity: 0;
+  box-shadow: 0 8px 32px 0 rgba(42, 44, 61, 0.37);
+  backdrop-filter: blur(4px);
+  border-radius: 32px;
+  animation: fadeIn 1.5s ease-in 2.5s forwards;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-top-left {
+  position: absolute;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+
+  top: 48px;
+  right: 56px;
+  animation: fadeIn 1.5s ease-in 2.5s forwards;
+
+  span {
+    padding-bottom: 8px;
+  }
+
+  a {
+    text-align: right;
+    font-size: 14px;
+    padding-right: 2px;
+    text-decoration: none;
+    color: $link-color;
+  }
+}
+
+.impress {
+  position: absolute;
+  opacity: 0;
+  bottom: 50px;
+  gap: 20px;
+  display: flex;
+  animation: fadeIn 1.5s ease-in 2.5s forwards;
+
+  a {
+    text-decoration: none;
+    color: $link-color;
+  }
+}
