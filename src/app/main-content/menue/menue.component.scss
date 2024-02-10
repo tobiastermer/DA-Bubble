@@ -6,3 +6,22 @@
     flex-direction: column;
     gap: 25px;
 }
+
+
+// kann später wieder raus, wenn global in styles.scss
+/////////// global mixings /////////////
+
+@mixin dFlex ($fd: row, $jc: center, $ai: center, $gap: 0) {
+    display: flex;
+    flex-direction: $fd;
+    justify-content: $jc;
+    align-items: $ai ;
+    gap: $gap ;
+}
+
+
+$bgGrey: #ECEEFE;
+$bgBlue: #797EF3;
+
+$dkBlue: #535AF1;
+$lgBlue: #6E73DD;

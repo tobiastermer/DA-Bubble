@@ -1,0 +1,39 @@
+@import './../menue.component.scss';
+
+header {
+    display: flex;
+    align-items: center;
+    @include dFlex($jc: space-between);
+
+    .menu-header-left {
+        @include dFlex($jc: flex-start, $gap: 15px);
+
+        .workspace-logo {
+            height: 60px;
+            width: auto;
+        }
+    
+        mat-card-title{
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+    }
+
+    .img-edit-workspace {
+        background-image: url('../../../../assets/img/icons/edit_square_bk_24.png');
+        background-size: auto;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 40px;
+        width: 40px;
+
+        &:hover{
+            cursor: pointer;
+            background-image: url('../../../../assets/img/icons/edit_square_bl_24.png');
+            background-color: $bgGrey;
+            border-radius: 30px;
+            color: $dkBlue;
+        }
+    }
+}
