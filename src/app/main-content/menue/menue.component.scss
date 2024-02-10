@@ -9,6 +9,15 @@
     gap: $gap ;
 }
 
+@mixin pAbsolute ($t: unset, $r: unset, $b: unset, $l: unset, $z: unset) {
+    position: absolute;
+    top: $t;
+    right: $r;
+    bottom: $b;
+    left: $l;
+    z-index: $z;
+}
+
 
 $bgGrey: #ECEEFE;
 $bgBlue: #797EF3;
@@ -35,7 +44,7 @@ $lgBlue: #6E73DD;
 
 /////////////////////////////////
 
-.menue-card {
+.menu-card {
     width: 366px;
     height: 100%;
     border-radius: 30px;
@@ -43,6 +52,22 @@ $lgBlue: #6E73DD;
     display: flex;
     flex-direction: column;
     gap: 25px;
+}
+
+.menu-close {
+    @include dFlex($ai: center,  $gap: 10px);
+    @include pAbsolute($t: 50%, $l: -145px, $z: 1);
+    width: 347px !important;
+    height: unset !important;
+    transform: rotate(270deg);
+    border-radius: 0px 0px 30px 30px;
+    padding: 14px 23px 14px 23px;
+    z-index: 10;
+    
+    mat-card-title{
+        @include dFlex($ai: center,  $gap: 10px);
+        font-size: 20px;
+    }
 }
 
 
