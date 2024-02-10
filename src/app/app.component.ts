@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { ChannelComponent } from './main-content/channel/channel.component';
+import { MainContentComponent } from './main-content/main-content.component';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import { ChannelComponent } from './main-content/channel/channel.component';
   imports: [
     RouterOutlet,
     LoginComponent,
-    ChannelComponent
+    ChannelComponent,
+    MainContentComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
