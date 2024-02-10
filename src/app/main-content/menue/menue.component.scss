@@ -1,0 +1,50 @@
+// kann später wieder raus, wenn global in styles.scss
+/////////// global mixings /////////////
+
+@mixin dFlex ($fd: row, $jc: center, $ai: center, $gap: 0) {
+    display: flex;
+    flex-direction: $fd;
+    justify-content: $jc;
+    align-items: $ai ;
+    gap: $gap ;
+}
+
+
+$bgGrey: #ECEEFE;
+$bgBlue: #797EF3;
+
+$dkBlue: #535AF1;
+$lgBlue: #6E73DD;
+
+// ggf. auch 
+
+.icon-btn {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        border-radius: 50%;
+    }
+}
+
+.d-none {
+    display: none;
+}
+
+/////////////////////////////////
+
+.menue-card {
+    width: 366px;
+    height: 100%;
+    border-radius: 30px;
+    padding: 32px 30px 32px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+
+
+

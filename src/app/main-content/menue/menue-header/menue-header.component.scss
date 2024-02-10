@@ -1,0 +1,29 @@
+@import './../menue.component.scss';
+
+header {
+    @include dFlex($jc: space-between);
+
+    .menu-header-left {
+        @include dFlex($jc: flex-start, $gap: 15px);
+
+        .workspace-logo {
+            height: 60px;
+            width: auto;
+        }
+    
+        mat-card-title{
+            font-size: 24px;
+            font-weight: 700;
+        }
+    }
+
+    .img-edit-workspace {
+        background-image: url('../../../../assets/img/icons/edit_square_bk.png');
+        height: 40px;
+        width: 40px;
+
+        &:hover{
+            background-image: url('../../../../assets/img/icons/edit_square_bl.png');
+        }
+    }
+}

@@ -1,0 +1,24 @@
+<section class="menu-channel-container">
+    <div class="menu-channel-header">
+        <div class="menu-channel-header-left">
+            <div class="img-expand-channels icon-btn" (click)="toggleChannelsVisibility();"></div>
+            <mat-card-title>
+                <img src="../../../../assets/img/icons/workspaces.png" alt="">
+                Channels
+            </mat-card-title>
+        </div>
+        <div class="img-add-channel icon-btn"></div>
+    </div>
+    <div class="menu-channel-content" *ngIf="channelsVisible">
+        <div class="channel" *ngFor="let channel of channels">
+            <div class="img-channel-hash icon-btn"></div>
+            <span class="channel-name">{{ channel }}</span>
+        </div>
+    </div>
+    <div class="menu-channel-add-container" *ngIf="channelsVisible">
+        <div class="menu-channel-add">
+            <div class="img-channel-add icon-btn"></div>
+            <span class="channel-add-text">Channel hinzufügen</span>
+        </div>
+    </div>
+</section>
