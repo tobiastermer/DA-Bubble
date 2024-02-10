@@ -1,1 +1,17 @@
-<p>menue-messages works!</p>
+<section class="menu-users-container">
+    <div class="menu-users-header">
+        <div class="menu-users-header-left">
+            <div class="img-expand-users icon-btn" (click)="toggleUsersVisibility();"></div>
+            <mat-card-title>
+                <img src="../../../../assets/img/icons/account_circle.png" alt="">
+                Direktnachrichten
+            </mat-card-title>
+        </div>
+    </div>
+    <div class="menu-users-content" *ngIf="usersVisible">
+        <div class="user" *ngFor="let user of users">
+            <img class="user-avatar" src="../../../../assets/img/avatars/{{ user.avatar }}.svg" alt="Avatar">
+            <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+        </div>
+    </div>
+</section>

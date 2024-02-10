@@ -1,44 +1,75 @@
 @import './../menue.component.scss';
 
 .menu-channel-container {
+    @include dFlex($fd: column, $ai: flex-start, $gap: 25px);
 
     .menu-channel-header {
         @include dFlex($jc: space-between);
+        width: 100%;
+        padding: 3px 0px 3px 0px;
 
+        .menu-channel-header-left {
+            @include dFlex($jc: flex-start, $gap: 15px);
+
+            .img-expand-channels {
+                position: relative;
+                height: 30px;
+                width: 30px;
+                background-image: url('../../../../assets/img/icons/arrow_drop_down_bk.png');
+                &:hover {
+                    background-image: url('../../../../assets/img/icons/arrow_drop_down_bl.png');
+                }
+            }
+
+            mat-card-title {
+                @include dFlex($jc: flex-start, $gap: 15px);
+            }
+        }
+
+        .img-add-channel {
+            height: 30px;
+            width: 30px;
+            background-image: url('../../../../assets/img/icons/add_bk.png');
+            &:hover {
+                background-image: url('../../../../assets/img/icons/add_bl.png');
+            }
+        }
     }
 
     .menu-channel-content {
+        @include dFlex($fd: column, $ai: flex-start, $gap: 13px);
         font-size: 18px;
         font-weight: 400;
+        padding-left: 25px;
 
         .channel {
             @include dFlex($jc: flex-start, $gap: 15px);
             border-radius: 20px;
             padding: 4px 20px 4px 20px;
 
-            .channel-hash {
+            .img-channel-hash {
                 height: 20px;
                 width: 20px;
                 background-image: url('../../../../assets/img/icons/hash_bk_16.png');
-
             }
-
 
             &:hover {
                 background-color: $bgGrey;
+                cursor: pointer;
 
-                .channel-hash {
+                .img-channel-hash {
                     background-image: url('../../../../assets/img/icons/hash_bl_16.png');
                 }
 
                 .channel-name {
                     color: $dkBlue;
+                    font-weight: 700;
                 }
             }
         }
 
         .active {
-            .channel-hash {
+            .img-channel-hash {
                 background-image: url('../../../../assets/img/icons/hash_bl_16.png');
             }
 
@@ -47,14 +78,31 @@
                 font-weight: 700;
             }
         }
+    }
 
-        .channel-add {
-            .channel-add-img {
+    .menu-channel-add-container {
+        padding-left: 25px;
+
+        .menu-channel-add {
+            @include dFlex($jc: flex-start, $gap: 15px);
+            border-radius: 20px;
+            padding: 4px 20px 4px 20px;
+
+            .img-channel-add {
+                height: 21px;
+                width: 21px;
                 background-image: url('../../../../assets/img/icons/add_circle_bk.png');
             }
 
+            .channel-add-text {
+                font-size: 18px;
+            }
+
             &:hover {
-                .channel-add-img {
+                background-color: $bgGrey;
+                cursor: pointer;
+
+                .img-channel-add {
                     background-image: url('../../../../assets/img/icons/add_circle_bl.png');
                 }
 
@@ -64,8 +112,6 @@
                 }
             }
         }
-
     }
-
-
 }
+

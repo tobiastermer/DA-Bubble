@@ -10,6 +10,18 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './menue-channels.component.scss'
 })
 export class MenueChannelsComponent {
-
   channels: string[] = ['Entwicklerteam', 'Office-Team', 'Plauderecke', 'Coffee-Corner'];
+  channelsVisible: boolean = true;
+
+  constructor() { }
+
+  toggleChannelsVisibility() {
+    if (this.channelsVisible) {
+      this.channelsVisible = false;
+    } else {
+      this.channelsVisible = true;
+    }
+    console.log(this.channelsVisible);
+  }
 }
+

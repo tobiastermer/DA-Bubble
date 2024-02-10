@@ -15,23 +15,15 @@ header {
             font-size: 24px;
             font-weight: 700;
         }
-
     }
 
     .img-edit-workspace {
         background-image: url('../../../../assets/img/icons/edit_square_bk.png');
-        background-size: auto;
-        background-repeat: no-repeat;
-        background-position: center;
         height: 40px;
         width: 40px;
 
         &:hover{
-            cursor: pointer;
             background-image: url('../../../../assets/img/icons/edit_square_bl.png');
-            background-color: $bgGrey;
-            border-radius: 30px;
-            color: $dkBlue;
         }
     }
 }
