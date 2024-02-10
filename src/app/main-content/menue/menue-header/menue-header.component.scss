@@ -1,8 +1,6 @@
 @import './../menue.component.scss';
 
 header {
-    display: flex;
-    align-items: center;
     @include dFlex($jc: space-between);
 
     .menu-header-left {
@@ -21,7 +19,7 @@ header {
     }
 
     .img-edit-workspace {
-        background-image: url('../../../../assets/img/icons/edit_square_bk_24.png');
+        background-image: url('../../../../assets/img/icons/edit_square_bk.png');
         background-size: auto;
         background-repeat: no-repeat;
         background-position: center;
@@ -30,7 +28,7 @@ header {
 
         &:hover{
             cursor: pointer;
-            background-image: url('../../../../assets/img/icons/edit_square_bl_24.png');
+            background-image: url('../../../../assets/img/icons/edit_square_bl.png');
             background-color: $bgGrey;
             border-radius: 30px;
             color: $dkBlue;

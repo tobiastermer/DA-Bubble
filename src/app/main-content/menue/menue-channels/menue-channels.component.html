@@ -1,3 +1,22 @@
 <section class="menu-channel-container">
-    
+    <div class="menu-channel-header">
+        <img src="../../../../assets/img/icons/arrow_drop_down_bk.png" alt="">
+            <mat-card-title>
+                <img src="../../../../assets/img/icons/workspaces.png" alt="">
+                Channels
+            </mat-card-title>
+        <img src="../../../../assets/img/icons/add_bk.png" alt="">
+    </div>
+    <div class="menu-channel-content">
+
+        <div class="channel" *ngFor="let channel of channels">
+            <div class="channel-hash icon"></div>
+            <span class="channel-name">{{ channel }}</span>
+        </div>
+
+        <div class="channel-add">
+            <div class="channel-add-img icon"></div>
+            <span class="channel-add-text">Channel hinzufügen</span>
+        </div>
+    </div>
 </section>
