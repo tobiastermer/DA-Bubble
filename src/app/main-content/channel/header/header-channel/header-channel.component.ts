@@ -4,6 +4,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogPosition, MatDialog } from '@angular/material/dialog';
 import { DialogMembersComponent } from '../../dialogs/dialog-members/dialog-members.component';
+import { DialogAddUserComponent } from '../../dialogs/dialog-add-user/dialog-add-user.component';
+
+export interface ElementPos {
+  y: number,
+  h: number,
+  x: number,
+  w: number,
+}
 
 @Component({
   selector: 'app-header-channel',
@@ -20,6 +28,7 @@ export class HeaderChannelComponent {
 
   @ViewChild('channleInfo') channelInfo?: ElementRef;
   @ViewChild('membersInfo') membersInfo?: ElementRef;
+  @ViewChild('addUser') addUser?: ElementRef;
 
   constructor(public dialog: MatDialog) { }
 
@@ -43,30 +52,52 @@ export class HeaderChannelComponent {
 
   // Daten müssen noch angepasst werde
   openDialogMembers(): void {
-    let pos: DialogPosition | undefined = this.getMemberPos()
+    let pos = this.getDialogPos(this.membersInfo, 'right');
     const dialogRef = this.dialog.open(DialogMembersComponent, {
-      position: pos,
-      panelClass: ['card-right-corner', 'test'],
+      position: pos, panelClass: ['card-right-corner'],
       data: {},
     });
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-
     });
   }
 
 
-  getMemberPos(): DialogPosition | undefined {
-    if (!this.membersInfo) return undefined
-    const y = this.membersInfo.nativeElement.getBoundingClientRect().y
-    const h = this.membersInfo.nativeElement.getBoundingClientRect().height
-    const x = this.membersInfo.nativeElement.getBoundingClientRect().x
-    const w = this.membersInfo.nativeElement.getBoundingClientRect().width
-    const windowW = window.innerWidth;
-    return { top: y + h + 'px', right: windowW - x - w + 'px'}
+  // Daten müssen noch angepasst werde
+  openDialogAddUser(): void {
+    let pos = this.getDialogPos(this.addUser, 'right');
+    const dialogRef = this.dialog.open(DialogAddUserComponent, {
+      position: pos, panelClass: ['card-right-corner'],
+      data: {},
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
+
+  getDialogPos(element: ElementRef | undefined, cornerPos: 'right' | 'left'): DialogPosition | undefined {
+    if (!element) return undefined
+    const windowW = window.innerWidth;
+    let pos: ElementPos;
+    if (element.nativeElement) pos = this.getElementPos(element.nativeElement);
+    else {
+      let e: any = element;
+      pos = this.getElementPos(e._elementRef.nativeElement)
+    }
+    if (cornerPos === 'right') return { top: pos.y + pos.h + 'px', right: windowW - pos.x - pos.w + 'px' }
+    else return { top: pos.y + pos.h + 'px', right: pos.x + 'px' }
+  }
+
+
+  getElementPos(element: any): ElementPos {
+    return {
+      y: element.getBoundingClientRect().y,
+      h: element.getBoundingClientRect().height,
+      x: element.getBoundingClientRect().x,
+      w: element.getBoundingClientRect().width,
+    }
+  }
 
 
   test() {

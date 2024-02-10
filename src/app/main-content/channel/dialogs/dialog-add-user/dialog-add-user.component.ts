@@ -8,8 +8,15 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+
+interface Car {
+  value: string;
+  viewValue: string;
+}
+
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -18,7 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatButtonModule,
+    MatInputModule,
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
@@ -28,10 +35,14 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './dialog-add-user.component.scss'
 })
 export class DialogAddUserComponent {
+
+  selectedCar!: string;
+
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
+
 
   onNoClick(): void {
     this.dialogRef.close();

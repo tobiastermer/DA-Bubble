@@ -27,3 +27,17 @@ mat-card {
         @include iButton($w: 32px, $h:32px ,$p:3px, $hBgIC:$dkBlue)
     }
 }
+
+
+#userSelector{
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 1px solid $lgPurple;
+    outline: none;
+
+    &:focus-visible{
+      border-color: $bgBlue;
+    }
+}
+
+
