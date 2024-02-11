@@ -45,13 +45,11 @@ export class MenueComponent {
   setActiveChannel(index: number | undefined) {
     this.activeChannel = index;
     this.activeUser = undefined;
-    console.log('Aktiver Channel: ', this.activeChannel, ', aktiver User: ', this.activeUser);
   }
 
   setActiveMessage(index: number | undefined) {
     this.activeUser = index;
     this.activeChannel = undefined;
-    console.log('Aktiver Channel: ', this.activeChannel, ', aktiver User: ', this.activeUser);
   }
   
 }
