@@ -1,5 +1,5 @@
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
@@ -7,21 +7,26 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   imports: [MatCardModule, CommonModule],
   templateUrl: './menue-channels.component.html',
-  styleUrl: './menue-channels.component.scss'
+  styleUrls: ['./menue-channels.component.scss'] // Achtung: Korrektur von styleUrl zu styleUrls
 })
 export class MenueChannelsComponent {
+  @Output() channelSelected = new EventEmitter<number>();
+  @Input() channelActive: number | undefined;
+  
   channels: string[] = ['Entwicklerteam', 'Office-Team', 'Plauderecke', 'Coffee-Corner'];
   channelsVisible: boolean = true;
 
   constructor() { }
 
   toggleChannelsVisibility() {
-    if (this.channelsVisible) {
-      this.channelsVisible = false;
-    } else {
-      this.channelsVisible = true;
-    }
-    console.log(this.channelsVisible);
+    this.channelsVisible = !this.channelsVisible;
+  }
+
+  setChannelActive(i: number) {
+    this.channelSelected.emit(i);
+  }
+
+  isActiveChannel(i: number): boolean {
+    return this.channelActive === i;
   }
 }
-

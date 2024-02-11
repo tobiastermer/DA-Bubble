@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-menue-messages',
   standalone: true,
-  imports: [MatCardModule, CommonModule],
+  imports: [MatCardModule, CommonModule, MenueMessagesComponent],
   templateUrl: './menue-messages.component.html',
   styleUrl: './menue-messages.component.scss'
 })
 export class MenueMessagesComponent {
+  @Output() activeChannelChanged = new EventEmitter<number>();
+  @Input() userActive: number | undefined;
+
   users = [
     {
       firstName: 'Frederik',
@@ -42,11 +45,17 @@ export class MenueMessagesComponent {
   constructor() { }
 
   toggleUsersVisibility() {
-    if (this.usersVisible) {
-      this.usersVisible = false;
-    } else {
-      this.usersVisible = true;
-    }
-    console.log(this.usersVisible);
+    this.usersVisible = !this.usersVisible;
   }
+
+  @Output() userSelected = new EventEmitter<number>();
+
+  setUserActive(i: number) {
+    this.userSelected.emit(i); // Informiert die Parent-Komponente
+  }
+
+  isActiveUser(i: number): boolean {
+    return this.userActive === i;
+  }
+
 }

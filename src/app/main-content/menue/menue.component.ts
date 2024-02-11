@@ -15,5 +15,43 @@ import { MenueHeaderComponent } from './menue-header/menue-header.component';
   styleUrl: './menue.component.scss'
 })
 export class MenueComponent {
+  isMenuOpen: boolean = true;
+  isHovering: boolean = false; // Neue Variable für Hover-Zustand
+  activeChannel: number | undefined;
+  activeUser: number | undefined;
 
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  // Methoden zum Ändern des Hover-Zustands des Close-Overlays
+  onMouseEnter() {
+    this.isHovering = true;
+  }
+
+  onMouseLeave() {
+    this.isHovering = false;
+  }
+
+  getIconSource(): string {
+    if (this.isMenuOpen) {
+      return this.isHovering ? "../../../assets/img/icons/close_menu_bl.png" : "../../../assets/img/icons/close_menu_bk.png";
+    } else {
+      return this.isHovering ? "../../../assets/img/icons/open_menu_bl.png" : "../../../assets/img/icons/open_menu_bk.png";
+    }
+  }
+
+  // Methoden zum Switchen zwischen aktiver Nachricht oder aktivem CHannel
+  setActiveChannel(index: number | undefined) {
+    this.activeChannel = index;
+    this.activeUser = undefined;
+    console.log('Aktiver Channel: ', this.activeChannel, ', aktiver User: ', this.activeUser);
+  }
+
+  setActiveMessage(index: number | undefined) {
+    this.activeUser = index;
+    this.activeChannel = undefined;
+    console.log('Aktiver Channel: ', this.activeChannel, ', aktiver User: ', this.activeUser);
+  }
+  
 }

@@ -31,6 +31,7 @@ $lgBlue: #6E73DD;
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
+
     &:hover {
         cursor: pointer;
         background-color: $bgGrey;
@@ -52,10 +53,20 @@ $lgBlue: #6E73DD;
     display: flex;
     flex-direction: column;
     gap: 25px;
+    transition: transform 0.5s ease-in-out;
 }
 
-.menu-close {
-    @include dFlex($ai: center,  $gap: 10px);
+
+.menu-open {
+    transform: translateX(0); // Menü sichtbar
+}
+
+.menu-closed {
+    transform: translateX(-100%); // Menü versteckt
+}
+
+.menu-btn-close {
+    @include dFlex($ai: center, $gap: 10px);
     @include pAbsolute($t: 50%, $l: -145px, $z: 1);
     width: 347px !important;
     height: unset !important;
@@ -63,13 +74,23 @@ $lgBlue: #6E73DD;
     border-radius: 0px 0px 30px 30px;
     padding: 14px 23px 14px 23px;
     z-index: 10;
-    
-    mat-card-title{
-        @include dFlex($ai: center,  $gap: 10px);
+    box-shadow: 4px 4px 7px 0px rgba(0, 0, 0, 0.2);
+
+    mat-card-title {
+        @include dFlex($ai: center, $gap: 10px);
         font-size: 20px;
+
+        img {
+            transform: rotate(90deg);
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 4px 4px 7px 1px rgba(0, 0, 0, 0.3);
+
+        mat-card-title {
+            color: $dkBlue;
+        }
     }
 }
-
-
-
-
