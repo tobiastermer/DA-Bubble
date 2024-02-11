@@ -1,13 +1,13 @@
 <mat-card class="menu-card" [class.menu-open]="isMenuOpen" [class.menu-closed]="!isMenuOpen">
     <app-menue-header></app-menue-header>
-    <app-menue-channels [channelActive]="activeChannel" (channelSelected)="setActiveChannel($event)"></app-menue-channels>
+    <app-menue-channels [channelActive]="activeChannel"
+        (channelSelected)="setActiveChannel($event)"></app-menue-channels>
     <app-menue-messages [userActive]="activeUser" (userSelected)="setActiveMessage($event)"></app-menue-messages>
 </mat-card>
 
 <mat-card class="menu-btn-close" (click)="toggleMenu()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
     <mat-card-title>
-      Workspace-Menü schließen
-      <img [src]="getIconSource()" alt="menu-icon">
+        {{ isMenuOpen ? 'Workspace-Menü schließen' : 'Workspace-Menü öffnen' }}
+        <img [src]="getIconSource()" alt="menu-icon">
     </mat-card-title>
-  </mat-card>
-  
+</mat-card>

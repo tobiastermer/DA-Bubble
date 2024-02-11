@@ -69,6 +69,8 @@
         }
 
         .active {
+            background-color: $bgGrey;
+            
             .img-channel-hash {
                 background-image: url('../../../../assets/img/icons/hash_bl_16.png');
             }
