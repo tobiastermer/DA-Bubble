@@ -1,1 +1,68 @@
-<p>threads works!</p>
+<div class="thread-panel">
+  <header>
+    <div class="thread-title-panel">
+      <h2>Thread</h2>
+      <p>#Entwicklerteam</p>
+    </div>
+    <button class="close-button">
+      <mat-icon class="mt-2px">close</mat-icon>
+    </button>
+  </header>
+  <main>
+    <div class="message-block">
+      <img class="avatar" src="./assets/img/avatars/1.svg" alt="" />
+      <!--AVATAR ICON -->
+      <div class="message-details">
+        <div class="name-timestamp">
+          <h3>Noah Braun</h3>
+          <!--USER NAME-->
+          <span>14:25 Uhr</span>
+          <!--TIME STAMP-->
+        </div>
+        <mat-card class="message-card">
+          <mat-card-content
+            >Welche Version ist aktuell von Angular?</mat-card-content
+          > </mat-card
+        ><!--textmessage from User-->
+      </div>
+    </div>
+    <div class="response-counter">
+      <div>2</div>
+      <div>Antworten</div>
+      <mat-divider></mat-divider>
+    </div>
+    <div class="message-block">
+      <img class="avatar" src="./assets/img/avatars/1.svg" alt="" />
+      <div class="message-details">
+        <div class="name-timestamp">
+          <h3>Sofia Müller</h3>
+          <span>14:30 Uhr</span>
+        </div>
+        <mat-card class="message-card">
+          <mat-card-content
+            >Ich habe die gleiche Frage. Ich habe gegoogelt und es scheint, dass
+            die aktuelle Version Angular 13 ist. Vielleicht weiß Frederik, ob es
+            wahr ist.</mat-card-content
+          >
+        </mat-card>
+      </div>
+    </div>
+    <div class="message-input-area">
+      <textarea placeholder="Antworten..."></textarea>
+      <div class="control-container">
+        <div class="message-actions">
+          <div class="file-upload">
+            <mat-icon class="action-btn file-btn">add</mat-icon>
+            <input type="file" style="display: none" />
+          </div>
+          <hr />
+          <mat-icon class="action-btn">sentiment_satisfied</mat-icon>
+          <mat-icon appClickOutside class="action-btn"
+            >alternate_email</mat-icon
+          >
+        </div>
+        <button><mat-icon class="send-icon">send</mat-icon></button>
+      </div>
+    </div>
+  </main>
+</div>
