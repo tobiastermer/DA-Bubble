@@ -8,11 +8,11 @@
     <div class="users-info">
         <div class="users" #membersInfo (click)="openDialogMembers()">
             <div class="users-list">
-                <img src="../../../../../assets/img/avatars/1.svg" alt="userName" class="user-avatar">
-                <img src="../../../../../assets/img/avatars/2.svg" alt="userName" class="user-avatar">
-                <img src="../../../../../assets/img/avatars/3.svg" alt="userName" class="user-avatar">
+                @for (member of members; track $index) {
+                    <img src="../../../../../assets/img/avatars/{{member.avatar}}.svg" alt="userName" class="user-avatar">
+                }
             </div>
-            <span>3</span>
+            <span>{{ members.length }}</span>
         </div>
         <button mat-icon-button class="icon-button" #addUser (click)="openDialogAddUser()">
             <mat-icon>person_add_alt</mat-icon>

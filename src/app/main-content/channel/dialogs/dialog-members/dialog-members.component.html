@@ -5,8 +5,10 @@
             <mat-icon>close</mat-icon>
         </button>
     </div>
-    <div>
-
+    <div class="members">
+        @for (member of members; track $index) {
+            <app-user-chip [user]="member"></app-user-chip>
+            }
     </div>
     <div class="add-member">
         <button mat-icon-button disableRipple>

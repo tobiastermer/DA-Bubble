@@ -1,0 +1,56 @@
+@import './../../../../styles.scss';
+
+.user {
+    @include dFlex($jc: flex-start, $gap: 15px);
+    border-radius: 30px;
+    padding: 4px 20px 4px 20px;
+
+    .user-avatar {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+    }
+
+    &:hover {
+        background-color: $bgGrey;
+        cursor: pointer;
+
+        .user-name {
+            color: $dkBlue;
+            font-weight: 700;
+        }
+    }
+}
+
+.smaleUser {
+    @include dFlex($jc: flex-start, $gap: 15px);
+    border-radius: 30px;
+    padding: 4px 4px 4px 4px;
+    background-color: $bgGrey;
+    width: max-content;
+
+    .user-avatar {
+        height: 32px;
+        width: 32px;
+        border-radius: 50%;
+    }
+
+    mat-icon {
+        transform: scale(0.7);
+
+        &:hover {
+            transform: scale(1);
+            color: $dkBlue;
+            cursor: pointer;
+        }
+    }
+}
+
+.active {
+    background-color: $bgGrey;
+
+    .user-name {
+        color: $dkBlue;
+        font-weight: 700;
+    }
+}

@@ -1,5 +1,5 @@
 export class User {
-    id: string;
+    id?: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -31,4 +31,4 @@ export class User {
         return jsonObj;
     }
 
-}
+    }

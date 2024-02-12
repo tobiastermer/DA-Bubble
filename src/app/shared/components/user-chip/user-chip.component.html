@@ -1,0 +1,8 @@
+<!-- !smale muss getausch werdden -->
+<div [class.user]="!smale" [class.smaleUser]="smale" [class.active]="active" >
+    <img class="user-avatar" src="../../../../assets/img/avatars/{{ user.avatar }}.svg" alt="Avatar">
+    <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+    @if (smale) {
+    <mat-icon>close</mat-icon>
+    }
+</div>

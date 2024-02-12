@@ -1,16 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
+/////////// global colors /////////////
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color:#ECEEFE;}
+$bgGrey: #ECEEFE;
+$bgBlue: #797EF3;
 
-.card-right-corner{
-    border-radius: 30px 0 30px 30px;
-    overflow: hidden;
+$dkBlue: #535AF1;
+$lgBlue: #6E73DD;
+
+$lgPurple: #ADB0D9;
+
+
+
+/////////// border + shadows /////////////
+
+$boxShadow: 0px 2px 10px 0px #00000014;
+
+
+
+/////////// global mixings /////////////
+
+@mixin dFlex ($fd: row, $jc: center, $ai: center, $gap: 0) {
+  display: flex;
+  flex-direction: $fd;
+  justify-content: $jc;
+  align-items: $ai ;
+  gap: $gap ;
 }
 
-.mat-button-focus-overlay {
-    background-color: transparent!important;
+@mixin pAbsolute ($t: unset, $r: unset, $b: unset, $l: unset, $z: unset) {
+  position: absolute;
+  top: $t;
+  right: $r;
+  bottom: $b;
+  left: $l;
+  z-index: $z;
 }
+
+@mixin iButton($h: 40px, $w: 40px, $bgC: $bgGrey, $p: 8px, $hBgC: $bgGrey, $hBgIC: $bgGrey) {
+  height: $h;
+  width: $w;
+  background-color: $bgC;
+  padding: $p;
+
+  &:hover {
+    background-color: $hBgC;
+
+    mat-icon {
+      color: $hBgIC;
+    }
+  }
+
+  &:focus,
+  &:active {
+    background-color: $bgC;
+  }
+
+}
+
+
+/////////// global fonts /////////////
 
 @each $weight in (200, 300, 400, 500, 600, 700, 800, 900) {
   @font-face {
@@ -30,4 +77,32 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
     font-weight: $weight;
     src: url('/assets/fonts/figtree-v5-latin-#{$weight}.woff2') format('woff2');
   }
+}
+
+
+
+/////////// global classes /////////////
+
+.d-none {
+  display: none;
+}
+
+.card-right-corner {
+  border-radius: 30px 0 30px 30px;
+  overflow: hidden;
+}
+
+.mat-button-focus-overlay {
+  background-color: transparent !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Nunito, "Helvetica Neue", sans-serif;
+  background-color: #ECEEFE;
 }

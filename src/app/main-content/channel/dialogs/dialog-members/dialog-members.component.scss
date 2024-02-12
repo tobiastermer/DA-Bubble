@@ -6,7 +6,7 @@ mat-card {
     min-width: 450px;
     height: 100%;
 
-    @include dFlex($fd: column, $ai: flex-start, $gap:20px);
+    @include dFlex($fd: column, $ai: flex-start, $gap: 20px);
 
 }
 
@@ -14,16 +14,20 @@ mat-card {
     @include dFlex($jc: space-between);
     width: 100%;
 
-    button{
-    @include iButton($bgC:unset, $hBgIC: #000);
+    button {
+        @include iButton($bgC: unset, $hBgIC: #000);
     }
+}
+
+.members {
+    @include dFlex($fd: column, $ai: flex-starts, $gap: 10px);
 }
 
 .add-member {
     @include dFlex($gap: 15px);
     padding-left: 30px;
 
-    button{
-        @include iButton($w: 32px, $h:32px ,$p:3px, $hBgIC:$dkBlue)
+    button {
+        @include iButton($w: 32px, $h: 32px, $p: 3px, $hBgIC: $dkBlue)
     }
 }

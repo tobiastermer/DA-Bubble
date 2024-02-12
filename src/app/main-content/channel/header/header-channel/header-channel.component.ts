@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogPosition, MatDialog } from '@angular/material/dialog';
 import { DialogMembersComponent } from '../../dialogs/dialog-members/dialog-members.component';
 import { DialogAddUserComponent } from '../../dialogs/dialog-add-user/dialog-add-user.component';
+import { User } from '../../../../models/user.class';
 
 export interface ElementPos {
   y: number,
@@ -25,6 +26,30 @@ export interface ElementPos {
   styleUrl: './header-channel.component.scss'
 })
 export class HeaderChannelComponent {
+
+  members: User[] = [
+    {
+      firstName: 'Frederik',
+      lastName: 'Beck (Du)',
+      avatar: 1,
+      email: '',
+      status: '',
+    },
+    {
+      firstName: 'Sofia',
+      lastName: 'Müller',
+      avatar: 2,
+      email: '',
+      status: '',
+    },
+    {
+      firstName: 'Noah',
+      lastName: 'Braun',
+      avatar: 3,
+      email: '',
+      status: '',
+    },
+  ];
 
   @ViewChild('channleInfo') channelInfo?: ElementRef;
   @ViewChild('membersInfo') membersInfo?: ElementRef;
@@ -53,9 +78,10 @@ export class HeaderChannelComponent {
   // Daten müssen noch angepasst werde
   openDialogMembers(): void {
     let pos = this.getDialogPos(this.membersInfo, 'right');
+    let members = this.members;
     const dialogRef = this.dialog.open(DialogMembersComponent, {
       position: pos, panelClass: ['card-right-corner'],
-      data: {},
+      data: {members},
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

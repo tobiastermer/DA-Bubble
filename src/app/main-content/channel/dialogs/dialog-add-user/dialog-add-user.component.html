@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card (click)="closeFilterdUsers()">
     <div class="card-header">
         <mat-card-title>Leute hinzufügen</mat-card-title>
         <button mat-icon-button disableRipple (click)="onNoClick()">
@@ -9,10 +9,19 @@
         <img src="./../../../../../assets/img/icons/hash_bl_24.png" alt="">
         <span>Channel Name</span>
     </div>
-    <div>
-        <input type="text" name="" id="userSelector"
-        placeholder="Name eingeben">
-        <ul>
+    <div (click)="stopPropagation($event)">
+        <div class="user-selector">
+            @if (!userSelected) {
+            <input #userInp type="text" placeholder="Name eingeben" (input)="filterUsers()">
+            } @else{
+                <app-user-chip [user]="addedUser" [smale]="true"></app-user-chip>
+            }
+
+        </div>
+        <ul class="filterd-users" [class.d-none]="!selectListVisible">
+            @for (user of filterdUsres; track $index) {
+            <app-user-chip (click)="seletUser(user)" [user]="user"></app-user-chip>
+            }
         </ul>
     </div>
 
