@@ -1,1 +1,71 @@
-<p>sign-up works!</p>
+<div class="signup-page-container">
+  <div class="logo">
+    <img src="./assets/img/logo_+_text.png" />
+  </div>
+
+  <mat-card class="sign-up-main-container">
+    <mat-card-header>
+      <mat-card-title class="sign-up-header">Konto erstellen</mat-card-title>
+      <mat-card-subtitle class="sign-up-subtitle"
+        >Mit deinem Namen und deiner E-mail-Adresse hast <br />
+        du dein neues DABubble-Konto.</mat-card-subtitle
+      >
+    </mat-card-header>
+    <form>
+      <mat-form-field class="sign-up-formfield" appearance="outline">
+        <mat-icon matIconPrefix>person_outlined</mat-icon>
+        <input
+          matInput
+          placeholder="Name und Nachname"
+          formControlName="name"
+          type="text"
+        />
+        <mat-error>Name eingeben</mat-error>
+        <mat-error>Mindestens 3 Zeichen eingeben</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="sign-up-formfield">
+        <mat-icon matIconPrefix>mail_outlined</mat-icon>
+        <input
+          matInput
+          placeholder="beispiel@email.com"
+          formControlName="email"
+          type="email"
+        />
+        <mat-error>Email eingeben</mat-error>
+        <mat-error>Richtige Email eingeben</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="sign-up-formfield">
+        <mat-icon matIconPrefix>lock_outlined</mat-icon>
+        <input
+          matInput
+          placeholder="Password"
+          formControlName="password"
+          type="password"
+        />
+        <mat-error>Password eingeben</mat-error>
+        <mat-error>Mindestens 6 Zeichen eingeben</mat-error>
+      </mat-form-field>
+
+      <section class="section-checkbox">
+        <mat-checkbox class="sign-up-checkbox"
+          >Ich stimme die <a href="#">Datenschutzerklärungen</a></mat-checkbox
+        >
+      </section>
+
+      <div class="next-button">
+        <button type="submit" mat-fab extended color="primary">Weiter</button>
+      </div>
+    </form>
+
+    <div class="arrow-back">
+      <button class="basic-button close-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+
+  <div class="legals">
+    <div>Impressum</div>
+    <div>Datenschutz</div>
+  </div>
+</div>

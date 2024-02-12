@@ -1,1 +1,48 @@
-<p>select-avatar works!</p>
+<div class="Avatar-page-container">
+  <div class="logo">
+    <img src="./assets/img/logo_+_text.png" />
+  </div>
+
+  <mat-card class="Avatar-main-container">
+    <mat-card-header>
+      <mat-card-title class="Avatar-header">Wähle deinen Avatar</mat-card-title>
+    
+    </mat-card-header>
+
+    <div class="avatar-content-box">
+      <div class="profile-img">
+        <img src="./assets/img/empty-profile.png" />
+      </div>
+      <div class="new-user">Hans</div>
+      <!---USER NAME-->
+      <div class="info-container">Aus der Liste wählen</div>
+      <div class="profile-pics">
+        <div *ngFor="let avatar of avatars">
+          <img src="./assets/img/avatars/{{ avatar }}" />
+        </div>
+      </div>
+      <div class="my-pic">
+        <span>Eigenes Bild anwenden</span>
+        <div class="form-group">
+          <button>Datei Hochladen</button>
+          <input type="file" style="display: none;" />
+        </div>
+      </div>
+
+      <div class="next-button">
+        <button type="submit" mat-fab extended color="primary">Weiter</button>
+      </div>
+
+      <div class="arrow-back">
+        <button class="basic-button close-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+
+      <div class="legals">
+        <div>Impressum</div>
+        <div>Datenschutz</div>
+      </div>
+    </div>
+  </mat-card>
+</div>

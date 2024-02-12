@@ -11,3 +11,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 .mat-button-focus-overlay {
     background-color: transparent!important;
 }
+
+@each $weight in (200, 300, 400, 500, 600, 700, 800, 900) {
+  @font-face {
+    font-display: swap;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: $weight;
+    src: url('/assets/fonts/nunito-v26-latin-#{$weight}.woff2') format('woff2');
+  }
+}
+
+@each $weight in (300, 400, 500, 600, 700, 800, 900) {
+  @font-face {
+    font-display: swap;
+    font-family: 'Figtree';
+    font-style: normal;
+    font-weight: $weight;
+    src: url('/assets/fonts/figtree-v5-latin-#{$weight}.woff2') format('woff2');
+  }
+}
