@@ -81,9 +81,10 @@ export class HeaderChannelComponent {
     let members = this.members;
     const dialogRef = this.dialog.open(DialogMembersComponent, {
       position: pos, panelClass: ['card-right-corner'],
-      data: {members},
+      data: { members },
     });
     dialogRef.afterClosed().subscribe(result => {
+      if (result) this.openDialogAddUser();
       console.log('The dialog was closed');
     });
   }

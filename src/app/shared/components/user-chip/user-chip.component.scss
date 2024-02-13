@@ -4,6 +4,7 @@
     @include dFlex($jc: flex-start, $gap: 15px);
     border-radius: 30px;
     padding: 4px 20px 4px 20px;
+    font-size: 18px;
 
     .user-avatar {
         height: 50px;
@@ -28,6 +29,7 @@
     padding: 4px 8px;
     background-color: $bgGrey;
     width: max-content;
+    font-size: 18px;
 
     .user-avatar {
         height: 28px;

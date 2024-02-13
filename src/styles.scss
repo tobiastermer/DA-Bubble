@@ -37,11 +37,15 @@ $boxShadow: 0px 2px 10px 0px #00000014;
   z-index: $z;
 }
 
-@mixin iButton($h: 40px, $w: 40px, $bgC: $bgGrey, $p: 8px, $hBgC: $bgGrey, $hBgIC: $bgGrey) {
+@mixin iButton($h: 40px, $w: 40px, $bgC: $bgGrey, $iC: #000, $p: 8px, $hBgC: $bgGrey, $hBgIC: $bgGrey) {
   height: $h;
   width: $w;
   background-color: $bgC;
   padding: $p;
+
+  mat-icon {
+    color: $iC;
+  }
 
   &:hover {
     background-color: $hBgC;

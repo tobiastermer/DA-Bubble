@@ -10,7 +10,7 @@
             <app-user-chip [user]="member"></app-user-chip>
             }
     </div>
-    <div class="add-member">
+    <div class="add-member" (click)="openAddUser()">
         <button mat-icon-button disableRipple>
             <mat-icon>person_add_alt</mat-icon>
         </button>
