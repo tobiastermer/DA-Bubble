@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../../../models/user.class';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
 import { TmplAstRecursiveVisitor } from '@angular/compiler';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -29,7 +30,8 @@ import { TmplAstRecursiveVisitor } from '@angular/compiler';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    UserChipComponent
+    UserChipComponent,
+    CommonModule
   ],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss'
@@ -154,5 +156,25 @@ export class DialogAddUserComponent {
     this.addedUser = user;
     this.userSelected = true;
     this.closeFilterdUsers();
+  }
+
+
+  removeUser() {
+    this.userSelected = false;
+    this.addedUser = new User;
+  }
+
+
+  addUser() {
+    if (!this.userSelected) return
+    this.dialogRef.close(this.addedUser)
+  }
+
+
+  setBtnClass() {
+    return {
+      'btn-disable': !this.userSelected,
+      'btn-enable': this.userSelected
+    }
   }
 }

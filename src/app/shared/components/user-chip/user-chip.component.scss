@@ -23,20 +23,21 @@
 }
 
 .smaleUser {
-    @include dFlex($jc: flex-start, $gap: 15px);
+    @include dFlex($jc: flex-start, $gap: 8px);
     border-radius: 30px;
-    padding: 4px 4px 4px 4px;
+    padding: 4px 8px;
     background-color: $bgGrey;
     width: max-content;
 
     .user-avatar {
-        height: 32px;
-        width: 32px;
+        height: 28px;
+        width: 28px;
         border-radius: 50%;
     }
 
     mat-icon {
         transform: scale(0.7);
+        margin-left: -8px;
 
         &:hover {
             transform: scale(1);

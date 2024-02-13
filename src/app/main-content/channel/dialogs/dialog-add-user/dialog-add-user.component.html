@@ -1,23 +1,27 @@
 <mat-card (click)="closeFilterdUsers()">
+
     <div class="card-header">
         <mat-card-title>Leute hinzufügen</mat-card-title>
         <button mat-icon-button disableRipple (click)="onNoClick()">
             <mat-icon>close</mat-icon>
         </button>
     </div>
+
     <div class="channel-name">
-        <img src="./../../../../../assets/img/icons/hash_bl_24.png" alt="">
+        <img src="./../../../../../assets/img/icons/hash_bl_18.png" alt="">
         <span>Channel Name</span>
     </div>
-    <div (click)="stopPropagation($event)">
-        <div class="user-selector">
-            @if (!userSelected) {
-            <input #userInp type="text" placeholder="Name eingeben" (input)="filterUsers()">
-            } @else{
-                <app-user-chip [user]="addedUser" [smale]="true"></app-user-chip>
-            }
 
+    <div class="user-sector" (click)="stopPropagation($event)">
+
+        @if (!userSelected) {
+        <input #userInp class="user-input" type="text" placeholder="Name eingeben" (input)="filterUsers()">
+        } @else{
+        <div class="user-selector">
+            <app-user-chip [user]="addedUser" [smale]="true" (deletUser)="removeUser()"></app-user-chip>
         </div>
+        }
+
         <ul class="filterd-users" [class.d-none]="!selectListVisible">
             @for (user of filterdUsres; track $index) {
             <app-user-chip (click)="seletUser(user)" [user]="user"></app-user-chip>
@@ -25,5 +29,5 @@
         </ul>
     </div>
 
-    <button>hinzufügen</button>
+    <button class="btn" [ngClass]="setBtnClass()" (click)="addUser()">Hinzufügen</button>
 </mat-card>

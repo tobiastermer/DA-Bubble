@@ -97,7 +97,7 @@ export class HeaderChannelComponent {
       data: {},
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      if (result) console.log(result)
     });
   }
 
