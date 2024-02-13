@@ -16,7 +16,7 @@
         </div> -->
         @for (user of users; track $index) {
         <app-user-chip [user]="user" [active]="isActiveUser($index)"
-        (click)="setUserActive($index)"></app-user-chip>
+        (click)="setUserActive($index); openDialog()"></app-user-chip>
         }
     </div>
 </section>

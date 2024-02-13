@@ -5,7 +5,7 @@
     <app-menue-messages [userActive]="activeUser" (userSelected)="setActiveMessage($event)"></app-menue-messages>
 </mat-card>
 
-<mat-card class="menu-btn-close" (click)="toggleMenu()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+<mat-card class="menu-overlay-close" (click)="toggleMenu()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
     <mat-card-title>
         {{ isMenuOpen ? 'Workspace-Menü schließen' : 'Workspace-Menü öffnen' }}
         <img [src]="getIconSource()" alt="menu-icon">

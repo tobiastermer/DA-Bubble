@@ -65,7 +65,7 @@ $lgBlue: #6E73DD;
     transform: translateX(-120%); // Menü versteckt
 }
 
-.menu-btn-close {
+.menu-overlay-close {
     @include dFlex($ai: center, $gap: 10px);
     @include pAbsolute($t: 50%, $l: -145px, $z: 1);
     width: 347px !important;
