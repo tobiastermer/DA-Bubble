@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 // Global colors
 $bgGrey: #eceefe;
 $bgdGrey: #686868;
@@ -46,7 +48,7 @@ $fontFigtree: "Figtree", sans-serif;
   }
 }
 
-.signup-page-container {
+.background-container {
   @include dFlex(column, center, center);
   width: 100vw;
   max-width: 1920px;
@@ -56,17 +58,135 @@ $fontFigtree: "Figtree", sans-serif;
   background-color: $bgGrey;
   position: relative;
 
-  .logo {
+  &__logo {
     @include pAbsolute(32px, unset, unset, 32px, unset);
+  }
+
+  &__legals {
+    @include dFlex(row, center, center, 16px);
+    position: absolute;
+    bottom: 48px;
+    color: $lPurple;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: $fontFigtree;
+    cursor: pointer;
   }
 }
 
-.sign-up-main-container {
+.sign-up {
   padding: 42px;
   border-radius: 30px;
   @include dFlex(column, center, 36px);
   gap: 36px;
   box-shadow: $boxShadow;
+
+  &__header,
+  &__subtitle {
+    text-align: center;
+    font-family: $fontNunito;
+  }
+
+  &__header {
+    font-size: 46px;
+    color: $dkBlue;
+    padding: 36px;
+    font-weight: 700;
+  }
+
+  &__subtitle {
+    font-size: 20px;
+    color: black;
+    font-weight: 400;
+  }
+
+  &__form-field {
+    display: flex;
+    flex-direction: column;
+
+    mat-icon {
+      color: grey;
+      padding-left: 30px;
+    }
+
+    input {
+      padding-left: 8px;
+      font-family: $fontNunito;
+      font-weight: 500;
+    }
+  }
+  &__checkbox-section {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    padding-bottom: 40px;
+  }
+
+  &__checkbox {
+    color: $dkBlue;
+    @include dFlex(row, center, center);
+    font-family: $fontNunito;
+
+    a {
+      text-decoration: none;
+      color: $bgBlue;
+      font-family: $fontNunito;
+
+      &:hover {
+        color: $dkBlue;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__checkbox-error {
+    position: absolute;
+    bottom: 62px;
+    left: 82px;
+    font-size: 12px;
+  }
+
+  &__next-button {
+    @include pAbsolute(unset, 53px, 40px, unset, unset);
+
+    button {
+      font-size: 18px;
+      font-weight: 700;
+      width: 107px;
+      height: 49px;
+      border: none;
+      color: $bgGrey;
+      background-color: $dkBlue;
+      border-radius: 28px;
+      font-family: $fontNunito;
+      font-weight: 700;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__arrow-back {
+    position: absolute;
+    top: 48px;
+    left: 18px;
+    cursor: pointer;
+    display: flex;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      border: unset;
+      background-color: transparent;
+
+      &:hover {
+        cursor: pointer;
+        transform: scaleY(1.01);
+      }
+    }
+  }
 }
 
 .sign-up-header {
@@ -105,73 +225,7 @@ form {
   --mdc-outlined-text-field-container-shape: 28px;
   background-color: $bgGrey;
   border-radius: 28px;
-}
-
-.section-checkbox {
-  display: flex;
-  box-sizing: border-box;
-  width: 100%;
-  padding-bottom: 40px;
-}
-
-.next-button {
-  @include pAbsolute(unset, 53px, 40px, unset, unset);
-
-  button {
-    font-size: 18px;
-    font-weight: 700;
-    width: 107px;
-    height: 49px;
-    border: none;
-    color: $bgGrey;
-    background-color: $dkBlue;
-    border-radius: 28px;
-    font-family: $fontNunito;
-    font-weight: 700;
-
-    &:hover{
-      cursor: pointer;
-    }
-  }
-}
-
-.arrow-back {
-  position: absolute;
-  top: 48px;
-  left: 18px;
-  cursor: pointer;
-  display: flex;
-  padding: 8px;
-  justify-content: center;
-  align-items: center;
-
-  button {
-    border: unset;
-    background-color: transparent;
-    
-
-    &:hover{
-      cursor: pointer;
-      transform: scaleY(1.01);
-    }
-  }
-}
-
-.sign-up-checkbox {
-  color: $dkBlue;
-  @include dFlex(row, center, center);
-  font-family: $fontNunito;
-
-  a {
-    text-decoration: none;
-    color: $bgBlue;
-    font-family: $fontNunito;
-
-    &:hover {
-      color: $dkBlue;
-      cursor: pointer;
-    }
-  }
+  border: transparent;
 }
 
 :host ::ng-deep .mdc-form-field > label {
@@ -190,13 +244,9 @@ form {
   background-color: $dkBlue;
   border: $dkBlue;
 }
-.legals {
-  @include dFlex(row, center, center, 16px);
-  position: absolute;
-  bottom: 48px;
-  color: $lPurple;
-  cursor: pointer;
-  margin-top: 10px;
-  font-family: $fontFigtree;
-  cursor: pointer;
-}
+
+/* ENTFERNT BORDER ABER DANN IN ALLEN ZUSTÄNDEN 
+:host ::ng-deep .mdc-notched-outline__trailing,
+:host ::ng-deep .mdc-notched-outline__leading {
+  border-color: transparent !important ;
+}*/

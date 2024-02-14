@@ -12,6 +12,7 @@ import { SignUpComponent } from './auth/sign-up/sign-up.component';
     RouterOutlet,
     LoginComponent,
     MainContentComponent,
+
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

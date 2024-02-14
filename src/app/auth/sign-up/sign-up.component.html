@@ -1,18 +1,18 @@
-<div class="signup-page-container">
-  <div class="logo">
+<div class="background-container">
+  <div class="background-container__logo">
     <img src="./assets/img/logo_+_text.png" />
   </div>
 
-  <mat-card class="sign-up-main-container">
+  <mat-card class="sign-up">
     <mat-card-header>
-      <mat-card-title class="sign-up-header">Konto erstellen</mat-card-title>
-      <mat-card-subtitle class="sign-up-subtitle"
-        >Mit deinem Namen und deiner E-mail-Adresse hast <br />
-        du dein neues DABubble-Konto.</mat-card-subtitle
-      >
+      <mat-card-title class="sign-up__header">Konto erstellen</mat-card-title>
+      <mat-card-subtitle class="sign-up__subtitle">
+        Mit deinem Namen und deiner E-mail-Adresse hast <br />
+        du dein neues DABubble-Konto.
+      </mat-card-subtitle>
     </mat-card-header>
-    <form>
-      <mat-form-field class="sign-up-formfield" appearance="outline">
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="sign-up__form-field" appearance="outline">
         <mat-icon matIconPrefix>person_outlined</mat-icon>
         <input
           matInput
@@ -20,10 +20,14 @@
           formControlName="name"
           type="text"
         />
-        <mat-error>Name eingeben</mat-error>
-        <mat-error>Mindestens 3 Zeichen eingeben</mat-error>
+        <mat-error *ngIf="signUpForm.get('name')?.hasError('required')"
+          >Name eingeben</mat-error
+        >
+        <mat-error *ngIf="signUpForm.get('name')?.hasError('minlength')"
+          >Mindestens 3 Zeichen eingeben</mat-error
+        >
       </mat-form-field>
-      <mat-form-field appearance="outline" class="sign-up-formfield">
+      <mat-form-field appearance="outline" class="sign-up__form-field">
         <mat-icon matIconPrefix>mail_outlined</mat-icon>
         <input
           matInput
@@ -31,10 +35,14 @@
           formControlName="email"
           type="email"
         />
-        <mat-error>Email eingeben</mat-error>
-        <mat-error>Richtige Email eingeben</mat-error>
+        <mat-error *ngIf="signUpForm.get('email')?.hasError('required')"
+          >Email eingeben</mat-error
+        >
+        <mat-error *ngIf="signUpForm.get('email')?.hasError('email')"
+          >Richtige Email eingeben</mat-error
+        >
       </mat-form-field>
-      <mat-form-field appearance="outline" class="sign-up-formfield">
+      <mat-form-field appearance="outline" class="sign-up__form-field">
         <mat-icon matIconPrefix>lock_outlined</mat-icon>
         <input
           matInput
@@ -42,29 +50,37 @@
           formControlName="password"
           type="password"
         />
-        <mat-error>Password eingeben</mat-error>
-        <mat-error>Mindestens 6 Zeichen eingeben</mat-error>
+        <mat-error *ngIf="signUpForm.get('password')?.invalid">
+          {{ getFirstPasswordError() }}
+        </mat-error>
       </mat-form-field>
 
-      <section class="section-checkbox">
-        <mat-checkbox class="sign-up-checkbox"
-          >Ich stimme die <a href="#">Datenschutzerklärungen</a></mat-checkbox
+      <section class="sign-up__checkbox-section">
+        <mat-checkbox class="sign-up__checkbox" formControlName="termsAccepted">
+          Ich stimme den <a href="#">Datenschutzerklärungen</a> zu
+        </mat-checkbox>
+
+        <mat-error
+          class="sign-up__checkbox-error"
+          *ngIf="formSubmitted && signUpForm.controls['termsAccepted'].errors?.['required']"
         >
+          Bitte bestätigen Sie die Datenschutzerklärungen
+        </mat-error>
       </section>
 
-      <div class="next-button">
+      <div class="sign-up__next-button">
         <button type="submit" mat-fab extended color="primary">Weiter</button>
       </div>
     </form>
 
-    <div class="arrow-back">
+    <div class="sign-up__arrow-back">
       <button class="basic-button close-btn">
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
   </mat-card>
 
-  <div class="legals">
+  <div class="background-container__legals">
     <div>Impressum</div>
     <div>Datenschutz</div>
   </div>
