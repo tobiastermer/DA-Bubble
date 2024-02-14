@@ -3,12 +3,6 @@
 $bgGrey: #eceefe;
 $bgBlue: #797ef3;
 
-<<<<<<< HEAD
-$dkBlue: #535af1;
-$lgBlue: #6e73dd;
-
-$lgPurple: #adb0d9;
-=======
 $dkGrey: #686868; //also for status icon 'abwesend'
 $lgGreen: #92c83e; //also for status icon 'aktiv'
 
@@ -18,7 +12,6 @@ $lgBlueLinks: #1381ff; // for links
 
 $lgPurple: #ADB0D9;
 $dkPurple: #444df2; // for buttons
->>>>>>> 2898905f6813d22bf7fe6690e1e47c269066f4fb
 
 $bgdGrey: #686868;
 
@@ -45,18 +38,7 @@ $boxShadow: 0px 2px 10px 0px #00000014;
   z-index: $z;
 }
 
-<<<<<<< HEAD
-@mixin iButton(
-  $h: 40px,
-  $w: 40px,
-  $bgC: $bgGrey,
-  $p: 8px,
-  $hBgC: $bgGrey,
-  $hBgIC: $bgGrey
-) {
-=======
 @mixin iButton($h: 40px, $w: 40px, $bgC: $bgGrey, $iC: #000, $p: 8px, $hBgC: $bgGrey, $hBgIC: $bgGrey) {
->>>>>>> 2898905f6813d22bf7fe6690e1e47c269066f4fb
   height: $h;
   width: $w;
   background-color: $bgC;
@@ -139,10 +121,6 @@ body {
 body {
   margin: 0;
   font-family: Nunito, "Helvetica Neue", sans-serif;
-<<<<<<< HEAD
-  background-color: #eceefe;
-}
-=======
   background-color: #ECEEFE;
 }
 
@@ -163,4 +141,3 @@ a {
     cursor: pointer;
   }
 }
->>>>>>> 2898905f6813d22bf7fe6690e1e47c269066f4fb

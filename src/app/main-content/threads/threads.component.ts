@@ -5,6 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { InputTextareaComponent } from '../../shared/components/input-textarea/input-textarea.component';
 
+
+
 interface Message {
   userFirstName: string;
   text: string;
