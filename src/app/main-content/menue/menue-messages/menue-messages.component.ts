@@ -71,7 +71,10 @@ export class MenueMessagesComponent {
 
 
   openDialog() {
-    this.dialog.open(DialogShowUserComponent);
+    this.dialog.open(DialogShowUserComponent,{
+      panelClass: ['card-round-corners'],
+      data: {},
+    });
   }
 
 }
