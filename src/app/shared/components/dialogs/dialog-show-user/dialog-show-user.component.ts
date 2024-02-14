@@ -13,11 +13,9 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { User } from '../../../../models/user.class';
 import { FormsModule } from '@angular/forms';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 
 @Component({
   selector: 'app-dialog-show-user',
@@ -26,7 +24,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose, MatDatepickerModule, MatNativeDateModule, FormsModule, MatProgressBarModule],
+    MatDialogClose, FormsModule],
   templateUrl: './dialog-show-user.component.html',
   styleUrl: './dialog-show-user.component.scss'
 })
@@ -34,7 +32,7 @@ export class DialogShowUserComponent {
   user: User;
 
 
-  constructor(public dialogRef: MatDialogRef<DialogShowUserComponent>) {
+  constructor(public dialogRef: MatDialogRef<DialogShowUserComponent>, public dialog: MatDialog) {
     this.user = new User();
   }
 
@@ -42,5 +40,9 @@ export class DialogShowUserComponent {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  openDialogEditUser() {
+    this.dialog.open(DialogEditUserComponent);
   }
 }

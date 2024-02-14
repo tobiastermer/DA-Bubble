@@ -41,36 +41,31 @@ export class DialogAddUserComponent {
   //dummy values for testing
   allUsers: User[] = [
     {
-      firstName: 'Frederik',
-      lastName: 'Beck (Du)',
+      name: 'Frederik Beck (Du)',
       avatar: 1,
       email: '',
       status: '',
     },
     {
-      firstName: 'Sofia',
-      lastName: 'Müller',
+      name: 'Sofia Müller',
       avatar: 2,
       email: '',
       status: '',
     },
     {
-      firstName: 'Noah',
-      lastName: 'Braun',
+      name: 'Noah Braun',
       avatar: 3,
       email: '',
       status: '',
     },
     {
-      firstName: 'Elise',
-      lastName: 'Roth',
+      name: 'Elise Roth',
       avatar: 4,
       email: '',
       status: '',
     },
     {
-      firstName: 'Elias',
-      lastName: 'Neumann',
+      name: 'Elias Neumann',
       avatar: 5,
       email: '',
       status: '',
@@ -98,9 +93,7 @@ export class DialogAddUserComponent {
   setFilterValues() {
     this.allUsers.forEach(user => {
       this.filterValues.push(
-        user.firstName.toLowerCase()
-        + ' '
-        + user.lastName.toLowerCase())
+        user.name.toLowerCase())
     });
   }
 

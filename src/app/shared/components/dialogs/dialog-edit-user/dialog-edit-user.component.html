@@ -1,1 +1,27 @@
-<p>dialog-edit-user works!</p>
+<div class="dialog-container">
+    <h2>Dein Profil bearbeiten</h2>
+    <div class="avatar-container">
+        <img src="../../../../../assets/img/avatars/1.svg" alt="">
+    </div>
+    <div class="input-container">
+        <div class="label-container">
+            <img src="../../../../../assets/img/icons/account_circle.png" class="icon" alt="">
+            <span>Vollständiger Name</span>
+        </div>
+        <input type="text" [disabled]="loading" [(ngModel)]="user.name" matInput placeholder="Name">
+    </div>
+    <div class="input-container">
+        <div class="label-container">
+            <img src="../../../../../assets/img/icons/mail.png" class="icon" alt="">
+            <span>E-Mail-Adresse</span>
+        </div>
+        <input type="email" [disabled]="loading" [(ngModel)]="user.email" matInput placeholder="E-Mail-Adresse">
+    </div>
+    <div class="button-container">
+        <div mat-dialog-actions>
+            <button mat-flat-button class="btn-cancel" (click)="closeDialog()">Abbrechen</button>
+            <button mat-flat-button class="btn-save" color="primary" (click)="saveUser()">Speichern</button>
+        </div>
+    </div>
+    <img src="../../../../../assets/img/icons/close.png" class="btn-close" (click)="closeDialog()" alt="close">
+</div>

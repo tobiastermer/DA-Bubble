@@ -19,36 +19,31 @@ export class MenueMessagesComponent {
 
   users: User[] = [
     {
-      firstName: 'Frederik',
-      lastName: 'Beck (Du)',
+      name: 'Frederik Beck (Du)',
       avatar: 1,
       email: '',
       status:'',
     },
     {
-      firstName: 'Sofia',
-      lastName: 'Müller',
+      name: 'Sofia Müller',
       avatar: 2,
       email: '',
       status:'',
     },
     {
-      firstName: 'Noah',
-      lastName: 'Braun',
+      name: 'Noah Braun',
       avatar: 3,
       email: '',
       status:'',
     },
     {
-      firstName: 'Elise',
-      lastName: 'Roth',
+      name: 'Elise Roth',
       avatar: 4,
       email: '',
       status:'',
     },
     {
-      firstName: 'Elias',
-      lastName: 'Neumann',
+      name: 'Elias Neumann',
       avatar: 5,
       email: '',
       status:'',

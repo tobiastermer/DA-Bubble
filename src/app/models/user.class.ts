@@ -1,15 +1,13 @@
 export class User {
     id?: string;
-    firstName: string;
-    lastName: string;
+    name: string;
     email: string;
     avatar: number;
     status: string;
 
     constructor(obj?: any) {
         this.id = obj ? obj.id : '';
-        this.firstName = obj ? obj.firstName : '';
-        this.lastName = obj ? obj.lastName : '';
+        this.name = obj ? obj.name : '';
         this.email = obj ? obj.email : '';
         this.avatar = obj ? obj.avatar : NaN;
         this.status = obj ? obj.status : '';
@@ -17,8 +15,7 @@ export class User {
 
     public toJSON?() {
         const jsonObj: any = {
-            firstName: this.firstName,
-            lastName: this.lastName,
+            name: this.name,
             email: this.email,
             avatar: this.avatar,
             status: this.status,

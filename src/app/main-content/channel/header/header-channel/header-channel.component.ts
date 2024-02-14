@@ -29,22 +29,19 @@ export class HeaderChannelComponent {
 
   members: User[] = [
     {
-      firstName: 'Frederik',
-      lastName: 'Beck (Du)',
+      name: 'Frederik Beck (Du)',
       avatar: 1,
       email: '',
       status: '',
     },
     {
-      firstName: 'Sofia',
-      lastName: 'Müller',
+      name: 'Sofia Müller',
       avatar: 2,
       email: '',
       status: '',
     },
     {
-      firstName: 'Noah',
-      lastName: 'Braun',
+      name: 'Noah Braun',
       avatar: 3,
       email: '',
       status: '',
