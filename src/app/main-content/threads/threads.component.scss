@@ -1,134 +1,274 @@
-// Global colors
-$bgGrey: #eceefe;
-$bgdGrey: #686868;
-$bgBlue: #797ef3;
-$dkBlue: #535af1;
-$lgBlue: #6e73dd;
-$lPurple: #adb0d9;
+@import "../../../styles.scss";
 
-// Border + shadows
-$boxShadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.0784313725);
-
-// Global mixins
-@mixin dFlex($fd: row, $jc: center, $ai: center, $gap: 0) {
-  display: flex;
-  flex-direction: $fd;
-  justify-content: $jc;
-  align-items: $ai;
-  gap: $gap;
-}
-
-@mixin pAbsolute($t: unset, $r: unset, $b: unset, $l: unset, $z: unset) {
-  position: absolute;
-  top: $t;
-  right: $r;
-  bottom: $b;
-  left: $l;
-  z-index: $z;
-}
-
-@mixin iButton(
-  $bgC: $bgGrey,
-  $p: 8px,
-  $border: 1px solid #adb0d9,
-  $hoverBorder: 1px solid $dkBlue
-) {
-  background-color: $bgC;
-  padding: $p;
-  border: $border;
-  &:hover,
-  &:focus-within {
-    border: $hoverBorder;
+@mixin buttonHover {
+  &:not(:disabled):hover {
+    cursor: pointer;
+    transform: scale(1.02);
+    color: $dkBlue;
   }
+}
+
+@mixin transition($properties: all, $duration: 0.3s, $ease: ease) {
+  transition: $properties $duration $ease;
 }
 
 * {
   box-sizing: border-box;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 72px);
+  background-color: white;
+  border-radius: 0 0 24px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
 .thread-panel {
-  
   width: calc(100% - 16px);
+  height: 100%;
   max-width: 400px;
   min-width: 200px;
   overflow-y: auto;
   border-radius: 0 0 30px 30px;
-}
 
-header {
-  @include dFlex($jc: space-between);
-  position: relative;
-  z-index: 1;
-  background-color: white;
-  padding: 20px 45px;
-  border-radius: 24px 24px 0 0;
-  box-shadow: $boxShadow;
-}
+  &__header {
+    @include dFlex($jc: space-between);
+    position: relative;
+    z-index: 1;
+    background-color: white;
+    padding: 20px 45px;
+    border-radius: 24px 24px 0 0;
+    box-shadow: $boxShadow;
+  }
 
-.mt-2px {
-  margin-top: 2px;
-}
+  &__title-text {
+    @include dFlex($gap: 8px);
+    h2 {
+      @include fontNunito(700, 24px);
 
-h2 {
-  font-size: 24px;
-  font-weight: 500;
-  margin: 0;
-}
+      margin: 0;
+    }
+    p {
+      margin-bottom: -2px;
+      font-size: 14px;
+      color: $lgBlue;
+      @include fontNunito(400, 14px);
+    }
+  }
 
-.thread-title-panel {
-  @include dFlex($gap: 8px);
-  p {
-    margin-bottom: -2px;
-    font-size: 14px;
-    color: $lgBlue;
+  &__close-button {
+    background-color: transparent;
+    border: none;
+    &:hover {
+      color: $dkBlue;
+      .mat-icon {
+        cursor: pointer;
+        background-color: $bgGrey;
+        border-radius: 100%;
+      }
+    }
+  }
+
+  &__close-icon {
+    margin-top: 2px;
   }
 }
 
-.message-block {
+.message {
+  position: relative;
   padding: 24px 0px 0 16px;
   display: flex;
   gap: 20px;
   margin-bottom: 0px;
-  width: calc(100% - 30px);
+  width: 100%;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    background-color: $bgGrey;
+  }
+
+  &:hover {
+    .message__card {
+      background-color: white;
+      @include transition(background-color 0.3s ease);
+    }
+
+    .message__emoji-popup {
+      animation: emojiPopup 0.3s ease-out forwards;
+    }
+  }
+
+  &__avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 40px;
+    border: 2px solid white;
+  }
+
+  &__details {
+    width: 76%;
+  }
+
+  &__name-timestamp {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-left: -6px;
+
+    h3 {
+      @include fontNunito(700, 18px);
+    }
+
+    span {
+      @include fontNunito(400, 14px);
+      color: #686868;
+    }
+  }
+
+  &__card {
+    border-radius: 0 20px 20px 20px;
+    background-color: $bgGrey;
+    transform: translateX(-20px) translateY(-24px);
+    transition: background-color 0.3s ease;
+    word-wrap: break-word;
+    max-width: 100%;
+    box-sizing: border-box;
+    width: calc(100% - 30px);
+    margin: 15px;
+    @include fontNunito(400, 16px);
+    white-space: pre-wrap;
+  }
+
+  &__emoji-popup {
+    position: absolute;
+    top: 22px;
+    right: 11px;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    height: 46px;
+    border: 1px solid $bgGrey;
+    border-radius: 20px 20px 0px 25px;
+  }
+
+  &__action-btn {
+    color: $bgdGrey;
+
+    &:hover {
+      @include buttonHover;
+    }
+  }
 }
 
-.avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 40px;
-  border: 2px solid white;
+@keyframes emojiPopup {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-h3 {
-  font-size: 18px;
-  font-weight: 500;
+@keyframes emjoipopup {
+  from {
+    opacity: 0;
+    right: -30px;
+  }
+  to {
+    opacity: 1;
+    right: 35px;
+  }
 }
 
-.name-timestamp {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  margin-left: -6px;
-}
-
-span {
-  font-size: 14px;
-  font-weight: 400;
-  color: #686868;
-}
-
-main {
+.chat-area {
+  flex: 1;
   overflow-y: auto;
-  height: 98vh;
-  background-color: white;
-  border-radius: 0 0 24px 24px;
-  position: relative;
+  width: 100%;
 }
 
-.message-card {
-  border-radius: 0 20px 20px 20px;
-  background-color: $bgGrey;
-  transform: translateX(-20px) translateY(-24px);
+.mat-mdc-card-content > :last-child:not(.mat-mdc-card-footer) {
+  margin-bottom: 17px;
+  margin-top: -5px;
+}
+
+.message-input {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid $lgPurple;
+  z-index: 2;
+  background-color: white;
+  height: 145px;
+  padding: 20px;
+  margin: 0 20px;
+  width: calc(100% - 30px);
+  margin: 15px;
+
+  &:hover,
+  &:focus-within {
+    border: 1px solid $dkBlue;
+  }
+
+  &__textarea {
+    border: unset;
+    resize: none;
+    width: 100%;
+
+    min-height: 70px;
+    max-height: 200px;
+    @include fontNunito(400, 16px);
+    outline: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__controls {
+    @include dFlex($jc: space-between);
+
+    button:disabled {
+      color: $bgdGrey;
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      color: $dkBlue;
+      @include buttonHover;
+    }
+  }
+
+  &__actions {
+    @include dFlex($gap: 8px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__file-upload {
+    position: relative;
+    input[type="file"] {
+      display: none;
+    }
+  }
+
+  &__action-btn {
+    color: $bgdGrey;
+
+    &:hover {
+      @include buttonHover;
+    }
+  }
+
+  &__file-btn {
+    margin-bottom: -3px;
+  }
 }
 
 .response-counter {
@@ -143,99 +283,7 @@ main {
   margin-right: 16px;
 }
 
-.message-input-area {
-  position: absolute; 
-  bottom: 0;
-  left: 0; 
-  width: 100%; 
-  border-radius: 20px;
-  border: 1px solid $lPurple;
-  z-index: 2;
-  background-color: white;
-  height: 145px;
-  padding: 20px;
-  margin: 0 20px;
-
-  &:hover {
-    border: 1px solid $dkBlue;
-  }
-
-  &:focus-within {
-    border: 1px solid $dkBlue;
-  }
-
-  textarea {
-    border: unset;
-    resize: none;
-    width: 100%;
-    font-size: 16px;
-    min-height: 70px;
-    max-height: 200px;
-    font-family: "Nunito";
-
-    &:focus {
-      outline: none;
-    }
-  }
-}
-
-.control-container {
-  @include dFlex($jc: space-between);
-  button {
-    background-color: transparent;
-    border: none;
-    color: $bgdGrey;
-    &:hover {
-      color: $dkBlue;
-    }
-  }
-}
-
-.message-actions {
-  @include dFlex($gap: 8px);
-  hr {
-    margin: 0;
-    min-height: 30px;
-  }
-}
-
-.close-button {
-  background-color: transparent;
-  border: none;
-  &:hover {
-    color: $dkBlue;
-  }
-}
-
-.user {
-  @include dFlex($gap: 16px);
-  padding: 4px 8px;
-  border-radius: 30px;
-  cursor: pointer;
-  img {
-    width: 25px;
-    height: 25px;
-    border-radius: 100%;
-  }
-  span {
-    font-size: 16px;
-    color: black;
-  }
-  &:hover {
-    background-color: $bgGrey;
-  }
-}
-
-.message-input-area,
-.message-card {
-  width: calc(100% - 30px);
-  margin: 15px;
-}
-
-.file-btn {
-  margin-bottom: -3px;
-}
-
-.action-btn {
-  color: $bgdGrey;
+.message-input__actions hr {
+  margin: 0;
+  min-height: 30px;
 }

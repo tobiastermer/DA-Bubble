@@ -1,0 +1,34 @@
+<!-- INPUT FORM AREA -->
+<div class="message-input">
+    <textarea
+      class="message-input__textarea"
+      #messageText
+      placeholder="Antworten..."
+      (input)="updateButtonState(messageText.value)"
+      (keydown.enter)="handleEnter($event, messageText.value)"
+    ></textarea>
+    <div class="message-input__controls">
+      <div class="message-input__actions">
+        <div class="message-input__file-upload">
+          <mat-icon class="message-input__action-btn message-input__file-btn"
+            >add</mat-icon
+          >
+          <input type="file" class="message-input__file-input" />
+        </div>
+        <hr />
+        <mat-icon class="message-input__action-btn"
+          >sentiment_satisfied</mat-icon
+        >
+        <mat-icon class="message-input__action-btn" appClickOutside
+          >alternate_email</mat-icon
+        >
+      </div>
+      <button
+        class="message-input__send-btn"
+        (click)="addMessage(messageText.value); messageText.value = ''"
+        [disabled]="isButtonDisabled"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </div>
