@@ -1,0 +1,33 @@
+<div class="dialog-container">
+    <h2>Profil</h2>
+    <div class="avatar-container">
+        <img src="../../../../../assets/img/avatars/1.svg" alt="">
+    </div>
+    <div class="name-status-container">
+        <div class="name-container">
+            <h1>Noah Braun</h1>
+            <a href="">Bearbeiten</a>
+        </div>
+        <div class="status-icon-with-label">
+            <div class="status-icon"></div>
+            <span class="status-label">Aktiv</span>
+        </div>
+    </div>
+    <div class="mail-container">
+        <img src="../../../../../assets/img/icons/mail.png" alt="">
+        <div class="mail">
+            <span>Email-Adresse</span>
+            <a href="mailto:noah-braun@web.de">noah-braun(at)web.de</a>
+        </div>
+    </div>
+    <div class="button-container">
+        <div mat-dialog-actions>
+            <button mat-flat-button color="primary" (click)="sendMessage()">
+                <!-- <img src="../../../../../assets/img/icons/comment.png" alt=""> -->
+                <mat-icon>mode_comment</mat-icon>
+                <span>Nachricht</span>
+            </button>
+        </div>
+    </div>
+    <img src="../../../../../assets/img/icons/close.png" class="btn-close" (click)="closeDialog()" alt="close">
+</div>

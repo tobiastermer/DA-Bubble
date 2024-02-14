@@ -3,6 +3,8 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { UserChipComponent } from '../../../shared/components/user-chip/user-chip.component';
 import { User } from '../../../models/user.class';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogShowUserComponent } from '../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
 
 @Component({
   selector: 'app-menue-messages',
@@ -53,8 +55,9 @@ export class MenueMessagesComponent {
     }
   ];
   usersVisible: boolean = true;
+  user = new User();
 
-  constructor() { }
+  constructor(public dialog: MatDialog) {}
 
   toggleUsersVisibility() {
     this.usersVisible = !this.usersVisible;
@@ -68,6 +71,12 @@ export class MenueMessagesComponent {
 
   isActiveUser(i: number): boolean {
     return this.userActive === i;
+  }
+
+
+
+  openDialog() {
+    this.dialog.open(DialogShowUserComponent);
   }
 
 }

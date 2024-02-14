@@ -11,7 +11,7 @@ export class User {
         this.firstName = obj ? obj.firstName : '';
         this.lastName = obj ? obj.lastName : '';
         this.email = obj ? obj.email : '';
-        this.avatar = obj ? obj.avatar : '';
+        this.avatar = obj ? obj.avatar : NaN;
         this.status = obj ? obj.status : '';
     }
 

@@ -18,5 +18,11 @@ export class UserChipComponent {
   @Input() user!:User;
   @Input() smale = false;
 
+  @Output() deletUser: EventEmitter<User> = new EventEmitter<User>();
+
+  onUserChipDelet() {
+    this.deletUser.emit(this.user);
+  }
+
 
 }

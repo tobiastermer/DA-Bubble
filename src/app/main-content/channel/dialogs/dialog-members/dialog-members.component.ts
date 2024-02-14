@@ -44,4 +44,8 @@ export class DialogMembersComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  openAddUser(){
+    this.dialogRef.close(true);
+  }
 }

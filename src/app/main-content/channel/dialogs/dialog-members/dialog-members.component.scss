@@ -14,6 +14,11 @@ mat-card {
     @include dFlex($jc: space-between);
     width: 100%;
 
+    mat-card-title {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
     button {
         @include iButton($bgC: unset, $hBgIC: #000);
     }
@@ -25,9 +30,21 @@ mat-card {
 
 .add-member {
     @include dFlex($gap: 15px);
-    padding-left: 30px;
+    border-radius: 30px;
+    padding: 12px 20px;
+    font-size: 18px;
 
     button {
         @include iButton($w: 32px, $h: 32px, $p: 3px, $hBgIC: $dkBlue)
+    }
+
+    &:hover{
+        cursor: pointer;
+        background-color: $bgGrey;
+        color: $dkBlue;
+
+        button {
+            @include iButton($w: 32px, $h: 32px, $p: 3px, $iC:$dkBlue, $hBgIC: $dkBlue)
+        }
     }
 }

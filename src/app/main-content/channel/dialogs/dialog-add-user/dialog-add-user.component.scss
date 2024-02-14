@@ -6,7 +6,7 @@ mat-card {
     min-width: 450px;
     height: 100%;
 
-    @include dFlex($fd: column, $ai: flex-start, $gap: 20px);
+    @include dFlex($fd: column, $ai: flex-end, $gap: 20px);
 
 }
 
@@ -14,41 +14,51 @@ mat-card {
     @include dFlex($jc: space-between);
     width: 100%;
 
+    mat-card-title {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
     button {
         @include iButton($bgC: unset, $hBgIC: #000);
     }
 }
 
-.add-member {
-    @include dFlex($gap: 15px);
-    padding-left: 30px;
+.channel-name {
+    @include dFlex($jc: flex-start, $gap: 15px);
+    width: 100%;
 
-    button {
-        @include iButton($w: 32px, $h: 32px, $p: 3px, $hBgIC: $dkBlue)
+    span {
+        font-size: 18px;
+        font-weight: 400;
+        color: $dkBlue;
+    }
+}
+
+.user-sector {
+    width: 100%;
+}
+
+.user-input {
+    width: calc(100% - 42px);
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 1px solid $lgPurple;
+    outline: none;
+
+    &:focus-visible {
+        border-color: $bgBlue;
     }
 }
 
 
 .user-selector {
+    @include dFlex($ai: center, $jc: flex-start);
     border-radius: 30px;
     border: 1px solid $lgPurple;
-    width: 100%;
-    height: 47px;
-
-
-    input {
-        width: calc(100% - 40px);
-        padding: 15px 20px;
-        border-radius: 30px;
-        border: 1px solid $lgPurple;
-        outline: none;
-
-        &:focus-visible {
-            border-color: $bgBlue;
-        }
-    }
+    height: 45px;
+    padding-inline: 20px;
 }
-
 
 
 .filterd-users {
@@ -60,4 +70,28 @@ mat-card {
     border: 1px solid $lgPurple;
     border-radius: 0 30px 30px 30px;
 
+}
+
+.btn {
+    font-size: 18px;
+    font-weight: 700;
+    height: 49px;
+    border: none;
+    border-radius: 28px;
+    font-weight: 700;
+    padding: 12px 25px;
+    color: white;
+}
+
+.btn-disable {
+    background-color: $dkGrey;
+}
+
+.btn-enable {
+    background-color: $dkBlue;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $lgBlue;
+    }
 }
