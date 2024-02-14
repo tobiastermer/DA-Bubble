@@ -7,7 +7,7 @@
     </div>
     <div class="members">
         @for (member of members; track $index) {
-            <app-user-chip [user]="member"></app-user-chip>
+            <app-user-chip [user]="member" (click)="openShowUserDialog()"></app-user-chip>
             }
     </div>
     <div class="add-member" (click)="openAddUser()">

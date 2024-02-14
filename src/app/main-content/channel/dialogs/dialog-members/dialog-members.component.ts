@@ -6,12 +6,14 @@ import {
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
+  MatDialog,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
 import { User } from '../../../../models/user.class';
+import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
 
 @Component({
   selector: 'app-dialog-members',
@@ -36,6 +38,7 @@ export class DialogMembersComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogMembersComponent>,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.members = data.members;
@@ -45,7 +48,18 @@ export class DialogMembersComponent {
     this.dialogRef.close();
   }
 
+
+  openShowUserDialog() {
+    this.dialog.open(DialogShowUserComponent,{
+      panelClass: ['card-round-corners'],
+      data: {},
+    });
+  }
+
+
   openAddUser(){
     this.dialogRef.close(true);
   }
+
+
 }

@@ -6,6 +6,8 @@ import { DialogPosition, MatDialog } from '@angular/material/dialog';
 import { DialogMembersComponent } from '../../dialogs/dialog-members/dialog-members.component';
 import { DialogAddUserComponent } from '../../dialogs/dialog-add-user/dialog-add-user.component';
 import { User } from '../../../../models/user.class';
+import { Channel } from '../../../../models/channel.class';
+import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-channel.component';
 
 export interface ElementPos {
   y: number,
@@ -27,6 +29,15 @@ export interface ElementPos {
 })
 export class HeaderChannelComponent {
 
+  // dummy - owner ID function is missing
+  channel: Channel = {
+    id: '',
+    name: 'Entwicklerteam',
+    description: `Dieser Channel ist für alles rund um #dfsdf vorgesehen. 
+    Hier kannst du zusammen mit deinem Team Meetings abhalten, 
+    Dokumente teilen und Entscheidungen treffen.`,
+    ownerID: '' 
+  }
   members: User[] = [
     {
       firstName: 'Frederik',
@@ -76,6 +87,20 @@ export class HeaderChannelComponent {
 
 
   // Daten müssen noch angepasst werde
+  openDialogChannel(): void {
+    let pos = this.getDialogPos(this.channelInfo, 'left');
+    let channel = this.channel;
+    const dialogRef = this.dialog.open(DialogChannelComponent, {
+      maxWidth: '800px',
+      position: pos, panelClass: ['card-left-corner'],
+      data: { channel },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+
+  // Daten müssen noch angepasst werde
   openDialogMembers(): void {
     let pos = this.getDialogPos(this.membersInfo, 'right');
     let members = this.members;
@@ -113,7 +138,7 @@ export class HeaderChannelComponent {
       pos = this.getElementPos(e._elementRef.nativeElement)
     }
     if (cornerPos === 'right') return { top: pos.y + pos.h + 'px', right: windowW - pos.x - pos.w + 'px' }
-    else return { top: pos.y + pos.h + 'px', right: pos.x + 'px' }
+    else return { top: pos.y + pos.h + 'px', left: pos.x + 'px' }
   }
 
 

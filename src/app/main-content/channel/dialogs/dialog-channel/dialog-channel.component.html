@@ -1,0 +1,59 @@
+<mat-card>
+
+    <header>
+        <div>
+            <img src="./../../../../../assets/img/icons/hash_bk_22.png" alt="hash">
+            <mat-card-title>{{ channel?.name }}</mat-card-title>
+        </div>
+        <button mat-icon-button disableRipple (click)="onNoClick()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+
+    <div class="section" [ngClass]="{'section-box': !editName}">
+        @if (!editName){
+        <header>
+            <span class="section-title">Channel-Name</span>
+            <a (click)="editChannelName()">Bearbeiten</a>
+        </header>
+        <div class="channel-name">
+            <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
+            <span>{{ channel?.name }}</span>
+        </div>
+        }@else {
+        <header>
+            <span class="section-title">Channel-Name</span>
+            <a (click)="saveChannelName()">Speichern</a>
+        </header>
+        <div class="channel-name-inp">
+            <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
+            <input type="text" placeholder="{{ channel?.name }}">
+        </div>
+        }
+    </div>
+
+    <div class="section" [ngClass]="{'section-box': !editDesc}">
+        @if (!editDesc){
+        <header>
+            <span class="section-title">Beschreibung</span>
+            <a (click)="editChannelDescr()">Bearbeiten</a>
+        </header>
+        <p>{{ channel?.description }}</p>
+        <hr>
+        <span class="section-title">Erstellt von</span>
+        <span class="des-owner-name">Noah Braun</span>
+        } @else {
+        <header>
+            <span class="section-title">Beschreibung</span>
+            <a (click)="saveChannelDescr()">Speichern</a>
+        </header>
+        <input type="text" placeholder="Beschreibung">
+        <hr>
+        <span class="section-title">Erstellt von</span>
+        <span class="des-owner-name">Noah Braun</span>
+        }
+    </div>
+
+
+    <button class="btn">Channel verlassen</button>
+</mat-card>
