@@ -53,10 +53,16 @@ export class SignUpComponent {
     return null;
   }
 
-  onSubmit() {
-    this.formSubmitted = true; 
-    if (this.signUpForm.valid) {
-      // ROUTE TO AVATAR CHOICE
-    }
+  showErrors() {
+    this.signUpForm.markAllAsTouched();
   }
-}
+
+  onSubmit() {
+    this.formSubmitted = true;
+    if (this.signUpForm.valid) {
+      console.log('Formular-Daten:', this.signUpForm.value);
+      //Route zu select Avatar //
+    } else {
+      console.log('ungültig.');
+    }
+  }}

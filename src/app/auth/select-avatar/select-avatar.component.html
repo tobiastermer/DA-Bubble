@@ -1,48 +1,75 @@
-<div class="Avatar-page-container">
-  <div class="logo">
+<div class="background-container">
+  <div class="background-container__logo">
     <img src="./assets/img/logo_+_text.png" />
   </div>
 
-  <mat-card class="Avatar-main-container">
+  <mat-card class="avatar">
     <mat-card-header>
-      <mat-card-title class="Avatar-header">Wähle deinen Avatar</mat-card-title>
-    
+      <mat-card-title class="avatar__header"
+        >Wähle deinen Avatar</mat-card-title
+      >
     </mat-card-header>
 
-    <div class="avatar-content-box">
-      <div class="profile-img">
-        <img src="./assets/img/empty-profile.png" />
-      </div>
-      <div class="new-user">Hans</div>
-      <!---USER NAME-->
-      <div class="info-container">Aus der Liste wählen</div>
-      <div class="profile-pics">
-        <div *ngFor="let avatar of avatars">
-          <img src="./assets/img/avatars/{{ avatar }}" />
+    <div class="avatar__content-box">
+      <mat-card class="avatar__profile-image" [ngClass]="animationClass">
+        <img [src]="currentAvatar" />
+      </mat-card>
+      <mat-card class="avatar__new-user">Hans</mat-card>
+      <!---USER NAME/CLASS-->
+      <mat-card class="avatar__info-container">Aus der Liste wählen</mat-card>
+      <mat-card class="avatar__select-pic">
+        <div *ngFor="let avatar of avatars" (click)="selectAvatar(avatar)">
+          <img [src]="'./assets/img/avatars/' + avatar" />
         </div>
-      </div>
-      <div class="my-pic">
+      </mat-card>
+      <mat-card class="avatar__my-upload">
         <span>Eigenes Bild anwenden</span>
         <div class="form-group">
-          <button>Datei Hochladen</button>
-          <input type="file" style="display: none;" />
+          <button (click)="fileInput.click()">Datei Hochladen</button>
+          <input
+            type="file"
+            #fileInput
+            style="display: none"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+          />
         </div>
-      </div>
+      </mat-card>
 
-      <div class="next-button">
-        <button type="submit" mat-fab extended color="primary">Weiter</button>
-      </div>
-
-      <div class="arrow-back">
-        <button class="basic-button close-btn">
-          <mat-icon>arrow_back</mat-icon>
+      <div class="avatar__next-button">
+        <button
+          type="submit"
+          mat-fab
+          extended
+          color="primary"
+          [ngClass]="{ 'valid-form': formIsValid }"
+          (click)="registerAccount()"
+        >
+          Weiter
         </button>
       </div>
 
-      <div class="legals">
-        <div>Impressum</div>
-        <div>Datenschutz</div>
-      </div>
+      <mat-card class="arrow-back">
+        <button class="basic-button close-btn">
+          <mat-icon class="arrow-back__image">arrow_back</mat-icon>
+        </button>
+      </mat-card>
+      <mat-card *ngIf="avatarError" class="error-message">
+        Bitte wählen Sie einen Avatar.
+      </mat-card>
     </div>
+  </mat-card>
+  <div class="background-container__legals">
+    <div>Impressum</div>
+    <div>Datenschutz</div>
+  </div>
+
+  <mat-card *ngIf="showError" class="error-message">
+    <p>Ihr Bild ist zu groß.<br />Maximale Größe beträgt 1MB.</p>
+    <button (click)="closeError()">Schließen</button>
+  </mat-card>
+
+  <mat-card *ngIf="accountSuccess" class="success-popup slide-up">
+    <mat-card-content>Konto erfolgreich erstellt</mat-card-content>
   </mat-card>
 </div>

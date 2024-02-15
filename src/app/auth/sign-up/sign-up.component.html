@@ -19,6 +19,7 @@
           placeholder="Name und Nachname"
           formControlName="name"
           type="text"
+          (blur)="signUpForm.controls['name'].markAsTouched()"
         />
         <mat-error *ngIf="signUpForm.get('name')?.hasError('required')"
           >Name eingeben</mat-error
@@ -34,6 +35,7 @@
           placeholder="beispiel@email.com"
           formControlName="email"
           type="email"
+          (blur)="signUpForm.controls['email'].markAsTouched()"
         />
         <mat-error *ngIf="signUpForm.get('email')?.hasError('required')"
           >Email eingeben</mat-error
@@ -49,6 +51,7 @@
           placeholder="Password"
           formControlName="password"
           type="password"
+          (blur)="signUpForm.controls['password'].markAsTouched()"
         />
         <mat-error *ngIf="signUpForm.get('password')?.invalid">
           {{ getFirstPasswordError() }}
@@ -69,7 +72,9 @@
       </section>
 
       <div class="sign-up__next-button">
-        <button type="submit" mat-fab extended color="primary">Weiter</button>
+        <button type="submit" mat-fab extended color="primary" [class.valid-form]="signUpForm.valid">
+          Weiter
+        </button>
       </div>
     </form>
 
