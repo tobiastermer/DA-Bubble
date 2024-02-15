@@ -72,14 +72,14 @@
       </section>
 
       <div class="sign-up__next-button">
-        <button type="submit" mat-fab extended color="primary" [class.valid-form]="signUpForm.valid">
+        <button type="submit" mat-fab extended color="primary" [ngClass]="{'valid-form': signUpForm.valid}">
           Weiter
         </button>
       </div>
     </form>
 
     <div class="sign-up__arrow-back">
-      <button class="basic-button close-btn">
+      <button (click)="openLogin()" class="basic-button close-btn">
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>

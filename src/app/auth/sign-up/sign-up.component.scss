@@ -210,6 +210,14 @@ form {
   }
 }
 
+.valid-form {
+  background-color: $dkBlue !important; 
+  animation: buttonFadeIn 0.3s ease-in-out;
+
+  &:hover {
+    background-color: darken($dkBlue, 5%);
+  }
+}
 /* ENTFERNT BORDER ABER DANN IN ALLEN ZUSTÄNDEN 
 :host ::ng-deep .mdc-notched-outline__trailing,
 :host ::ng-deep .mdc-notched-outline__leading {

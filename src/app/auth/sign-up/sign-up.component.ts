@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class SignUpComponent {
   signUpForm: FormGroup;
   formSubmitted: boolean = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router)  {
     this.signUpForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -57,11 +58,15 @@ export class SignUpComponent {
     this.signUpForm.markAllAsTouched();
   }
 
+  openLogin(){
+    this.router.navigate(['/login'])
+  }
+
   onSubmit() {
     this.formSubmitted = true;
     if (this.signUpForm.valid) {
       console.log('Formular-Daten:', this.signUpForm.value);
-      //Route zu select Avatar //
+      this.router.navigate(['/select-avatar'])
     } else {
       console.log('ungültig.');
     }

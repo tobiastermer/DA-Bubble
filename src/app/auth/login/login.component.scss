@@ -1,177 +1,316 @@
-$primary-gradient-start: #313ae6;
-$primary-gradient-end: #797ef3;
-$background-fade-end: #eceefe;
-$login-area-background: #f2f2f2d1;
-$link-color: #797ef3;
-$text-color-white: white;
-$text-color-black: black;
+@import "../../../styles.scss";
 
-.start-screen {
-  position: absolute;
-  top: 0;
-  z-index: 10;
+$fontFigtree: "Figtree", sans-serif;
+
+
+.background-container {
+  
+  @include dFlex(column, center, center);
   width: 100vw;
+  max-width: 1920px;
   height: 100vh;
-  background: linear-gradient(
-    1.46deg,
-    $primary-gradient-start 1.22%,
-    $primary-gradient-end 98%
-  );
-  animation: fadeOutBackground 1s ease-in-out 2s forwards;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0 auto;
+  z-index: 100;
+  background-color: $bgGrey;
+  position: relative;
+  animation: backgroundFadeIn 1s ease-in  forwards;
+  
 
-  &_content {
+  &__logo {
+    @include pAbsolute(32px, unset, unset, 32px, unset);
+  }
+
+  &__legals {
+    @include dFlex(row, center, center, 16px);
     position: absolute;
-    top: 50%;
-    left: 50%;
-    display: flex;
-    align-items: center;
+    bottom: 48px;
+    color: $lgPurple;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: $fontFigtree;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.02);
+    }
+  }
+
+  &__sign-up-box{
+    position: absolute;
+    flex-direction: column;
     justify-content: center;
-    gap: 20px;
-    transform: translate(-50%, -50%);
-    animation: moveToCorner 1s ease-in 1s forwards;
-  }
+    gap: 10px;
+    align-items: center;
+    display: flex;
+    top: 32px;
+    right: 32px;
+    box-shadow: unset;
+    background-color: #eceefe;
 
-  &_logo {
-    height: 150px;
-    width: 150px;
-    animation: sizeDown 1s ease-in 1s forwards, spin 1s linear 1s;
+    span{
+      @include fontNunito($weight: 400, $size: 18px);
+    }
+
+    p{
+      @include fontNunito($weight: 400, $size: 16px);
+      color: #797EF3;
+
+      &:hover{
+        cursor: pointer;
+        transform: scale(1.02);
+        transition: ease-in 0.2s;
+      }
+    }
+    
   }
 }
 
-.title {
-  height: 100px;
-  z-index: 15;
-  font-size: 64px;
-  font-weight: 700;
-  color: $text-color-white;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  overflow: hidden;
-  animation: revealText 2s ease-in forwards;
+.login {
+  width: 600px;
+  height: 688px;
+  padding: 42px;
+  border-radius: 30px;
+  @include dFlex(column, center, 36px);
+  gap: 36px;
+  box-shadow: $boxShadow;
+  z-index: 200;
+  animation: backgroundFadeIn 1.5s ease-in  forwards;
+
+  &__header,
+  &__subtitle {
+    text-align: center;
+  }
+
+  &__header {
+    color: $dkBlue;
+    padding: 36px;
+    @include fontNunito($weight: 700, $size: 46px);
+  }
+
+  &__subtitle {
+    @include fontNunito($weight: 400, $size: 20px);
+  }
+
+  &__form-field {
+    display: flex;
+    flex-direction: column;
+    
+
+    mat-icon {
+      color: grey;
+      padding-left: 30px;
+    }
+
+    input {
+      padding-left: 8px;
+      @include fontNunito($weight: 500, $size: 18px);
+    }
+  }
+
+  &__forgot-password{
+    box-shadow: unset;
+
+    a{
+    text-decoration: none;
+    color: #1381ff;
+    text-align: center;
+    margin-bottom: 32px;
+  }
 }
 
-@keyframes spin {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(-360deg);
-  }
-}
-
-@keyframes revealText {
-  0%,
-  50% {
-    width: 0%;
-    font-size: 64px;
-    color: $text-color-white;
-  }
-  50%,
-  95% {
+  &__bottom-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 32px;
+    align-items: center;
     width: 100%;
+    box-shadow: unset;
   }
-  95%,
-  100% {
-    font-size: 32px;
-    color: $text-color-black;
+  
+
+  &__sign-in {
+    
+
+    button {
+      transition: background-color 0.3s ease-in-out;
+      width: 153px;
+      height: 49px;
+      border: none;
+      color: white;
+      background-color: #797EF3;
+      border-radius: 28px;
+      @include fontNunito($weight: 700, $size: 18px);
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid #797EF3;
+        background-color: white;
+        color: #797EF3;
+      }
+    }
+
+    &__sign-in .valid-form {
+      background-color: $dkBlue;
+      animation: buttonFadeIn 0.3s ease-in-out;
+
+      &:hover {
+        background-color: darken($dkBlue, 5%);
+      }
+    }
+  }
+
+  &__guest {
+    
+
+    button {
+      transition: background-color 0.3s ease-in-out;
+      border: 1px solid #797EF3;
+      width: 153px;
+      height: 49px;
+      color: #797EF3;
+      background-color: white;
+      border-radius: 28px;
+      @include fontNunito($weight: 700, $size: 18px);
+
+      &:hover {
+      
+        cursor: pointer;
+        border: 1px solid white;
+        background-color: #797EF3;
+        color: white;
+      }
+    }
+
+    &__guest .valid-form {
+      background-color: $dkBlue;
+      animation: buttonFadeIn 0.3s ease-in-out;
+
+      &:hover {
+        background-color: darken($dkBlue, 5%);
+      }
+    }
+  }
+
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+
+  mat-icon {
+    color: grey;
+    padding-left: 30px;
+  }
+
+  input {
+    padding-left: 8px;
+    @include fontNunito($weight: 500, $size: 18px);
   }
 }
 
-@keyframes sizeDown {
+:host ::ng-deep .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px;
+  background-color: $bgGrey;
+  border-radius: 28px;
+  border: transparent;
+}
+
+:host ::ng-deep .mdc-form-field > label {
+  @include fontNunito($weight: 400, $size: 18px);
+}
+
+:host ::ng-deep .mat-mdc-form-field-bottom-align {
+  height: 36px !important;
+}
+
+:host
+  ::ng-deep
+  .mdc-checkbox
+  .mdc-checkbox__native-control:enabled:focus:checked
+  ~ .mdc-checkbox__background {
+  background-color: $dkBlue;
+  border: $dkBlue;
+}
+
+
+
+@keyframes buttonFadeIn {
   from {
-    height: 150px;
-    width: 150px;
+    background-color: grey;
   }
   to {
-    height: 85px;
-    width: 85px;
+    background-color: $dkBlue;
   }
 }
 
-@keyframes fadeOutBackground {
-  0% {
-    background: linear-gradient(
-      1.46deg,
-      $primary-gradient-start 1.22%,
-      $primary-gradient-end 98.76%
-    );
-  }
-  100% {
-    background: $background-fade-end;
-  }
-}
-
-@keyframes moveToCorner {
-  to {
-    top: 7%;
-    left: 10%;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
+@keyframes backgroundFadeIn {
+  from {
     opacity: 0;
   }
-  100% {
+  to {
     opacity: 1;
   }
 }
 
-.login-area {
-  z-index: 20;
-  margin-left: auto;
-  margin-right: auto;
-  width: 420px;
-  height: 600px;
-  background-color: $login-area-background;
-  opacity: 0;
-  box-shadow: 0 8px 32px 0 rgba(42, 44, 61, 0.37);
-  backdrop-filter: blur(4px);
-  border-radius: 32px;
-  animation: fadeIn 1.5s ease-in 2.5s forwards;
+.divider {
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
-.signup-top-left {
-  position: absolute;
-  opacity: 0;
+.divider .line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.divider .text {
+  padding: 0 10px;
+  color: #777;
+}
+
+
+.google-login-btn {
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-
-  top: 48px;
-  right: 56px;
-  animation: fadeIn 1.5s ease-in 2.5s forwards;
-
-  span {
-    padding-bottom: 8px;
-  }
-
-  a {
-    text-align: right;
-    font-size: 14px;
-    padding-right: 2px;
-    text-decoration: none;
-    color: $link-color;
-  }
-}
-
-.impress {
-  position: absolute;
-  opacity: 0;
-  bottom: 50px;
+  align-items: center;
+  justify-content: center;
+  
   gap: 20px;
-  display: flex;
-  animation: fadeIn 1.5s ease-in 2.5s forwards;
 
-  a {
-    text-decoration: none;
-    color: $link-color;
+  img {
+      width: 38px;
+      height: 38px;
+      object-fit: cover;
+
   }
+
+ }
+
+.input-field-container{
+  border-radius: 30px;
+    border: unset;
+    height: 58px;
+    margin-top: 30px;
+    margin-bottom: 32px;
+    background-color: $bgGrey;
+    transition: ease-in-out 0.3s;
+
+    &:hover{
+      background-color: white;
+      border: 1px solid #797EF3;
+      cursor: pointer;
+      transition: ease-in-out 0.3s;
+    }
 }
+
+
+/* ENTFERNT BORDER ABER DANN IN ALLEN ZUSTÄNDEN 
+:host ::ng-deep .mdc-notched-outline__trailing,
+:host ::ng-deep .mdc-notched-outline__leading {
+  border-color: transparent !important ;
+}*/

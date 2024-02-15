@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { MainContentComponent } from './main-content/main-content.component';
-
-
+import { StartAnimationComponent } from './auth/start-animation/start-animation.component';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import { SelectAvatarComponent } from './auth/select-avatar/select-avatar.component';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +13,21 @@ import { MainContentComponent } from './main-content/main-content.component';
     RouterOutlet,
     LoginComponent,
     MainContentComponent,
-
+    SignUpComponent,
+    StartAnimationComponent,
+    SelectAvatarComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'DA-Bubble';
+
+  constructor(private router: Router) {
+    this.navigateToStartAnimation();
+  }
+
+  navigateToStartAnimation() {
+    this.router.navigate(['']);
+  }
 }
