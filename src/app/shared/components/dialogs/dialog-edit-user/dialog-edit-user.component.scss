@@ -19,6 +19,10 @@ a {
     width: 500px;
 }
 
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: 30px !important;
+}
+
 h2 {
     font-size: 24px;
     font-weight: 700;

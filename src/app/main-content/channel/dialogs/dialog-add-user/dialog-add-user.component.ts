@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../../../models/user.class';
+import { User } from '../../../../shared/models/user.class';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
 import { TmplAstRecursiveVisitor } from '@angular/compiler';
 import { CommonModule } from '@angular/common';

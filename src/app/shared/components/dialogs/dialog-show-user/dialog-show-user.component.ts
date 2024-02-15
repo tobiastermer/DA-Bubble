@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,7 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { User } from '../../../../models/user.class';
+import { User } from '../../../models/user.class';
 import { FormsModule } from '@angular/forms';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 
@@ -29,11 +29,11 @@ import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.co
   styleUrl: './dialog-show-user.component.scss'
 })
 export class DialogShowUserComponent {
-  user: User;
+  @Input() user!:User;
 
 
   constructor(public dialogRef: MatDialogRef<DialogShowUserComponent>, public dialog: MatDialog) {
-    this.user = new User();
+    console.log(this.user);
   }
 
   sendMessage() {}

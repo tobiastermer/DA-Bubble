@@ -5,8 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogPosition, MatDialog } from '@angular/material/dialog';
 import { DialogMembersComponent } from '../../dialogs/dialog-members/dialog-members.component';
 import { DialogAddUserComponent } from '../../dialogs/dialog-add-user/dialog-add-user.component';
-import { User } from '../../../../models/user.class';
-import { Channel } from '../../../../models/channel.class';
+import { User } from '../../../../shared/models/user.class';
+import { Channel } from '../../../../shared/models/channel.class';
 import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-channel.component';
 
 export interface ElementPos {

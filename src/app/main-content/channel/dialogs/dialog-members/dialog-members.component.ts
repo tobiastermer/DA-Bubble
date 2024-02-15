@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
-import { User } from '../../../../models/user.class';
+import { User } from '../../../../shared/models/user.class';
 import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
 
 @Component({

@@ -13,7 +13,7 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { User } from '../../../../models/user.class';
+import { User } from '../../../models/user.class';
 import { FormsModule } from '@angular/forms';
 
 @Component({

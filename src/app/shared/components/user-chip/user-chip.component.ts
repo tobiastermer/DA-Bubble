@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { User } from '../../../models/user.class';
+import { User } from '../../models/user.class';
 import { MatIconModule } from '@angular/material/icon';
 
 

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DA-Bubble": {
+    "da-bubble": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "DA-Bubble:build:production"
+              "buildTarget": "dA-bubble:build:production"
             },
             "development": {
-              "buildTarget": "DA-Bubble:build:development"
+              "buildTarget": "da-bubble:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "DA-Bubble:build"
+            "buildTarget": "da-bubble:build"
           }
         },
         "test": {
@@ -103,6 +103,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "da-bubble:build:production",
+              "serveTarget": "da-bubble:serve:production"
+            },
+            "development": {
+              "buildTarget": "da-bubble:build:development",
+              "serveTarget": "da-bubble:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
