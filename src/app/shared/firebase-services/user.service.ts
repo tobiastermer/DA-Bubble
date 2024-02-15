@@ -9,16 +9,14 @@ import { BehaviorSubject } from 'rxjs';
 
 export class UserService {
 
+    private usersSubject = new BehaviorSubject<User[]>([]);
+    public users$ = this.usersSubject.asObservable();
     users: User[] = [];
     subscribeAllUsers;
-    subscribeSingleUser?: () => void;
     firestore: Firestore = inject(Firestore);
-    private currentUserSubject = new BehaviorSubject<User | null>(null);
-    currentUser = this.currentUserSubject.asObservable();
 
     constructor() {
         this.subscribeAllUsers = this.getAllUsers();
-        this.subscribeSingleUser;
     }
 
     async addUser(item: {}) {
@@ -34,7 +32,7 @@ export class UserService {
 
     async updateUser(user: User) {
         if (user.id) {
-            let docRef = doc(collection(this.firestore, "users"), user.id);
+            let docRef = doc(collection(this.firestore, 'users'), user.id);
             await updateDoc(docRef, this.getCleanJSON(user)).catch(
                 (err) => { console.log(err); }
             )
@@ -44,26 +42,11 @@ export class UserService {
     getAllUsers() {
         const q = query(collection(this.firestore, 'users'));
         return onSnapshot(q, (list) => {
-            this.users = [];
+            const users: User[] = [];
             list.forEach(element => {
-                this.users.push(this.setUserObject(element.data(), element.id));
-                console.log(this.users);
+                users.push(this.setUserObject(element.data(), element.id));
             });
-        });
-    }
-
-    getUser(id: string) {
-        const userDocRef = doc(this.firestore, "users", id);
-        this.subscribeSingleUser = onSnapshot(userDocRef, (documentSnapshot) => {
-            if (documentSnapshot.exists()) {
-                const user = this.setUserObject(documentSnapshot.data(), documentSnapshot.id);
-                // Aktualisieren des currentUserSubject mit dem neuen User-Objekt
-                this.currentUserSubject.next(user);
-            } else {
-                // Handhabung, falls kein User mit der ID gefunden wurde
-                console.log(`No user found with id: ${id}`);
-                this.currentUserSubject.next(null);
-            }
+            this.usersSubject.next(users); // Aktualisiere das BehaviorSubject
         });
     }
 

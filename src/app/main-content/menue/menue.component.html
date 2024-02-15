@@ -2,7 +2,7 @@
     <app-menue-header></app-menue-header>
     <app-menue-channels [channelActive]="activeChannel"
         (channelSelected)="setActiveChannel($event)"></app-menue-channels>
-    <app-menue-messages [userActive]="activeUser" (userSelected)="setActiveMessage($event)"></app-menue-messages>
+    <app-menue-messages [users]="users" [userActive]="activeUser" (userSelected)="setActiveMessage($event)"></app-menue-messages>
 </mat-card>
 
 <mat-card class="menu-overlay-close" (click)="toggleMenu()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">

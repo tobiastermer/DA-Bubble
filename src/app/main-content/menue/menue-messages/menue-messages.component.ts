@@ -5,7 +5,6 @@ import { UserChipComponent } from '../../../shared/components/user-chip/user-chi
 import { User } from '../../../shared/models/user.class';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogShowUserComponent } from '../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
-import { UserService } from '../../../shared/firebase-services/user.service';
 
 @Component({
   selector: 'app-menue-messages',
@@ -17,46 +16,12 @@ import { UserService } from '../../../shared/firebase-services/user.service';
 export class MenueMessagesComponent {
   @Output() activeChannelChanged = new EventEmitter<number>();
   @Input() userActive: number | undefined;
+  @Input() users: User[] = [];
 
-  users: User[];
-
-  // users: User[] = [
-  //   {
-  //     name: 'Frederik Beck (Du)',
-  //     avatar: 1,
-  //     email: '',
-  //     status:'',
-  //   },
-  //   {
-  //     name: 'Sofia Müller',
-  //     avatar: 2,
-  //     email: '',
-  //     status:'',
-  //   },
-  //   {
-  //     name: 'Noah Braun',
-  //     avatar: 3,
-  //     email: '',
-  //     status:'',
-  //   },
-  //   {
-  //     name: 'Elise Roth',
-  //     avatar: 4,
-  //     email: '',
-  //     status:'',
-  //   },
-  //   {
-  //     name: 'Elias Neumann',
-  //     avatar: 5,
-  //     email: '',
-  //     status:'',
-  //   }
-  // ];
   usersVisible: boolean = true;
-  user = new User();
 
-  constructor(public dialog: MatDialog, private UserService: UserService) {
-    this.users = this.getUsers();
+  constructor(public dialog: MatDialog) {
+    //this.users = this.getUsers();
     console.log(this.users);
   }
 
@@ -74,16 +39,11 @@ export class MenueMessagesComponent {
     return this.userActive === i;
   }
 
-  getUsers(): User[] {
-    return this.UserService.users;
-  }
-
   openDialog(user: User) {
     this.dialog.open(DialogShowUserComponent,{
       panelClass: ['card-round-corners'],
       data: {user},
     });
-    console.log(user);
   }
 
 }

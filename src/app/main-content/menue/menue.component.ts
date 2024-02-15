@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MenueChannelsComponent } from './menue-channels/menue-channels.component';
 import { MenueMessagesComponent } from './menue-messages/menue-messages.component';
 import { MenueHeaderComponent } from './menue-header/menue-header.component';
+import { User } from '../../shared/models/user.class';
 
 @Component({
   selector: 'app-menue',
@@ -15,6 +16,8 @@ import { MenueHeaderComponent } from './menue-header/menue-header.component';
   styleUrl: './menue.component.scss'
 })
 export class MenueComponent {
+  @Input() users: User[] = [];
+
   isMenuOpen: boolean = true;
   isHovering: boolean = false; // Neue Variable für Hover-Zustand
   activeChannel: number | undefined;

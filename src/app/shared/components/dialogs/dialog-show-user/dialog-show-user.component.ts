@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,20 +29,25 @@ import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.co
   styleUrl: './dialog-show-user.component.scss'
 })
 export class DialogShowUserComponent {
-  @Input() user!:User;
 
-
-  constructor(public dialogRef: MatDialogRef<DialogShowUserComponent>, public dialog: MatDialog) {
-    console.log(this.user);
+  constructor(
+    public dialogRef: MatDialogRef<DialogShowUserComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { user: User },
+    public dialog: MatDialog
+  ) {
+    console.log(this.data.user); // So kannst du auf den übergebenen Benutzer zugreifen
   }
 
-  sendMessage() {}
+  sendMessage() { }
 
   closeDialog() {
     this.dialogRef.close();
   }
 
-  openDialogEditUser() {
-    this.dialog.open(DialogEditUserComponent);
+  openDialogEditUser(user:User) {
+    this.dialog.open(DialogEditUserComponent, {
+      panelClass: ['card-round-corners'],
+      data: {user},
+    });
   }
 }

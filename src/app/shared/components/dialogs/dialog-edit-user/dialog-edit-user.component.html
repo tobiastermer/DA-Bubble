@@ -1,21 +1,24 @@
 <div class="dialog-container">
+    
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
     <h2>Dein Profil bearbeiten</h2>
     <div class="avatar-container">
-        <img src="../../../../../assets/img/avatars/1.svg" alt="">
+        <img src="../../../../../assets/img/avatars/{{ data.user.avatar }}.svg" alt="">
     </div>
     <div class="input-container">
         <div class="label-container">
             <img src="../../../../../assets/img/icons/account_circle.png" class="icon" alt="">
             <span>Vollständiger Name</span>
         </div>
-        <input type="text" [disabled]="loading" [(ngModel)]="user.name" matInput placeholder="Name">
+        <input type="text" [disabled]="loading" [(ngModel)]="data.user.name" matInput placeholder="Name">
     </div>
     <div class="input-container">
         <div class="label-container">
             <img src="../../../../../assets/img/icons/mail.png" class="icon" alt="">
             <span>E-Mail-Adresse</span>
         </div>
-        <input type="email" [disabled]="loading" [(ngModel)]="user.email" matInput placeholder="E-Mail-Adresse">
+        <input type="email" [disabled]="loading" [(ngModel)]="data.user.email" matInput placeholder="E-Mail-Adresse">
     </div>
     <div class="button-container">
         <div mat-dialog-actions>

@@ -14,7 +14,7 @@
             <img class="user-avatar" src="../../../../assets/img/avatars/{{ user.avatar }}.svg" alt="Avatar">
             <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
         </div> -->
-        @for (user of getUsers(); track $index) {
+        @for (user of users; track $index) {
         <app-user-chip [user]="user" [active]="isActiveUser($index)"
         (click)="setUserActive($index); openDialog(user)"></app-user-chip>
         }
