@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { Channel } from '../../../shared/models/channel.class';
 
 @Component({
   selector: 'app-menue-channels',
@@ -10,10 +11,12 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./menue-channels.component.scss'] // Achtung: Korrektur von styleUrl zu styleUrls
 })
 export class MenueChannelsComponent {
-  @Output() channelSelected = new EventEmitter<number>();
+  @Input() channels: Channel[] = [];
   @Input() channelActive: number | undefined;
   
-  channels: string[] = ['Entwicklerteam', 'Office-Team', 'Plauderecke', 'Coffee-Corner'];
+  @Output() channelSelected = new EventEmitter<number>();
+  
+  // channels: string[] = ['Entwicklerteam', 'Office-Team', 'Plauderecke', 'Coffee-Corner'];
   channelsVisible: boolean = true;
 
   constructor() { }

@@ -30,9 +30,11 @@ import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.co
 })
 export class DialogShowUserComponent {
 
+  // @Input() currentUserID: String = '';
+
   constructor(
     public dialogRef: MatDialogRef<DialogShowUserComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { user: User },
+    @Inject(MAT_DIALOG_DATA) public data: { user: User, currentUserID: String },
     public dialog: MatDialog
   ) {
     console.log(this.data.user); // So kannst du auf den übergebenen Benutzer zugreifen

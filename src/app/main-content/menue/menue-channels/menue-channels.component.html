@@ -12,7 +12,7 @@
     <div class="menu-channel-content" *ngIf="channelsVisible">
         <div class="channel" *ngFor="let channel of channels; let i = index" [ngClass]="{'active': isActiveChannel(i)}" (click)="setChannelActive(i)">
             <div class="img-channel-hash icon-btn"></div>
-            <span class="channel-name">{{ channel }}</span>
+            <span class="channel-name">{{ channel.name }}</span>
         </div>
     </div>
     <div class="menu-channel-add-container" *ngIf="channelsVisible">

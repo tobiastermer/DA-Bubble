@@ -1,10 +1,12 @@
+<!-- The menu itself -->
 <mat-card class="menu-card" [class.menu-open]="isMenuOpen" [class.menu-closed]="!isMenuOpen">
     <app-menue-header></app-menue-header>
-    <app-menue-channels [channelActive]="activeChannel"
+    <app-menue-channels [channels]="channels" [channelActive]="activeChannel"
         (channelSelected)="setActiveChannel($event)"></app-menue-channels>
-    <app-menue-messages [users]="users" [userActive]="activeUser" (userSelected)="setActiveMessage($event)"></app-menue-messages>
+    <app-menue-messages [users]="users" [userActive]="activeUser" [currentUserID]="currentUserID" (userSelected)="setActiveMessage($event)"></app-menue-messages>
 </mat-card>
 
+<!-- The overlay-button for toggling visibility -->
 <mat-card class="menu-overlay-close" (click)="toggleMenu()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
     <mat-card-title>
         {{ isMenuOpen ? 'Workspace-Menü schließen' : 'Workspace-Menü öffnen' }}

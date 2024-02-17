@@ -17,6 +17,7 @@ export class UserChipComponent {
   @Input() active:boolean = false;
   @Input() user!:User;
   @Input() smale = false;
+  @Input() currentUserID: String = '';
 
   @Output() deletUser: EventEmitter<User> = new EventEmitter<User>();
 
