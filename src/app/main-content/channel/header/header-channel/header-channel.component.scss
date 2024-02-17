@@ -1,11 +1,5 @@
 @import './../../channel.component.scss';
 
-header {
-    @include dFlex($jc: space-between);
-    padding: 25px 45px;
-    box-shadow: $boxShadow;
-}
-
 .channel-info {
     @include dFlex($gap: 10px);
     padding-inline: 10px;

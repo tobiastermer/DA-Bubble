@@ -1,7 +1,21 @@
 <mat-card class="channel-card">
-    <app-header-channel></app-header-channel>
-    <main>
+    @if (chat === 'channel') {
+        <app-header-channel></app-header-channel>
+        <main class="chat-space">
+            <app-channel-msg [channel]="channel" [owner]="'Willi'"></app-channel-msg>
 
-    </main>
+        </main>
+    }@else if (chat === 'message') {
+        <app-direct-message [user]="user"></app-direct-message>
+        <main class="chat-space">
+            <app-direct-msg [user]="user"></app-direct-msg>
+
+        </main>
+    }@else {
+
+    }
+
+
+
     <app-input-textarea></app-input-textarea>
 </mat-card>

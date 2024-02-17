@@ -1,9 +1,21 @@
 @import './../../../styles.scss';
 
 .channel-card {
-    @include dFlex($fd: column, $jc: space-between,$ai: normal);
+    @include dFlex($fd: column, $jc: space-between, $ai: normal);
     height: 100%;
     border-radius: 30px;
+}
+
+.header-channel {
+    @include dFlex($jc: space-between);
+    padding: 25px 45px;
+    box-shadow: $boxShadow;
+}
+
+.chat-space {
+    @include dFlex($fd: column, $jc: flex-end);
+    height: 100%;
+    margin: 15px;
 }
 
 .icon-button {

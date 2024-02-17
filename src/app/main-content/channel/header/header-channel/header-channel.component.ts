@@ -36,7 +36,7 @@ export class HeaderChannelComponent {
     description: `Dieser Channel ist für alles rund um #dfsdf vorgesehen. 
     Hier kannst du zusammen mit deinem Team Meetings abhalten, 
     Dokumente teilen und Entscheidungen treffen.`,
-    ownerID: '' 
+    ownerID: '',
   }
   members: User[] = [
     {

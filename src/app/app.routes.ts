@@ -10,5 +10,5 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signUp', component: SignUpComponent },
     { path: 'select-avatar', component: SelectAvatarComponent },
-    { path: 'main', component: MainContentComponent }
+    { path: ':id', component: MainContentComponent }
 ];
