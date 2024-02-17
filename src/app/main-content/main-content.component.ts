@@ -23,23 +23,21 @@ export class MainContentComponent implements OnDestroy {
   userMemberships: Membership[] = [];
   channels: Channel[] = [];
 
-  currentUserID: string = 's4vgY2BWfL0LIKBJIEOQ'; // Korrigierter Typ von String zu string
+  // wird später dynamisiert
+  currentUserID: string = 's4vgY2BWfL0LIKBJIEOQ';
 
   private usersSubscription?: Subscription;
   private userMembershipSubscription?: Subscription;
   private channelsSubscription?: Subscription;
 
   constructor(private userService: UserService,
-              private membershipService: MembershipService,
-              private channelService: ChannelService) {
+    private membershipService: MembershipService,
+    private channelService: ChannelService) {
 
     this.usersSubscription = this.userService.users$.subscribe(users => {
       this.users = users;
     });
 
-    // Aufruf der Methode mit der aktuellen userID ohne direkte Zuweisung einer Subscription
-    // Beachte, dass getUserMemberships in deinem MembershipService angepasst sein muss,
-    // um intern die Benutzermitgliedschaften zu verwalten und das BehaviorSubject zu aktualisieren.
     this.membershipService.getUserMemberships(this.currentUserID);
     this.userMembershipSubscription = this.membershipService.userMemberships$.subscribe(userMemberships => {
       this.userMemberships = userMemberships;

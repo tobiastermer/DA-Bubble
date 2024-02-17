@@ -27,7 +27,7 @@ export class ChannelService {
             list.forEach(element => {
                 channels.push(this.setChannelObject(element.data(), element.id));
             });
-            this.chanellsSubject.next(channels); // Aktualisiere das BehaviorSubject
+            this.chanellsSubject.next(channels);
         });
     }
 

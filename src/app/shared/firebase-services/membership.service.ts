@@ -13,8 +13,6 @@ export class MembershipService {
     public userMemberships$ = this.userMembershipsSubject.asObservable();
     userMemberships: Membership[] = [];
 
-
-
     firestore: Firestore = inject(Firestore);
 
     constructor() { }
@@ -26,7 +24,7 @@ export class MembershipService {
             list.forEach(element => {
                 memberships.push(this.setMembershipObject(element.data(), element.id));
             });
-            this.userMembershipsSubject.next(memberships); // Aktualisiere das BehaviorSubject
+            this.userMembershipsSubject.next(memberships);
         });
     }
 
