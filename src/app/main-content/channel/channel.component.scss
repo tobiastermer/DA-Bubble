@@ -1,6 +1,7 @@
 @import './../../../styles.scss';
 
-.channle-card {
+.channel-card {
+    @include dFlex($fd: column, $jc: space-between,$ai: normal);
     height: 100%;
     border-radius: 30px;
 }

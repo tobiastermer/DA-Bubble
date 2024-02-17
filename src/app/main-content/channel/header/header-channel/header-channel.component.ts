@@ -88,7 +88,7 @@ export class HeaderChannelComponent {
     let pos = this.getDialogPos(this.channelInfo, 'left');
     let channel = this.channel;
     const dialogRef = this.dialog.open(DialogChannelComponent, {
-      maxWidth: '800px',
+      width: '750px',
       position: pos, panelClass: ['card-left-corner'],
       data: { channel },
     });
