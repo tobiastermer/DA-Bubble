@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, doc, collectionData, query, where, limit, orderBy, onSnapshot, addDoc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
-import { User } from '../models/user.class'
 import { BehaviorSubject } from 'rxjs';
 import { Channel } from '../models/channel.class';
 
@@ -9,42 +8,58 @@ import { Channel } from '../models/channel.class';
 })
 
 export class ChannelService {
-
-    private chanellsSubject = new BehaviorSubject<Channel[]>([]);
-    public channels$ = this.chanellsSubject.asObservable();
-    channels: Channel[] = [];
-    subscribeChannels;
+    private channelsSubject = new BehaviorSubject<Channel[]>([]);
+    public channels$ = this.channelsSubject.asObservable();
     firestore: Firestore = inject(Firestore);
 
     constructor() {
-        this.subscribeChannels = this.getChannels();
+        this.getChannels();
+    }
+
+    async addChannel(channel: Channel) {
+        try {
+            const docRef = await addDoc(collection(this.firestore, "channels"), channel.toJSON());
+            console.log(docRef.id);
+            return docRef.id;
+        } catch (err) {
+            console.error(err);
+            return err;
+        }
+    }
+
+    async updateChannel(channel: Channel) {
+        if (channel.id) {
+            const docRef = doc(collection(this.firestore, 'channels'), channel.id);
+            await updateDoc(docRef, channel.toJSON()).catch(console.error);
+        }
     }
 
     getChannels() {
         const q = query(collection(this.firestore, 'channels'));
-        return onSnapshot(q, (list) => {
-            const channels: Channel[] = [];
-            list.forEach(element => {
-                channels.push(this.setChannelObject(element.data(), element.id));
-            });
-            this.chanellsSubject.next(channels);
+        onSnapshot(q, (snapshot) => {
+            const channels = snapshot.docs.map(doc => Channel.fromFirestore({id: doc.id, data: () => doc.data()}));
+            this.channelsSubject.next(channels);
         });
     }
 
-    getCleanJSON(user: Channel): {} {
-        return {
-            name: user.name,
-            description: user.description,
-            ownerID: user.ownerID,
-        }
-    }
+    async getChannelByID(channelID: string): Promise<Channel | null> {
+        try {
+            const docRef = doc(this.firestore, 'channels', channelID);
+            const docSnap = await getDoc(docRef);
 
-    setChannelObject(obj: any, id: string): Channel {
-        return {
-            id: id,
-            name: obj.name || "",
-            description: obj.description || "",
-            ownerID: obj.ownerID || "",
+            if (docSnap.exists()) {
+                const channel = new Channel({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                });
+                return channel;
+            } else {
+                console.log('No such channel doc!');
+                return null;
+            }
+        } catch (error) {
+            console.error("Error getting channel doc:", error);
+            return null;
         }
     }
 }

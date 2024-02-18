@@ -9,23 +9,26 @@ export class User {
         this.id = obj ? obj.id : '';
         this.name = obj ? obj.name : '';
         this.email = obj ? obj.email : '';
-        this.avatar = obj ? obj.avatar : NaN;
+        this.avatar = obj ? obj.avatar : 0;
         this.status = obj ? obj.status : '';
     }
 
-    public toJSON?() {
-        const jsonObj: any = {
+    public toJSON() {
+        return {
             name: this.name,
             email: this.email,
             avatar: this.avatar,
             status: this.status,
+            // Bedingte Einbeziehung der ID, nur wenn sie vorhanden ist
+            ...(this.id && { id: this.id }),
         };
-
-        if (this.id !== undefined) {
-            jsonObj.id = this.id;
-        }
-
-        return jsonObj;
     }
 
+    static fromFirestore(doc: any): User {
+        return new User({
+            id: doc.id,
+            ...doc.data()
+        });
     }
+
+}

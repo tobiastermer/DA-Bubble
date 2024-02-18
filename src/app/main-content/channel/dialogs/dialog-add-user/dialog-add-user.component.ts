@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, Input } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -38,60 +38,68 @@ import { CommonModule } from '@angular/common';
 })
 export class DialogAddUserComponent {
 
+  @Input() allUsers: User[] = [];
+
   //dummy values for testing
-  allUsers: User[] = [
-    {
-      name: 'Frederik Beck (Du)',
-      avatar: 1,
-      email: '',
-      status: '',
-    },
-    {
-      name: 'Sofia Müller',
-      avatar: 2,
-      email: '',
-      status: '',
-    },
-    {
-      name: 'Noah Braun',
-      avatar: 3,
-      email: '',
-      status: '',
-    },
-    {
-      name: 'Elise Roth',
-      avatar: 4,
-      email: '',
-      status: '',
-    },
-    {
-      name: 'Elias Neumann',
-      avatar: 5,
-      email: '',
-      status: '',
-    }
-  ];
+  // allUsers: User[] = [
+  //   {
+  //     name: 'Frederik Beck (Du)',
+  //     avatar: 1,
+  //     email: '',
+  //     status: '',
+  //   },
+  //   {
+  //     name: 'Sofia Müller',
+  //     avatar: 2,
+  //     email: '',
+  //     status: '',
+  //   },
+  //   {
+  //     name: 'Noah Braun',
+  //     avatar: 3,
+  //     email: '',
+  //     status: '',
+  //   },
+  //   {
+  //     name: 'Elise Roth',
+  //     avatar: 4,
+  //     email: '',
+  //     status: '',
+  //   },
+  //   {
+  //     name: 'Elias Neumann',
+  //     avatar: 5,
+  //     email: '',
+  //     status: '',
+  //   }
+  // ];
 
   userSelected = false;
   selectListVisible = false;
-  filterdUsres!: User[];
+  filterdUsers!: User[];
   filterValues: string[] = [];
   addedUser!: User;
 
 
   @ViewChild('userInp') userInp?: ElementRef;
 
+  // constructor(
+  //   public dialogRef: MatDialogRef<DialogAddUserComponent>,
+  //   @Inject(MAT_DIALOG_DATA) public data: any,
+  // ) {
+  //   this.setFilterValues();
+  // }
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { allUsers: User[] },
   ) {
     this.setFilterValues();
   }
 
 
   setFilterValues() {
-    this.allUsers.forEach(user => {
+    this.data.allUsers.forEach(user => {
       this.filterValues.push(
         user.name.toLowerCase())
     });
@@ -102,9 +110,9 @@ export class DialogAddUserComponent {
     if (!this.userInp) return
     let serch = this.userInp.nativeElement.value;
     let index = this.searchUser(serch);
-    if (index.length > 0 && serch.length > 0) this.fillFilterdUsres(index);
+    if (index.length > 0 && serch.length > 0) this.fillFilterdUsers(index);
     else {
-      this.filterdUsres = [];
+      this.filterdUsers = [];
       this.selectListVisible = false;
     }
   }
@@ -112,7 +120,7 @@ export class DialogAddUserComponent {
 
   searchUser(serch: string): number[] {
     let index = [];
-    for (let i = 0; i < this.allUsers.length; i++) {
+    for (let i = 0; i < this.data.allUsers.length; i++) {
       if (this.filterValues[i].indexOf(serch.toLowerCase()) >= 0) {
         index.push(i)
       }
@@ -121,10 +129,10 @@ export class DialogAddUserComponent {
   }
 
 
-  fillFilterdUsres(index: number[]) {
-    this.filterdUsres = [];
+  fillFilterdUsers(index: number[]) {
+    this.filterdUsers = [];
     index.forEach(index => {
-      this.filterdUsres.push(this.allUsers[index])
+      this.filterdUsers.push(this.data.allUsers[index])
     });
     this.selectListVisible = true;
   }

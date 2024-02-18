@@ -4,25 +4,27 @@ export class Channel {
     description: string;
     ownerID: string;
 
-    constructor(obj?: any) {
-        this.id = obj ? obj.id : '';
-        this.name = obj ? obj.name : '';
-        this.description = obj ? obj.description : '';
-        this.ownerID = obj ? obj.ownerID : '';
+    constructor(obj: any = {}) {
+        this.id = obj.id || '';
+        this.name = obj.name || '';
+        this.description = obj.description || '';
+        this.ownerID = obj.ownerID || '';
     }
 
-    public toJSON?() {
-        const jsonObj: any = {
+    public toJSON() {
+        return {
             name: this.name,
             description: this.description,
             ownerID: this.ownerID,
+            // Nur die ID hinzufügen, wenn sie existiert
+            ...(this.id && { id: this.id }),
         };
-
-        if (this.id !== undefined) {
-            jsonObj.id = this.id;
-        }
-
-        return jsonObj;
     }
 
+    static fromFirestore(doc: any): Channel {
+        return new Channel({
+            id: doc.id,
+            ...doc.data()
+        });
+    }
 }

@@ -1,14 +1,14 @@
 <mat-card class="channel-card">
     @if (chat === 'channel') {
-        <app-header-channel></app-header-channel>
+        <app-header-channel [channel]="currentChannel" [members]="currentChannelMembers" [allUsers]="users"></app-header-channel>
         <main class="chat-space">
-            <app-channel-msg [channel]="channel" [owner]="'Willi'"></app-channel-msg>
+            <app-channel-msg [channel]="currentChannel" [owner]="'Willi'"></app-channel-msg>
 
         </main>
     }@else if (chat === 'message') {
-        <app-direct-message [user]="user"></app-direct-message>
+        <app-direct-message [user]="currentUser"></app-direct-message>
         <main class="chat-space">
-            <app-direct-msg [user]="user"></app-direct-msg>
+            <app-direct-msg [user]="currentUser"></app-direct-msg>
 
         </main>
     }@else {

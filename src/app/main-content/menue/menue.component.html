@@ -1,5 +1,6 @@
 <!-- The menu itself -->
-<mat-card class="menu-card" [class.menu-open]="isMenuOpen" [class.menu-closed]="!isMenuOpen">
+<mat-card class="menu-card" [class.menu-open]="isMenuOpen" 
+    [class.menu-closed]="!isMenuOpen" [ngStyle]="{'display': hideMenu ? 'none' : 'flex'}">
     <app-menue-header></app-menue-header>
     <app-menue-channels [channels]="channels" [channelActive]="activeChannel"
         (channelSelected)="setActiveChannel($event)"></app-menue-channels>

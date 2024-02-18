@@ -6,14 +6,16 @@ import { MenueHeaderComponent } from './menue-header/menue-header.component';
 import { User } from '../../shared/models/user.class';
 import { Membership } from '../../shared/models/membership.class';
 import { Channel } from '../../shared/models/channel.class';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-menue',
   standalone: true,
-  imports: [MatCardModule,
-            MenueHeaderComponent,
-            MenueChannelsComponent,
-            MenueMessagesComponent],
+  imports: [CommonModule, 
+    MatCardModule, 
+    MenueHeaderComponent,
+    MenueChannelsComponent,
+    MenueMessagesComponent],
   templateUrl: './menue.component.html',
   styleUrl: './menue.component.scss'
 })
@@ -24,12 +26,21 @@ export class MenueComponent {
   @Input() channels: Channel[] = [];
 
   isMenuOpen: boolean = true;
-  isHovering: boolean = false; // Neue Variable für Hover-Zustand
+  isHovering: boolean = false;
+  hideMenu: boolean = false;
   activeChannel: number | undefined;
   activeUser: number | undefined;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+
+    if (!this.isMenuOpen) {
+      setTimeout(() => {
+        this.hideMenu = true;
+      }, 500);
+    } else {
+      this.hideMenu = false;
+    }
   }
 
   // Methoden zum Ändern des Hover-Zustands des Close-Overlays
@@ -59,5 +70,5 @@ export class MenueComponent {
     this.activeUser = index;
     this.activeChannel = undefined;
   }
-  
+
 }

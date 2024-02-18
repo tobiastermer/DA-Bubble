@@ -8,22 +8,19 @@ import { BehaviorSubject } from 'rxjs';
 })
 
 export class UserService {
-
     private usersSubject = new BehaviorSubject<User[]>([]);
     public users$ = this.usersSubject.asObservable();
-    users: User[] = [];
-    subscribeAllUsers;
     firestore: Firestore = inject(Firestore);
 
     constructor() {
-        this.subscribeAllUsers = this.getAllUsers();
+        this.getAllUsers();
     }
 
-    async addUser(item: {}) {
+    async addUser(user: User) {
         try {
-            const docRef = await addDoc(collection(this.firestore, "users"), item);
-            return docRef.id;
+            const docRef = await addDoc(collection(this.firestore, "users"), user.toJSON());
             console.log(docRef.id);
+            return docRef.id;
         } catch (err) {
             console.error(err);
             return err;
@@ -32,40 +29,37 @@ export class UserService {
 
     async updateUser(user: User) {
         if (user.id) {
-            let docRef = doc(collection(this.firestore, 'users'), user.id);
-            await updateDoc(docRef, this.getCleanJSON(user)).catch(
-                (err) => { console.log(err); }
-            )
+            const docRef = doc(collection(this.firestore, 'users'), user.id);
+            await updateDoc(docRef, user.toJSON()).catch(console.error);
         }
     }
 
     getAllUsers() {
         const q = query(collection(this.firestore, 'users'));
-        return onSnapshot(q, (list) => {
-            const users: User[] = [];
-            list.forEach(element => {
-                users.push(this.setUserObject(element.data(), element.id));
-            });
-            this.usersSubject.next(users); // Aktualisiere das BehaviorSubject
+        onSnapshot(q, (snapshot) => {
+            const users = snapshot.docs.map(doc => User.fromFirestore({ id: doc.id, data: () => doc.data() }));
+            this.usersSubject.next(users);
         });
     }
 
-    getCleanJSON(user: User): {} {
-        return {
-            name: user.name,
-            email: user.email,
-            avatar: user.avatar,
-            status: user.status,
-        }
-    }
+    async getUserByID(userID: string): Promise<User | null> {
+        try {
+            const docRef = doc(this.firestore, 'users', userID);
+            const docSnap = await getDoc(docRef);
 
-    setUserObject(obj: any, id: string): User {
-        return {
-            id: id,
-            name: obj.name || "",
-            email: obj.email || "",
-            avatar: obj.avatar || 0,
-            status: obj.status || "",
+            if (docSnap.exists()) {
+                const user = new User({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                });
+                return user;
+            } else {
+                console.log('No such user doc!');
+                return null;
+            }
+        } catch (error) {
+            console.error("Error getting user doc:", error);
+            return null;
         }
     }
 }

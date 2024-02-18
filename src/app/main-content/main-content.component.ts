@@ -25,6 +25,7 @@ export class MainContentComponent implements OnDestroy {
 
   // wird später dynamisiert
   currentUserID: string = 's4vgY2BWfL0LIKBJIEOQ';
+  currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' })
 
   private usersSubscription?: Subscription;
   private userMembershipSubscription?: Subscription;
@@ -48,6 +49,11 @@ export class MainContentComponent implements OnDestroy {
       this.channels = channels;
       console.log('Channel: ', this.channels);
     });
+
+  }
+
+  async ngOnInit() {
+    await this.fetchCurrentUser();
   }
 
   ngOnDestroy() {
@@ -66,6 +72,19 @@ export class MainContentComponent implements OnDestroy {
       return [currentUser, ...otherUsers];
     } else {
       return otherUsers;
+    }
+  }
+
+  private async fetchCurrentUser() {
+    try {
+      const user = await this.userService.getUserByID(this.currentUserID);
+      if (user) {
+        this.currentUser = user;
+      } else {
+        console.log('Benutzer nicht gefunden');
+      }
+    } catch (error) {
+      console.error('Fehler beim Abrufen des aktuellen Benutzers:', error);
     }
   }
 }

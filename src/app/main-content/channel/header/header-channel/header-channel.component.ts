@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,35 +29,40 @@ export interface ElementPos {
 })
 export class HeaderChannelComponent {
 
+  @Input() members: User[] = [];
+  @Input() channel: Channel = new Channel({});
+  @Input() allUsers: User[] = [];
+
   // dummy - owner ID function is missing
-  channel: Channel = {
-    id: '',
-    name: 'Entwicklerteam',
-    description: `Dieser Channel ist für alles rund um #dfsdf vorgesehen. 
-    Hier kannst du zusammen mit deinem Team Meetings abhalten, 
-    Dokumente teilen und Entscheidungen treffen.`,
-    ownerID: '',
-  }
-  members: User[] = [
-    {
-      name: 'Frederik Beck (Du)',
-      avatar: 1,
-      email: '',
-      status: '',
-    },
-    {
-      name: 'Sofia Müller',
-      avatar: 2,
-      email: '',
-      status: '',
-    },
-    {
-      name: 'Noah Braun',
-      avatar: 3,
-      email: '',
-      status: '',
-    },
-  ];
+
+  // channel: Channel = {
+  //   id: '',
+  //   name: 'Entwicklerteam',
+  //   description: `Dieser Channel ist für alles rund um #dfsdf vorgesehen. 
+  //   Hier kannst du zusammen mit deinem Team Meetings abhalten, 
+  //   Dokumente teilen und Entscheidungen treffen.`,
+  //   ownerID: '',
+  // }
+  // members: User[] = [
+  //   {
+  //     name: 'Frederik Beck (Du)',
+  //     avatar: 1,
+  //     email: '',
+  //     status: '',
+  //   },
+  //   {
+  //     name: 'Sofia Müller',
+  //     avatar: 2,
+  //     email: '',
+  //     status: '',
+  //   },
+  //   {
+  //     name: 'Noah Braun',
+  //     avatar: 3,
+  //     email: '',
+  //     status: '',
+  //   },
+  // ];
 
   @ViewChild('channleInfo') channelInfo?: ElementRef;
   @ViewChild('membersInfo') membersInfo?: ElementRef;
@@ -117,7 +122,7 @@ export class HeaderChannelComponent {
     let pos = this.getDialogPos(this.addUser, 'right');
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
       position: pos, panelClass: ['card-right-corner'],
-      data: {},
+      data: { allUsers: this.allUsers },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) console.log(result)

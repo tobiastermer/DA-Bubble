@@ -23,7 +23,7 @@
         }
 
         <ul class="filterd-users" [class.d-none]="!selectListVisible">
-            @for (user of filterdUsres; track $index) {
+            @for (user of filterdUsers; track $index) {
             <app-user-chip (click)="seletUser(user)" [user]="user"></app-user-chip>
             }
         </ul>

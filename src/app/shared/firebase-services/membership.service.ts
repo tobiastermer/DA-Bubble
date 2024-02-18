@@ -8,38 +8,47 @@ import { Membership } from '../models/membership.class';
 })
 
 export class MembershipService {
-
     private userMembershipsSubject = new BehaviorSubject<Membership[]>([]);
     public userMemberships$ = this.userMembershipsSubject.asObservable();
-    userMemberships: Membership[] = [];
+
+    private channelMembershipsSubject = new BehaviorSubject<Membership[]>([]);
+    public channelMemberships$ = this.channelMembershipsSubject.asObservable();
 
     firestore: Firestore = inject(Firestore);
 
     constructor() { }
 
+    async addMembership(membership: Membership) {
+        try {
+            const docRef = await addDoc(collection(this.firestore, "memberships"), membership.toJSON());
+            console.log(docRef.id);
+            return docRef.id;
+        } catch (err) {
+            console.error(err);
+            return err;
+        }
+    }
+
+    async updateMembership(membership: Membership) {
+        if (membership.id) {
+            const docRef = doc(collection(this.firestore, 'memberships'), membership.id);
+            await updateDoc(docRef, membership.toJSON()).catch(console.error);
+        }
+    }
+
     getUserMemberships(userID: string) {
         const q = query(collection(this.firestore, 'memberships'), where("userID", "==", userID));
-        return onSnapshot(q, (list) => {
-            const memberships: Membership[] = [];
-            list.forEach(element => {
-                memberships.push(this.setMembershipObject(element.data(), element.id));
-            });
+        onSnapshot(q, (snapshot) => {
+            const memberships = snapshot.docs.map(doc => Membership.fromFirestore({id: doc.id, data: () => doc.data()}));
             this.userMembershipsSubject.next(memberships);
         });
     }
 
-    getCleanJSON(membership: Membership): {} {
-        return {
-            channelID: membership.channelID,
-            userID: membership.userID,
-        }
-    }
-
-    setMembershipObject(obj: any, id: string): Membership {
-        return {
-            id: id,
-            channelID: obj.channelID || "",
-            userID: obj.userID || "",
-        }
+    getChannelMemberships(channelID: string) {
+        const q = query(collection(this.firestore, 'memberships'), where("channelID", "==", channelID));
+        onSnapshot(q, (snapshot) => {
+            const memberships = snapshot.docs.map(doc => Membership.fromFirestore({id: doc.id, data: () => doc.data()}));
+            this.channelMembershipsSubject.next(memberships);
+        });
     }
 }

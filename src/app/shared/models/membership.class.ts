@@ -3,23 +3,25 @@ export class Membership {
     channelID: string;
     userID: string;
 
-    constructor(obj?: any) {
-        this.id = obj ? obj.id : '';
-        this.channelID = obj ? obj.channelID : '';
-        this.userID = obj ? obj.userID : '';
+    constructor(obj: any = {}) {
+        this.id = obj.id || '';
+        this.channelID = obj.channelID || '';
+        this.userID = obj.userID || '';
     }
 
-    public toJSON?() {
-        const jsonObj: any = {
+    public toJSON() {
+        return {
             channelID: this.channelID,
             userID: this.userID,
+            // Nur die ID hinzufügen, wenn sie existiert
+            ...(this.id && { id: this.id }),
         };
-
-        if (this.id !== undefined) {
-            jsonObj.id = this.id;
-        }
-
-        return jsonObj;
     }
 
+    static fromFirestore(doc: any): Membership {
+        return new Membership({
+            id: doc.id,
+            ...doc.data()
+        });
+    }
 }
