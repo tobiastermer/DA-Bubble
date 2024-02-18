@@ -34,6 +34,12 @@ export class UserService {
         }
     }
 
+    async deleteUser(user: User) {
+        await deleteDoc(doc(collection(this.firestore, 'users'), user.id)).catch(
+            (err) => { console.log(err); }
+        )
+    }
+
     getAllUsers() {
         const q = query(collection(this.firestore, 'users'));
         onSnapshot(q, (snapshot) => {

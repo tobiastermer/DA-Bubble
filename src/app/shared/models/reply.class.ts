@@ -4,13 +4,32 @@ export class Reply {
     userID: string;
     message: string;
     attachmentID: string;
-    
-    constructor(obj?: any) {
-        // this.id = obj ? obj.id : '';
-        this.date = obj ? obj.date : 0;
-        this.channelID = obj ? obj.channelID : '';
-        this.userID = obj ? obj.userID : '';
-        this.message = obj ? obj.message : '';
-        this.attachmentID = obj ? obj.attachmentID : '';
+
+    constructor(obj: any = {}) {
+        this.date = obj.date ?? 0;
+        this.channelID = obj.channelID ?? '';
+        this.userID = obj.userID ?? '';
+        this.message = obj.message ?? '';
+        this.attachmentID = obj.attachmentID ?? '';
+    }
+
+    public toJSON() {
+        return {
+            date: this.date,
+            channelID: this.channelID,
+            userID: this.userID,
+            message: this.message,
+            attachmentID: this.attachmentID,
+        };
+    }
+
+    static fromFirestore(doc: any): Reply {
+        return new Reply({
+            date: doc.date,
+            channelID: doc.channelID,
+            userID: doc.userID,
+            message: doc.message,
+            attachmentID: doc.attachmentID,
+        });
     }
 }

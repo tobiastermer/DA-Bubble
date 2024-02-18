@@ -36,6 +36,12 @@ export class MembershipService {
         }
     }
 
+    async deleteMembership(membership: Membership) {
+        await deleteDoc(doc(collection(this.firestore, 'memberships'), membership.id)).catch(
+            (err) => { console.log(err); }
+        )
+    }
+
     getUserMemberships(userID: string) {
         const q = query(collection(this.firestore, 'memberships'), where("userID", "==", userID));
         onSnapshot(q, (snapshot) => {

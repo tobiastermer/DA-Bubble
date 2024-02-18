@@ -34,6 +34,12 @@ export class ChannelService {
         }
     }
 
+    async deleteChannel(channel: Channel) {
+        await deleteDoc(doc(collection(this.firestore, 'channels'), channel.id)).catch(
+            (err) => { console.log(err); }
+        )
+    }
+
     getChannels() {
         const q = query(collection(this.firestore, 'channels'));
         onSnapshot(q, (snapshot) => {
