@@ -8,6 +8,8 @@ import { DialogAddUserComponent } from '../../dialogs/dialog-add-user/dialog-add
 import { User } from '../../../../shared/models/user.class';
 import { Channel } from '../../../../shared/models/channel.class';
 import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-channel.component';
+import { MembershipService } from '../../../../shared/firebase-services/membership.service';
+import { Membership } from '../../../../shared/models/membership.class';
 
 export interface ElementPos {
   y: number,
@@ -68,7 +70,8 @@ export class HeaderChannelComponent {
   @ViewChild('membersInfo') membersInfo?: ElementRef;
   @ViewChild('addUser') addUser?: ElementRef;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog,
+    private membershipService: MembershipService) { }
 
   changeImgBl() {
     if (!this.channelInfo) return;
@@ -125,8 +128,19 @@ export class HeaderChannelComponent {
       data: { allUsers: this.allUsers },
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) console.log(result)
+      if (result) console.log(result);
+      this.saveAddedMember(result);
     });
+  }
+
+  async saveAddedMember(user: User) {
+    if (user && user.id) {
+      const membership = new Membership({
+        channelID: this.channel.id,
+        userID: user.id,
+      });
+      await this.membershipService.addMembership(membership).catch(err => console.error(err));
+    }
   }
 
 

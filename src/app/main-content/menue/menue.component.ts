@@ -32,14 +32,20 @@ export class MenueComponent {
   activeUser: number | undefined;
 
   toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
+    // this.isMenuOpen = !this.isMenuOpen;
 
-    if (!this.isMenuOpen) {
+    // open
+    if (this.isMenuOpen) {
+      this.isMenuOpen = false;
       setTimeout(() => {
         this.hideMenu = true;
       }, 500);
+    // closed
     } else {
       this.hideMenu = false;
+      setTimeout(() => {
+        this.isMenuOpen = true
+      }, 100);
     }
   }
 
