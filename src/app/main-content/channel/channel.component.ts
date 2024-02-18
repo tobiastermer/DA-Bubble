@@ -11,6 +11,7 @@ import { ChannelService } from '../../shared/firebase-services/channel.service';
 import { Membership } from '../../shared/models/membership.class';
 import { MembershipService } from '../../shared/firebase-services/membership.service';
 import { Subscription } from 'rxjs';
+import { HeaderNewMsgComponent } from './header/header-new-msg/header-new-msg.component';
 
 @Component({
   selector: 'app-channel',
@@ -21,6 +22,8 @@ import { Subscription } from 'rxjs';
     ChannelMsgComponent,
     DirectMessageComponent,
     DirectMsgComponent,
+    HeaderNewMsgComponent,
+
     InputTextareaComponent
   ],
   templateUrl: './channel.component.html',
@@ -31,7 +34,7 @@ export class ChannelComponent {
   @Input() users: User[] = [];
   @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' })
 
-  chat: 'channel' | 'message' | 'new' = 'channel';
+  chat: 'channel' | 'message' | 'new' = 'new';
 
   currentChannelID: string = 'NgbOpyfDLsZOQSBzLK3B'
   currentChannel: Channel = new Channel({ id: 'Channel lädt', name: 'Channel lädt', description: 'Channel lädt', ownerID: 'abcde' });
@@ -39,21 +42,6 @@ export class ChannelComponent {
   currentChannelMembers: User[] = [];
 
   private channelMembershipSubscription?: Subscription;
-
-  // dummy Values
-  // user: User = {
-  //   name: 'Frederik Beck (Du)',
-  //   avatar: 1,
-  //   email: '',
-  //   status: '',
-  // }
-
-  // channel: Channel = {
-  //   id: 'idTestChannel',
-  //   name:'Office-team',
-  //   description: 'Dieser Channel ist für alles rund um Office Infos vorgesehen. Hier kannst du zusammen mit deinem Team Meetings abhalten, Dokumente teilen und Entscheidungen treffen.',
-  //   ownerID: 'abcde',
-  // }
 
   constructor(private channelService: ChannelService,
     private membershipService: MembershipService) {
@@ -92,6 +80,5 @@ export class ChannelComponent {
     const memberIDs = this.currentChannelMemberships.map(membership => membership.userID);
     this.currentChannelMembers = this.users.filter(user => user.id && memberIDs.includes(user.id));
   }
-  
 
 }

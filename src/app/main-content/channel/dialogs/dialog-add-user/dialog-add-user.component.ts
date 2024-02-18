@@ -39,40 +39,7 @@ import { CommonModule } from '@angular/common';
 export class DialogAddUserComponent {
 
   @Input() allUsers: User[] = [];
-
-  //dummy values for testing
-  // allUsers: User[] = [
-  //   {
-  //     name: 'Frederik Beck (Du)',
-  //     avatar: 1,
-  //     email: '',
-  //     status: '',
-  //   },
-  //   {
-  //     name: 'Sofia Müller',
-  //     avatar: 2,
-  //     email: '',
-  //     status: '',
-  //   },
-  //   {
-  //     name: 'Noah Braun',
-  //     avatar: 3,
-  //     email: '',
-  //     status: '',
-  //   },
-  //   {
-  //     name: 'Elise Roth',
-  //     avatar: 4,
-  //     email: '',
-  //     status: '',
-  //   },
-  //   {
-  //     name: 'Elias Neumann',
-  //     avatar: 5,
-  //     email: '',
-  //     status: '',
-  //   }
-  // ];
+  
 
   userSelected = false;
   selectListVisible = false;
@@ -83,12 +50,6 @@ export class DialogAddUserComponent {
 
   @ViewChild('userInp') userInp?: ElementRef;
 
-  // constructor(
-  //   public dialogRef: MatDialogRef<DialogAddUserComponent>,
-  //   @Inject(MAT_DIALOG_DATA) public data: any,
-  // ) {
-  //   this.setFilterValues();
-  // }
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,

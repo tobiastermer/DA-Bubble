@@ -35,36 +35,6 @@ export class HeaderChannelComponent {
   @Input() channel: Channel = new Channel({});
   @Input() allUsers: User[] = [];
 
-  // dummy - owner ID function is missing
-
-  // channel: Channel = {
-  //   id: '',
-  //   name: 'Entwicklerteam',
-  //   description: `Dieser Channel ist für alles rund um #dfsdf vorgesehen. 
-  //   Hier kannst du zusammen mit deinem Team Meetings abhalten, 
-  //   Dokumente teilen und Entscheidungen treffen.`,
-  //   ownerID: '',
-  // }
-  // members: User[] = [
-  //   {
-  //     name: 'Frederik Beck (Du)',
-  //     avatar: 1,
-  //     email: '',
-  //     status: '',
-  //   },
-  //   {
-  //     name: 'Sofia Müller',
-  //     avatar: 2,
-  //     email: '',
-  //     status: '',
-  //   },
-  //   {
-  //     name: 'Noah Braun',
-  //     avatar: 3,
-  //     email: '',
-  //     status: '',
-  //   },
-  // ];
 
   @ViewChild('channleInfo') channelInfo?: ElementRef;
   @ViewChild('membersInfo') membersInfo?: ElementRef;

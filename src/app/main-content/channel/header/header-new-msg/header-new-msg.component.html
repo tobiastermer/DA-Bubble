@@ -1,0 +1,11 @@
+<header class="header-channel">
+    <h2>Neue Nachricht</h2>
+    <input #inp class="user-input" type="text"
+    placeholder="An: #channel oder @jemand" (input)="filterUsers()">
+    <ul class="filterd-users" [class.d-none]="!selectListVisible">
+        @for (user of filterdUsers; track $index) {
+        <app-user-chip [user]="user"></app-user-chip>
+        }
+    </ul>
+    
+</header>

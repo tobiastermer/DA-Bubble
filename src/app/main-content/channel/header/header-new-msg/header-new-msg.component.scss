@@ -1,0 +1,34 @@
+@import './../../channel.component.scss';
+
+
+.header-channel{
+    @include dFlex($fd:column, $ai: flex-start, $gap: 20px);
+
+    h2{
+        margin: 0;
+    }
+}
+
+
+.user-input {
+    width: calc(100% - 42px);
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 1px solid $lgPurple;
+    outline: none;
+
+    &:focus-visible {
+        border-color: $bgBlue;
+    }
+}
+
+
+.filterd-users {
+    position: fixed;
+    padding: 25px;
+    margin-top: -8px;
+    margin-left: 16px;
+    background: white;
+    border: 1px solid $lgPurple;
+    border-radius: 0 30px 30px 30px;
+}
