@@ -6,6 +6,7 @@ export class ChannelMessage {
     date: number;
     channelID: string;
     fromUserID: string;
+    message: string;
     attachmentID: string;
     likes: Like[];
     replies: Reply[];
@@ -15,6 +16,7 @@ export class ChannelMessage {
         this.date = obj.date ?? 0;
         this.channelID = obj.channelID ?? '';
         this.fromUserID = obj.fromUserID ?? '';
+        this.message = obj.message ?? '';
         this.attachmentID = obj.attachmentID ?? '';
         this.likes = obj.likes ?? [];
         this.replies = obj.replies ?? [];
@@ -27,6 +29,7 @@ export class ChannelMessage {
             channelID: this.channelID,
             fromUserID: this.fromUserID,
             attachmentID: this.attachmentID,
+            message: this.message,
             likes: this.likes.map(like => like.toJSON()),
             replies: this.replies.map(reply => reply.toJSON())
         };

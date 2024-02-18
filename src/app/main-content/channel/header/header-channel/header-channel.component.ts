@@ -103,13 +103,16 @@ export class HeaderChannelComponent {
     });
   }
 
+
   async saveAddedMember(user: User) {
     if (user && user.id) {
       const membership = new Membership({
         channelID: this.channel.id,
         userID: user.id,
       });
-      await this.membershipService.addMembership(membership).catch(err => console.error(err));
+      await this.membershipService.addMembership(membership).then(() => {
+        this.members.push(user); // ggf. sauberer lösen durch unmittelbares Abo dieser Komponente auf members-Array
+      }).catch(err => console.error(err));
     }
   }
 

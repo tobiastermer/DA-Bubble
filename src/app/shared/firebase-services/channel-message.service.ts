@@ -13,7 +13,7 @@ export class ChannelMessagesService {
 
     firestore: Firestore = inject(Firestore);
 
-    constructor() { }
+    constructor() {  }
 
     async addChannelMessage(channelMessage: ChannelMessage) {
         try {
