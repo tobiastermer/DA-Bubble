@@ -4,6 +4,8 @@ import { MenueChannelsComponent } from './menue-channels/menue-channels.componen
 import { MenueMessagesComponent } from './menue-messages/menue-messages.component';
 import { MenueHeaderComponent } from './menue-header/menue-header.component';
 import { User } from '../../shared/models/user.class';
+import { Membership } from '../../shared/models/membership.class';
+import { Channel } from '../../shared/models/channel.class';
 
 @Component({
   selector: 'app-menue',
@@ -17,6 +19,9 @@ import { User } from '../../shared/models/user.class';
 })
 export class MenueComponent {
   @Input() users: User[] = [];
+  @Input() currentUserID: String = '';
+  @Input() userMemberships: Membership[] = [];
+  @Input() channels: Channel[] = [];
 
   isMenuOpen: boolean = true;
   isHovering: boolean = false; // Neue Variable für Hover-Zustand

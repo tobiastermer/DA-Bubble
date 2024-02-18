@@ -15,8 +15,8 @@
             <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
         </div> -->
         @for (user of users; track $index) {
-        <app-user-chip [user]="user" [active]="isActiveUser($index)"
-        (click)="setUserActive($index); openDialog(user)"></app-user-chip>
+        <app-user-chip [user]="user" [active]="isActiveUser($index)" [currentUserID]="currentUserID"
+        (click)="setUserActive($index); openDialog(user, currentUserID)"></app-user-chip>
         }
     </div>
 </section>

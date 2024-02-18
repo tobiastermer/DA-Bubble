@@ -14,9 +14,12 @@ import { DialogShowUserComponent } from '../../../shared/components/dialogs/dial
   styleUrl: './menue-messages.component.scss'
 })
 export class MenueMessagesComponent {
-  @Output() activeChannelChanged = new EventEmitter<number>();
   @Input() userActive: number | undefined;
   @Input() users: User[] = [];
+  @Input() currentUserID: String = '';
+
+  @Output() activeChannelChanged = new EventEmitter<number>();
+  @Output() userSelected = new EventEmitter<number>();
 
   usersVisible: boolean = true;
 
@@ -29,7 +32,6 @@ export class MenueMessagesComponent {
     this.usersVisible = !this.usersVisible;
   }
 
-  @Output() userSelected = new EventEmitter<number>();
 
   setUserActive(i: number) {
     this.userSelected.emit(i); // Informiert die Parent-Komponente
@@ -39,10 +41,10 @@ export class MenueMessagesComponent {
     return this.userActive === i;
   }
 
-  openDialog(user: User) {
-    this.dialog.open(DialogShowUserComponent,{
+  openDialog(user: User, currentUserID: String) {
+    this.dialog.open(DialogShowUserComponent, {
       panelClass: ['card-round-corners'],
-      data: {user},
+      data: { user, currentUserID },
     });
   }
 

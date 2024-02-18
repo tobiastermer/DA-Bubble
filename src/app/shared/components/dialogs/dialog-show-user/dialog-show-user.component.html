@@ -5,8 +5,8 @@
     </div>
     <div class="name-status-container">
         <div class="name-container">
-            <h1>{{ data.user.name }}</h1>
-            <a (click)="openDialogEditUser(data.user)">Bearbeiten</a>
+            <h1>{{ data.user.name }} {{ data.user.id == data.currentUserID ? ' (Du)' : '' }}</h1>
+            <a (click)="openDialogEditUser(data.user)" *ngIf="data.user.id == data.currentUserID">Bearbeiten</a>
         </div>
         <div class="status-icon-with-label">
             <div class="status-icon"></div>
@@ -20,7 +20,7 @@
             <a href="mailto:noah-braun@web.de">{{ data.user.email }}</a>
         </div>
     </div>
-    <div class="button-container">
+    <div class="button-container" *ngIf="data.user.id !== data.currentUserID">
         <div mat-dialog-actions>
             <button mat-flat-button color="primary" (click)="sendMessage()">
                 <!-- <img src="../../../../../assets/img/icons/comment.png" alt=""> -->

@@ -1,6 +1,7 @@
 <app-header></app-header>
 <main>
-    <app-menue [users]="users"></app-menue>
+    <app-menue [users]="sortedUsers()" [currentUserID]="currentUserID" 
+        [userMemberships]="userMemberships" [channels]="channels"></app-menue>
     <app-channel></app-channel>
     <app-threads></app-threads> 
 </main> 
