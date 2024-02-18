@@ -308,6 +308,20 @@ form {
     }
 }
 
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+    
+  }
+  to {
+    transform: translateY(150%);
+  }
+}
+
+.slide-out-down {
+  animation: slideOutDown 0.8s ease forwards;
+}
+
 
 /* ENTFERNT BORDER ABER DANN IN ALLEN ZUSTÄNDEN 
 :host ::ng-deep .mdc-notched-outline__trailing,

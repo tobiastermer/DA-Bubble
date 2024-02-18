@@ -218,6 +218,37 @@ form {
     background-color: darken($dkBlue, 5%);
   }
 }
+
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+    
+  }
+  to {
+    transform: translateY(150%);
+  }
+}
+
+.slide-out-down {
+  animation: slideOutDown 0.8s ease forwards;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.5s ease forwards;
+}
+
+
 /* ENTFERNT BORDER ABER DANN IN ALLEN ZUSTÄNDEN 
 :host ::ng-deep .mdc-notched-outline__trailing,
 :host ::ng-deep .mdc-notched-outline__leading {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule} from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { fetchSignInMethodsForEmail } from '@angular/fire/auth';
+import { Auth } from '@angular/fire/auth';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { AuthService } from '../../shared/firebase-services/auth.service';
 
 
 @Component({
@@ -14,13 +18,26 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule,MatCardModule, MatFormFieldModule,MatInputModule,MatIconModule,MatCheckboxModule,ReactiveFormsModule],
   templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.scss'
-})
-export class SignUpComponent {
+  styleUrl: './sign-up.component.scss',
+    animations: [
+      trigger('slideInUp', [
+        transition(':enter', [
+          style({ transform: 'translateY(100%)', opacity: 0 }),
+          animate('0.5s ease-out', style({ transform: 'translateY(0)', opacity: 1 })),
+        ]),
+      ]),
+    ],
+  })
+
+export class SignUpComponent implements OnInit {
+
+  ngOnInit(): void {
+   
+  }
   signUpForm: FormGroup;
   formSubmitted: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router)  {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private afAuth: Auth)  {
     this.signUpForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -59,15 +76,39 @@ export class SignUpComponent {
   }
 
   openLogin(){
-    this.router.navigate(['/login'])
+    const signUpCard = document.querySelector('.sign-up');
+    
+     signUpCard?.classList.add('slide-out-down');
+       
+     
+     setTimeout(() => {
+      this.router.navigate(['/login']);
+     }, 800);
+    
   }
 
-  onSubmit() {
+
+
+  // In Ihrer onSubmit Methode
+  async onSubmit() {
     this.formSubmitted = true;
     if (this.signUpForm.valid) {
-      console.log('Formular-Daten:', this.signUpForm.value);
-      this.router.navigate(['/select-avatar'])
+      const { email, password, name } = this.signUpForm.value;
+      localStorage.setItem('tempUser', JSON.stringify({ name, email, password }));
+      
+       const signUpCard = document.querySelector('.sign-up');
+  
+      localStorage.setItem('tempUser', JSON.stringify({ name, email, password }));
+    
+   
+       signUpCard?.classList.add('slide-out-down');
+       
+       
+       setTimeout(() => {
+        this.router.navigate(['/select-avatar']);
+       }, 800);
+      
     } else {
-      console.log('ungültig.');
+      console.log('Formular ist ungültig.');
     }
   }}

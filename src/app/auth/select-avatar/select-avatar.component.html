@@ -3,7 +3,7 @@
     <img src="./assets/img/logo_+_text.png" />
   </div>
 
-  <mat-card class="avatar">
+  <mat-card class="avatar" @slideInUp >
     <mat-card-header>
       <mat-card-title class="avatar__header"
         >Wähle deinen Avatar</mat-card-title
@@ -50,7 +50,7 @@
       </div>
 
       <mat-card class="arrow-back">
-        <button class="basic-button close-btn">
+        <button class="basic-button close-btn" (click)="backToSignUp()">
           <mat-icon class="arrow-back__image">arrow_back</mat-icon>
         </button>
       </mat-card>
@@ -69,7 +69,7 @@
     <button (click)="closeError()">Schließen</button>
   </mat-card>
 
-  <mat-card *ngIf="accountSuccess" class="success-popup slide-up">
+  <mat-card class="success-popup" @slideInUp *ngIf="registrationSuccess">
     <mat-card-content>Konto erfolgreich erstellt</mat-card-content>
   </mat-card>
 </div>

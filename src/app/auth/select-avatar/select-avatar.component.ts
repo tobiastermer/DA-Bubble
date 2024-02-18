@@ -1,7 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { doc, updateDoc } from '@angular/fire/firestore';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Auth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { AuthService } from '../../shared/firebase-services/auth.service';
 
 @Component({
   selector: 'app-select-avatar',
@@ -9,8 +14,21 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatCardModule, MatIconModule, CommonModule],
   templateUrl: './select-avatar.component.html',
   styleUrl: './select-avatar.component.scss',
+  animations: [
+    trigger('slideInUp', [
+      transition(':enter', [
+        style({ transform: 'translateY(100%)', opacity: 0 }),
+        animate('0.5s ease-out', style({ transform: 'translateY(0)', opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
-export class SelectAvatarComponent {
+export class SelectAvatarComponent implements OnInit {
+
+  ngOnInit(): void {
+   
+  }
+
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   avatars = ['1.svg', '2.svg', '3.svg', '4.svg', '5.svg'];
   currentAvatar = './assets/img/empty-profile.png';
@@ -19,7 +37,15 @@ export class SelectAvatarComponent {
   errorMessage = '';
   formIsValid = false;
   avatarError = false;
-  accountSuccess = false;
+  registrationSuccess = false;
+
+
+  
+  constructor(private authService: AuthService, private router: Router) {
+
+  }
+
+
 
   selectAvatar(avatar: string) {
     this.fadeOut();
@@ -84,12 +110,31 @@ export class SelectAvatarComponent {
     this.showError = false;
   }
 
-  registerAccount() {
+  backToSignUp(){
+    this.router.navigate(['/signUp']);
+  }
+
+  async registerAccount() {
     if (this.formIsValid) {
-      console.log('Konto erfolgreich erstellt');
-      this.accountSuccess = true;
+      const tempUserData = JSON.parse(localStorage.getItem('tempUser') || '{}');
+      if (tempUserData.email && tempUserData.password) {
+        await this.authService.registerUser(tempUserData.email, tempUserData.password, tempUserData.name, this.currentAvatar);
+        localStorage.removeItem('tempUser'); 
+        const AvatarCard = document.querySelector('.avatar');
+    
+        AvatarCard?.classList.add('slide-out-down');
+        this.registrationSuccess = true; 
+        
+       
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 3000);
+      }
     } else {
       this.avatarError = true;
     }
   }
 }
+
+  
+
