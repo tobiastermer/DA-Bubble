@@ -6,6 +6,7 @@ main {
     gap: 20px;
 
     app-channel{
+        flex: 2;
         width: calc(100% - 40px);
     }
 }

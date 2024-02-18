@@ -37,7 +37,7 @@
       outline: none;
     }
   }
-  .mat-icon{
+  .mat-icon {
     color: #686868;
   }
 }
@@ -46,17 +46,18 @@
   flex: 1;
   @include dFlex($gap: 20px, $jc: flex-end);
   height: 70px;
-  min-width: 310px;
+  min-width: 384px;
+  padding-right: 20px;
   span {
     font-size: 22px;
     font-weight: 500;
   }
   .avater {
     @include dFlex();
-  }
-  img {
-    width: 66px;
-    height: 66px;
-    border-radius: 40px;
+    img {
+      width: 66px;
+      height: 66px;
+      border-radius: 40px;
+    }
   }
 }
