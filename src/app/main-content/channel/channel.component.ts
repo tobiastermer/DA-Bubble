@@ -16,6 +16,7 @@ import { ChannelMessage } from '../../shared/models/channel-message.class';
 import { ChannelMessagesService } from '../../shared/firebase-services/channel-message.service';
 import { ActivatedRoute } from '@angular/router';
 import { ThreadsComponent } from './threads/threads.component';
+import { MessageComponent } from '../../shared/components/message/message.component';
 
 @Component({
   selector: 'app-channel',
@@ -28,7 +29,8 @@ import { ThreadsComponent } from './threads/threads.component';
     DirectMessageComponent,
     DirectMsgComponent,
     HeaderNewMsgComponent,
-    InputTextareaComponent
+    InputTextareaComponent,
+    MessageComponent
   ],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss'
