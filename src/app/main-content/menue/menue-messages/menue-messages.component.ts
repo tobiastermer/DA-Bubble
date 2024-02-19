@@ -38,7 +38,7 @@ export class MenueMessagesComponent {
 
   changePath(activeUserIndex: number) {
     this.userSelected.emit(activeUserIndex); // Informiert die Parent-Komponente
-    let name = this.users[activeUserIndex].name.replace(/\s/g, '');
+    let name = this.users[activeUserIndex].name.replace(/\s/g, '_');
     this.router.navigate([this.pathUserName + '/message/' + name]);
   }
 

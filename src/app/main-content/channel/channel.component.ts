@@ -39,16 +39,19 @@ export class ChannelComponent {
   @Input() channels: Channel[] = [];
   @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' });
 
-
   chat: 'channel' | 'message' | 'new' = 'channel';
+
   currentChannelID: string = ''
   currentChannel: Channel = new Channel({ id: 'Channel lädt', name: 'Channel lädt', description: 'Channel lädt', ownerID: 'abcde' });
   currentChannelMemberships: Membership[] = [];
   currentChannelMembers: User[] = [];
   channelMessages: ChannelMessage[] = [];
 
+  chatUser!: User;
+
   private channelMembershipSubscription?: Subscription;
   private channelMessagesSubscription?: Subscription;
+
 
   constructor(private channelService: ChannelService,
     private membershipService: MembershipService,
@@ -58,8 +61,7 @@ export class ChannelComponent {
 
     this.router.params.subscribe(params => {
       this.chat = params['chat'];
-      this.currentChannelID = this.getChannelIdByName(params['idChat']);
-      this.loadData(this.chat);
+      this.loadData(this.chat, params['idChat']);
     });
   }
 
@@ -70,17 +72,21 @@ export class ChannelComponent {
   }
 
 
-  loadData(chat: 'channel' | 'message' | 'new') {
+  loadData(chat: 'channel' | 'message' | 'new', idChat: string) {
     if (chat === 'channel') {
+      this.currentChannelID = this.getChannelIdByName(idChat);
       this.loadChannelData();
       return
     }
-    if (chat === 'message') { }
+    if (chat === 'message') {
+      this.loadChatUserData(idChat);
+    }
     if (chat === 'new') { }
 
   }
 
 
+  // Functions for Channel 
   async loadChannelData() {
     this.ngOnDestroy();
     if (this.currentChannelID !== '') {
@@ -110,12 +116,6 @@ export class ChannelComponent {
   }
 
 
-  ngOnDestroy() {
-    this.channelMembershipSubscription?.unsubscribe();
-    this.channelMessagesSubscription?.unsubscribe();
-  }
-
-
   private async fetchCurrentChannel() {
     try {
       const channel = await this.channelService.getChannelByID(this.currentChannelID);
@@ -135,4 +135,25 @@ export class ChannelComponent {
     this.currentChannelMembers = this.users.filter(user => user.id && memberIDs.includes(user.id));
   }
 
+
+  // Functions for direct messeges
+  loadChatUserData(idChat: string) {
+    let name = idChat.replace(/_/g,' ');
+    let user = this.getUserByName(name);
+    if (user) this.chatUser = user
+  }
+
+
+  getUserByName(name: string): User | undefined {
+    const user = this.users.find(user => user.name === name);
+    if (user) return user;
+    else return
+  }
+
+
+
+  ngOnDestroy() {
+    this.channelMembershipSubscription?.unsubscribe();
+    this.channelMessagesSubscription?.unsubscribe();
+  }
 }

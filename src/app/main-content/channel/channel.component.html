@@ -8,9 +8,9 @@
 
         </main>
         }@else if (chat === 'message') {
-        <app-direct-message [user]="currentUser"></app-direct-message>
+        <app-direct-message [user]="chatUser"></app-direct-message>
         <main class="chat-space">
-            <app-direct-msg [user]="currentUser"></app-direct-msg>
+            <app-direct-msg [user]="chatUser"></app-direct-msg>
 
         </main>
         }@else {
