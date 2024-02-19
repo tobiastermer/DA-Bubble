@@ -34,10 +34,10 @@ import { ChannelMessagesService } from '../../shared/firebase-services/channel-m
 export class ChannelComponent {
 
   @Input() users: User[] = [];
-  @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' })
+  @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' });
+
 
   chat: 'channel' | 'message' | 'new' = 'channel';
-
   currentChannelID: string = 'NgbOpyfDLsZOQSBzLK3B'
   currentChannel: Channel = new Channel({ id: 'Channel lädt', name: 'Channel lädt', description: 'Channel lädt', ownerID: 'abcde' });
   currentChannelMemberships: Membership[] = [];

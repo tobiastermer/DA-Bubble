@@ -42,7 +42,7 @@ export class LoginComponent {
         
        
         setTimeout(() => {
-          this.router.navigate(['/main']); 
+          this.router.navigate(['/Guest/newMsg/abc']); 
         }, 800);
       } catch (error) {
         console.error('Anmeldefehler', error);
@@ -61,7 +61,7 @@ export class LoginComponent {
     
     
     setTimeout(() => {
-      this.router.navigate(['/main']); 
+      this.router.navigate(['/Guest/newMsg/abc']); 
     }, 800);
   }
 

@@ -7,12 +7,13 @@ import { User } from '../../shared/models/user.class';
 import { Membership } from '../../shared/models/membership.class';
 import { Channel } from '../../shared/models/channel.class';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-menue',
   standalone: true,
-  imports: [CommonModule, 
-    MatCardModule, 
+  imports: [CommonModule,
+    MatCardModule,
     MenueHeaderComponent,
     MenueChannelsComponent,
     MenueMessagesComponent],
@@ -30,6 +31,14 @@ export class MenueComponent {
   hideMenu: boolean = false;
   activeChannel: number | undefined;
   activeUser: number | undefined;
+  pathUserName: string = '';
+
+
+  constructor(private router: ActivatedRoute) {
+    this.router.params.subscribe(params => {
+      this.pathUserName = params['idUser']
+    })
+  }
 
   toggleMenu() {
     // this.isMenuOpen = !this.isMenuOpen;
@@ -40,7 +49,7 @@ export class MenueComponent {
       setTimeout(() => {
         this.hideMenu = true;
       }, 500);
-    // closed
+      // closed
     } else {
       this.hideMenu = false;
       setTimeout(() => {

@@ -10,5 +10,5 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signUp', component: SignUpComponent },
     { path: 'select-avatar', component: SelectAvatarComponent },
-    { path: ':id', component: MainContentComponent }
+    { path: ':idUser/:chat/:idChat', component: MainContentComponent }
 ];

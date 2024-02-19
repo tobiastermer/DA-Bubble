@@ -5,6 +5,7 @@ import { UserChipComponent } from '../../../shared/components/user-chip/user-chi
 import { User } from '../../../shared/models/user.class';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogShowUserComponent } from '../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menue-messages',
@@ -17,13 +18,15 @@ export class MenueMessagesComponent {
   @Input() userActive: number | undefined;
   @Input() users: User[] = [];
   @Input() currentUserID: String = '';
+  @Input() pathUserName: string = '';
+
 
   @Output() activeChannelChanged = new EventEmitter<number>();
   @Output() userSelected = new EventEmitter<number>();
 
   usersVisible: boolean = true;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private router: Router) {
     //this.users = this.getUsers();
     console.log(this.users);
   }
@@ -33,8 +36,10 @@ export class MenueMessagesComponent {
   }
 
 
-  setUserActive(i: number) {
-    this.userSelected.emit(i); // Informiert die Parent-Komponente
+  changePath(activeUserIndex: number) {
+    this.userSelected.emit(activeUserIndex); // Informiert die Parent-Komponente
+    let name = this.users[activeUserIndex].name.replace(/\s/g, '');
+    this.router.navigate([this.pathUserName + '/message/' + name]);
   }
 
   isActiveUser(i: number): boolean {
