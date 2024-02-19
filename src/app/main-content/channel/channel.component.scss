@@ -1,8 +1,19 @@
 @import './../../../styles.scss';
 
+.channel-row {
+    @include dFlex($jc: normal, $ai: normal, $gap: 20px);
+    height: calc(100vh - 40px - 90px); // 40px padding 90px height header
+
+    app-threads {
+        width: 400px;
+    }
+
+}
+
 .channel-card {
     @include dFlex($fd: column, $jc: space-between, $ai: normal);
     height: 100%;
+    width: 100%;
     border-radius: 30px;
 }
 
@@ -19,7 +30,7 @@
 }
 
 app-channel-msg,
-app-direct-msg{
+app-direct-msg {
     width: 100%;
 }
 

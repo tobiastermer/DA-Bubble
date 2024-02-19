@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
-import { InputTextareaComponent } from '../../shared/components/input-textarea/input-textarea.component';
+import { InputTextareaComponent } from '../../../shared/components/input-textarea/input-textarea.component';
 
 
 

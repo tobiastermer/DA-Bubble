@@ -1,24 +1,29 @@
-<mat-card class="channel-card">
-    @if (chat === 'channel') {
-        <app-header-channel [channel]="currentChannel" [members]="currentChannelMembers" [allUsers]="users"></app-header-channel>
+<div class="channel-row">
+    <mat-card class="channel-card">
+        @if (chat === 'channel') {
+        <app-header-channel [channel]="currentChannel" [members]="currentChannelMembers"
+            [allUsers]="users"></app-header-channel>
         <main class="chat-space">
             <app-channel-msg [channel]="currentChannel" [owner]="'Willi'"></app-channel-msg>
 
         </main>
-    }@else if (chat === 'message') {
+        }@else if (chat === 'message') {
         <app-direct-message [user]="currentUser"></app-direct-message>
         <main class="chat-space">
             <app-direct-msg [user]="currentUser"></app-direct-msg>
 
         </main>
-    }@else {
+        }@else {
         <app-header-new-msg></app-header-new-msg>
         <main class="chat-space">
 
         </main>
+        }
+        <app-input-textarea></app-input-textarea>
+    </mat-card>
+
+    @if (chat === 'channel') {
+    <app-threads></app-threads>
     }
 
-
-
-    <app-input-textarea></app-input-textarea>
-</mat-card>
+</div>
