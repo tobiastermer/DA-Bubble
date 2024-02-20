@@ -6,7 +6,7 @@
 
 .message {
   position: relative;
-  padding: 24px 0px 0 16px;
+  padding: 8px 0px 8px 16px;
   display: flex;
   gap: 20px;
   margin-bottom: 0px;
@@ -40,6 +40,7 @@
 }
 
 .details {
+  @include dFlex($fd: column, $ai: flex-start);
   width: 76%;
 }
 
@@ -95,6 +96,7 @@
   margin: 15px;
   @include fontNunito(400, 16px);
   white-space: pre-wrap;
+  margin-bottom: -16px;
 }
 
 .emoji-popup {
@@ -121,5 +123,43 @@
     cursor: pointer;
     transform: scale(1.02);
     color: $dkBlue;
+  }
+}
+
+.current-user{
+  flex-direction: row-reverse;
+  padding: 8px 16px 8px 0px;
+
+  &:hover {
+    .emoji-popup {
+      animation: emojiPopupRev 0.3s ease-out forwards;
+    }
+  }
+
+  .details {
+    align-items: flex-end;
+
+    .name-timestamp{
+      flex-direction: row-reverse;
+    }
+
+    .message-card{
+      border-radius: 20px 0 20px 20px;
+      background-color: $bgBlue;
+      transform: translateX(20px) translateY(-24px);
+      color: white;
+    }
+
+    .reply{
+      flex-direction: row-reverse;
+    }
+  }
+
+  .emoji-popup {
+    top: 22px;
+    right: unset;
+    left: 11px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    border-radius: 20px 20px 20px 0px;
   }
 }

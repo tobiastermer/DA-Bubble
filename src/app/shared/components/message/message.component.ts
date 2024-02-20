@@ -6,6 +6,7 @@ import { ChannelMessage } from '../../models/channel-message.class';
 import { User } from '../../models/user.class';
 import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show-user.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
     MatIconModule,
     MatDividerModule,
     MatCardModule,
+    CommonModule
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
@@ -24,6 +26,7 @@ export class MessageComponent {
   @Input() msg!: ChannelMessage;
   @Input() user!: User;
   @Input() channelMsg: Boolean = false;
+  @Input() currentUserID: String | undefined = '';
 
   constructor(public dialog: MatDialog) { }
 
