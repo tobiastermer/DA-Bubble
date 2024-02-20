@@ -30,13 +30,14 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="sign-up__form-field">
         <mat-icon matIconPrefix>mail_outlined</mat-icon>
-        <input
+        <input 
           matInput
           placeholder="beispiel@email.com"
           formControlName="email"
-          type="email"
+          type="email" 
           (blur)="signUpForm.controls['email'].markAsTouched()"
         />
+        <mat-error *ngIf="signUpForm.get('email')?.errors?.['emailTaken']">Diese E-Mail ist bereits vergeben.</mat-error>
         <mat-error *ngIf="signUpForm.get('email')?.hasError('required')"
           >Email eingeben</mat-error
         >
@@ -86,7 +87,7 @@
   </mat-card>
 
   <div class="background-container__legals">
-    <div>Impressum</div>
-    <div>Datenschutz</div>
+    <a href="">Impressum</a>
+   <a href="">Datenschutz</a>
   </div>
 </div>

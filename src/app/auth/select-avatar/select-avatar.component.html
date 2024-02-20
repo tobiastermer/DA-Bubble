@@ -14,7 +14,7 @@
       <mat-card class="avatar__profile-image" [ngClass]="animationClass">
         <img [src]="currentAvatar" />
       </mat-card>
-      <mat-card class="avatar__new-user">Hans</mat-card>
+      <mat-card class="avatar__new-user">{{ userName }}</mat-card>
       <!---USER NAME/CLASS-->
       <mat-card class="avatar__info-container">Aus der Liste wählen</mat-card>
       <mat-card class="avatar__select-pic">
@@ -50,8 +50,8 @@
       </div>
 
       <mat-card class="arrow-back">
-        <button class="basic-button close-btn" (click)="backToSignUp()">
-          <mat-icon class="arrow-back__image">arrow_back</mat-icon>
+        <button (click)="backToSignUp()"class="basic-button close-btn">
+          <mat-icon>arrow_back</mat-icon>
         </button>
       </mat-card>
       <mat-card *ngIf="avatarError" class="error-message">
@@ -60,8 +60,8 @@
     </div>
   </mat-card>
   <div class="background-container__legals">
-    <div>Impressum</div>
-    <div>Datenschutz</div>
+    <a href="">Impressum</a>
+   <a href="">Datenschutz</a>
   </div>
 
   <mat-card *ngIf="showError" class="error-message">
@@ -70,6 +70,10 @@
   </mat-card>
 
   <mat-card class="success-popup" @slideInUp *ngIf="registrationSuccess">
-    <mat-card-content>Konto erfolgreich erstellt</mat-card-content>
+    <mat-card-content>
+      Konto erfolgreich erstellt
+      <br>
+      <p>Bevor Sie fortfahren, bestätigen Sie bitte die E-Mail.</p>
+    </mat-card-content>
   </mat-card>
 </div>

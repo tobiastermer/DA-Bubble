@@ -62,8 +62,14 @@
     </mat-card>
     </form>
   </mat-card>
+  <mat-card class="error-popup" @slideInUp *ngIf="error">
+    <mat-card-content>
+      {{ errorMessage }}
+     
+    </mat-card-content>
+  </mat-card>
   <div class="background-container__legals">
-    <div>Impressum</div>
-    <div>Datenschutz</div>
+    <a href="">Impressum</a>
+   <a href="">Datenschutz</a>
   </div>
 </div>

@@ -1,17 +1,28 @@
-<div class="message">
-    <img class="message__avatar" src="./assets/img/avatars/{{ user.avatar }}.svg" alt="" />
-    <div class="message__details">
-        <div class="message__name-timestamp">
-            <h3>{{ user.name }}</h3>
-            <span>{{ date }}</span>
+<div class="message" [ngClass]="{'current-user': (user.id == currentUserID)}">
+    <img class="avatar" src="./assets/img/avatars/{{ user.avatar }}.svg" alt="" (click)="openShowUserDialog(user)" />
+    <div class="details">
+        <div class="name-timestamp">
+            <h3 (click)="openShowUserDialog(user)">{{ user.name }}</h3>
+            <span>{{ setTime(msg.date) }} Uhr</span>
         </div>
-        <mat-card class="message__card">
+        <mat-card class="message-card">
             <mat-card-content>{{ msg.message }}</mat-card-content>
         </mat-card>
+        @if(channelMsg && msg.replies.length > 0){
+        <div class="reply">
+            <a>{{ msg.replies.length }} Antworten</a>
+            <span>Letzte Antwort {{ setTime(msg.replies[msg.replies.length-1].date) }}</span>
+        </div>
+        }
     </div>
-    <mat-card class="message__emoji-popup">
+    <mat-card class="emoji-popup">
         <mat-card-content>
-            <mat-icon class="message__action-btn">add_reaction</mat-icon>
+            @if (channelMsg) {
+            <mat-icon class="action-btn">add_reaction</mat-icon>
+            <mat-icon class="action-btn">comment</mat-icon>
+            } @else {
+            <mat-icon class="action-btn">add_reaction</mat-icon>
+            }
         </mat-card-content>
     </mat-card>
 </div>

@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { doc, updateDoc } from '@angular/fire/firestore';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/firebase-services/auth.service';
 
@@ -18,15 +16,17 @@ import { AuthService } from '../../shared/firebase-services/auth.service';
     trigger('slideInUp', [
       transition(':enter', [
         style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate('0.5s ease-out', style({ transform: 'translateY(0)', opacity: 1 })),
+        animate(
+          '0.5s ease-out',
+          style({ transform: 'translateY(0)', opacity: 1 })
+        ),
       ]),
     ]),
   ],
 })
 export class SelectAvatarComponent implements OnInit {
-
   ngOnInit(): void {
-   
+    this.loadUserName();
   }
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -38,14 +38,14 @@ export class SelectAvatarComponent implements OnInit {
   formIsValid = false;
   avatarError = false;
   registrationSuccess = false;
+  userName: string = ''; 
 
+  constructor(private authService: AuthService, private router: Router) {}
 
-  
-  constructor(private authService: AuthService, private router: Router) {
-
+  loadUserName() {
+    const tempUserData = JSON.parse(localStorage.getItem('tempUser') || '{}');
+    this.userName = tempUserData.name || ''; 
   }
-
-
 
   selectAvatar(avatar: string) {
     this.fadeOut();
@@ -61,29 +61,30 @@ export class SelectAvatarComponent implements OnInit {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (!file) return;
-  
-    const fileSizeMB = file.size / 1536 / 1536; 
-    const isSupportedFileType = file.type === 'image/jpeg' || file.type === 'image/png';
-  
+
+    const fileSizeMB = file.size / 1536 / 1536;
+    const isSupportedFileType =
+      file.type === 'image/jpeg' || file.type === 'image/png';
+
     if (fileSizeMB > 1.5) {
       this.setFormError('Ihr Bild ist zu groß. Maximale Größe beträgt 1MB.');
       return;
     }
-  
+
     if (!isSupportedFileType) {
       this.setFormError('Nur .jpg und .png Dateiformate werden unterstützt.');
       return;
     }
-  
+
     this.loadImage(file);
   }
-  
+
   private setFormError(errorMessage: string) {
     this.showError = true;
     this.errorMessage = errorMessage;
     this.formIsValid = false;
   }
-  
+
   private loadImage(file: File) {
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -110,31 +111,25 @@ export class SelectAvatarComponent implements OnInit {
     this.showError = false;
   }
 
-  backToSignUp(){
+  backToSignUp() {
     this.router.navigate(['/signUp']);
   }
 
   async registerAccount() {
-    if (this.formIsValid) {
-      const tempUserData = JSON.parse(localStorage.getItem('tempUser') || '{}');
-      if (tempUserData.email && tempUserData.password) {
-        await this.authService.registerUser(tempUserData.email, tempUserData.password, tempUserData.name, this.currentAvatar);
-        localStorage.removeItem('tempUser'); 
-        const AvatarCard = document.querySelector('.avatar');
-    
-        AvatarCard?.classList.add('slide-out-down');
-        this.registrationSuccess = true; 
-        
-       
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 3000);
-      }
+    const tempUserData = JSON.parse(localStorage.getItem('tempUser') ?? '{}');
+    if (this.formIsValid && tempUserData.email && tempUserData.password) {
+      await this.authService.saveAccountDataUser(
+        tempUserData.email,
+        tempUserData.password,
+        tempUserData.name ?? '',
+        this.currentAvatar
+      );
+      localStorage.removeItem('tempUser');
+      document.querySelector('.avatar')?.classList.add('slide-out-down');
+      this.registrationSuccess = true;
+      setTimeout(() => this.router.navigate(['/login']), 3000);
     } else {
       this.avatarError = true;
     }
   }
 }
-
-  
-

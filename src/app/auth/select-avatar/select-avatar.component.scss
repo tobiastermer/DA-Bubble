@@ -9,9 +9,11 @@ $fontFigtree: "Figtree", sans-serif;
   max-width: 1920px;
   height: 100vh;
   margin: 0 auto;
-
+  z-index: 100;
   background-color: $bgGrey;
   position: relative;
+  animation: backgroundFadeIn 1s ease-in forwards;
+  overflow: hidden;
 
   &__logo {
     @include pAbsolute(32px, unset, unset, 32px, unset);
@@ -21,19 +23,28 @@ $fontFigtree: "Figtree", sans-serif;
     @include dFlex(row, center, center, 16px);
     position: absolute;
     bottom: 48px;
-    color: $lgPurple;
-    cursor: pointer;
     margin-top: 10px;
     font-family: $fontFigtree;
-    font-size: 18px;
-    color: $bgBlue;
 
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.02);
+    a {
+      color: $bgBlue;
+      border-radius: 20px;
+      padding: 2px 8px;
+      transition: ease-in-out 0.3s;
+      border: 1px solid transparent;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $dkBlue;
+        color: $dkBlue;
+        font-weight: 400;
+        transition: ease-in-out 0.3s;
+      }
+      &:active {
+        transform: scale(0.98);
+      }
     }
-  }
-}
+  }}
 
 .avatar {
   padding: 46px;
@@ -130,7 +141,13 @@ $fontFigtree: "Figtree", sans-serif;
 
       &:hover {
         cursor: pointer;
-        transform: scale(1.02);
+        border: 1px solid white;
+        background-color: $dkBlue;
+        color: white;
+        transition: ease-in-out 0.3s;
+      }
+      &:active {
+        transform: scale(0.98);
       }
     }
   }
@@ -157,52 +174,57 @@ $fontFigtree: "Figtree", sans-serif;
       background-color: $dkBlue;
       animation: buttonFadeIn 0.3s ease-in-out;
 
-      &:hover {
-        background-color: darken($dkBlue, 5%);
-      }
+    
     }
   }
 
   .valid-form {
     background-color: $dkBlue;
-    &:hover {
-      background-color: darken($dkBlue, 5%);
-    }
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $bgBlue;
+        background-color: $bgBlue;
+      }
+      &:active {
+        transform: scale(0.98);
+      }
   }
 }
 
 .arrow-back {
   position: absolute;
-  top: 48px;
-  left: 18px;
+  top: 54px;
+  left: 10px;
   cursor: pointer;
   display: flex;
-  padding: 3px 0px;
+  padding: 8px;
   justify-content: center;
   align-items: center;
-  margin-top: 13px;
-  margin-left: 2px;
-  border-radius: 40px;
-  transition: ease-in-out 0.3s;
+  background-color: transparent;
   box-shadow: unset;
+    
+    
 
-  &:hover {
-    cursor: pointer;
-    background-color: $bgBlue;
-    color: white;
-    transition: ease-in-out 0.3s;
-  }
+    button {
+      padding-top: 3px;
+      border: unset;
+      background-color: transparent;
+      border-radius: 100%;
 
-  &__image {
-    cursor: pointer;
-    margin-top: 2px;
-    margin-bottom: -1px;
-  }
+      &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        color: $dkBlue;
+        transform: scale(1.01);
+        
+      
+        transition: ease-in-out 0.3s;
+      }
 
-  button {
-    border: unset;
-    background-color: transparent;
-  }
+      &:active {
+        transform: scale(0.98);
+      }
+    }
 }
 
 .error-message {
@@ -264,6 +286,11 @@ $fontFigtree: "Figtree", sans-serif;
   border-radius: 30px 30px 0px 30px;
   margin-top: 8px;
   @include fontNunito($weight: 700, $size: 36px);
+
+  p{
+    margin-top: 10px;
+    font-size: 16px;
+  }
 }
 
 .fade-out {

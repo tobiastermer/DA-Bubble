@@ -138,9 +138,15 @@ export class ChannelComponent {
   }
 
 
+  getUserFromMessage(message: ChannelMessage) :User {
+    const user = this.users.find(user => user.id === message.fromUserID);
+    return user ? user: new User;
+  }
+
+
   // Functions for direct messeges
   loadChatUserData(idChat: string) {
-    let name = idChat.replace(/_/g,' ');
+    let name = idChat.replace(/_/g, ' ');
     let user = this.getUserByName(name);
     if (user) this.chatUser = user
   }
