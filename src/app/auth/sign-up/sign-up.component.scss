@@ -9,9 +9,11 @@ $fontFigtree: "Figtree", sans-serif;
   max-width: 1920px;
   height: 100vh;
   margin: 0 auto;
-
+  z-index: 100;
   background-color: $bgGrey;
   position: relative;
+  animation: backgroundFadeIn 1s ease-in forwards;
+  overflow: hidden;
 
   &__logo {
     @include pAbsolute(32px, unset, unset, 32px, unset);
@@ -21,17 +23,28 @@ $fontFigtree: "Figtree", sans-serif;
     @include dFlex(row, center, center, 16px);
     position: absolute;
     bottom: 48px;
-    color: $lgPurple;
-    cursor: pointer;
     margin-top: 10px;
     font-family: $fontFigtree;
 
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.02);
+    a {
+      color: $bgBlue;
+      border-radius: 20px;
+      padding: 2px 8px;
+      transition: ease-in-out 0.3s;
+      border: 1px solid transparent;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $dkBlue;
+        color: $dkBlue;
+        font-weight: 400;
+        transition: ease-in-out 0.3s;
+      }
+      &:active {
+        transform: scale(0.98);
+      }
     }
-  }
-}
+  }}
 
 .sign-up {
   padding: 42px;
@@ -39,6 +52,7 @@ $fontFigtree: "Figtree", sans-serif;
   @include dFlex(column, center, 36px);
   gap: 36px;
   box-shadow: $boxShadow;
+  overflow: hidden;
 
   &__header,
   &__subtitle {
@@ -74,17 +88,18 @@ $fontFigtree: "Figtree", sans-serif;
     box-sizing: border-box;
     width: 100%;
     padding-bottom: 40px;
+    margin-bottom: 32px;
   }
 
   &__checkbox {
     color: $dkBlue;
     @include dFlex(row, center, center);
-    @include fontNunito($weight: 400, $size: 14px);
+    @include fontNunito($weight: 400, $size: 16px);
 
     a {
       text-decoration: none;
       color: $bgBlue;
-      @include fontNunito($weight: 400, $size: 14px);
+      @include fontNunito($weight: 400, $size: 18px);
 
       &:hover {
         color: $dkBlue;
@@ -95,7 +110,7 @@ $fontFigtree: "Figtree", sans-serif;
 
   &__checkbox-error {
     position: absolute;
-    bottom: 62px;
+    bottom: 88px;
     left: 82px;
     animation: checkboxAnimation 0.3s ease-in forwards;
     @include fontNunito($weight: 400, $size: 14px);
@@ -116,15 +131,19 @@ $fontFigtree: "Figtree", sans-serif;
 
       &:hover {
         cursor: pointer;
-      }
-    }
+      }}
 
-    &__next-button .valid-form {
+     .valid-form {
       background-color: $dkBlue;
       animation: buttonFadeIn 0.3s ease-in-out;
 
       &:hover {
-        background-color: darken($dkBlue, 5%);
+        cursor: pointer;
+        border: 1px solid $bgBlue;
+        background-color: $bgBlue;
+      }
+      &:active {
+        transform: scale(0.98);
       }
     }
   }
@@ -138,14 +157,27 @@ $fontFigtree: "Figtree", sans-serif;
     padding: 8px;
     justify-content: center;
     align-items: center;
+    
+    
 
     button {
+      padding-top: 3px;
       border: unset;
       background-color: transparent;
+      border-radius: 100%;
 
       &:hover {
         cursor: pointer;
-        transform: scaleY(1.01);
+        background-color: $bgGrey;
+        color: $dkBlue;
+        transform: scale(1.01);
+        
+      
+        transition: ease-in-out 0.3s;
+      }
+
+      &:active {
+        transform: scale(0.98);
       }
     }
   }

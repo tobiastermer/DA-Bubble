@@ -32,7 +32,7 @@ import { AuthService } from '../../shared/firebase-services/auth.service';
 export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
-   
+    this.prefillForm();
   }
   signUpForm: FormGroup;
   formSubmitted: boolean = false;
@@ -46,19 +46,29 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  // PW VALIDATOR FOR 1 UPPERCASE
+  prefillForm() {
+    const tempUserData = JSON.parse(localStorage.getItem('tempUser') || '{}');
+    if (tempUserData.email && tempUserData.name) {
+      this.signUpForm.patchValue({
+        name: tempUserData.name,
+        email: tempUserData.email
+      });
+    }
+  }
+
+
   upperCaseValidator(control: AbstractControl): ValidationErrors | null {
     const hasUpperCase = /[A-Z]/.test(control.value);
     return hasUpperCase ? null : { upperCase: true };
   }
 
-  // PW VALIDATOR SPECIAL CHAR
+ 
   specialCharValidator(control: AbstractControl): ValidationErrors | null {
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(control.value);
     return hasSpecialChar ? null : { specialChar: true };
   }
 
-  // COMBINED PASSWORD ERRORS FUNCTION
+  
   getFirstPasswordError() {
     const passwordErrors = this.signUpForm.get('password')?.errors;
     if (!passwordErrors) return null;
@@ -77,10 +87,10 @@ export class SignUpComponent implements OnInit {
 
   openLogin(){
     const signUpCard = document.querySelector('.sign-up');
-    
+   
      signUpCard?.classList.add('slide-out-down');
        
-     
+  
      setTimeout(() => {
       this.router.navigate(['/login']);
      }, 800);
@@ -95,15 +105,15 @@ export class SignUpComponent implements OnInit {
     if (this.signUpForm.valid) {
       const { email, password, name } = this.signUpForm.value;
       localStorage.setItem('tempUser', JSON.stringify({ name, email, password }));
-      
+     
        const signUpCard = document.querySelector('.sign-up');
   
+      
       localStorage.setItem('tempUser', JSON.stringify({ name, email, password }));
     
-   
        signUpCard?.classList.add('slide-out-down');
        
-       
+  
        setTimeout(() => {
         this.router.navigate(['/select-avatar']);
        }, 800);
