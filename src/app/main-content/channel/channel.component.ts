@@ -42,6 +42,7 @@ export class ChannelComponent {
   @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' });
 
   chat: 'channel' | 'message' | 'new' = 'channel';
+  threadMsg: ChannelMessage | undefined;
 
   currentChannelID: string = ''
   currentChannel: Channel = new Channel({ id: 'Channel lädt', name: 'Channel lädt', description: 'Channel lädt', ownerID: 'abcde' });
@@ -64,6 +65,7 @@ export class ChannelComponent {
     this.router.params.subscribe(params => {
       this.chat = params['chat'];
       this.loadData(this.chat, params['idChat']);
+      this.threadMsg = undefined;
     });
   }
 
@@ -138,9 +140,9 @@ export class ChannelComponent {
   }
 
 
-  getUserFromMessage(message: ChannelMessage) :User {
+  getUserFromMessage(message: ChannelMessage): User {
     const user = this.users.find(user => user.id === message.fromUserID);
-    return user ? user: new User;
+    return user ? user : new User;
   }
 
 
@@ -158,6 +160,11 @@ export class ChannelComponent {
     else return
   }
 
+
+
+  setThreadMsg(msg: ChannelMessage) {
+    this.threadMsg = new ChannelMessage(msg)
+  }
 
 
   ngOnDestroy() {

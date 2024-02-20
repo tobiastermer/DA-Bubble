@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -28,6 +28,8 @@ export class MessageComponent {
   @Input() channelMsg: Boolean = false;
   @Input() currentUserID: String | undefined = '';
 
+  @Output() threadOutput: EventEmitter<ChannelMessage> = new EventEmitter<ChannelMessage>();
+
   constructor(public dialog: MatDialog) { }
 
   
@@ -42,5 +44,10 @@ export class MessageComponent {
       panelClass: ['card-round-corners'],
       data: { user: user },
     });
+  }
+
+
+  setThreadOutput() {
+    this.threadOutput.emit(this.msg)
   }
 }

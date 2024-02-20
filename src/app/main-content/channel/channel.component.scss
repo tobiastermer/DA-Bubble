@@ -4,9 +4,9 @@
     @include dFlex($jc: normal, $ai: normal, $gap: 20px);
     height: calc(100vh - 40px - 90px); // 40px padding 90px height header
 
-    app-threads {
-        width: 400px;
-    }
+    // app-threads {
+    //     width: 400px;
+    // }
 
 }
 

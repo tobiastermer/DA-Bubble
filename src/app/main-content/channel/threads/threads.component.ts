@@ -1,9 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { InputTextareaComponent } from '../../../shared/components/input-textarea/input-textarea.component';
+import { ChannelMessage } from '../../../shared/models/channel-message.class';
 
 
 
@@ -70,4 +71,8 @@ export class ThreadsComponent {
       }
     }
   }
+
+
+
+  @Input() channelMsg!: ChannelMessage | undefined;
 }

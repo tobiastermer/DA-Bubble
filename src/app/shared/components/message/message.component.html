@@ -19,7 +19,7 @@
         <mat-card-content>
             @if (channelMsg) {
             <mat-icon class="action-btn">add_reaction</mat-icon>
-            <mat-icon class="action-btn">comment</mat-icon>
+            <mat-icon class="action-btn" (click)="setThreadOutput()">comment</mat-icon>
             } @else {
             <mat-icon class="action-btn">add_reaction</mat-icon>
             }
