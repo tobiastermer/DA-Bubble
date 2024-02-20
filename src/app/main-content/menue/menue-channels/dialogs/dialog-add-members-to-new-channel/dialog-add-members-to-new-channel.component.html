@@ -1,0 +1,28 @@
+<mat-card>
+
+    <header>
+        <mat-card-title>Leute hinzufügen</mat-card-title>
+        <button mat-icon-button disableRipple (click)="onNoClick()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+
+    <div class="section">
+        <mat-radio-group aria-label="Select an option">
+            <mat-radio-button value="1">Alle Mitglieder von Office-Team hinzufügen</mat-radio-button>
+            <mat-radio-button value="2">Bestimmte Leute hinzufügen</mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <div class="section">
+        <header>
+            <span class="section-title">Beschreibung</span>
+            <span class="section-brackets">(optional)</span>
+        </header>
+        <div class="channel-edit-inp">
+            <input type="text" placeholder="Dein Text hier" ng-minlength="5">
+        </div>
+    </div>
+
+    <button class="btn" (click)="saveNewChannel()">Erstellen</button>
+</mat-card>

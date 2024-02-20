@@ -151,6 +151,22 @@ $boxShadow: 0px 2px 10px 0px #00000014;
   font-family: Nunito, "Helvetica Neue", sans-serif;
 }
 
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  opacity: 0 !important;
+  /*click effect color change*/
+  background-color: $dkPurple !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: $dkPurple !important;
+  /*inner circle color change*/
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: $dkPurple !important;
+  /*outer ring color change*/
+}
+
 html,
 body {
   height: 100%;
