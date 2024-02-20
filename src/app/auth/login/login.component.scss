@@ -2,9 +2,7 @@
 
 $fontFigtree: "Figtree", sans-serif;
 
-
 .background-container {
-  
   @include dFlex(column, center, center);
   width: 100vw;
   max-width: 1920px;
@@ -13,8 +11,8 @@ $fontFigtree: "Figtree", sans-serif;
   z-index: 100;
   background-color: $bgGrey;
   position: relative;
-  animation: backgroundFadeIn 1s ease-in  forwards;
-  
+  animation: backgroundFadeIn 1s ease-in forwards;
+  overflow: hidden;
 
   &__logo {
     @include pAbsolute(32px, unset, unset, 32px, unset);
@@ -24,18 +22,30 @@ $fontFigtree: "Figtree", sans-serif;
     @include dFlex(row, center, center, 16px);
     position: absolute;
     bottom: 48px;
-    color: $lgPurple;
-    cursor: pointer;
     margin-top: 10px;
     font-family: $fontFigtree;
 
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.02);
+    a {
+      color: $bgBlue;
+      border-radius: 20px;
+      padding: 2px 8px;
+      transition: ease-in-out 0.3s;
+      border: 1px solid transparent;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $dkBlue;
+        color: $dkBlue;
+        font-weight: 400;
+        transition: ease-in-out 0.3s;
+      }
+      &:active {
+        transform: scale(0.98);
+      }
     }
   }
 
-  &__sign-up-box{
+  &__sign-up-box {
     position: absolute;
     flex-direction: column;
     justify-content: center;
@@ -47,21 +57,27 @@ $fontFigtree: "Figtree", sans-serif;
     box-shadow: unset;
     background-color: #eceefe;
 
-    span{
+    span {
       @include fontNunito($weight: 400, $size: 18px);
     }
 
-    p{
+    p {
       @include fontNunito($weight: 400, $size: 16px);
-      color: #797EF3;
+      color: #797ef3;
+      border-radius: 20px;
+      padding: 2px 6px;
+      border: 1px solid transparent;
 
-      &:hover{
+      &:hover {
         cursor: pointer;
-        transform: scale(1.02);
-        transition: ease-in 0.2s;
+        border: 1px solid $dkBlue;
+        color: $dkBlue;
+        transition: ease-in-out 0.3s;
+      }
+      &:active {
+        transform: scale(0.98);
       }
     }
-    
   }
 }
 
@@ -74,7 +90,8 @@ $fontFigtree: "Figtree", sans-serif;
   gap: 36px;
   box-shadow: $boxShadow;
   z-index: 200;
-  animation: backgroundFadeIn 1.5s ease-in  forwards;
+  animation: backgroundFadeIn 1.5s ease-in forwards;
+  overflow: hidden;
 
   &__header,
   &__subtitle {
@@ -94,7 +111,6 @@ $fontFigtree: "Figtree", sans-serif;
   &__form-field {
     display: flex;
     flex-direction: column;
-    
 
     mat-icon {
       color: grey;
@@ -107,18 +123,37 @@ $fontFigtree: "Figtree", sans-serif;
     }
   }
 
-  &__forgot-password{
+  &__forgot-password {
     box-shadow: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    a{
-    text-decoration: none;
-    color: #1381ff;
-    text-align: center;
-    margin-bottom: 32px;
+    a {
+      text-decoration: none;
+      color: $bgBlue;
+      text-align: center;
+      margin-bottom: 32px;
+      transition: ease-in-out 0.3s;
+      border-radius: 20px;
+      padding: 5px 15px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        color: $dkBlue;
+        border-radius: 20px;
+        padding: 5px 15px;
+        transition: ease-in-out 0.3s;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
   }
-}
 
-  &__bottom-container{
+  &__bottom-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -127,26 +162,25 @@ $fontFigtree: "Figtree", sans-serif;
     width: 100%;
     box-shadow: unset;
   }
-  
 
   &__sign-in {
-    
-
     button {
       transition: background-color 0.3s ease-in-out;
       width: 153px;
       height: 49px;
       border: none;
       color: white;
-      background-color: #797EF3;
+      background-color: $dkBlue;
       border-radius: 28px;
       @include fontNunito($weight: 700, $size: 18px);
 
       &:hover {
         cursor: pointer;
-        border: 1px solid #797EF3;
-        background-color: white;
-        color: #797EF3;
+        border: 1px solid $bgBlue;
+        background-color: $bgBlue;
+      }
+      &:active {
+        transform: scale(0.98);
       }
     }
 
@@ -161,24 +195,26 @@ $fontFigtree: "Figtree", sans-serif;
   }
 
   &__guest {
-    
-
     button {
       transition: background-color 0.3s ease-in-out;
-      border: 1px solid #797EF3;
+      border: 1px solid $dkBlue;
       width: 153px;
       height: 49px;
-      color: #797EF3;
+      color: $dkBlue;
       background-color: white;
       border-radius: 28px;
       @include fontNunito($weight: 700, $size: 18px);
+      transition: ease-in-out 0.3s;
 
       &:hover {
-      
         cursor: pointer;
         border: 1px solid white;
-        background-color: #797EF3;
+        background-color: $dkBlue;
         color: white;
+        transition: ease-in-out 0.3s;
+      }
+      &:active {
+        transform: scale(0.98);
       }
     }
 
@@ -191,7 +227,6 @@ $fontFigtree: "Figtree", sans-serif;
       }
     }
   }
-
 }
 
 form {
@@ -233,8 +268,6 @@ form {
   border: $dkBlue;
 }
 
-
-
 @keyframes buttonFadeIn {
   from {
     background-color: grey;
@@ -272,46 +305,57 @@ form {
   color: #777;
 }
 
-
 .google-login-btn {
   box-sizing: border-box;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  
+  font-family: "Nunito";
+  font-size: 18px;
+  font-weight: 400;
+  color: $dkBlue;
+  transition: ease-in-out 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    font-weight: 700;
+    transition: ease-in-out 0.3s;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
   gap: 20px;
 
   img {
-      width: 38px;
-      height: 38px;
-      object-fit: cover;
-
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
   }
+}
 
- }
-
-.input-field-container{
+.input-field-container {
   border-radius: 30px;
-    border: unset;
-    height: 58px;
-    margin-top: 30px;
-    margin-bottom: 32px;
-    background-color: $bgGrey;
-    transition: ease-in-out 0.3s;
+  border: unset;
+  height: 58px;
+  margin-top: 30px;
+  margin-bottom: 32px;
+  background-color: $bgGrey;
+  transition: ease-in-out 0.3s;
 
-    &:hover{
-      background-color: white;
-      border: 1px solid #797EF3;
-      cursor: pointer;
-      transition: ease-in-out 0.3s;
-    }
+  &:hover {
+    background-color: white;
+    border: 1px solid #797ef3;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+  }
 }
 
 @keyframes slideOutDown {
   from {
     transform: translateY(0);
-    
   }
   to {
     transform: translateY(150%);
@@ -322,9 +366,27 @@ form {
   animation: slideOutDown 0.8s ease forwards;
 }
 
-
 /* ENTFERNT BORDER ABER DANN IN ALLEN ZUSTÄNDEN 
 :host ::ng-deep .mdc-notched-outline__trailing,
 :host ::ng-deep .mdc-notched-outline__leading {
   border-color: transparent !important ;
 }*/
+.error-popup {
+z-index: 200;
+display: flex;
+justify-content: center;
+align-items: center;
+max-width: 530px;
+height: 150px;
+min-width: 300px;
+padding: 8px;
+position: absolute;
+top: 30%;
+background-color: $dkBlue;
+color: white;
+border-radius: 30px 30px 0px 30px;
+margin-top: 8px;
+@include fontNunito($weight: 700, $size: 30px);
+
+
+}

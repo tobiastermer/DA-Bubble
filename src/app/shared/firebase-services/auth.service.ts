@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendEmailVerification } from '@angular/fire/auth';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 
@@ -12,14 +12,16 @@ export class AuthService {
   
   
 
-
-
-  async registerUser(email: string, password: string, name: string, avatarPath: string) {
+  async saveAccountDataUser(email: string, password: string, name: string, avatarPath: string) {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.afAuth, email, password);
       const user = userCredential.user;
+
       if (user) {
-        // Zahl aus dem Image ziehen
+        
+        await sendEmailVerification(user);
+
+      
         const avatarNumber = parseInt(avatarPath.split('/').pop()?.split('.')[0] ?? '0', 10);
   
         await addDoc(collection(this.firestore, "users"), {
@@ -29,10 +31,10 @@ export class AuthService {
           avatar: avatarNumber, 
           status: ""
         });
-        console.log('Benutzer erfolgreich registriert und Avatar gesetzt');
       }
     } catch (error) {
-      console.error('Registrierungsfehler', error);
+      console.error('Registrierungsfehler', error); // muss noch drin bleiben wegen fetchemail Problem.
       throw error; 
-    }}
+    }
+  }
 }
