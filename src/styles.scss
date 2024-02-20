@@ -62,6 +62,23 @@ $boxShadow: 0px 2px 10px 0px #00000014;
   }
 }
 
+@mixin transition($properties: all, $duration: 0.3s, $ease: ease) {
+  transition: $properties $duration $ease;
+}
+
+/////////// global keyframes /////////////
+
+@keyframes emojiPopup {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /////////// global fonts /////////////
 
 @mixin fontNunito($weight: 400, $size: 14px) {

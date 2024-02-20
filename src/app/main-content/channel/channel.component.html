@@ -5,9 +5,9 @@
             [allUsers]="users"></app-header-channel>
         <main class="chat-space">
             <app-channel-msg [channel]="currentChannel" [owner]="'Willi'"></app-channel-msg>
-            <!-- @for (message of channelMessages; track $index) {
-                <app-message [msg]="message"></app-message>
-            } -->
+            @for (message of channelMessages; track $index) {
+                <app-message [msg]="message" [user]="getUserFromMessage(message)"></app-message>
+            }
         </main>
         }@else if (chat === 'message') {
         <app-direct-message [user]="chatUser"></app-direct-message>

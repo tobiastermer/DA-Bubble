@@ -26,12 +26,15 @@
 .chat-space {
     @include dFlex($fd: column, $jc: flex-end);
     height: 100%;
-    margin: 15px;
-}
 
-app-channel-msg,
-app-direct-msg {
-    width: 100%;
+    app-channel-msg,
+    app-direct-msg {
+        width: calc(100% - 30px);
+    }
+
+    app-message {
+        width: 100%;
+    }
 }
 
 .icon-button {
