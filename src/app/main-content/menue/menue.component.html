@@ -3,7 +3,8 @@
     [ngStyle]="{'display': hideMenu ? 'none' : 'flex'}">
     <app-menue-header [pathUserName]="pathUserName"></app-menue-header>
     <app-menue-channels [channels]="channels" [channelActive]="activeChannel"
-        (channelSelected)="setActiveChannel($event)" [pathUserName]="pathUserName"></app-menue-channels>
+        (channelSelected)="setActiveChannel($event)" [pathUserName]="pathUserName"
+        [currentUserID]="currentUserID"></app-menue-channels>
     <app-menue-messages [users]="users" [userActive]="activeUser" [currentUserID]="currentUserID"
         [pathUserName]="pathUserName" (userSelected)="setActiveMessage($event)"></app-menue-messages>
 </mat-card>

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { Channel } from '../../../shared/models/channel.class';
 import { Router } from '@angular/router';
+import { DialogAddChannelComponent } from './dialogs/dialog-add-channel/dialog-add-channel.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-menue-channels',
@@ -15,13 +17,15 @@ export class MenueChannelsComponent {
   @Input() channels: Channel[] = [];
   @Input() channelActive: number | undefined;
   @Input() pathUserName: string = '';
+  @Input() currentUserID: String = '';
 
   @Output() channelSelected = new EventEmitter<number>();
 
   // channels: string[] = ['Entwicklerteam', 'Office-Team', 'Plauderecke', 'Coffee-Corner'];
   channelsVisible: boolean = true;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    public dialog: MatDialog) { }
 
   toggleChannelsVisibility() {
     this.channelsVisible = !this.channelsVisible;
@@ -35,5 +39,12 @@ export class MenueChannelsComponent {
 
   isActiveChannel(i: number): boolean {
     return this.channelActive === i;
+  }
+
+  openDialogAddChannel() {
+    this.dialog.open(DialogAddChannelComponent, {
+      panelClass: ['card-round-corners'],
+      data: { currentUserID: this.currentUserID },
+    });
   }
 }

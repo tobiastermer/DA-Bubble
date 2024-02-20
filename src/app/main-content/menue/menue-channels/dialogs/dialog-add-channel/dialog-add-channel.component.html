@@ -1,0 +1,36 @@
+<mat-card>
+
+    <header>
+        <mat-card-title>Channel erstellen</mat-card-title>
+        <button mat-icon-button disableRipple (click)="onNoClick()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+
+    <div>
+        <span>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein <br>#marketing zum
+            Beispiel.</span>
+    </div>
+
+    <div class="section">
+        <header>
+            <span class="section-title">Channel-Name</span>
+        </header>
+        <div class="channel-edit-inp">
+            <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
+            <input type="text" [(ngModel)]="newChannel.name" placeholder="z.B. Kooperationsprojekte" ng-minlength="3">
+        </div>
+    </div>
+
+    <div class="section">
+        <header>
+            <span class="section-title">Beschreibung</span>
+            <span class="section-brackets">(optional)</span>
+        </header>
+        <div class="channel-edit-inp">
+            <input type="text" [(ngModel)]="newChannel.description" placeholder="Dein Text hier" ng-minlength="5">
+        </div>
+    </div>
+
+    <button class="btn" (click)="openDialogAddUserToNewChannel()">Erstellen</button>
+</mat-card>
