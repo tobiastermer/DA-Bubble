@@ -2,6 +2,5 @@
 <main>
     <app-menue [users]="sortedUsers()" [currentUserID]="currentUserID" 
         [userMemberships]="userMemberships" [channels]="channels"></app-menue>
-    <app-channel [users]="sortedUsers()" [currentUser]="currentUser"></app-channel>
-    <app-threads></app-threads> 
+    <app-channel [users]="sortedUsers()" [currentUser]="currentUser" [channels]="channels"></app-channel>
 </main> 

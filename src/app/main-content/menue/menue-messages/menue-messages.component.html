@@ -9,14 +9,9 @@
         </div>
     </div>
     <div class="menu-users-content" *ngIf="usersVisible">
-        <!-- Verwenden von (click) zum Senden des aktiven Benutzerindex an die Parent-Komponente -->
-        <!-- <div class="user" *ngFor="let user of users; let i = index" [ngClass]="{'active': isActiveUser(i)}" (click)="setUserActive(i)">
-            <img class="user-avatar" src="../../../../assets/img/avatars/{{ user.avatar }}.svg" alt="Avatar">
-            <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
-        </div> -->
         @for (user of users; track $index) {
         <app-user-chip [user]="user" [active]="isActiveUser($index)" [currentUserID]="currentUserID"
-        (click)="setUserActive($index); openDialog(user, currentUserID)"></app-user-chip>
+            (click)="changePath($index)"></app-user-chip>
         }
     </div>
 </section>

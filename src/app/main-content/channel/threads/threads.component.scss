@@ -1,4 +1,4 @@
-@import "../../../styles.scss";
+@import "../channel.component.scss";
 
 @mixin buttonHover {
   &:not(:disabled):hover {
@@ -27,10 +27,7 @@ main {
 }
 
 .thread-panel {
-  width: calc(100% - 16px);
   height: 100%;
-  max-width: 400px;
-  min-width: 200px;
   overflow-y: auto;
   border-radius: 0 0 30px 30px;
 

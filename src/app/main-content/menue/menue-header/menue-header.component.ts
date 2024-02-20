@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menue-header',
@@ -10,4 +11,12 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class MenueHeaderComponent {
 
+  @Input() pathUserName: string = '';
+
+
+  constructor(private router: Router) { }
+
+  changePath() {
+    this.router.navigate([this.pathUserName + '/new/message/']);
+  }
 }

@@ -1,0 +1,17 @@
+<div class="message">
+    <img class="message__avatar" src="./assets/img/avatars/{{ user.avatar }}.svg" alt="" />
+    <div class="message__details">
+        <div class="message__name-timestamp">
+            <h3>{{ user.name }}</h3>
+            <span>{{ date }}</span>
+        </div>
+        <mat-card class="message__card">
+            <mat-card-content>{{ msg.message }}</mat-card-content>
+        </mat-card>
+    </div>
+    <mat-card class="message__emoji-popup">
+        <mat-card-content>
+            <mat-icon class="message__action-btn">add_reaction</mat-icon>
+        </mat-card-content>
+    </mat-card>
+</div>

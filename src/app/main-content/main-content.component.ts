@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { MenueComponent } from './menue/menue.component';
 import { ChannelComponent } from './channel/channel.component';
-import { ThreadsComponent } from './threads/threads.component';
+import { ThreadsComponent } from './channel/threads/threads.component';
 import { User } from '../shared/models/user.class';
 import { UserService } from '../shared/firebase-services/user.service';
 import { Subscription } from 'rxjs';
