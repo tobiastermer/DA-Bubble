@@ -41,7 +41,7 @@
 
 .details {
   @include dFlex($fd: column, $ai: flex-start);
-  width: 76%;
+  width: 100%;
 }
 
 .name-timestamp {
@@ -162,4 +162,142 @@
     transition: transform 0.3s ease, opacity 0.3s ease;
     border-radius: 20px 20px 20px 0px;
   }
+}
+
+
+// edit part
+
+.edit{
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid $lgPurple;
+  z-index: 2;
+  background-color: white;
+   // height: 145px;
+  padding: 20px 20px 0 20px;
+  margin: 0 20px;
+  width: calc(100% - 30px);
+  margin: 15px;
+
+  &:hover,
+  &:focus-within {
+    border: 1px solid $dkBlue;
+  }
+}
+
+.edit-text{
+  width: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  font-family: "nunito";
+  font-weight: 400;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.edit-bottom{
+  @include dFlex($jc: space-between);
+  padding: 8px 0;
+  width: 100%;
+}
+
+.btn-area{
+  @include dFlex($gap: 15px)
+}
+
+.delet-btn {
+  button {
+    transition: background-color 0.3s ease-in-out;
+    width: 153px;
+    height: 49px;
+    border: none;
+    color: white;
+    background-color: #ff1100;
+    border-radius: 28px;
+    @include fontNunito($weight: 700, $size: 18px);
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid #ff110099;
+      background-color: #ff110099;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // &__sign-in .valid-form {
+  //   background-color: $dkBlue;
+  //   animation: buttonFadeIn 0.3s ease-in-out;
+
+  //   &:hover {
+  //     background-color: darken($dkBlue, 5%);
+  //   }
+  // }
+}
+
+.safe-btn {
+  button {
+    transition: background-color 0.3s ease-in-out;
+    width: 153px;
+    height: 49px;
+    border: none;
+    color: white;
+    background-color: $dkBlue;
+    border-radius: 28px;
+    @include fontNunito($weight: 700, $size: 18px);
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid $bgBlue;
+      background-color: $bgBlue;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // &__sign-in .valid-form {
+  //   background-color: $dkBlue;
+  //   animation: buttonFadeIn 0.3s ease-in-out;
+
+  //   &:hover {
+  //     background-color: darken($dkBlue, 5%);
+  //   }
+  // }
+}
+
+.cancle-btn {
+  button {
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid $dkBlue;
+    width: 153px;
+    height: 49px;
+    color: $dkBlue;
+    background-color: white;
+    border-radius: 28px;
+    @include fontNunito($weight: 700, $size: 18px);
+    transition: ease-in-out 0.3s;
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid white;
+      background-color: $dkBlue;
+      color: white;
+      transition: ease-in-out 0.3s;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // &__guest .valid-form {
+  //   background-color: $dkBlue;
+  //   animation: buttonFadeIn 0.3s ease-in-out;
+
+  //   &:hover {
+  //     background-color: darken($dkBlue, 5%);
+  //   }
+  // }
 }

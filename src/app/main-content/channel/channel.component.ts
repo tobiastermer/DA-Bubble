@@ -17,11 +17,13 @@ import { ChannelMessagesService } from '../../shared/firebase-services/channel-m
 import { ActivatedRoute } from '@angular/router';
 import { ThreadsComponent } from './threads/threads.component';
 import { MessageComponent } from '../../shared/components/message/message.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-channel',
   standalone: true,
   imports: [
+    CommonModule,
     MatCardModule,
     ThreadsComponent,
     HeaderChannelComponent,
@@ -117,7 +119,6 @@ export class ChannelComponent {
     this.channelMessagesService.getChannelMessages(this.currentChannelID);
     this.channelMessagesSubscription = this.channelMessagesService.channelMessages$.subscribe(channelMessages => {
       this.channelMessages = channelMessages;
-      console.log('Channel Messages of current Channel: ', this.channelMessages);
     });
   }
 
@@ -128,7 +129,7 @@ export class ChannelComponent {
       if (channel) {
         this.currentChannel = channel;
       } else {
-        console.log('Channel nicht gefunden');
+        console.error('Channel nicht gefunden');
       }
     } catch (error) {
       console.error('Fehler beim Abrufen des aktuellen Channels:', error);

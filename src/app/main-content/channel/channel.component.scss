@@ -3,11 +3,6 @@
 .channel-row {
     @include dFlex($jc: normal, $ai: normal, $gap: 20px);
     height: calc(100vh - 40px - 90px); // 40px padding 90px height header
-
-    // app-threads {
-    //     width: 400px;
-    // }
-
 }
 
 .channel-card {
@@ -24,8 +19,8 @@
 }
 
 .chat-space {
-    @include dFlex($fd: column, $jc: flex-end);
     height: 100%;
+    overflow-y: auto;
 
     app-channel-msg,
     app-direct-msg {
@@ -35,6 +30,10 @@
     app-message {
         width: 100%;
     }
+}
+
+.chat-space-empty {
+    @include dFlex($fd: column, $jc: flex-end);
 }
 
 .icon-button {

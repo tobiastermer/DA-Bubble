@@ -25,7 +25,7 @@
       </div>
       <button
         class="message-input__send-btn"
-        (click)="addMessage(messageText.value); messageText.value = ''"
+        (click)="addNewMsg(messageText.value); messageText.value = ''"
         [disabled]="isButtonDisabled"
       >
         <mat-icon>send</mat-icon>

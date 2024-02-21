@@ -1,13 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { ChannelMessage } from '../../models/channel-message.class';
+import { DataService } from '../../services/data.service';
+import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
+import { Channel } from '../../models/channel.class';
 
-//TEST ARRAY /////
-interface Message {
-  userFirstName: string;
-  text: string;
-  timestamp: string;
-  replies?: Message[];
-}
 
 @Component({
   selector: 'app-input-textarea',
@@ -17,8 +14,15 @@ interface Message {
   styleUrl: './input-textarea.component.scss',
 })
 export class InputTextareaComponent {
+
+  @Input() channel!: Channel;
+  @Input() msg!: ChannelMessage;
+
   @ViewChild('messageText') messageText!: ElementRef;
+
   isButtonDisabled: boolean = true;
+
+  constructor(private data: DataService, private messageFBS: ChannelMessagesService) { }
 
   updateButtonState(textValue: string): void {
     this.isButtonDisabled = !textValue.trim();
@@ -31,7 +35,7 @@ export class InputTextareaComponent {
     } else {
       event.preventDefault();
       if (textValue.trim()) {
-        this.addMessage(textValue.trim());
+        this.addNewMsg(textValue.trim());
         if (this.messageText) {
           this.messageText.nativeElement.value = '';
         }
@@ -39,15 +43,24 @@ export class InputTextareaComponent {
     }
   }
 
-  /////// REPLY TO MESSAGE //////////
-  addMessage(text: string): void {
-    const newReply: Message = {
-      userFirstName: 'Aktueller Benutzer',
-      text: text,
-      timestamp: new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-    };
+  async addNewMsg(text: string) {
+    let newMsg: ChannelMessage | undefined = this.fillMessage(text)
+    if (!newMsg) return
+    else {
+      let id = await this.messageFBS.addChannelMessage(newMsg);
+    }
   }
+
+  fillMessage(text: string) {
+    if (!this.data.currentUser.id) return
+    if (!this.channel.id || this.channel.id === '') return
+    let msg = new ChannelMessage();
+    msg.date = new Date().getTime();
+    msg.channelID = this.channel.id;
+    msg.fromUserID = this.data.currentUser.id;
+    msg.message = text;
+    return msg
+  }
+
+
 }

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -22,7 +22,7 @@ import { Reply } from '../../models/reply.class';
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
-export class MessageComponent  implements OnChanges{
+export class MessageComponent implements OnChanges {
 
   @Input() msg!: ChannelMessage | Reply;
   @Input() user!: User;
@@ -31,7 +31,11 @@ export class MessageComponent  implements OnChanges{
 
   @Output() threadOutput: EventEmitter<ChannelMessage> = new EventEmitter<ChannelMessage>();
 
+  @ViewChild('msgText')  msgText!: ElementRef;
+
   replaies: Reply[] = [];
+
+  editMsg = false;
 
   constructor(public dialog: MatDialog) { }
 
@@ -46,6 +50,26 @@ export class MessageComponent  implements OnChanges{
   setTime(timestemp: number): string {
     let date = new Date(timestemp);
     return date.getHours() + ':' + date.getMinutes()
+  }
+
+
+  editPossible(): boolean {
+    if (this.msg instanceof ChannelMessage) {
+      if (this.msg.fromUserID === this.currentUserID) return true
+      else return false
+    } else {
+      if (this.msg.userID === this.currentUserID) return true
+      else return false
+    }
+  }
+
+
+  toggleEditMsg(){
+    this.editMsg = !this.editMsg;
+    if (this.editMsg) {
+      debugger
+      this.msgText.nativeElement.value = this.msg.message
+    }
   }
 
 
