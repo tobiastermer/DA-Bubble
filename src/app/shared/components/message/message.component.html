@@ -8,10 +8,10 @@
         <mat-card class="message-card">
             <mat-card-content>{{ msg.message }}</mat-card-content>
         </mat-card>
-        @if(channelMsg && msg.replies.length > 0){
+        @if(channelMsg && replaies.length > 0){
         <div class="reply">
-            <a>{{ msg.replies.length }} Antworten</a>
-            <span>Letzte Antwort {{ setTime(msg.replies[msg.replies.length-1].date) }}</span>
+            <a>{{ replaies.length }} Antworten</a>
+            <span>Letzte Antwort {{ setTime(replaies[replaies.length-1].date) }}</span>
         </div>
         }
     </div>

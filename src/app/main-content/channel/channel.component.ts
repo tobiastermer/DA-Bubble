@@ -42,7 +42,9 @@ export class ChannelComponent {
   @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' });
 
   chat: 'channel' | 'message' | 'new' = 'channel';
+
   threadMsg: ChannelMessage | undefined;
+  threadChannel: Channel | undefined;
 
   currentChannelID: string = ''
   currentChannel: Channel = new Channel({ id: 'Channel lädt', name: 'Channel lädt', description: 'Channel lädt', ownerID: 'abcde' });
@@ -162,8 +164,9 @@ export class ChannelComponent {
 
 
 
-  setThreadMsg(msg: ChannelMessage) {
+  setThreadValues(msg: ChannelMessage) {
     this.threadMsg = new ChannelMessage(msg)
+    this.threadChannel = new Channel(this.channels.find(channel => channel.id === this.threadMsg?.channelID)); 
   }
 
 

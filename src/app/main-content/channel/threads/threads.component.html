@@ -1,108 +1,39 @@
 @if(channelMsg){
-  <div class="thread-panel">
-    <header class="thread-panel__header">
-      <div class="thread-panel__title-text">
-        <h2>Thread</h2>
-        <p>#Entwicklerteam</p>
-        <!--Channel-->
-      </div>
-      <button class="thread-panel__close-button">
-        <mat-icon class="thread-panel__close-icon">close</mat-icon>
-      </button>
-    </header>
-    <main>
-      
-  
-  
-      <!-- MAIN TEXT FROM CHANNEL -->
-  
-  
-      <!-- <div *ngFor="let message of messages" class="message">
-        <img class="message__avatar" src="./assets/img/avatars/1.svg" alt="" />
-        <div class="message__details">
-          <div class="message__name-timestamp">
-            <h3>{{ message.userFirstName }}</h3>
-            <span>{{ message.timestamp }}</span>
-          </div>
-          <mat-card class="message__card">
-            <mat-card-content>{{ message.text }}</mat-card-content>
-          </mat-card>
-        </div>
-        <mat-card class="message__emoji-popup">
-          <mat-card-content>
-            <mat-icon class="message__action-btn">add_reaction</mat-icon>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="response-counter">
-        <div>{{ responseCount }}</div>
-        <div>Antworten</div>
-        <mat-divider></mat-divider>
-      </div> -->
-  
-  
-      <!-- REPLY MESSAGE -->
-  
-  
-      <!-- <div class="chat-area">
-        <div *ngFor="let reply of messages[0].replies" class="message">
-          <img class="message__avatar" src="./assets/img/avatars/2.svg" alt="" />
-          <div class="message__details">
-            <div class="message__name-timestamp">
-              <h3>{{ reply.userFirstName }}</h3>
-              <span>{{ reply.timestamp }}</span>
-            </div>
-            <mat-card class="message__card">
-              <mat-card-content>{{ reply.text }}</mat-card-content>
-            </mat-card>
-          </div>
-          <mat-card class="message__emoji-popup">
-            <mat-card-content>
-              <mat-icon class="message__action-btn">add_reaction</mat-icon>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </div> -->
-  
-  
-      <!-- INPUT FORM AREA -->
-  
-  
-      <!-- <div class="message-input">
-        <textarea
-          class="message-input__textarea"
-          #messageText
-          placeholder="Antworten..."
-          (input)="updateButtonState(messageText.value)"
-          (keydown.enter)="handleEnter($event, messageText.value)"
-        ></textarea>
-        <div class="message-input__controls">
-          <div class="message-input__actions">
-            <div class="message-input__file-upload">
-              <mat-icon class="message-input__action-btn message-input__file-btn"
-                >add</mat-icon
-              >
-              <input type="file" class="message-input__file-input" />
-            </div>
-            <hr />
-            <mat-icon class="message-input__action-btn"
-              >sentiment_satisfied</mat-icon
-            >
-            <mat-icon class="message-input__action-btn" appClickOutside
-              >alternate_email</mat-icon
-            >
-          </div>
-          <button
-            class="message-input__send-btn"
-            (click)="addMessage(messageText.value); messageText.value = ''"
-            [disabled]="isButtonDisabled"
-          >
-            <mat-icon>send</mat-icon>
-          </button>
-        </div>
-      </div> -->
-      
-    </main>
-  </div>
-}
 
+<mat-card class="thread-panel">
+  <header class="thread-panel__header">
+    <div class="thread-panel__title-text">
+      <h2>Thread</h2>
+      <p>#{{ channel?.name }}</p>
+      <!--Channel-->
+    </div>
+    <button class="thread-panel__close-button">
+      <mat-icon class="thread-panel__close-icon">close</mat-icon>
+    </button>
+  </header>
+  <main>
+
+    <app-message [msg]="channelMsg" [currentUserID]="data.currentUser.id"
+      [user]="data.getUserFromMessage(channelMsg)"></app-message>
+
+    <div class="response-counter">
+      <div>{{ channelMsg.replies.length }}</div>
+      <div>Antworten</div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <!-- REPLY MESSAGE -->
+
+    @for (reply of channelMsg.replies ; track $index) {
+    <app-message [msg]="reply" [currentUserID]="data.currentUser.id"
+      [user]="data.getUserFromReply(reply)"></app-message>
+    }
+
+  </main>
+
+  <app-input-textarea></app-input-textarea>
+
+</mat-card>
+
+
+}

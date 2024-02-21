@@ -9,7 +9,7 @@
                 }
                 @for (message of channelMessages; track $index) {
                 <app-message [msg]="message" [user]="getUserFromMessage(message)" [currentUserID]="currentUser.id"
-                    [channelMsg]="true" (threadOutput)="setThreadMsg($event)"></app-message>
+                    [channelMsg]="true" (threadOutput)="setThreadValues($event)"></app-message>
                 }
         </main>
         }@else if (chat === 'message') {
@@ -28,7 +28,7 @@
     </mat-card>
 
     @if (chat === 'channel') {
-    <app-threads [channelMsg]="threadMsg"></app-threads>
+    <app-threads [channelMsg]="threadMsg" [channel]="threadChannel"></app-threads>
     }
 
 </div>

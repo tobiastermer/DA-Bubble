@@ -10,11 +10,12 @@ import { MembershipService } from '../shared/firebase-services/membership.servic
 import { Membership } from '../shared/models/membership.class';
 import { ChannelService } from '../shared/firebase-services/channel.service';
 import { Channel } from '../shared/models/channel.class';
+import { DataService } from '../shared/services/data.service';
 
 @Component({
   selector: 'app-main-content',
   standalone: true,
-  imports: [HeaderComponent, MenueComponent, ChannelComponent, ThreadsComponent],
+  imports: [HeaderComponent, MenueComponent, ChannelComponent],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss'
 })
@@ -33,10 +34,12 @@ export class MainContentComponent implements OnDestroy {
 
   constructor(private userService: UserService,
     private membershipService: MembershipService,
-    private channelService: ChannelService) {
+    private channelService: ChannelService,
+    private dataService: DataService) {
 
     this.usersSubscription = this.userService.users$.subscribe(users => {
       this.users = users;
+      this.dataService.users = users;
     });
 
     this.membershipService.getUserMemberships(this.currentUserID);
@@ -47,8 +50,11 @@ export class MainContentComponent implements OnDestroy {
 
     this.channelsSubscription = this.channelService.channels$.subscribe(channels => {
       this.channels = channels;
+      this.dataService.channels = channels;
       console.log('Channel: ', this.channels);
     });
+
+    this.dataService.currentUser = this.currentUser;
 
   }
 
@@ -80,6 +86,7 @@ export class MainContentComponent implements OnDestroy {
       const user = await this.userService.getUserByID(this.currentUserID);
       if (user) {
         this.currentUser = user;
+        this.dataService.currentUser = user;
       } else {
         console.log('Benutzer nicht gefunden');
       }
