@@ -12,8 +12,11 @@
         <span>Channel Name</span>
     </div>
 
-    <app-input-add-user [allUsers]="data.allUsers" (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved()"></app-input-add-user>
+    <app-input-add-user [allUsers]="data.allUsers" [currentMemberIDs]="data.currentMemberIDs"
+        (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved($event)"
+        (selectedUsersChanged)="onSelectedUsersChanged($event)">
+    </app-input-add-user>
 
-    <button class="btn" [ngClass]="setBtnClass()" (click)="addUser()">Hinzufügen</button>
+    <button class="btn" [ngClass]="setBtnClass()" (click)="addUsers()">Hinzufügen</button>
 
 </mat-card>

@@ -35,13 +35,16 @@ export class HeaderChannelComponent {
   @Input() channel: Channel = new Channel({});
   @Input() allUsers: User[] = [];
 
-
   @ViewChild('channleInfo') channelInfo?: ElementRef;
   @ViewChild('membersInfo') membersInfo?: ElementRef;
   @ViewChild('addUser') addUser?: ElementRef;
 
+  currentMemberIDs: string[] = [];
+
   constructor(public dialog: MatDialog,
-    private membershipService: MembershipService) { }
+    private MembershipService: MembershipService) {
+
+  }
 
   changeImgBl() {
     if (!this.channelInfo) return;
@@ -93,29 +96,27 @@ export class HeaderChannelComponent {
   // Daten müssen noch angepasst werde
   openDialogAddUser(): void {
     let pos = this.getDialogPos(this.addUser, 'right');
+    this.currentMemberIDs = this.members.map(user => user.id!);
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
       position: pos, panelClass: ['card-right-corner'],
-      data: { allUsers: this.allUsers },
+      data: { allUsers: this.allUsers, currentMemberIDs: this.currentMemberIDs },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) console.log(result);
-      this.saveAddedMember(result);
+      this.saveAddedMembers(result);
     });
   }
 
-
-  async saveAddedMember(user: User) {
-    if (user && user.id) {
-      const membership = new Membership({
-        channelID: this.channel.id,
-        userID: user.id,
-      });
-      await this.membershipService.addMembership(membership).then(() => {
-        this.members.push(user); // ggf. sauberer lösen durch unmittelbares Abo dieser Komponente auf members-Array
-      }).catch(err => console.error(err));
+  async saveAddedMembers(selectedUsers: User[]) {
+    if (selectedUsers) {
+      for (let user of selectedUsers) {
+        let membership = this.MembershipService.createMembership(user.id!, this.channel.id);
+        await this.MembershipService.addMembership(membership).then(() => {
+          this.members.push(user); // ggf. sauberer lösen durch unmittelbares Abo dieser Komponente auf members-Array
+        }).catch(err => console.error(err));
+      }
     }
   }
-
 
   getDialogPos(element: ElementRef | undefined, cornerPos: 'right' | 'left'): DialogPosition | undefined {
     if (!element) return undefined

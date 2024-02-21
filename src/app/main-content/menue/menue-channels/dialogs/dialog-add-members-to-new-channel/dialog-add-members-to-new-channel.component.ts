@@ -52,11 +52,12 @@ export class DialogAddMembersToNewChannelComponent {
   loading: boolean = false;
   radioSelection: string = '';
   userSelected = false;
+  selectedUsers: User[] = [];
   addedUser!: User;
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddMembersToNewChannelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { newChannel: Channel, allUsers: User[] },
+    @Inject(MAT_DIALOG_DATA) public data: { newChannel: Channel, allUsers: User[], currentMemberIDs: string[] },
     public dialog: MatDialog,
     private MembershipService: MembershipService
   ) {
@@ -82,14 +83,19 @@ export class DialogAddMembersToNewChannelComponent {
     this.userSelected = true;
   }
 
-  onUserRemoved() {
+  onUserRemoved(user: User) {
     this.userSelected = false;
+  }
+
+  onSelectedUsersChanged(users: User[]) {
+    this.selectedUsers = users;
+    // Aktualisiere die Logik für den Submit-Button basierend auf `selectedUsers`
   }
 
   canSubmit(): boolean {
     if (this.radioSelection === 'all') {
       return true;
-    } else if (this.radioSelection === 'specific' && this.userSelected) {
+    } else if (this.radioSelection === 'specific' && this.selectedUsers.length > 0) {
       return true;
     }
     return false;
@@ -99,12 +105,16 @@ export class DialogAddMembersToNewChannelComponent {
     this.loading = true;
     if (this.radioSelection === 'all') {
       for (let user of this.data.allUsers) {
+        if (!this.data.currentMemberIDs.includes(user.id!)) {
+          const membership = this.MembershipService.createMembership(user.id!, this.data.newChannel.id);
+          await this.MembershipService.addMembership(membership).catch(err => console.error(err));
+        }
+      }
+    } else if (this.radioSelection === 'specific' && this.userSelected) {
+      for (const user of this.selectedUsers) {
         const membership = this.MembershipService.createMembership(user.id!, this.data.newChannel.id);
         await this.MembershipService.addMembership(membership).catch(err => console.error(err));
       }
-    } else if (this.radioSelection === 'specific' && this.userSelected) {
-      const membership = this.MembershipService.createMembership(this.addedUser.id!, this.data.newChannel.id);
-      await this.MembershipService.addMembership(membership).catch(err => console.error(err));
     }
     this.loading = false;
     this.dialogRef.close();

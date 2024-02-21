@@ -22,7 +22,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MenueComponent {
   @Input() users: User[] = [];
-  @Input() currentUserID: String = '';
+  @Input() currentUserID: string = '';
   @Input() userMemberships: Membership[] = [];
   @Input() channels: Channel[] = [];
 

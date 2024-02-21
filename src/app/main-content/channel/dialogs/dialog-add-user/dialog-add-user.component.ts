@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Output, ViewChild } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -37,39 +37,43 @@ import { InputAddUserComponent } from '../../../../shared/components/input-add-u
 })
 export class DialogAddUserComponent {
 
-  userSelected = false;
-  addedUser!: User;
-
   @ViewChild('userInp') userInp?: ElementRef;
+
+  selectedUsers: User[] = []; // Neu
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { allUsers: User[] },
+    @Inject(MAT_DIALOG_DATA) public data: { allUsers: User[], currentMemberIDs: string[] },
   ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  addUser() {
-    if (!this.userSelected) return
-    this.dialogRef.close(this.addedUser)
+  addUsers() {
+    if (this.selectedUsers.length == 0) return
+    this.dialogRef.close(this.selectedUsers);
   }
 
   setBtnClass(): any {
     return {
-      'btn-disable': !this.userSelected,
-      'btn-enable': this.userSelected
+      'btn-disable': this.selectedUsers.length == 0,
+      'btn-enable': this.selectedUsers.length > 0
     };
   }
 
   onUserAdded(user: User) {
-    this.addedUser = user;
-    this.userSelected = true;
+    if (!this.selectedUsers.find(u => u.id === user.id)) {
+      this.selectedUsers.push(user);
+    }
   }
 
-  onUserRemoved() {
-    this.userSelected = false;
+  onUserRemoved(user: User) {
+    this.selectedUsers = this.selectedUsers.filter(u => u.id !== user.id);
+  }
+
+  onSelectedUsersChanged(users: User[]) {
+    this.selectedUsers = users;
   }
 
 }

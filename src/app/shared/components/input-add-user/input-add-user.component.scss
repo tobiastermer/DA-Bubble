@@ -1,42 +1,48 @@
 @import './../../../../styles.scss';
 
-
 .user-sector {
     width: 100%;
+    position: relative;
 
-    ul {
+    .selected-users {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+    .user-input {
+        width: calc(100% - 42px);
+        padding: 15px 20px;
+        border-radius: 30px;
+        border: 1px solid $lgPurple;
+        outline: none;
+
+        &:focus-visible {
+            border-color: $bgBlue;
+        }
+    }
+
+    .filtered-users {
+        position: fixed;
+        z-index: 100;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        margin-top: -8px;
+        margin-left: 16px;
+        background: white;
+        border: 1px solid $lgPurple;
+        border-radius: 0 30px 30px 30px;
         list-style-type: none;
     }
-}
 
-.user-input {
-    width: calc(100% - 42px);
-    padding: 15px 20px;
-    border-radius: 30px;
-    border: 1px solid $lgPurple;
-    outline: none;
+    .user-chip {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        transform: scale(0.8);
 
-    &:focus-visible {
-        border-color: $bgBlue;
+        &:hover {
+            transform: scale(0.9);
+        }
     }
-}
-
-.user-selector {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    border-radius: 30px;
-    border: 1px solid $lgPurple;
-    height: 45px;
-    padding-inline: 20px;
-}
-
-.filterd-users {
-    position: fixed;
-    padding: 25px;
-    margin-top: -8px;
-    margin-left: 16px;
-    background: white;
-    border: 1px solid $lgPurple;
-    border-radius: 0 30px 30px 30px;
 }

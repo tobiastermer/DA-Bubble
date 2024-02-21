@@ -7,25 +7,27 @@ import { CommonModule } from '@angular/common';
   selector: 'app-input-add-user',
   standalone: true,
   imports: [UserChipComponent,
-            CommonModule],
+    CommonModule],
   templateUrl: './input-add-user.component.html',
   styleUrl: './input-add-user.component.scss'
 })
 
 export class InputAddUserComponent implements OnInit {
   @Input() allUsers: User[] = [];
+  @Input() currentMemberIDs: string[] = [];
+
   @Output() userAdded = new EventEmitter<User>();
-  @Output() userRemoved = new EventEmitter<void>();
+  @Output() userRemoved = new EventEmitter<User>();
+  @Output() selectedUsersChanged = new EventEmitter<User[]>();
+
   @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
 
-  userSelected: boolean = false;
   selectListVisible: boolean = false;
   filteredUsers: User[] = [];
-  addedUser!: User;
+  selectedUsers: User[] = [];
 
   ngOnInit() {
-    // Initialisiert die gefilterten Benutzer mit allen Benutzern
-    this.filteredUsers = [...this.allUsers];
+    // this.filterUsers();
   }
 
   stopPropagation(event: MouseEvent) {
@@ -34,29 +36,37 @@ export class InputAddUserComponent implements OnInit {
 
   filterUsers() {
     const search = this.userInput.nativeElement.value.toLowerCase();
-    this.filteredUsers = this.allUsers.filter(user => user.name.toLowerCase().includes(search));
+    this.filteredUsers = this.allUsers.filter(user =>
+      user.name &&
+      user.name.toLowerCase().includes(search) &&
+      !this.currentMemberIDs.includes(user.id!) &&
+      !this.selectedUsers.map(u => u.id).includes(user.id)
+    );
     this.selectListVisible = !!search && this.filteredUsers.length > 0;
   }
 
   selectUser(user: User) {
-    this.addedUser = user;
-    this.userSelected = true;
-    this.selectListVisible = false;
-    this.userAdded.emit(this.addedUser);
+    this.selectedUsers.push(user);
+    this.userAdded.emit(user);
+    this.userInput.nativeElement.value = '';
+    this.filterUsers();
+    this.selectedUsersChanged.emit(this.selectedUsers);
   }
 
-  removeUser() {
-    this.userSelected = false;
-    this.addedUser = new User;
-    this.userRemoved.emit();
+  removeUser(user: User) {
+    this.selectedUsers = this.selectedUsers.filter(selectedUser => selectedUser.id !== user.id);
+    this.userRemoved.emit(user);
+    this.filterUsers();
+    this.selectedUsersChanged.emit(this.selectedUsers);
   }
 
   trackByFn(index: number, item: User): any {
-    return item.id; // oder einen anderen eindeutigen Wert
+    return item.id;
   }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     this.selectListVisible = false;
   }
+
 }

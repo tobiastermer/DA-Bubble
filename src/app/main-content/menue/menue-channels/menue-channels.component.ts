@@ -19,11 +19,10 @@ export class MenueChannelsComponent {
   @Input() channelActive: number | undefined;
   @Input() pathUserName: string = '';
   @Input() allUsers: User[] = [];
-  @Input() currentUserID: String = '';
+  @Input() currentUserID: string = '';
 
   @Output() channelSelected = new EventEmitter<number>();
 
-  // channels: string[] = ['Entwicklerteam', 'Office-Team', 'Plauderecke', 'Coffee-Corner'];
   channelsVisible: boolean = true;
 
   constructor(private router: Router,
@@ -46,7 +45,7 @@ export class MenueChannelsComponent {
   openDialogAddChannel() {
     this.dialog.open(DialogAddChannelComponent, {
       panelClass: ['card-round-corners'],
-      data: { allChannel: this.channels, currentUserID: this.currentUserID, allUsers: this.allUsers },
+      data: { allChannel: this.channels, currentUserID: this.currentUserID, allUsers: this.allUsers, pathUserName: this.pathUserName },
     });
   }
 }

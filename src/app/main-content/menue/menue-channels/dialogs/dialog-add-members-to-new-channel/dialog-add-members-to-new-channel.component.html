@@ -13,7 +13,9 @@
     </mat-radio-group>
 
     <app-input-add-user *ngIf="radioSelection === 'specific'" [allUsers]="data.allUsers"
-        (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved()"></app-input-add-user>
+        [currentMemberIDs]="data.currentMemberIDs" (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved($event)"
+        (selectedUsersChanged)="onSelectedUsersChanged($event)"> <!-- Neu -->
+    </app-input-add-user>
 
     <button class="btn" [ngClass]="setBtnClass()" (click)="saveMemberships()" [disabled]="!canSubmit()">Channel
         erstellen</button>

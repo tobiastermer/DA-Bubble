@@ -3,7 +3,7 @@
 mat-card {
     padding: 40px;
     width: 100%;
-    min-width: 450px;
+    width: 500px;
     height: 100%;
     @include dFlex($fd: column, $ai: flex-end, $gap: 20px);
 

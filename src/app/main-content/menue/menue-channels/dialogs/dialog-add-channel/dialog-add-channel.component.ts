@@ -21,6 +21,8 @@ import { ChannelService } from '../../../../../shared/firebase-services/channel.
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { User } from '../../../../../shared/models/user.class';
 import { MembershipService } from '../../../../../shared/firebase-services/membership.service';
+import { Router } from '@angular/router';
+import { Membership } from '../../../../../shared/models/membership.class';
 
 @Component({
   selector: 'app-dialog-add-channel',
@@ -46,17 +48,20 @@ export class DialogAddChannelComponent {
 
   loading: boolean = false;
   newChannel: Channel = new Channel
+  newChannelMemberIDs: string[] = [];
   channelNameError: string = '';
   descriptionError: string = '';
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddChannelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { allChannel: Channel[], currentUserID: string, allUsers: User[] },
+    @Inject(MAT_DIALOG_DATA) public data: { allChannel: Channel[], currentUserID: string, allUsers: User[], pathUserName: string },
     public dialog: MatDialog,
     private ChannelService: ChannelService,
-    private MembershipService: MembershipService
+    private MembershipService: MembershipService,
+    private router: Router
   ) {
     this.newChannel.ownerID = this.data.currentUserID;
+    this.newChannelMemberIDs.push(this.newChannel.ownerID);
   }
 
   validateInputName() {
@@ -105,6 +110,7 @@ export class DialogAddChannelComponent {
         const channelId = await this.ChannelService.addChannel(this.newChannel) as string;
         this.newChannel.id = channelId; // Setze die ID für das Channel-Objekt
         this.saveOwnerMembership();
+        this.router.navigate([this.data.pathUserName + '/channel/' + this.newChannel.name]);
         this.openDialogAddUserToNewChannel(); // Weiterarbeiten mit dem vervollständigten Channel-Objekt
       } catch (err) {
         console.error(err);
@@ -116,19 +122,17 @@ export class DialogAddChannelComponent {
 
   async saveOwnerMembership() {
     const membership = this.MembershipService.createMembership(this.newChannel.ownerID, this.newChannel.id);
-    if (membership) {
-      try {
-        await this.MembershipService.addMembership(membership);
-      } catch (err) {
-        console.error(err);
-      }
+    try {
+      await this.MembershipService.addMembership(membership);
+    } catch (err) {
+      console.error(err);
     }
   }
 
   openDialogAddUserToNewChannel() {
     this.dialog.open(DialogAddMembersToNewChannelComponent, {
       panelClass: ['card-round-corners'],
-      data: { newChannel: this.newChannel, allUsers: this.data.allUsers },
+      data: { newChannel: this.newChannel, allUsers: this.data.allUsers, currentMemberIDs: this.newChannelMemberIDs },
     });
   }
 
