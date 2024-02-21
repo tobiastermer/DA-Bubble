@@ -20,18 +20,18 @@
         }
         @else {
         <div class="edit">
-            <textarea #msgText class="edit-text" cols="30" rows="3"></textarea>
+            <textarea #msgText class="edit-text" cols="30" rows="3" (input)="checkChange()">{{ msg.message }}</textarea>
             <div class="edit-bottom">
                 <mat-icon class="action-btn">add_reaction</mat-icon>
                 <div class="btn-area">
                     <div class="delet-btn">
-                        <button mat-fab extended color="primary" [disabled]="">Löschen</button>
+                        <button mat-fab extended color="primary" (click)="deletMsg()">Löschen</button>
                     </div>
                     <div class="cancle-btn">
-                        <button mat-fab extended color="primary" (click)="toggleEditMsg()" [disabled]="">Abbrechen</button>
+                        <button mat-fab extended color="primary" (click)="toggleEditMsg()">Abbrechen</button>
                     </div>
-                    <div class="safe-btn">
-                        <button mat-fab extended color="primary">Speichern</button>
+                    <div class="safe-btn" [ngClass]="{'btn-disable': !saveEnable}">
+                        <button mat-fab extended color="primary" (click)="saveMsg()">Speichern</button>
                     </div>
                 </div>
             </div>

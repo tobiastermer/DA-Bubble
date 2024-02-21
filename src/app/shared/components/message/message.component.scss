@@ -72,7 +72,7 @@
     text-decoration: none;
     color: $lgBlue;
 
-    &:hover{
+    &:hover {
       color: $dkBlue;
       font-weight: 500;
     }
@@ -126,7 +126,7 @@
   }
 }
 
-.current-user{
+.current-user {
   flex-direction: row-reverse;
   padding: 8px 16px 8px 0px;
 
@@ -139,18 +139,18 @@
   .details {
     align-items: flex-end;
 
-    .name-timestamp{
+    .name-timestamp {
       flex-direction: row-reverse;
     }
 
-    .message-card{
+    .message-card {
       border-radius: 20px 0 20px 20px;
       background-color: $bgBlue;
       transform: translateX(20px) translateY(-24px);
       color: white;
     }
 
-    .reply{
+    .reply {
       flex-direction: row-reverse;
     }
   }
@@ -167,13 +167,13 @@
 
 // edit part
 
-.edit{
+.edit {
   width: 100%;
   border-radius: 20px;
   border: 1px solid $lgPurple;
   z-index: 2;
   background-color: white;
-   // height: 145px;
+  // height: 145px;
   padding: 20px 20px 0 20px;
   margin: 0 20px;
   width: calc(100% - 30px);
@@ -185,7 +185,7 @@
   }
 }
 
-.edit-text{
+.edit-text {
   width: 100%;
   resize: none;
   border: none;
@@ -196,13 +196,13 @@
   overflow: hidden;
 }
 
-.edit-bottom{
+.edit-bottom {
   @include dFlex($jc: space-between);
   padding: 8px 0;
   width: 100%;
 }
 
-.btn-area{
+.btn-area {
   @include dFlex($gap: 15px)
 }
 
@@ -222,19 +222,11 @@
       border: 1px solid #ff110099;
       background-color: #ff110099;
     }
+
     &:active {
       transform: scale(0.98);
     }
   }
-
-  // &__sign-in .valid-form {
-  //   background-color: $dkBlue;
-  //   animation: buttonFadeIn 0.3s ease-in-out;
-
-  //   &:hover {
-  //     background-color: darken($dkBlue, 5%);
-  //   }
-  // }
 }
 
 .safe-btn {
@@ -253,19 +245,11 @@
       border: 1px solid $bgBlue;
       background-color: $bgBlue;
     }
+
     &:active {
       transform: scale(0.98);
     }
   }
-
-  // &__sign-in .valid-form {
-  //   background-color: $dkBlue;
-  //   animation: buttonFadeIn 0.3s ease-in-out;
-
-  //   &:hover {
-  //     background-color: darken($dkBlue, 5%);
-  //   }
-  // }
 }
 
 .cancle-btn {
@@ -287,17 +271,25 @@
       color: white;
       transition: ease-in-out 0.3s;
     }
+
     &:active {
       transform: scale(0.98);
     }
   }
+}
 
-  // &__guest .valid-form {
-  //   background-color: $dkBlue;
-  //   animation: buttonFadeIn 0.3s ease-in-out;
+.btn-disable {
+  button {
+    background-color: #686868;
 
-  //   &:hover {
-  //     background-color: darken($dkBlue, 5%);
-  //   }
-  // }
+    &:hover {
+      cursor: unset;
+      border: none;
+      background-color: #686868;
+    }
+
+    &:active {
+      transform: unset;
+    }
+  }
 }

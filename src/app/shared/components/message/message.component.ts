@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -8,6 +8,7 @@ import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { Reply } from '../../models/reply.class';
+import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
 
 
 @Component({
@@ -31,13 +32,15 @@ export class MessageComponent implements OnChanges {
 
   @Output() threadOutput: EventEmitter<ChannelMessage> = new EventEmitter<ChannelMessage>();
 
-  @ViewChild('msgText')  msgText!: ElementRef;
+  @ViewChild('msgText') msgText!: ElementRef;
 
   replaies: Reply[] = [];
 
   editMsg = false;
+  saveEnable = false;
+  oldText: string = '';
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private messageFBS: ChannelMessagesService) { }
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -53,26 +56,6 @@ export class MessageComponent implements OnChanges {
   }
 
 
-  editPossible(): boolean {
-    if (this.msg instanceof ChannelMessage) {
-      if (this.msg.fromUserID === this.currentUserID) return true
-      else return false
-    } else {
-      if (this.msg.userID === this.currentUserID) return true
-      else return false
-    }
-  }
-
-
-  toggleEditMsg(){
-    this.editMsg = !this.editMsg;
-    if (this.editMsg) {
-      debugger
-      this.msgText.nativeElement.value = this.msg.message
-    }
-  }
-
-
   openShowUserDialog(user: User) {
     this.dialog.open(DialogShowUserComponent, {
       panelClass: ['card-round-corners'],
@@ -85,4 +68,53 @@ export class MessageComponent implements OnChanges {
     if (this.msg instanceof ChannelMessage) this.threadOutput.emit(this.msg)
     else return
   }
+
+
+  // edit functions
+
+  editPossible(): boolean {
+    if (this.msg instanceof ChannelMessage) {
+      if (this.msg.fromUserID === this.currentUserID) return true
+      else return false
+    } else {
+      if (this.msg.userID === this.currentUserID) return true
+      else return false
+    }
+  }
+
+
+  toggleEditMsg() {
+    this.editMsg = !this.editMsg;
+    if (this.editMsg) this.oldText = this.msg.message
+    else this.saveEnable = false;
+  }
+
+
+  checkChange() {
+    if (!this.editMsg) return
+    if (this.oldText != this.msgText.nativeElement.value) this.saveEnable = true;
+    else this.saveEnable = false;
+  }
+
+
+  async deletMsg() {
+    this.editMsg = false;
+    if (this.msg instanceof ChannelMessage) {
+      if (this.msg.fromUserID !== this.currentUserID) return
+      else await this.messageFBS.deleteChannelMessage(this.msg)
+    }
+  }
+
+
+  async saveMsg() {
+    if (!this.saveEnable) return
+    this.saveEnable = false;
+    this.msg.message = this.msgText.nativeElement.value;
+    this.editMsg = false;
+    if (this.msg instanceof ChannelMessage) {
+      if (this.msg.fromUserID !== this.currentUserID) return
+      else await this.messageFBS.updateChannelMessage(this.msg)
+    }
+  }
+
 }
