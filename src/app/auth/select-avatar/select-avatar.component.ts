@@ -62,12 +62,11 @@ export class SelectAvatarComponent implements OnInit {
     const file = event.target.files[0];
     if (!file) return;
 
-    const fileSizeMB = file.size / 1536 / 1536;
-    const isSupportedFileType =
-      file.type === 'image/jpeg' || file.type === 'image/png';
+    const fileSizeMB = file.size / 1024 / 1024; // Korrektur für MB-Berechnung
+    const isSupportedFileType = file.type === 'image/jpeg' || file.type === 'image/png';
 
-    if (fileSizeMB > 1.5) {
-      this.setFormError('Ihr Bild ist zu groß. Maximale Größe beträgt 1MB.');
+    if (fileSizeMB > 1) {
+      this.setFormError('Ihr Bild ist zu groß. Maximale Größe beträgt 1.5MB.');
       return;
     }
 
@@ -76,7 +75,17 @@ export class SelectAvatarComponent implements OnInit {
       return;
     }
 
-    this.loadImage(file);
+    // Hochladen des Bildes und Setzen der URL als Avatar
+    this.authService.uploadAvatarImage(file).then((url) => {
+      this.currentAvatar = url;
+      this.fadeIn();
+      this.formIsValid = true;
+      this.showError = false;
+      this.avatarError = false;
+    }).catch((error) => {
+      console.error("Fehler beim Hochladen des Bildes: ", error);
+      this.setFormError("Fehler beim Hochladen des Bildes.");
+    });
   }
 
   private setFormError(errorMessage: string) {
@@ -88,14 +97,15 @@ export class SelectAvatarComponent implements OnInit {
   private loadImage(file: File) {
     const reader = new FileReader();
     reader.onload = (e: any) => {
-      this.currentAvatar = e.target.result;
-      this.animationClass = 'fade-in';
-      this.formIsValid = true;
-      this.showError = false;
-      this.avatarError = false;
+       
+        this.currentAvatar = e.target.result;
+        this.animationClass = 'fade-in';
+        this.formIsValid = true;
+        this.showError = false;
+        this.avatarError = false;
     };
     reader.readAsDataURL(file);
-  }
+}
 
   fadeIn() {
     this.animationClass = 'fade-in';

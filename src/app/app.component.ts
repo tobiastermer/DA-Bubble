@@ -5,6 +5,7 @@ import { MainContentComponent } from './main-content/main-content.component';
 import { StartAnimationComponent } from './auth/start-animation/start-animation.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { SelectAvatarComponent } from './auth/select-avatar/select-avatar.component';
+import { PwResetComponent } from './auth/pw-reset/pw-reset.component';
 
 @Component({
   selector: 'app-root',
@@ -24,10 +25,8 @@ export class AppComponent {
   title = 'DA-Bubble';
 
   constructor(private router: Router) {
-    this.navigateToStartAnimation();
+   
   }
 
-  navigateToStartAnimation() {
-    this.router.navigate(['']);
-  }
+ 
 }

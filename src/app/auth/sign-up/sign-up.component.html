@@ -16,7 +16,7 @@
         <mat-icon matIconPrefix>person_outlined</mat-icon>
         <input
           matInput
-          placeholder="Name und Nachname"
+          placeholder="Name"
           formControlName="name"
           type="text"
           (blur)="signUpForm.controls['name'].markAsTouched()"
@@ -30,20 +30,16 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="sign-up__form-field">
         <mat-icon matIconPrefix>mail_outlined</mat-icon>
-        <input 
+        <input
           matInput
           placeholder="beispiel@email.com"
           formControlName="email"
-          type="email" 
+          type="email"
           (blur)="signUpForm.controls['email'].markAsTouched()"
         />
-        <mat-error *ngIf="signUpForm.get('email')?.errors?.['emailTaken']">Diese E-Mail ist bereits vergeben.</mat-error>
-        <mat-error *ngIf="signUpForm.get('email')?.hasError('required')"
-          >Email eingeben</mat-error
-        >
-        <mat-error *ngIf="signUpForm.get('email')?.hasError('email')"
-          >Richtige Email eingeben</mat-error
-        >
+        <mat-error *ngIf="signUpForm.controls['email'].errors">
+          Bitte richtige E-Mail eingeben
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="sign-up__form-field">
         <mat-icon matIconPrefix>lock_outlined</mat-icon>
@@ -73,7 +69,13 @@
       </section>
 
       <div class="sign-up__next-button">
-        <button type="submit" mat-fab extended color="primary" [ngClass]="{'valid-form': signUpForm.valid}">
+        <button
+          type="submit"
+          mat-fab
+          extended
+          color="primary"
+          [ngClass]="{ 'valid-form': signUpForm.valid }"
+        >
           Weiter
         </button>
       </div>
@@ -88,6 +90,6 @@
 
   <div class="background-container__legals">
     <a href="">Impressum</a>
-   <a href="">Datenschutz</a>
+    <a href="">Datenschutz</a>
   </div>
 </div>

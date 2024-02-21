@@ -38,14 +38,14 @@
         <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Mindestens 6 Zeichen eingeben</mat-error>
       </mat-form-field>
      
-        <mat-card class="login__forgot-password"><a href="#">Passwort vergessen?</a></mat-card>
+        <mat-card class="login__forgot-password"><a (click)="openPwReset()">Passwort vergessen?</a></mat-card>
       
       <div class="divider">
         <div class="line"></div>
         <div class="text">ODER</div>
         <div class="line"></div>
     </div>
-    <button class="input-field-container" >
+    <button type="button" (click)="onGoogleSignIn()" class="input-field-container" >
         <div class="google-login-btn">
             <img src="./assets/img/icons/Google.png">
             <span>Anmelden mit Google</span>
