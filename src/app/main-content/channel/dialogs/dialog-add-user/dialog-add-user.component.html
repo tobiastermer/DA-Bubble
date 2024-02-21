@@ -1,4 +1,4 @@
-<mat-card (click)="closeFilterdUsers()">
+<mat-card>
 
     <div class="card-header">
         <mat-card-title>Leute hinzufügen</mat-card-title>
@@ -12,22 +12,8 @@
         <span>Channel Name</span>
     </div>
 
-    <div class="user-sector" (click)="stopPropagation($event)">
-
-        @if (!userSelected) {
-        <input #userInp class="user-input" type="text" placeholder="Name eingeben" (input)="filterUsers()">
-        } @else{
-        <div class="user-selector">
-            <app-user-chip [user]="addedUser" [smale]="true" (deletUser)="removeUser()"></app-user-chip>
-        </div>
-        }
-
-        <ul class="filterd-users" [class.d-none]="!selectListVisible">
-            @for (user of filterdUsers; track $index) {
-            <app-user-chip (click)="seletUser(user)" [user]="user"></app-user-chip>
-            }
-        </ul>
-    </div>
+    <app-input-add-user [allUsers]="data.allUsers" (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved()"></app-input-add-user>
 
     <button class="btn" [ngClass]="setBtnClass()" (click)="addUser()">Hinzufügen</button>
+
 </mat-card>

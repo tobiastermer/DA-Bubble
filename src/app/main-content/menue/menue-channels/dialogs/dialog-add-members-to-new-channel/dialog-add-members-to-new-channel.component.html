@@ -7,22 +7,15 @@
         </button>
     </header>
 
-    <div class="section">
-        <mat-radio-group aria-label="Select an option">
-            <mat-radio-button value="1">Alle Mitglieder von Office-Team hinzufügen</mat-radio-button>
-            <mat-radio-button value="2">Bestimmte Leute hinzufügen</mat-radio-button>
-        </mat-radio-group>
-    </div>
+    <mat-radio-group [(ngModel)]="radioSelection" aria-label="Select an option">
+        <mat-radio-button value="all">Alle Benutzer hinzufügen</mat-radio-button>
+        <mat-radio-button value="specific">Bestimmte Leute hinzufügen</mat-radio-button>
+    </mat-radio-group>
 
-    <div class="section">
-        <header>
-            <span class="section-title">Beschreibung</span>
-            <span class="section-brackets">(optional)</span>
-        </header>
-        <div class="channel-edit-inp">
-            <input type="text" placeholder="Dein Text hier" ng-minlength="5">
-        </div>
-    </div>
+    <app-input-add-user *ngIf="radioSelection === 'specific'" [allUsers]="data.allUsers"
+        (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved()"></app-input-add-user>
 
-    <button class="btn" (click)="saveNewChannel()">Erstellen</button>
+    <button class="btn" [ngClass]="setBtnClass()" (click)="saveMemberships()" [disabled]="!canSubmit()">Channel
+        erstellen</button>
+
 </mat-card>

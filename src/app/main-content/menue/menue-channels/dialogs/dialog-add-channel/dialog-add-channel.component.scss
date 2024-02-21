@@ -8,6 +8,10 @@ mat-card {
 
     @include dFlex($fd: column, $ai: flex-end, $gap: 20px);
 
+    mat-progress-bar {
+        @include pAbsolute($t: 0px, $l: -15px);
+        width: 100%;
+    }
 }
 
 header {
@@ -68,12 +72,6 @@ header {
     font-weight: 500;
 }
 
-.section-brackets {
-    font-size: 18px;
-    font-weight: 400;
-    color: $bgdGrey;
-}
-
 .channel-name {
     @include dFlex($jc: flex-start, $gap: 15px);
 
@@ -85,9 +83,9 @@ header {
 
 .channel-edit-inp {
     @include dFlex($jc: flex-start, $gap: 15px);
-    padding: 20px;
+    padding: 18px 20px 18px 20px;
     border: 1px solid $lgPurple;
-    border-radius: 20px;
+    border-radius: 40px;
     width: calc(100% - 40px);
 
     input {
@@ -111,3 +109,25 @@ header {
         background-color: $lgBlue;
     }
 }
+
+.btn-disable {
+    background-color: $dkGrey;
+
+    &:hover {
+        background-color: $dkGrey;
+        cursor: unset;
+    }
+}
+
+.btn-enable {
+    background-color: $dkBlue;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $lgBlue;
+    }
+}
+
+.error {
+    color: red;
+  }

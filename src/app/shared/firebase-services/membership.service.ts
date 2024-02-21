@@ -18,6 +18,13 @@ export class MembershipService {
 
     constructor() { }
 
+    createMembership(userID: string, channelID: string): Membership {
+        return new Membership({
+          channelID: channelID,
+          userID: userID
+        });
+      }
+      
     async addMembership(membership: Membership) {
         try {
             const docRef = await addDoc(collection(this.firestore, "memberships"), membership.toJSON());

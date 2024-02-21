@@ -5,6 +5,7 @@ import { Channel } from '../../../shared/models/channel.class';
 import { Router } from '@angular/router';
 import { DialogAddChannelComponent } from './dialogs/dialog-add-channel/dialog-add-channel.component';
 import { MatDialog } from '@angular/material/dialog';
+import { User } from '../../../shared/models/user.class';
 
 @Component({
   selector: 'app-menue-channels',
@@ -17,6 +18,7 @@ export class MenueChannelsComponent {
   @Input() channels: Channel[] = [];
   @Input() channelActive: number | undefined;
   @Input() pathUserName: string = '';
+  @Input() allUsers: User[] = [];
   @Input() currentUserID: String = '';
 
   @Output() channelSelected = new EventEmitter<number>();
@@ -44,7 +46,7 @@ export class MenueChannelsComponent {
   openDialogAddChannel() {
     this.dialog.open(DialogAddChannelComponent, {
       panelClass: ['card-round-corners'],
-      data: { currentUserID: this.currentUserID },
+      data: { allChannel: this.channels, currentUserID: this.currentUserID, allUsers: this.allUsers },
     });
   }
 }

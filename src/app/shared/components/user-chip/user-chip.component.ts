@@ -19,10 +19,10 @@ export class UserChipComponent {
   @Input() smale = false;
   @Input() currentUserID: String = '';
 
-  @Output() deletUser: EventEmitter<User> = new EventEmitter<User>();
+  @Output() deleteUser: EventEmitter<User> = new EventEmitter<User>();
 
   onUserChipDelet() {
-    this.deletUser.emit(this.user);
+    this.deleteUser.emit(this.user);
   }
 
 

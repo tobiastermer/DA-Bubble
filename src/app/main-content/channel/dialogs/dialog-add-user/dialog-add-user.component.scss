@@ -35,40 +35,8 @@ mat-card {
     }
 }
 
-.user-sector {
+app-input-add-user {
     width: 100%;
-}
-
-.user-input {
-    width: calc(100% - 42px);
-    padding: 15px 20px;
-    border-radius: 30px;
-    border: 1px solid $lgPurple;
-    outline: none;
-
-    &:focus-visible {
-        border-color: $bgBlue;
-    }
-}
-
-
-.user-selector {
-    @include dFlex($ai: center, $jc: flex-start);
-    border-radius: 30px;
-    border: 1px solid $lgPurple;
-    height: 45px;
-    padding-inline: 20px;
-}
-
-
-.filterd-users {
-    position: fixed;
-    padding: 25px;
-    margin-top: -8px;
-    margin-left: 16px;
-    background: white;
-    border: 1px solid $lgPurple;
-    border-radius: 0 30px 30px 30px;
 }
 
 .btn {

@@ -1,5 +1,7 @@
 <mat-card>
 
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
     <header>
         <mat-card-title>Channel erstellen</mat-card-title>
         <button mat-icon-button disableRipple (click)="onNoClick()">
@@ -12,25 +14,32 @@
             Beispiel.</span>
     </div>
 
+    <!-- Channel-Name Eingabefeld mit Fehlermeldung -->
     <div class="section">
         <header>
             <span class="section-title">Channel-Name</span>
         </header>
         <div class="channel-edit-inp">
             <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
-            <input type="text" [(ngModel)]="newChannel.name" placeholder="z.B. Kooperationsprojekte" ng-minlength="3">
+            <input type="text" [(ngModel)]="newChannel.name" placeholder="z.B. Kooperationsprojekte"
+                (ngModelChange)="validateInputName()">
         </div>
+        <div *ngIf="channelNameError" class="error">{{ channelNameError }}</div>
     </div>
 
+    <!-- Beschreibung Eingabefeld mit Fehlermeldung -->
     <div class="section">
         <header>
             <span class="section-title">Beschreibung</span>
-            <span class="section-brackets">(optional)</span>
         </header>
         <div class="channel-edit-inp">
-            <input type="text" [(ngModel)]="newChannel.description" placeholder="Dein Text hier" ng-minlength="5">
+            <input type="text" [(ngModel)]="newChannel.description" placeholder="Dein Text hier"
+                (ngModelChange)="validateInputDescription()">
         </div>
+        <div *ngIf="descriptionError" class="error">{{ descriptionError }}</div>
     </div>
 
-    <button class="btn" (click)="openDialogAddUserToNewChannel()">Erstellen</button>
+    <!-- Button mit dynamischer Klasse -->
+    <button class="btn" [ngClass]="{'btn-enable': canSaveNewChannel(), 'btn-disable': !canSaveNewChannel()}"
+        (click)="saveNewChannel()" [disabled]="!canSaveNewChannel()">Erstellen</button>
 </mat-card>

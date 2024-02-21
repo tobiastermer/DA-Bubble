@@ -1,0 +1,17 @@
+<div class="user-sector" (click)="$event.stopPropagation()">
+    <ng-container *ngIf="!userSelected; else selectedUserTemplate">
+        <input #userInput class="user-input" type="text" placeholder="Name eingeben" (input)="filterUsers()">
+    </ng-container>
+
+    <ng-template #selectedUserTemplate>
+        <div class="user-selector">
+            <app-user-chip [user]="addedUser" [smale]="true" (deleteUser)="removeUser()"></app-user-chip>
+        </div>
+    </ng-template>
+
+    <ul class="filterd-users" [class.d-none]="!selectListVisible">
+        <li *ngFor="let user of filteredUsers; trackBy: trackByFn" (click)="selectUser(user)">
+            <app-user-chip [user]="user"></app-user-chip>
+        </li>
+    </ul>
+</div>
