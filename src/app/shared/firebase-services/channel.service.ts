@@ -43,7 +43,7 @@ export class ChannelService {
     getChannels() {
         const q = query(collection(this.firestore, 'channels'));
         onSnapshot(q, (snapshot) => {
-            const channels = snapshot.docs.map(doc => Channel.fromFirestore({id: doc.id, data: () => doc.data()}));
+            const channels = snapshot.docs.map(doc => Channel.fromFirestore({ id: doc.id, data: () => doc.data() }));
             this.channelsSubject.next(channels);
         });
     }
@@ -68,4 +68,43 @@ export class ChannelService {
             return null;
         }
     }
+
+    validateInputChannelName(name: string) {
+        let channelNameError = '';
+        if (name.length > 0) {
+            if (name.length < 5) {
+                channelNameError = 'Der Channel-Name muss mindestens 5 Zeichen lang sein.';
+            } else if (name.includes(' ')) {
+                channelNameError = 'Der Channel-Name darf keine Leerzeichen enthalten.';
+            } else if (!this.channelNameIsUnique(name)) {
+                channelNameError = 'Ein Channel mit diesem Namen existiert bereits.';
+            } else {
+                channelNameError = '';
+            }
+        } else {
+            channelNameError = '';
+        }
+        return channelNameError;
+    }
+
+    validateInputChannelDescription(description: string) {
+        let channelDescriptionError = '';
+        if (description.length > 0) {
+            if (description.length < 5) {
+                channelDescriptionError = 'Die Beschreibung muss mindestens 5 Zeichen lang sein.';
+            } else {
+                channelDescriptionError = '';
+            }
+        } else {
+            channelDescriptionError = '';
+        }
+        return channelDescriptionError;
+    }
+
+    channelNameIsUnique(name: string): boolean {
+        const channelNameLowerCase = name.toLowerCase();
+        const channels: Channel[] = this.channelsSubject.value;
+        return !channels.some(channel => channel.name.toLowerCase() === channelNameLowerCase);
+    }
+
 }

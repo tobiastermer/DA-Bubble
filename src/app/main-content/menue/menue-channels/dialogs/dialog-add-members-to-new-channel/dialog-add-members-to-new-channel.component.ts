@@ -21,6 +21,7 @@ import { User } from '../../../../../shared/models/user.class';
 import { InputAddUserComponent } from '../../../../../shared/components/input-add-user/input-add-user.component';
 import { Membership } from '../../../../../shared/models/membership.class';
 import { MembershipService } from '../../../../../shared/firebase-services/membership.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-dialog-add-members-to-new-channel',
@@ -35,6 +36,7 @@ import { MembershipService } from '../../../../../shared/firebase-services/membe
     MatDialogActions,
     MatDialogClose,
     MatFormFieldModule,
+    MatProgressBarModule,
     MatRadioModule,
     FormsModule,
     CommonModule,

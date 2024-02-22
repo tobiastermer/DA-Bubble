@@ -22,7 +22,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { User } from '../../../../../shared/models/user.class';
 import { MembershipService } from '../../../../../shared/firebase-services/membership.service';
 import { Router } from '@angular/router';
-import { Membership } from '../../../../../shared/models/membership.class';
 
 @Component({
   selector: 'app-dialog-add-channel',
@@ -64,42 +63,36 @@ export class DialogAddChannelComponent {
     this.newChannelMemberIDs.push(this.newChannel.ownerID);
   }
 
-  validateInputName() {
-    if (this.newChannel.name.length > 0) {
-      if (this.newChannel.name.length < 5) {
-        this.channelNameError = 'Der Channel-Name muss mindestens 5 Zeichen lang sein.';
-      } else if (this.newChannel.name.includes(' ')) {
-        this.channelNameError = 'Der Channel-Name darf keine Leerzeichen enthalten.';
-      } else if (!this.channelNameIsUnique()) {
-        this.channelNameError = 'Ein Channel mit diesem Namen existiert bereits.';
-      } else {
-        this.channelNameError = '';
-      }
-    } else {
-      this.channelNameError = '';
-    }
+  validateInputChannelName() {
+    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name);
   }
 
-  validateInputDescription() {
-    if (this.newChannel.description.length > 0) {
-      if (this.newChannel.description.length < 5) {
-        this.descriptionError = 'Die Beschreibung muss mindestens 5 Zeichen lang sein.';
-      } else {
-        this.descriptionError = '';
-      }
-    } else {
-      this.descriptionError = '';
-    }
+  validateInputChannelDescription() {
+    this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.description);
   }
 
-  channelNameIsUnique(): boolean {
-    const newNameLowerCase = this.newChannel.name.toLowerCase();
-    return !this.data.allChannel.some(channel => channel.name.toLowerCase() === newNameLowerCase);
-  }
+  // validateInputDescription() {
+  //   if (this.newChannel.description.length > 0) {
+  //     if (this.newChannel.description.length < 5) {
+  //       this.descriptionError = 'Die Beschreibung muss mindestens 5 Zeichen lang sein.';
+  //     } else {
+  //       this.descriptionError = '';
+  //     }
+  //   } else {
+  //     this.descriptionError = '';
+  //   }
+  // }
+
+  // channelNameIsUnique(): boolean {
+  //   const newNameLowerCase = this.newChannel.name.toLowerCase();
+  //   return !this.data.allChannel.some(channel => channel.name.toLowerCase() === newNameLowerCase);
+  // }
 
   canSaveNewChannel(): boolean {
-    this.validateInputName();
-    this.validateInputDescription();
+    // this.validateInputName();
+    // this.validateInputDescription();
+    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name);
+    this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.name);
     return !this.channelNameError && !this.descriptionError && this.newChannel.name.length > 0 && this.newChannel.description.length > 0;
   }
 

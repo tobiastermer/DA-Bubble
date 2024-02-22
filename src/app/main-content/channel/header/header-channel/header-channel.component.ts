@@ -71,7 +71,7 @@ export class HeaderChannelComponent {
     const dialogRef = this.dialog.open(DialogChannelComponent, {
       width: '750px',
       position: pos, panelClass: ['card-left-corner'],
-      data: { channel },
+      data: { channel: this.channel, allUsers: this.allUsers },
     });
     dialogRef.afterClosed().subscribe(result => {
     });

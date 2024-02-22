@@ -22,7 +22,7 @@
         <div class="channel-edit-inp">
             <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
             <input type="text" [(ngModel)]="newChannel.name" placeholder="z.B. Kooperationsprojekte"
-                (ngModelChange)="validateInputName()">
+                (ngModelChange)="validateInputChannelName()">
         </div>
         <div *ngIf="channelNameError" class="error">{{ channelNameError }}</div>
     </div>
@@ -34,7 +34,7 @@
         </header>
         <div class="channel-edit-inp">
             <input type="text" [(ngModel)]="newChannel.description" placeholder="Dein Text hier"
-                (ngModelChange)="validateInputDescription()">
+                (ngModelChange)="validateInputChannelDescription()">
         </div>
         <div *ngIf="descriptionError" class="error">{{ descriptionError }}</div>
     </div>

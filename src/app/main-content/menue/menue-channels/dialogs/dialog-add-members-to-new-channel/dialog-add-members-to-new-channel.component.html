@@ -1,5 +1,7 @@
 <mat-card>
 
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
     <header>
         <mat-card-title>Leute hinzufügen</mat-card-title>
         <button mat-icon-button disableRipple (click)="onNoClick()">

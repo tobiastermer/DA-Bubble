@@ -8,7 +8,11 @@ mat-card {
 
     @include dFlex($fd: column, $ai: flex-end, $gap: 20px);
 
-}
+    mat-progress-bar {
+        @include pAbsolute($t: 0px, $l: -15px);
+        width: 100%;
+    }
+}    
 
 header {
     @include dFlex($jc: space-between);
