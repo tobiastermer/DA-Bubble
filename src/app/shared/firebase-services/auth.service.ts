@@ -4,6 +4,7 @@ import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { ref, uploadBytes, getDownloadURL, Storage } from '@angular/fire/storage'; // Import für Storage
+import { doc, getDoc, setDoc, query, where, getDocs } from 'firebase/firestore';
 
 
 @Injectable({
@@ -13,6 +14,19 @@ export class AuthService {
 
   constructor(private afAuth: Auth, private firestore: Firestore, private router: Router, private storage: Storage) {}
   
+
+  async userExists(uid: string): Promise<boolean> {
+    const userDocRef = doc(this.firestore, `users/${uid}`);
+    const docSnap = await getDoc(userDocRef);
+    return docSnap.exists();
+  }
+
+  async emailExists(email: string): Promise<boolean> {
+    const usersRef = collection(this.firestore, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  }
   
 
   async saveAccountDataUser(email: string, password: string, name: string, avatarPath: string) {
@@ -45,10 +59,10 @@ export class AuthService {
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(this.afAuth, provider);
       const user = userCredential.user;
-  
-      
+
+     
       await this.saveUserData(user);
-  
+
       return user;
     } catch (error) {
       console.error('Fehler bei der Anmeldung mit Google', error);
@@ -57,13 +71,14 @@ export class AuthService {
   }
   
   async saveUserData(user: any) {
-    await addDoc(collection(this.firestore, "users"), {
+    const userDocRef = doc(this.firestore, `users/${user.uid}`);
+    await setDoc(userDocRef, {
       uid: user.uid,
       name: user.displayName,
       email: user.email,
       avatar: user.photoURL,  
       status: ""
-    });
+    }, { merge: true }); 
   }
 
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, ValidationErrors } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { sendPasswordResetEmail } from '@angular/fire/auth';
 import { Auth } from '@angular/fire/auth';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { AuthService } from '../../shared/firebase-services/auth.service'; 
 
 @Component({
   selector: 'app-pw-reset',
@@ -28,27 +29,60 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class PwResetComponent {
   sendSuccess = false;
+  errorMessage= false;
   pwResetForm: FormGroup;
-  constructor(private fb: FormBuilder, private router: Router, private afAuth: Auth) {
+  constructor(private fb: FormBuilder, private router: Router, private afAuth: Auth,  private authService: AuthService) {
     this.pwResetForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email, this.emailDomainValidator]],
     });
   }
+
   async onSubmit() {
     if (this.pwResetForm.valid) {
       const email = this.pwResetForm.get('email')?.value;
       try {
+        const exists = await this.authService.emailExists(email); 
+        if (!exists) {
+          this.errorMessage= true;
+          setTimeout(() => {
+            this.errorMessage = false;
+          }, 1500);
+          return;
+        }
         await sendPasswordResetEmail(this.afAuth, email, {
-          url: 'http://localhost:4200/new-pw', //ändern vor deploy
+          url: 'http://localhost:4200/new-pw', // Ändern vor Deploy
           handleCodeInApp: true,
         });
         this.sendSuccess = true;
-      setTimeout(() => this.router.navigate(['/login']), 2000);
+        setTimeout(() => this.router.navigate(['/login']), 2000);
       } catch (error) {
         console.error('Fehler beim Senden', error);
-       
       }
     }
+  }
+
+  emailDomainValidator(control: AbstractControl): ValidationErrors | null {
+    const email = control.value;
+    if (!email.includes('@')) {
+      return { emailAtSymbolMissing: true };
+    }
+    const domainPart = email.substring(email.lastIndexOf('@') + 1);
+    if (!domainPart.includes('.')) {
+      return { emailDomainDotMissing: true };
+    }
+    return null;
+  }
+
+  getFirstEmailError() {
+    const emailErrors = this.pwResetForm.get('email')?.errors;
+    if (!emailErrors) return null;
+  
+    if (emailErrors['required']) return 'E-Mail eingeben';
+    if (emailErrors['email']) return 'Bitte richtige E-Mail eingeben';
+    
+    return 'Bitte richtige E-Mail eingeben';
+  
+    return null;
   }
 
 

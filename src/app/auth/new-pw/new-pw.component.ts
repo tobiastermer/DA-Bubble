@@ -7,11 +7,10 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { sendPasswordResetEmail } from '@angular/fire/auth';
 import { Auth } from '@angular/fire/auth';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
-import { applyActionCode, verifyPasswordResetCode, confirmPasswordReset } from '@angular/fire/auth';
+import { applyActionCode, confirmPasswordReset } from '@angular/fire/auth';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -51,11 +50,11 @@ export class NewPwComponent implements OnInit {
       this.oobCode = params['oobCode'];
       this.mode = params['mode'];
 
-      if (this.mode === 'resetPassword' && this.oobCode) {
-        this.isPasswordReset = true;
-      } else if (this.mode === 'verifyEmail' && this.oobCode) {
+      if (this.mode === 'verifyEmail' && this.oobCode) {
         applyActionCode(this.afAuth,this.oobCode);
         this.verifyEmail() ;
+      } else if (this.mode === 'resetPassword' && this.oobCode) {
+        this.isPasswordReset = true;
       }
     });
   }

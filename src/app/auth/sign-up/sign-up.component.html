@@ -37,8 +37,8 @@
           type="email"
           (blur)="signUpForm.controls['email'].markAsTouched()"
         />
-        <mat-error *ngIf="signUpForm.controls['email'].errors">
-          Bitte richtige E-Mail eingeben
+        <mat-error *ngIf="signUpForm.get('email')?.errors">
+          {{ getFirstEmailError() }}
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="sign-up__form-field">

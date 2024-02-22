@@ -22,13 +22,10 @@
               type="email" 
               (blur)="pwResetForm.controls['email'].markAsTouched()"
             />
-            <mat-error *ngIf="pwResetForm.get('email')?.errors?.['emailTaken']">Diese E-Mail ist bereits vergeben.</mat-error>
-            <mat-error *ngIf="pwResetForm.get('email')?.hasError('required')"
-              >Email eingeben</mat-error
-            >
-            <mat-error *ngIf="pwResetForm.get('email')?.hasError('email')"
-              >Richtige Email eingeben</mat-error
-            >
+            <mat-error *ngIf="pwResetForm.get('email')?.errors">
+              {{ getFirstEmailError() }}
+            </mat-error>
+      
           </mat-form-field>
    
       <mat-card-title class="pw-reset__footer"
@@ -61,6 +58,12 @@
     <mat-card-content>
       E-Mail gesendet
     </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="errorMessage" @slideInUp class="success-popup">
+    <mat-card-content>
+    Diese Email existiert nicht in DA-Bubble
+  </mat-card-content>
   </mat-card>
 
   <div class="background-container__legals">
