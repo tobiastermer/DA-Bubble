@@ -5,10 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { ChannelMessage } from '../../models/channel-message.class';
 import { User } from '../../models/user.class';
 import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show-user.component';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogPosition, MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { Reply } from '../../models/reply.class';
 import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
+import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
+import { ElementPos } from '../../../main-content/channel/header/header-channel/header-channel.component';
 
 
 @Component({
@@ -33,6 +35,7 @@ export class MessageComponent implements OnChanges {
   @Output() threadOutput: EventEmitter<ChannelMessage> = new EventEmitter<ChannelMessage>();
 
   @ViewChild('msgText') msgText!: ElementRef;
+  @ViewChild('emoijBtn') emoijBtn!: ElementRef;
 
   replaies: Reply[] = [];
 
@@ -94,6 +97,46 @@ export class MessageComponent implements OnChanges {
     if (!this.editMsg) return
     if (this.oldText != this.msgText.nativeElement.value) this.saveEnable = true;
     else this.saveEnable = false;
+  }
+
+
+  openDialogEmoji(): void {
+    let pos = this.getDialogPos(this.emoijBtn);
+    const dialogRef = this.dialog.open(DialogEmojiComponent, {
+      position: pos, panelClass: ['card-left-bottom-corner'],
+      data: {},
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result){
+        this.addEmoji(result);
+        this.checkChange();
+      } 
+    });
+  }
+
+
+  addEmoji(emoji: string) {
+    this.msgText.nativeElement.value = `${this.msgText.nativeElement.value}${emoji}`;
+  }
+
+
+  getDialogPos(element: ElementRef | undefined): DialogPosition | undefined {
+    if (!element) return undefined
+    const windowH = window.innerHeight;
+    let pos: ElementPos;
+    let e: any = element;
+    pos = this.getElementPos(e._elementRef.nativeElement)
+    return { bottom: windowH - pos.y + 'px', left: pos.x + 'px' }
+  }
+
+
+  getElementPos(element: any): ElementPos {
+    return {
+      y: element.getBoundingClientRect().y,
+      h: element.getBoundingClientRect().height,
+      x: element.getBoundingClientRect().x,
+      w: element.getBoundingClientRect().width,
+    }
   }
 
 

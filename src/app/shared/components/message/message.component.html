@@ -22,7 +22,7 @@
         <div class="edit">
             <textarea #msgText class="edit-text" cols="30" rows="3" (input)="checkChange()">{{ msg.message }}</textarea>
             <div class="edit-bottom">
-                <mat-icon class="action-btn">add_reaction</mat-icon>
+                <mat-icon class="action-btn" #emoijBtn (click)="openDialogEmoji()">sentiment_satisfied</mat-icon>
                 <div class="btn-area">
                     <div class="delet-btn">
                         <button mat-fab extended color="primary" (click)="deletMsg()">Löschen</button>

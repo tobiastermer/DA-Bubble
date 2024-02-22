@@ -5,12 +5,19 @@ import { DataService } from '../../services/data.service';
 import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
 import { Channel } from '../../models/channel.class';
 import { Reply } from '../../models/reply.class';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { DialogPosition, MatDialog } from '@angular/material/dialog';
+import { ElementPos } from '../../../main-content/channel/header/header-channel/header-channel.component';
+import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
 
 
 @Component({
   selector: 'app-input-textarea',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [
+    MatIconModule,
+    PickerComponent,
+  ],
   templateUrl: './input-textarea.component.html',
   styleUrl: './input-textarea.component.scss',
 })
@@ -21,10 +28,12 @@ export class InputTextareaComponent {
   @Input() channelMsg: Boolean = false;
 
   @ViewChild('messageText') messageText!: ElementRef;
+  @ViewChild('emoijBtn') emoijBtn!: ElementRef;
 
   isButtonDisabled: boolean = true;
+  isEmojiPickerVisible: boolean = false;
 
-  constructor(private data: DataService, private messageFBS: ChannelMessagesService) { }
+  constructor(private data: DataService, private messageFBS: ChannelMessagesService, public dialog: MatDialog) { }
 
   updateButtonState(textValue: string): void {
     this.isButtonDisabled = !textValue.trim();
@@ -65,7 +74,7 @@ export class InputTextareaComponent {
 
   fillChannelMsg(text: string) {
     if (!this.data.currentUser.id) return
-    if (!this.channel|| this.channel.id === '') return
+    if (!this.channel || this.channel.id === '') return
     let msg = new ChannelMessage();
     msg.date = new Date().getTime();
     msg.channelID = this.channel.id;
@@ -94,5 +103,46 @@ export class InputTextareaComponent {
     return reply
   }
 
+
+// Emoji part
+
+  openDialogEmoji(): void {
+    let pos = this.getDialogPos(this.emoijBtn);
+    let classCorner =  pos?.right ?  'card-right-bottom-corner' : 'card-left-bottom-corner';
+    const dialogRef = this.dialog.open(DialogEmojiComponent, {
+      position: pos, panelClass: [classCorner],
+      data: {},
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.addEmoji(result)
+    });
+  }
+
+
+  addEmoji(emoji: string) {
+    this.messageText.nativeElement.value = `${this.messageText.nativeElement.value}${emoji}`;
+  }
+
+
+  getDialogPos(element: ElementRef | undefined): DialogPosition | undefined {
+    if (!element) return undefined
+    const windowH = window.innerHeight;
+    const windowW = window.innerWidth;
+    let pos: ElementPos;
+    let e: any = element;
+    pos = this.getElementPos(e._elementRef.nativeElement)
+    if (pos.x < (windowW/2)) return { bottom: windowH - pos.y + 'px', left: pos.x + 'px' }
+    else return { bottom: windowH - pos.y + 'px', right: windowW - pos.x - pos.w + 'px' }
+  }
+
+
+  getElementPos(element: any): ElementPos {
+    return {
+      y: element.getBoundingClientRect().y,
+      h: element.getBoundingClientRect().height,
+      x: element.getBoundingClientRect().x,
+      w: element.getBoundingClientRect().width,
+    }
+  }
 
 }
