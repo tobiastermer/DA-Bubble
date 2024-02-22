@@ -1,14 +1,14 @@
 @if(channelMsg){
 
 <mat-card class="thread-panel">
-  <header class="thread-panel__header">
-    <div class="thread-panel__title-text">
+  <header class="thread-header">
+    <div class="header-title">
       <h2>Thread</h2>
       <p>#{{ channel?.name }}</p>
       <!--Channel-->
     </div>
-    <button class="thread-panel__close-button">
-      <mat-icon class="thread-panel__close-icon">close</mat-icon>
+    <button class="close-button">
+      <mat-icon class="close-icon">close</mat-icon>
     </button>
   </header>
   <main>
@@ -31,7 +31,7 @@
 
   </main>
 
-  <app-input-textarea></app-input-textarea>
+  <app-input-textarea [channel]="channel" [msg]="channelMsg"></app-input-textarea>
 
 </mat-card>
 
