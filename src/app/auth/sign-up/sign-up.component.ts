@@ -17,6 +17,8 @@ import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthService } from '../../shared/firebase-services/auth.service';
+import { map } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -62,6 +64,7 @@ export class SignUpComponent implements OnInit {
       email: [
         '',
         [Validators.required, Validators.email, this.emailDomainValidator],
+        [this.emailAsyncValidator.bind(this)],
       ],
       password: [
         '',
@@ -76,6 +79,18 @@ export class SignUpComponent implements OnInit {
     });
   }
 
+  formatName(name: string): string {
+    return name.replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  emailAsyncValidator(
+    control: AbstractControl
+  ): Observable<ValidationErrors | null> {
+    return from(this.authService.emailExists(control.value)).pipe(
+      map((exists) => (exists ? { emailExists: true } : null))
+    );
+  }
+
   emailDomainValidator(control: AbstractControl): ValidationErrors | null {
     const email = control.value;
     if (!email.includes('@')) {
@@ -87,13 +102,16 @@ export class SignUpComponent implements OnInit {
     }
     return null;
   }
+
   prefillForm() {
-    const tempUserData = JSON.parse(localStorage.getItem('tempUser') || '{}');
-    if (tempUserData.email && tempUserData.name) {
-      this.signUpForm.patchValue({
-        name: tempUserData.name,
-        email: tempUserData.email,
-      });
+    if (typeof window !== 'undefined') {
+      const tempUserData = JSON.parse(localStorage.getItem('tempUser') || '{}');
+      if (tempUserData.email && tempUserData.name) {
+        this.signUpForm.patchValue({
+          name: tempUserData.name,
+          email: tempUserData.email,
+        });
+      }
     }
   }
 
@@ -112,11 +130,25 @@ export class SignUpComponent implements OnInit {
     if (!passwordErrors) return null;
 
     if (passwordErrors['required']) return 'Passwort eingeben';
-    if (passwordErrors['minlength']) return 'Mindestens 6 Zeichen eingeben';
-    if (passwordErrors['upperCase'])
-      return 'Mindestens einen Großbuchstaben eingeben';
-    if (passwordErrors['specialChar'])
-      return 'Mindestens ein Sonderzeichen eingeben';
+    if (
+      passwordErrors['minlength'] ||
+      passwordErrors['upperCase'] ||
+      passwordErrors['specialChar']
+    ) {
+      return 'Min. 6 Zeichen, 1 Großbuchstaben, 1 Sonderzeichen';
+    }
+
+    return null;
+  }
+
+  getFirstEmailError() {
+    const emailErrors = this.signUpForm.get('email')?.errors;
+    if (!emailErrors) return null;
+
+    if (emailErrors['required']) return 'E-Mail eingeben';
+    if (emailErrors['email']) return 'Bitte richtige E-Mail eingeben';
+    if (emailErrors['emailExists'])
+      return 'Diese E-Mail-Adresse wird bereits verwendet.';
 
     return null;
   }
@@ -138,7 +170,9 @@ export class SignUpComponent implements OnInit {
   async onSubmit() {
     this.formSubmitted = true;
     if (this.signUpForm.valid) {
-      const { email, password, name } = this.signUpForm.value;
+      let { email, password, name } = this.signUpForm.value;
+      name = this.formatName(name);
+      email = email.toLowerCase();
       localStorage.setItem(
         'tempUser',
         JSON.stringify({ name, email, password })

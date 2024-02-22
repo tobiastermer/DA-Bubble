@@ -57,12 +57,12 @@
         <button type="submit" mat-fab extended color="primary" [disabled]="!loginForm.valid">Anmelden</button>
       </div>
       <div class="login__guest">
-        <button type="submit" mat-fab extended color="primary" (click)="onGuestLogin()">Gäste-login</button>
+        <button type="submit" mat-fab extended color="primary" (click)="onGuestLogin(guestUserId)">Gäste-login</button>
       </div>
     </mat-card>
     </form>
   </mat-card>
-  <mat-card class="error-popup" @slideInUp *ngIf="error">
+  <mat-card class="error-popup" @errorAnimation *ngIf="error">
     <mat-card-content>
       {{ errorMessage }}
      
