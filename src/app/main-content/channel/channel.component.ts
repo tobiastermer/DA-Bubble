@@ -44,6 +44,8 @@ export class ChannelComponent {
   @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' });
 
   chat: 'channel' | 'message' | 'new' = 'channel';
+  oldTimeStemp!: string;
+  newTimeStemp!: string;
 
   threadMsg: ChannelMessage | undefined;
   threadChannel: Channel | undefined;
@@ -94,6 +96,25 @@ export class ChannelComponent {
   }
 
 
+  checkTimeStemp(time:number): boolean{
+    this.newTimeStemp = this.getTimeStemp(time);
+    if (this.oldTimeStemp === this.newTimeStemp) return false
+    this.oldTimeStemp = this.newTimeStemp
+    return true
+  }
+
+
+  getTimeStemp(msgTime: number): string{
+    let time = new Date(msgTime);
+    let toDay = new Date();
+    if (time.getUTCFullYear() !== toDay.getFullYear()) return time.toISOString().substring(0, 10)
+    if (time.toDateString() === toDay.toDateString()) return 'Heute'
+    const weekday = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const month = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    return weekday[time.getUTCDay()] + ', ' + time.getDate() + ' ' + month[time.getUTCMonth()]
+  }
+
+
   // Functions for Channel 
   async loadChannelData() {
     this.ngOnDestroy();
@@ -118,7 +139,7 @@ export class ChannelComponent {
   loadMessages() {
     this.channelMessagesService.getChannelMessages(this.currentChannelID);
     this.channelMessagesSubscription = this.channelMessagesService.channelMessages$.subscribe(channelMessages => {
-      this.channelMessages = channelMessages;
+      this.channelMessages = channelMessages.sort((a, b) => a.date - b.date);
     });
   }
 
@@ -167,11 +188,11 @@ export class ChannelComponent {
 
   setThreadValues(msg: ChannelMessage) {
     this.threadMsg = new ChannelMessage(msg)
-    this.threadChannel = new Channel(this.channels.find(channel => channel.id === this.threadMsg?.channelID)); 
+    this.threadChannel = new Channel(this.channels.find(channel => channel.id === this.threadMsg?.channelID));
   }
 
 
-  deletThreadValues(delet:boolean){
+  deletThreadValues(delet: boolean) {
     if (delet) this.threadMsg = undefined;
   }
 

@@ -9,7 +9,18 @@
                 </app-channel-msg>
                 }
                 @for (message of channelMessages; track $index) {
-                <app-message [msg]="message" [user]="getUserFromMessage(message)" [isChannelMsg]="true" (threadOutput)="setThreadValues($event)"></app-message>
+                
+                @if(checkTimeStemp(message.date)){
+                    <div class="day-section">
+                        <hr>
+                        <div>{{ newTimeStemp }}</div>
+                        <hr>
+                    </div>
+                }
+
+
+                <app-message [msg]="message" [user]="getUserFromMessage(message)" [isChannelMsg]="true"
+                    (threadOutput)="setThreadValues($event)"></app-message>
                 }
         </main>
         }
@@ -34,7 +45,8 @@
     </mat-card>
 
     @if (chat === 'channel') {
-    <app-threads [channelMsg]="threadMsg" [channel]="threadChannel" (closeThread)="deletThreadValues($event)"></app-threads>
+    <app-threads [channelMsg]="threadMsg" [channel]="threadChannel"
+        (closeThread)="deletThreadValues($event)"></app-threads>
     }
 
 </div>
