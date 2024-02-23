@@ -1,0 +1,20 @@
+@import "./../../../../styles.scss";
+
+.dropDown {
+  @include dFlex($jc: center);
+  flex-direction: column;
+  width: 200px;
+  height: 100px;
+  span {
+    padding: 8px;
+    cursor: pointer;
+    font-size: 22px;
+    width: 150px;
+    text-align: center;
+    border-radius: 100px;
+    &:hover {
+      color: $dkBlue;
+      background-color: $bgGrey;
+    }
+  }
+}
