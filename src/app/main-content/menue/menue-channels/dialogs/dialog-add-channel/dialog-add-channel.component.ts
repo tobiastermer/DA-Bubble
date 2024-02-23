@@ -64,34 +64,15 @@ export class DialogAddChannelComponent {
   }
 
   validateInputChannelName() {
-    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name);
+    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, '');
   }
 
   validateInputChannelDescription() {
     this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.description);
   }
 
-  // validateInputDescription() {
-  //   if (this.newChannel.description.length > 0) {
-  //     if (this.newChannel.description.length < 5) {
-  //       this.descriptionError = 'Die Beschreibung muss mindestens 5 Zeichen lang sein.';
-  //     } else {
-  //       this.descriptionError = '';
-  //     }
-  //   } else {
-  //     this.descriptionError = '';
-  //   }
-  // }
-
-  // channelNameIsUnique(): boolean {
-  //   const newNameLowerCase = this.newChannel.name.toLowerCase();
-  //   return !this.data.allChannel.some(channel => channel.name.toLowerCase() === newNameLowerCase);
-  // }
-
   canSaveNewChannel(): boolean {
-    // this.validateInputName();
-    // this.validateInputDescription();
-    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name);
+    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, '');
     this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.name);
     return !this.channelNameError && !this.descriptionError && this.newChannel.name.length > 0 && this.newChannel.description.length > 0;
   }
@@ -101,10 +82,10 @@ export class DialogAddChannelComponent {
     if (this.newChannel.name && this.newChannel.description) {
       try {
         const channelId = await this.ChannelService.addChannel(this.newChannel) as string;
-        this.newChannel.id = channelId; // Setze die ID für das Channel-Objekt
+        this.newChannel.id = channelId;
         this.saveOwnerMembership();
         this.router.navigate([this.data.pathUserName + '/channel/' + this.newChannel.name]);
-        this.openDialogAddUserToNewChannel(); // Weiterarbeiten mit dem vervollständigten Channel-Objekt
+        this.openDialogAddUserToNewChannel();
       } catch (err) {
         console.error(err);
       }

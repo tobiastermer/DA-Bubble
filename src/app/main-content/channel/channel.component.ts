@@ -131,7 +131,7 @@ export class ChannelComponent {
     this.membershipService.getChannelMemberships(this.currentChannelID);
     this.channelMembershipSubscription = this.membershipService.channelMemberships$.subscribe(channelMemberships => {
       this.currentChannelMemberships = channelMemberships;
-      console.log('Members of current Channel: ', this.currentChannelMemberships);
+      // console.log('Members of current Channel: ', this.currentChannelMemberships);
     });
   }
 

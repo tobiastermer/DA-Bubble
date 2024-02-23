@@ -28,7 +28,7 @@ export class MenueMessagesComponent {
 
   constructor(public dialog: MatDialog, private router: Router) {
     //this.users = this.getUsers();
-    console.log(this.users);
+    // console.log(this.users);
   }
 
   toggleUsersVisibility() {

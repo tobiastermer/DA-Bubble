@@ -45,13 +45,13 @@ export class MainContentComponent implements OnDestroy {
     this.membershipService.getUserMemberships(this.currentUserID);
     this.userMembershipSubscription = this.membershipService.userMemberships$.subscribe(userMemberships => {
       this.userMemberships = userMemberships;
-      console.log('Memberships of current User: ', this.userMemberships);
+      // console.log('Memberships of current User: ', this.userMemberships);
     });
 
     this.channelsSubscription = this.channelService.channels$.subscribe(channels => {
       this.channels = channels;
       this.dataService.channels = channels;
-      console.log('Channel: ', this.channels);
+      // console.log('Channel: ', this.channels);
     });
 
     this.dataService.currentUser = this.currentUser;

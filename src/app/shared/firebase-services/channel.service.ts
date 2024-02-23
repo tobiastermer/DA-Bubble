@@ -69,14 +69,14 @@ export class ChannelService {
         }
     }
 
-    validateInputChannelName(name: string) {
+    validateInputChannelName(newChannelName: string, currentChannelName: string | '') {
         let channelNameError = '';
-        if (name.length > 0) {
-            if (name.length < 5) {
+        if (newChannelName.length > 0) {
+            if (newChannelName.length < 5) {
                 channelNameError = 'Der Channel-Name muss mindestens 5 Zeichen lang sein.';
-            } else if (name.includes(' ')) {
+            } else if (newChannelName.includes(' ')) {
                 channelNameError = 'Der Channel-Name darf keine Leerzeichen enthalten.';
-            } else if (!this.channelNameIsUnique(name)) {
+            } else if (!this.channelNameIsUnique(newChannelName, currentChannelName)) {
                 channelNameError = 'Ein Channel mit diesem Namen existiert bereits.';
             } else {
                 channelNameError = '';
@@ -87,10 +87,10 @@ export class ChannelService {
         return channelNameError;
     }
 
-    validateInputChannelDescription(description: string) {
+    validateInputChannelDescription(newChannelDescription: string) {
         let channelDescriptionError = '';
-        if (description.length > 0) {
-            if (description.length < 5) {
+        if (newChannelDescription.length > 0) {
+            if (newChannelDescription.length < 5) {
                 channelDescriptionError = 'Die Beschreibung muss mindestens 5 Zeichen lang sein.';
             } else {
                 channelDescriptionError = '';
@@ -101,10 +101,14 @@ export class ChannelService {
         return channelDescriptionError;
     }
 
-    channelNameIsUnique(name: string): boolean {
-        const channelNameLowerCase = name.toLowerCase();
-        const channels: Channel[] = this.channelsSubject.value;
-        return !channels.some(channel => channel.name.toLowerCase() === channelNameLowerCase);
+    channelNameIsUnique(name: string, currentChannelName: string | ''): boolean {
+        if (name == currentChannelName) {
+            return true;
+        } else {
+            const channelNameLowerCase = name.toLowerCase();
+            const channels: Channel[] = this.channelsSubject.value;
+            return !channels.some(channel => channel.name.toLowerCase() === channelNameLowerCase);
+        }
     }
 
 }

@@ -10,9 +10,8 @@ import { CommonModule } from '@angular/common';
 import { Reply } from '../../models/reply.class';
 import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
 import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
-import { ElementPos } from '../../../main-content/channel/header/header-channel/header-channel.component';
+import { ElementPos, PositionService } from '../../../shared/services/position.service';
 import { DataService } from '../../services/data.service';
-import { tick } from '@angular/core/testing';
 
 
 @Component({
@@ -51,7 +50,8 @@ export class MessageComponent implements OnChanges {
   constructor(
     public dialog: MatDialog,
     private messageFBS: ChannelMessagesService,
-    private data: DataService) {
+    private data: DataService,
+    private PositionService: PositionService) {
     this.currentUserID = data.currentUserID;
   }
 
@@ -107,7 +107,7 @@ export class MessageComponent implements OnChanges {
 
 
   openDialogEmoji(): void {
-    let pos = this.getDialogPos(this.emoijBtn);
+    let pos = this.PositionService.getDialogPos(this.emoijBtn);
     const dialogRef = this.dialog.open(DialogEmojiComponent, {
       position: pos, panelClass: ['card-left-bottom-corner'],
       data: {},
@@ -123,26 +123,6 @@ export class MessageComponent implements OnChanges {
 
   addEmoji(emoji: string) {
     this.msgText.nativeElement.value = `${this.msgText.nativeElement.value}${emoji}`;
-  }
-
-
-  getDialogPos(element: ElementRef | undefined): DialogPosition | undefined {
-    if (!element) return undefined
-    const windowH = window.innerHeight;
-    let pos: ElementPos;
-    let e: any = element;
-    pos = this.getElementPos(e._elementRef.nativeElement)
-    return { bottom: windowH - pos.y + 'px', left: pos.x + 'px' }
-  }
-
-
-  getElementPos(element: any): ElementPos {
-    return {
-      y: element.getBoundingClientRect().y,
-      h: element.getBoundingClientRect().height,
-      x: element.getBoundingClientRect().x,
-      w: element.getBoundingClientRect().width,
-    }
   }
 
 

@@ -9,7 +9,7 @@
         <div class="users" #membersInfo (click)="openDialogMembers()">
             <div class="users-list">
                 @for (member of members; track $index) {
-                    <img src="../../../../../assets/img/avatars/{{member.avatar}}.svg" alt="userName" class="user-avatar">
+                    <img src="{{member.avatar}}" alt="userName" class="user-avatar">
                 }
             </div>
             <span>{{ members.length }}</span>

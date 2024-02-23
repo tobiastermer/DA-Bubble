@@ -35,7 +35,7 @@ export class DialogShowUserComponent {
     @Inject(MAT_DIALOG_DATA) public data: { user: User, currentUserID: String },
     public dialog: MatDialog
   ) {
-    console.log(this.data.user); // So kannst du auf den übergebenen Benutzer zugreifen
+    // console.log(this.data.user); 
   }
 
   sendMessage() { }
