@@ -55,7 +55,7 @@ export class MainContentComponent implements OnDestroy {
     });
 
     this.dataService.currentUser = this.currentUser;
-
+    this.dataService.currentUserID = this.currentUserID;
   }
 
   async ngOnInit() {

@@ -171,6 +171,11 @@ export class ChannelComponent {
   }
 
 
+  deletThreadValues(delet:boolean){
+    if (delet) this.threadMsg = undefined;
+  }
+
+
   ngOnDestroy() {
     this.channelMembershipSubscription?.unsubscribe();
     this.channelMessagesSubscription?.unsubscribe();

@@ -11,6 +11,8 @@ import { Reply } from '../../models/reply.class';
 import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
 import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
 import { ElementPos } from '../../../main-content/channel/header/header-channel/header-channel.component';
+import { DataService } from '../../services/data.service';
+import { tick } from '@angular/core/testing';
 
 
 @Component({
@@ -28,9 +30,11 @@ import { ElementPos } from '../../../main-content/channel/header/header-channel/
 export class MessageComponent implements OnChanges {
 
   @Input() msg!: ChannelMessage | Reply;
+  @Input() channelMsg!: ChannelMessage;
+  @Input() index!: number;
   @Input() user!: User;
-  @Input() channelMsg: Boolean = false;
-  @Input() currentUserID: String | undefined = '';
+  @Input() isChannelMsg: Boolean = false;
+  @Input() isEditDisabled: Boolean = false;
 
   @Output() threadOutput: EventEmitter<ChannelMessage> = new EventEmitter<ChannelMessage>();
 
@@ -39,11 +43,17 @@ export class MessageComponent implements OnChanges {
 
   replaies: Reply[] = [];
 
-  editMsg = false;
-  saveEnable = false;
+  isEditMsg = false;
+  isSaveEnable = false;
+  currentUserID: string;
   oldText: string = '';
 
-  constructor(public dialog: MatDialog, private messageFBS: ChannelMessagesService) { }
+  constructor(
+    public dialog: MatDialog,
+    private messageFBS: ChannelMessagesService,
+    private data: DataService) {
+    this.currentUserID = data.currentUserID;
+  }
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -76,27 +86,23 @@ export class MessageComponent implements OnChanges {
   // edit functions
 
   editPossible(): boolean {
-    if (this.msg instanceof ChannelMessage) {
-      if (this.msg.fromUserID === this.currentUserID) return true
-      else return false
-    } else {
-      if (this.msg.userID === this.currentUserID) return true
-      else return false
-    }
+    if (this.isEditDisabled) return false
+    let out;
+    if (this.msg instanceof ChannelMessage) (this.msg.fromUserID === this.currentUserID) ? out = true : out = false;
+    else (this.msg.userID === this.currentUserID) ? out = true : out = false;
+    return out
   }
 
 
   toggleEditMsg() {
-    this.editMsg = !this.editMsg;
-    if (this.editMsg) this.oldText = this.msg.message
-    else this.saveEnable = false;
+    this.isEditMsg = !this.isEditMsg;
+    this.isEditMsg ? (this.oldText = this.msg.message) : this.isSaveEnable = false;
   }
 
 
   checkChange() {
-    if (!this.editMsg) return
-    if (this.oldText != this.msgText.nativeElement.value) this.saveEnable = true;
-    else this.saveEnable = false;
+    if (!this.isEditMsg) return
+    (this.oldText != this.msgText.nativeElement.value) ? this.isSaveEnable = true : this.isSaveEnable = false;
   }
 
 
@@ -107,10 +113,10 @@ export class MessageComponent implements OnChanges {
       data: {},
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result){
+      if (result) {
         this.addEmoji(result);
         this.checkChange();
-      } 
+      }
     });
   }
 
@@ -141,23 +147,48 @@ export class MessageComponent implements OnChanges {
 
 
   async deletMsg() {
-    this.editMsg = false;
-    if (this.msg instanceof ChannelMessage) {
-      if (this.msg.fromUserID !== this.currentUserID) return
-      else await this.messageFBS.deleteChannelMessage(this.msg)
-    }
+    this.isEditMsg = false;
+    if (this.msg instanceof ChannelMessage) await this.deletChannelMsg(this.msg)
+    else await this.deletReplyMsg(this.msg)
+  }
+
+
+  async deletChannelMsg(msg: ChannelMessage) {
+    if (msg.fromUserID !== this.currentUserID) return
+    else await this.messageFBS.deleteChannelMessage(msg)
+  }
+
+
+  async deletReplyMsg(msg: Reply) {
+    if (msg.userID !== this.currentUserID) return
+    if (!this.channelMsg) return
+    this.channelMsg.replies.splice(this.index, 1)
+    await this.messageFBS.updateChannelMessage(this.channelMsg)
   }
 
 
   async saveMsg() {
-    if (!this.saveEnable) return
-    this.saveEnable = false;
+    if (!this.isSaveEnable) return
+    this.isSaveEnable = false;
     this.msg.message = this.msgText.nativeElement.value;
-    this.editMsg = false;
-    if (this.msg instanceof ChannelMessage) {
-      if (this.msg.fromUserID !== this.currentUserID) return
-      else await this.messageFBS.updateChannelMessage(this.msg)
-    }
+    this.isEditMsg = false;
+    if (this.msg instanceof ChannelMessage) await this.saveChannelMsg(this.msg);
+    else await this.saveReplyMsg(this.msg);
+  }
+
+
+  async saveChannelMsg(msg: ChannelMessage) {
+    if (msg.fromUserID !== this.currentUserID) return
+    else await this.messageFBS.updateChannelMessage(msg)
+    return
+  }
+
+
+  async saveReplyMsg(msg: Reply) {
+    if (msg.userID !== this.currentUserID) return
+    if (!this.channelMsg) return
+    this.channelMsg.replies[this.index] = msg;
+    await this.messageFBS.updateChannelMessage(this.channelMsg)
   }
 
 }

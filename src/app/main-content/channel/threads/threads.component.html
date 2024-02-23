@@ -7,14 +7,14 @@
       <p>#{{ channel?.name }}</p>
       <!--Channel-->
     </div>
-    <button class="close-button">
+    <button class="close-button" (click)="setCloseTread()">
       <mat-icon class="close-icon">close</mat-icon>
     </button>
   </header>
   <main>
 
-    <app-message [msg]="channelMsg" [currentUserID]="data.currentUser.id"
-      [user]="data.getUserFromMessage(channelMsg)"></app-message>
+    <app-message [msg]="channelMsg"
+      [user]="data.getUserFromMessage(channelMsg)" [isEditDisabled]="true"></app-message>
 
     <div class="response-counter">
       <div>{{ channelMsg.replies.length }}</div>
@@ -25,8 +25,8 @@
     <!-- REPLY MESSAGE -->
 
     @for (reply of channelMsg.replies ; track $index) {
-    <app-message [msg]="reply" [currentUserID]="data.currentUser.id"
-      [user]="data.getUserFromReply(reply)"></app-message>
+    <app-message [msg]="reply" [user]="data.getUserFromReply(reply)"
+    [index]="$index" [channelMsg]="channelMsg"></app-message>
     }
 
   </main>

@@ -3,7 +3,7 @@
 
     <div class="details">
         <!-- Message Info or Edit options -->
-        @if (!editMsg) {
+        @if (!isEditMsg) {
         <div class="name-timestamp">
             <h3 (click)="openShowUserDialog(user)">{{ user.name }}</h3>
             <span>{{ setTime(msg.date) }} Uhr</span>
@@ -11,7 +11,7 @@
         <mat-card class="message-card">
             <mat-card-content>{{ msg.message }}</mat-card-content>
         </mat-card>
-        @if(channelMsg && replaies.length > 0){
+        @if(isChannelMsg && replaies.length > 0){
         <div class="reply">
             <a (click)="setThreadOutput()">{{ replaies.length }} Antworten</a>
             <span>Letzte Antwort {{ setTime(replaies[replaies.length-1].date) }}</span>
@@ -24,27 +24,28 @@
             <div class="edit-bottom">
                 <mat-icon class="action-btn" #emoijBtn (click)="openDialogEmoji()">sentiment_satisfied</mat-icon>
                 <div class="btn-area">
-                    <div class="delet-btn">
-                        <button mat-fab extended color="primary" (click)="deletMsg()">Löschen</button>
-                    </div>
-                    <div class="cancle-btn">
-                        <button mat-fab extended color="primary" (click)="toggleEditMsg()">Abbrechen</button>
-                    </div>
-                    <div class="safe-btn" [ngClass]="{'btn-disable': !saveEnable}">
-                        <button mat-fab extended color="primary" (click)="saveMsg()">Speichern</button>
-                    </div>
+                    <button class="icon-btn delet-btn" mat-fab extended color="primary" (click)="deletMsg()">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button class="icon-btn safe-btn" mat-fab extended color="primary" (click)="saveMsg()"
+                        [ngClass]="{'btn-disable': !isSaveEnable}">
+                        <mat-icon>save</mat-icon>
+                    </button>
                 </div>
             </div>
+            <button class="icon-btn cancle-btn pos-abso-right-top" mat-fab extended color="primary" (click)="toggleEditMsg()">
+                <mat-icon>close</mat-icon>
+            </button>
         </div>
         }
 
     </div>
 
     <!-- Slidin Emoji options -->
-    @if(!editMsg){
+    @if(!isEditMsg){
     <mat-card class="emoji-popup">
         <mat-card-content>
-            @if (channelMsg) {
+            @if (isChannelMsg) {
             <mat-icon class="action-btn">add_reaction</mat-icon>
             <mat-icon class="action-btn" (click)="setThreadOutput()">comment</mat-icon>
             @if (editPossible()){
@@ -52,6 +53,9 @@
             }
             } @else {
             <mat-icon class="action-btn">add_reaction</mat-icon>
+            @if (editPossible()){
+            <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
+            }
             }
         </mat-card-content>
     </mat-card>
