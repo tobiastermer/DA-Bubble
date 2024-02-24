@@ -27,7 +27,6 @@ export class HeaderComponent {
         right: '20px'
       }
     });
-    console.log(this.data.currentUser)
   }
 
 
