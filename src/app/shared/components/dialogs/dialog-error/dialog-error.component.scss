@@ -1,0 +1,41 @@
+@import './../../../../../styles.scss';
+
+mat-card {
+    padding: 40px;
+    width: 400px;
+
+    @include dFlex($fd: column, $ai: center, $gap: 20px);
+
+    header {
+        @include dFlex($jc: space-between);
+        width: 100%;
+
+        mat-card-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        button {
+            @include iButton($bgC: unset, $hBgIC: #000);
+        }
+    }
+
+    .btn {
+        font-size: 18px;
+        font-weight: 700;
+        height: 49px;
+        border: 1px solid $dkBlue;
+        border-radius: 28px;
+        font-weight: 700;
+        padding: 12px 25px;
+        color: white;
+        background-color: $dkBlue;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $lgBlue;
+        }
+    }
+
+
+}

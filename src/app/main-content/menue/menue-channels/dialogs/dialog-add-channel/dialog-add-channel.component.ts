@@ -22,6 +22,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { User } from '../../../../../shared/models/user.class';
 import { MembershipService } from '../../../../../shared/firebase-services/membership.service';
 import { Router } from '@angular/router';
+import { DialogErrorComponent } from '../../../../../shared/components/dialogs/dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-dialog-add-channel',
@@ -87,7 +88,13 @@ export class DialogAddChannelComponent {
         this.router.navigate([this.data.pathUserName + '/channel/' + this.newChannel.name]);
         this.openDialogAddUserToNewChannel();
       } catch (err) {
+        this.loading = false;
         console.error(err);
+        this.dialog.open(DialogErrorComponent, {
+          panelClass: ['card-round-corners'],
+          data: { errorMessage: 'Es gab ein Problem beim Erstellen des Channels. Bitte versuche es erneut.' }
+        });
+        return;
       }
     }
     this.loading = false;

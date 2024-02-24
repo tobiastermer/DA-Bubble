@@ -33,9 +33,9 @@
         </div> -->
         <div class="channel-edit-inp">
             <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
-            <input type="text" [(ngModel)]="newName" placeholder="Channel-Name">
-            <span *ngIf="channelNameError" style="color: red;">{{ channelNameError }}</span>
+            <input type="text" [(ngModel)]="newName" placeholder="Channel-Name" (ngModelChange)="validateInputChannelName()">
         </div>
+        <span class="error-message" style="color: red;">{{ channelNameError }}</span>
 
         }
     </div>
@@ -60,10 +60,10 @@
         </div> -->
         <div class="channel-edit-inp">
             <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
-            <textarea [(ngModel)]="newDescription" placeholder="Channel-Name" cols="30" rows="3"></textarea>
-            <span *ngIf="channelDescrError" style="color: red;">{{ channelDescrError }}</span>
+            <textarea [(ngModel)]="newDescription" placeholder="Channel-Name" cols="30" rows="3" (ngModelChange)="validateInputChannelDescription()"></textarea>
         </div>
-        
+        <span class="error-message" style="color: red;">{{ channelDescrError }}</span>
+
         <hr>
         <span class="section-title">Erstellt von</span>
         <span class="des-owner-name">{{ getUserNameFromChannelOwnerID() }}</span>

@@ -25,6 +25,7 @@ import { MembershipService } from '../../../../shared/firebase-services/membersh
 import { DataService } from '../../../../shared/services/data.service';
 import { Router } from '@angular/router';
 import { PositionService } from '../../../../shared/services/position.service';
+import { DialogErrorComponent } from '../../../../shared/components/dialogs/dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-dialog-channel',
@@ -74,6 +75,15 @@ export class DialogChannelComponent {
     this.channel = data.channel;
   }
 
+  
+  validateInputChannelName() {
+    this.channelNameError = this.ChannelService.validateInputChannelName(this.newName, this.channel?.name || '');
+  }
+
+  validateInputChannelDescription() {
+    this.channelDescrError = this.ChannelService.validateInputChannelDescription(this.newDescription);
+  }
+
   editChannelName() {
     this.editName = true;
     this.newName = this.channel?.name || '';
@@ -83,14 +93,23 @@ export class DialogChannelComponent {
     this.channelNameError = this.ChannelService.validateInputChannelName(this.newName, this.channel?.name || '');
     if (this.channelNameError === '' && this.newName.trim() !== '') {
       this.loading = true;
-      if (this.channel && this.channel.id) {
-        this.channel.name = this.newName;
-        await this.ChannelService.updateChannel(this.channel).catch(err => console.error(err));
+      try {
+        if (this.channel && this.channel.id) {
+          this.channel.name = this.newName;
+          await this.ChannelService.updateChannel(this.channel);
+        }
+      } catch (err) {
+        console.error(err);
+        this.dialog.open(DialogErrorComponent, {
+          panelClass: ['card-round-corners'],
+          data: { errorMessage: 'Es gab ein Problem beim Aktualisieren des Kanalnamens. Bitte versuche es erneut.' }
+        });
+      } finally {
+        this.loading = false;
+        this.editName = false;
       }
-      this.loading = false;
-      this.editName = false;
     }
-  }
+  }  
 
   editChannelDescr() {
     this.editDesc = true;
@@ -101,15 +120,24 @@ export class DialogChannelComponent {
     this.channelDescrError = this.ChannelService.validateInputChannelDescription(this.newDescription);
     if (this.channelDescrError === '' && this.newDescription.trim() !== '') {
       this.loading = true;
-      if (this.channel && this.channel.id) {
-        this.channel.description = this.newDescription;
-        await this.ChannelService.updateChannel(this.channel).catch(err => console.error(err));
+      try {
+        if (this.channel && this.channel.id) {
+          this.channel.description = this.newDescription;
+          await this.ChannelService.updateChannel(this.channel);
+        }
+      } catch (err) {
+        console.error(err);
+        this.dialog.open(DialogErrorComponent, {
+          panelClass: ['card-round-corners'],
+          data: { errorMessage: 'Es gab ein Problem beim Aktualisieren der Kanalbeschreibung. Bitte versuche es erneut.' }
+        });
+      } finally {
+        this.loading = false;
+        this.editDesc = false;
       }
-      this.loading = false;
-      this.editDesc = false;
     }
   }
-
+  
   onNoClick(): void {
     this.dialogRef.close();
   }

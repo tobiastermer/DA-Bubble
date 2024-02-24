@@ -10,6 +10,7 @@ import { Channel } from '../../../../shared/models/channel.class';
 import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-channel.component';
 import { MembershipService } from '../../../../shared/firebase-services/membership.service';
 import { PositionService } from '../../../../shared/services/position.service';
+import { DialogErrorComponent } from '../../../../shared/components/dialogs/dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-header-channel',
@@ -73,7 +74,7 @@ export class HeaderChannelComponent {
     let members = this.members;
     const dialogRef = this.dialog.open(DialogMembersComponent, {
       position: pos, panelClass: ['card-right-corner'],
-      data: { members },
+      data: { members: members },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.openDialogAddUser();
@@ -85,7 +86,7 @@ export class HeaderChannelComponent {
     this.currentMemberIDs = this.members.map(user => user.id!);
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
       position: pos, panelClass: ['card-right-corner'],
-      data: { allUsers: this.allUsers, currentMemberIDs: this.currentMemberIDs },
+      data: { allUsers: this.allUsers, currentMemberIDs: this.currentMemberIDs, channel: this.channel },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) console.log(result);
@@ -96,12 +97,20 @@ export class HeaderChannelComponent {
   async saveAddedMembers(selectedUsers: User[]) {
     if (selectedUsers) {
       for (let user of selectedUsers) {
-        let membership = this.MembershipService.createMembership(user.id!, this.channel.id);
-        await this.MembershipService.addMembership(membership).then(() => {
+        try {
+          let membership = this.MembershipService.createMembership(user.id!, this.channel.id);
+          await this.MembershipService.addMembership(membership);
           this.members.push(user); // ggf. sauberer lösen durch unmittelbares Abo dieser Komponente auf members-Array
-        }).catch(err => console.error(err));
+        } catch (err) {
+          console.error(err);
+          this.dialog.open(DialogErrorComponent, {
+            panelClass: ['card-round-corners'],
+            data: { errorMessage: 'Es gab ein Problem beim Hinzufügen von Mitgliedern. Bitte versuche es erneut.' }
+          });
+          break;
+        }
       }
     }
   }
-
+  
 }

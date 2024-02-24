@@ -24,7 +24,7 @@
             <input type="text" [(ngModel)]="newChannel.name" placeholder="z.B. Kooperationsprojekte"
                 (ngModelChange)="validateInputChannelName()">
         </div>
-        <div *ngIf="channelNameError" class="error">{{ channelNameError }}</div>
+        <div class="error-message">{{ channelNameError }}</div>
     </div>
 
     <!-- Beschreibung Eingabefeld mit Fehlermeldung -->
@@ -36,7 +36,7 @@
             <input type="text" [(ngModel)]="newChannel.description" placeholder="Dein Text hier"
                 (ngModelChange)="validateInputChannelDescription()">
         </div>
-        <div *ngIf="descriptionError" class="error">{{ descriptionError }}</div>
+        <div class="error-message">{{ descriptionError }}</div>
     </div>
 
     <!-- Button mit dynamischer Klasse -->

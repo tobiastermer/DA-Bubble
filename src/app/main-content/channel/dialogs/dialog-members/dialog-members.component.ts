@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
 import { User } from '../../../../shared/models/user.class';
 import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
+import { Channel } from '../../../../shared/models/channel.class';
 
 @Component({
   selector: 'app-dialog-members',
@@ -39,7 +40,7 @@ export class DialogMembersComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogMembersComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: {members: User[]},
   ) {
     this.members = data.members;
   }

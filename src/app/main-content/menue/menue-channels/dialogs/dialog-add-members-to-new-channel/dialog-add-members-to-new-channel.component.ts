@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -19,9 +19,9 @@ import { FormsModule } from '@angular/forms';
 import { MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { User } from '../../../../../shared/models/user.class';
 import { InputAddUserComponent } from '../../../../../shared/components/input-add-user/input-add-user.component';
-import { Membership } from '../../../../../shared/models/membership.class';
 import { MembershipService } from '../../../../../shared/firebase-services/membership.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DialogErrorComponent } from '../../../../../shared/components/dialogs/dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-dialog-add-members-to-new-channel',
@@ -105,22 +105,33 @@ export class DialogAddMembersToNewChannelComponent {
 
   async saveMemberships() {
     this.loading = true;
-    if (this.radioSelection === 'all') {
-      for (let user of this.data.allUsers) {
-        if (!this.data.currentMemberIDs.includes(user.id!)) {
+    try {
+      if (this.radioSelection === 'all') {
+        for (let user of this.data.allUsers) {
+          if (!this.data.currentMemberIDs.includes(user.id!)) {
+            const membership = this.MembershipService.createMembership(user.id!, this.data.newChannel.id);
+            await this.MembershipService.addMembership(membership);
+          }
+        }
+      } else if (this.radioSelection === 'specific' && this.userSelected) {
+        for (const user of this.selectedUsers) {
           const membership = this.MembershipService.createMembership(user.id!, this.data.newChannel.id);
-          await this.MembershipService.addMembership(membership).catch(err => console.error(err));
+          await this.MembershipService.addMembership(membership);
         }
       }
-    } else if (this.radioSelection === 'specific' && this.userSelected) {
-      for (const user of this.selectedUsers) {
-        const membership = this.MembershipService.createMembership(user.id!, this.data.newChannel.id);
-        await this.MembershipService.addMembership(membership).catch(err => console.error(err));
-      }
+    } catch (err) {
+      console.error(err);
+      this.loading = false;
+      this.dialog.open(DialogErrorComponent, {
+        panelClass: ['card-round-corners'],
+        data: { errorMessage: 'Es gab ein Problem Hinzufügen von Mitgliedern. Bitte versuche es erneut.' }
+      });
+      return;
     }
     this.loading = false;
     this.dialogRef.close();
   }
+  
 
 }
 

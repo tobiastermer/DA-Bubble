@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -15,6 +15,7 @@ import { User } from '../../../../shared/models/user.class';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
 import { CommonModule } from '@angular/common';
 import { InputAddUserComponent } from '../../../../shared/components/input-add-user/input-add-user.component';
+import { Channel } from '../../../../shared/models/channel.class';
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -43,7 +44,7 @@ export class DialogAddUserComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { allUsers: User[], currentMemberIDs: string[] },
+    @Inject(MAT_DIALOG_DATA) public data: { allUsers: User[], currentMemberIDs: string[], channel: Channel },
   ) { }
 
   onNoClick(): void {

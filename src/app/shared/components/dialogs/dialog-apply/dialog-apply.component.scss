@@ -9,12 +9,12 @@ mat-card {
     header {
         @include dFlex($jc: space-between);
         width: 100%;
-    
+
         mat-card-title {
             font-size: 24px;
             font-weight: 700;
         }
-    
+
         button {
             @include iButton($bgC: unset, $hBgIC: #000);
         }
@@ -34,7 +34,7 @@ mat-card {
             padding: 12px 25px;
             color: white;
             background-color: $dkBlue;
-        
+
             &:hover {
                 cursor: pointer;
                 background-color: $lgBlue;
@@ -42,17 +42,16 @@ mat-card {
         }
 
         .btn-cancel {
-            background-color: $dkGrey !important;
+            background-color: white !important;
             border: 1px solid $dkGrey !important;
+            color: $dkGrey !important;
 
             &:hover {
-                background-color: white !important;
+                background-color: $dkGrey !important;
                 border: 1px solid $dkGrey !important;
-                color: $dkGrey !important; 
+                color: white !important;
             }
         }
     }
 
 }
-
-
