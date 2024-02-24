@@ -8,6 +8,7 @@ import {
 import { DataService } from '../../../shared/services/data.service';
 import { DialogShowUserComponent } from '../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
 import { User } from '../../../shared/models/user.class';
+import { getAuth, signOut } from 'firebase/auth';
 
 @Component({
   selector: 'app-menu-dialog',
@@ -39,5 +40,17 @@ export class MenuDialogComponent {
       data: { user, currentUserID },
     });
     this.closeDialog();
+  }
+
+  logOut() {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log('ausgeloggt')
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   }
 }
