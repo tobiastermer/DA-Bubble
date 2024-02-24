@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -17,6 +17,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Auth } from '@angular/fire/auth'; // wichtig @angular/fire/auth NICHT @fire/auth
 import { AuthService } from '../../shared/firebase-services/auth.service';
 import { UserService } from '../../shared/firebase-services/user.service';
+import { PresenceService } from '../../shared/firebase-services/presence.service';
 
 @Component({
   selector: 'app-login',
@@ -62,7 +63,8 @@ export class LoginComponent {
     private router: Router,
     private afAuth: Auth,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private presenceService: PresenceService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -93,17 +95,32 @@ export class LoginComponent {
     }
   }
 
-  handleSuccessfulLogin(userCredential: any) {
+  async handleSuccessfulLogin(userCredential: any) {
     if (userCredential.user && userCredential.user.emailVerified) {
       const uid = userCredential.user.uid;
-      this.navigateToChat(uid);
+      this.updateUserStatus(uid);
+      const user = await this.userService.getUserByAuthUid(uid);
+      if (user) {
+        this.navigateToChat(user.id ?? '');
+      } else {
+        this.showError('Benutzer nicht gefunden.');
+      }
     } else {
       this.showError('Bitte Account verifizieren.');
     }
   }
 
-  navigateToChat(uid: string) {
-    this.router.navigate([`/${uid}/chat/idChat`]);
+  async updateUserStatus(uid: string) {
+    try {
+      await this.presenceService.updateOnUserLogin(uid);
+      console.log('Status auf online gesetzt für UID:', uid);
+    } catch (error) {
+      console.error('Fehler beim Setzen des Benutzerstatus:', error);
+    }
+  }
+
+  navigateToChat(userId: string) {
+    this.router.navigate([`/${userId}`]);
   }
 
   showError(message: string) {
@@ -126,7 +143,7 @@ export class LoginComponent {
       const guestData = await this.userService.getUserByID('guestUserId');
 
       setTimeout(() => {
-        this.router.navigate([`/${uid}/chat/idChat`]);
+          this.router.navigate([`/${uid}`]);
       }, 800);
     } catch (error) {}
   }

@@ -14,6 +14,7 @@ $fontFigtree: "Figtree", sans-serif;
   position: relative;
   animation: backgroundFadeIn 1s ease-in forwards;
   overflow: hidden;
+  
 
   &__logo {
     @include pAbsolute(32px, unset, unset, 32px, unset);
@@ -53,6 +54,7 @@ $fontFigtree: "Figtree", sans-serif;
   gap: 36px;
   box-shadow: $boxShadow;
   overflow: hidden;
+  z-index: 100;
   
 
   &__header,
@@ -246,7 +248,7 @@ form {
     
   }
   to {
-    transform: translateY(150%);
+    transform: translateY(200%);
   }
 }
 
