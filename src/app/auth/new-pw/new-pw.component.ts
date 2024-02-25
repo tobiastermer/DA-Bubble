@@ -23,7 +23,7 @@ import { isPlatformBrowser } from '@angular/common';
     trigger('slideInUp', [
       transition(':enter', [
         style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate('0.5s ease-in', style({ transform: 'translateY(0)', opacity: 1 })),
+        animate('0.5s ease-in ', style({ transform: 'translateY(0)', opacity: 1 })),
       ]),
     ]),
   ],
@@ -93,7 +93,7 @@ export class NewPwComponent implements OnInit {
 
 
 openLogin(){
-  const signUpCard = document.querySelector('.sign-up');
+  const signUpCard = document.querySelector('.pw-reset');
  
    signUpCard?.classList.add('slide-out-down');
      

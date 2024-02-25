@@ -52,8 +52,8 @@ $fontFigtree: "Figtree", sans-serif;
   @include dFlex(column, center, 36px);
   gap: 36px;
   box-shadow: $boxShadow;
-
   overflow: hidden;
+  animation: slideInUp 0.5s ease-in forwards;
 
   &__header,
   &__subtitle {

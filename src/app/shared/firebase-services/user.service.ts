@@ -74,9 +74,15 @@ export class UserService {
         try {
             const usersRef = collection(this.firestore, 'users');
             const q = query(usersRef, where("uid", "==", authUid), limit(1));
+<<<<<<< HEAD
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
                 const docSnap = querySnapshot.docs[0];
+=======
+            const querySnapshot = await getDocs(q); 
+            if (!querySnapshot.empty) {
+                const docSnap = querySnapshot.docs[0]; 
+>>>>>>> 4ec62e58fff78ee582ba334de3bd1dfb01203557
                 return new User({
                     id: docSnap.id,
                     ...docSnap.data()
@@ -98,9 +104,18 @@ export class UserService {
         if (!querySnapshot.empty) {
             const userDocRef = querySnapshot.docs[0].ref;
             await updateDoc(userDocRef, { status: status });
+<<<<<<< HEAD
 
         } else {
 
         }
     }
 }
+=======
+            
+        } else {
+            
+        }
+      }
+}
+>>>>>>> 4ec62e58fff78ee582ba334de3bd1dfb01203557

@@ -143,7 +143,11 @@ export class LoginComponent {
       const guestData = await this.userService.getUserByID('guestUserId');
 
       setTimeout(() => {
+<<<<<<< HEAD
         this.router.navigate([`/${uid}`]);
+=======
+          this.router.navigate([`/${uid}`]);
+>>>>>>> 4ec62e58fff78ee582ba334de3bd1dfb01203557
       }, 800);
     } catch (error) { }
   }

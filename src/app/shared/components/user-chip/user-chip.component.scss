@@ -1,67 +1,84 @@
-@import './../../../../styles.scss';
+@import "./../../../../styles.scss";
 
 .user {
-    @include dFlex($jc: flex-start, $gap: 15px);
-    border-radius: 30px;
-    padding: 4px 20px 4px 20px;
-    font-size: 18px;
+  @include dFlex($jc: flex-start, $gap: 15px);
+  border-radius: 30px;
+  padding: 4px 20px 4px 20px;
+  font-size: 18px;
 
-    .user-avatar {
-        height: 50px;
-        width: 50px;
-        border-radius: 50%;
-    }
+  .user-avatar {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
+
+  .user-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    display: block;
+  }
+
+  &:hover {
+    background-color: $bgGrey;
+    cursor: pointer;
 
     .user-name {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 150px;
-        display: block;
+      color: $dkBlue;
+      font-weight: 700;
     }
-
-    &:hover {
-        background-color: $bgGrey;
-        cursor: pointer;
-
-        .user-name {
-            color: $dkBlue;
-            font-weight: 700;
-        }
-    }
+  }
 }
 
 .smaleUser {
-    @include dFlex($jc: flex-start, $gap: 8px);
-    border-radius: 30px;
-    padding: 4px 8px;
-    background-color: $bgGrey;
-    width: max-content;
-    font-size: 18px;
+  @include dFlex($jc: flex-start, $gap: 8px);
+  border-radius: 30px;
+  padding: 4px 8px;
+  background-color: $bgGrey;
+  width: max-content;
+  font-size: 18px;
 
-    .user-avatar {
-        height: 28px;
-        width: 28px;
-        border-radius: 50%;
+  .user-avatar {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+  }
+
+  mat-icon {
+    transform: scale(0.7);
+    margin-left: -8px;
+
+    &:hover {
+      transform: scale(1);
+      color: $dkBlue;
+      cursor: pointer;
     }
-
-    mat-icon {
-        transform: scale(0.7);
-        margin-left: -8px;
-
-        &:hover {
-            transform: scale(1);
-            color: $dkBlue;
-            cursor: pointer;
-        }
-    }
+  }
 }
 
 .active {
-    background-color: $bgGrey;
+  background-color: $bgGrey;
 
-    .user-name {
-        color: $dkBlue;
-        font-weight: 700;
-    }
+  .user-name {
+    color: $dkBlue;
+    font-weight: 700;
+  }
+}
+
+.status-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: red;
+  display: inline-block;
+  position: absolute;
+  margin-top: 32px;
+  left: 116px;
+  border: 2px solid white;
+  border-radius: 100%;
+}
+
+.status-indicator.online {
+  background-color: green;
 }

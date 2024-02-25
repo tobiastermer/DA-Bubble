@@ -53,6 +53,7 @@ $fontFigtree: "Figtree", sans-serif;
   gap: 36px;
   box-shadow: $boxShadow;
   overflow: hidden;
+  z-index: 100;
 
   &__header,
   &__subtitle {
