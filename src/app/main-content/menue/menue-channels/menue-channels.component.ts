@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { Channel } from '../../../shared/models/channel.class';
 import { Router } from '@angular/router';
 import { DialogAddChannelComponent } from './dialogs/dialog-add-channel/dialog-add-channel.component';
 import { MatDialog } from '@angular/material/dialog';
-import { User } from '../../../shared/models/user.class';
+import { DataService } from '../../../shared/services/data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menue-channels',
@@ -14,19 +15,32 @@ import { User } from '../../../shared/models/user.class';
   templateUrl: './menue-channels.component.html',
   styleUrls: ['./menue-channels.component.scss'] // Achtung: Korrektur von styleUrl zu styleUrls
 })
-export class MenueChannelsComponent {
-  @Input() channels: Channel[] = [];
+export class MenueChannelsComponent implements OnInit, OnDestroy {
   @Input() channelActive: number | undefined;
   @Input() pathUserName: string = '';
-  @Input() allUsers: User[] = [];
-  @Input() currentUserID: string = '';
 
   @Output() channelSelected = new EventEmitter<number>();
+
+  private channelSubscription: Subscription = new Subscription();
+  channels: Channel[] = [];
 
   channelsVisible: boolean = true;
 
   constructor(private router: Router,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private dataService: DataService) { }
+
+  ngOnInit() {
+    this.channelSubscription.add(
+      this.dataService.currentUserChannels$.subscribe(channels => {
+        this.channels = channels;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.channelSubscription.unsubscribe();
+  }
 
   toggleChannelsVisibility() {
     this.channelsVisible = !this.channelsVisible;
@@ -45,7 +59,7 @@ export class MenueChannelsComponent {
   openDialogAddChannel() {
     this.dialog.open(DialogAddChannelComponent, {
       panelClass: ['card-round-corners'],
-      data: { allChannel: this.channels, currentUserID: this.currentUserID, allUsers: this.allUsers, pathUserName: this.pathUserName },
+      data: { allChannel: this.channels, pathUserName: this.pathUserName },
     });
   }
 }

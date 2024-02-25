@@ -10,8 +10,7 @@
     </div>
     <div class="menu-users-content" *ngIf="usersVisible">
         @for (user of users; track $index) {
-        <app-user-chip [user]="user" [active]="isActiveUser($index)" [currentUserID]="currentUserID"
-            (click)="changePath($index)"></app-user-chip>
+        <app-user-chip [user]="user" [active]="isActiveUser($index)" (click)="changePath($index)"></app-user-chip>
         }
     </div>
 </section>

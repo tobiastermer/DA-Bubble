@@ -18,6 +18,7 @@ import { Auth } from '@angular/fire/auth'; // wichtig @angular/fire/auth NICHT @
 import { AuthService } from '../../shared/firebase-services/auth.service';
 import { UserService } from '../../shared/firebase-services/user.service';
 import { PresenceService } from '../../shared/firebase-services/presence.service';
+import { DataService } from '../../shared/services/data.service';
 
 @Component({
   selector: 'app-login',
@@ -64,7 +65,8 @@ export class LoginComponent {
     private afAuth: Auth,
     private authService: AuthService,
     private userService: UserService,
-    private presenceService: PresenceService
+    private presenceService: PresenceService,
+    private dataService: DataService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -101,6 +103,7 @@ export class LoginComponent {
       this.updateUserStatus(uid);
       const user = await this.userService.getUserByAuthUid(uid);
       if (user) {
+        this.dataService.currentUser = user;
         this.navigateToChat(user.id ?? '');
       } else {
         this.showError('Benutzer nicht gefunden.');
@@ -140,10 +143,11 @@ export class LoginComponent {
     loginCard?.classList.add('slide-out-down');
 
     try {
-      const guestData = await this.userService.getUserByID('guestUserId');
+      const guestData = await this.userService.getUserByID(this.guestUserId);
 
       setTimeout(() => {
-          this.router.navigate([`/${uid}`]);
+        this.dataService.currentUser = guestData!;
+        this.router.navigate([`/${uid}`]);
       }, 800);
     } catch (error) { }
   }

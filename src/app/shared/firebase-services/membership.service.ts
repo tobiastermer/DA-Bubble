@@ -28,7 +28,6 @@ export class MembershipService {
     async addMembership(membership: Membership) {
         try {
             const docRef = await addDoc(collection(this.firestore, "memberships"), membership.toJSON());
-            console.log(docRef.id);
             return docRef.id;
         } catch (err) {
             console.error(err);

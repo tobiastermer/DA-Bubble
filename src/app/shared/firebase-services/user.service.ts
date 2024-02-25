@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, collectionData, query, where, limit, orderBy, onSnapshot, addDoc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, query, where, limit, orderBy, onSnapshot, addDoc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { User } from '../models/user.class'
 import { BehaviorSubject } from 'rxjs';
 import { getDocs } from 'firebase/firestore';
+import { DataService } from '../services/data.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,9 @@ export class UserService {
     public users$ = this.usersSubject.asObservable();
     firestore: Firestore = inject(Firestore);
 
-    constructor() {
+    constructor(
+        private dataService: DataService
+    ) {
         this.getAllUsers();
     }
 
@@ -42,12 +45,21 @@ export class UserService {
     }
 
     getAllUsers() {
-        const q = query(collection(this.firestore, 'users'));
+        const q = query(collection(this.firestore, 'users'), orderBy('name'));
         onSnapshot(q, (snapshot) => {
-            const users = snapshot.docs.map(doc => User.fromFirestore({ id: doc.id, data: () => doc.data() }));
+            let users = snapshot.docs.map(doc => User.fromFirestore({ id: doc.id, data: () => doc.data() }));
+            if (this.dataService.currentUser && this.dataService.currentUser.id) {
+                const currentUserIndex = users.findIndex(user => user.id === this.dataService.currentUser.id);
+                if (currentUserIndex > -1) {
+                    const currentUser = users.splice(currentUserIndex, 1)[0];
+                    users = [currentUser, ...users.sort((a, b) => a.name.localeCompare(b.name))];
+                }
+            } else {
+                users.sort((a, b) => a.name.localeCompare(b.name));
+            }
             this.usersSubject.next(users);
         });
-    }
+    }    
 
     async getUserByID(userID: string): Promise<User | null> {
         try {
@@ -71,12 +83,16 @@ export class UserService {
     }
 
     async getUserByAuthUid(authUid: string): Promise<User | null> {
+        if (!authUid) {
+            console.error("authUid ist undefined.");
+            return null;
+        }
         try {
             const usersRef = collection(this.firestore, 'users');
             const q = query(usersRef, where("uid", "==", authUid), limit(1));
-            const querySnapshot = await getDocs(q); 
+            const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
-                const docSnap = querySnapshot.docs[0]; 
+                const docSnap = querySnapshot.docs[0];
                 return new User({
                     id: docSnap.id,
                     ...docSnap.data()
@@ -98,9 +114,9 @@ export class UserService {
         if (!querySnapshot.empty) {
             const userDocRef = querySnapshot.docs[0].ref;
             await updateDoc(userDocRef, { status: status });
-            
+
         } else {
-            
+
         }
-      }
+    }
 }

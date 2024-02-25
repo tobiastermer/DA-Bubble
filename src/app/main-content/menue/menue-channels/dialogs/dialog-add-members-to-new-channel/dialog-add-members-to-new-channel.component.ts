@@ -22,6 +22,7 @@ import { InputAddUserComponent } from '../../../../../shared/components/input-ad
 import { MembershipService } from '../../../../../shared/firebase-services/membership.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DialogErrorComponent } from '../../../../../shared/components/dialogs/dialog-error/dialog-error.component';
+import { DataService } from '../../../../../shared/services/data.service';
 
 @Component({
   selector: 'app-dialog-add-members-to-new-channel',
@@ -52,6 +53,7 @@ import { DialogErrorComponent } from '../../../../../shared/components/dialogs/d
 export class DialogAddMembersToNewChannelComponent {
 
   loading: boolean = false;
+  users: User[] = [];
   radioSelection: string = '';
   userSelected = false;
   selectedUsers: User[] = [];
@@ -59,10 +61,14 @@ export class DialogAddMembersToNewChannelComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddMembersToNewChannelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { newChannel: Channel, allUsers: User[], currentMemberIDs: string[] },
+    @Inject(MAT_DIALOG_DATA) public data: { newChannel: Channel, currentMemberIDs: string[] },
     public dialog: MatDialog,
-    private MembershipService: MembershipService
+    private MembershipService: MembershipService,
+    private DataService: DataService,
   ) {
+    this.DataService.users$.subscribe(users => {
+      this.users = users;
+    });
   }
 
   onNoClick(): void {
@@ -107,7 +113,7 @@ export class DialogAddMembersToNewChannelComponent {
     this.loading = true;
     try {
       if (this.radioSelection === 'all') {
-        for (let user of this.data.allUsers) {
+        for (let user of this.users) {
           if (!this.data.currentMemberIDs.includes(user.id!)) {
             const membership = this.MembershipService.createMembership(user.id!, this.data.newChannel.id);
             await this.MembershipService.addMembership(membership);

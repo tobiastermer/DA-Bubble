@@ -44,7 +44,7 @@ export class DialogAddUserComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { allUsers: User[], currentMemberIDs: string[], channel: Channel },
+    @Inject(MAT_DIALOG_DATA) public data: { currentMemberIDs: string[], channel: Channel },
   ) { }
 
   onNoClick(): void {

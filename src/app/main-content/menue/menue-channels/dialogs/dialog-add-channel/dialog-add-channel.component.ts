@@ -23,6 +23,8 @@ import { User } from '../../../../../shared/models/user.class';
 import { MembershipService } from '../../../../../shared/firebase-services/membership.service';
 import { Router } from '@angular/router';
 import { DialogErrorComponent } from '../../../../../shared/components/dialogs/dialog-error/dialog-error.component';
+import { ChangeDetectorRef } from '@angular/core';
+import { DataService } from '../../../../../shared/services/data.service';
 
 @Component({
   selector: 'app-dialog-add-channel',
@@ -54,27 +56,31 @@ export class DialogAddChannelComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddChannelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { allChannel: Channel[], currentUserID: string, allUsers: User[], pathUserName: string },
+    @Inject(MAT_DIALOG_DATA) public data: { allChannel: Channel[], pathUserName: string },
     public dialog: MatDialog,
     private ChannelService: ChannelService,
     private MembershipService: MembershipService,
-    private router: Router
+    private DataService: DataService,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {
-    this.newChannel.ownerID = this.data.currentUserID;
+    this.newChannel.ownerID = this.DataService.currentUser.id!;
     this.newChannelMemberIDs.push(this.newChannel.ownerID);
   }
 
   validateInputChannelName() {
     this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, '');
+    this.cdr.detectChanges(); // Manuelle Auslösung der Änderungserkennung
   }
 
   validateInputChannelDescription() {
     this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.description);
+    this.cdr.detectChanges(); // Manuelle Auslösung der Änderungserkennung
   }
 
   canSaveNewChannel(): boolean {
     this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, '');
-    this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.name);
+    this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.description);
     return !this.channelNameError && !this.descriptionError && this.newChannel.name.length > 0 && this.newChannel.description.length > 0;
   }
 
@@ -113,7 +119,7 @@ export class DialogAddChannelComponent {
   openDialogAddUserToNewChannel() {
     this.dialog.open(DialogAddMembersToNewChannelComponent, {
       panelClass: ['card-round-corners'],
-      data: { newChannel: this.newChannel, allUsers: this.data.allUsers, currentMemberIDs: this.newChannelMemberIDs },
+      data: { newChannel: this.newChannel, currentMemberIDs: this.newChannelMemberIDs },
     });
   }
 

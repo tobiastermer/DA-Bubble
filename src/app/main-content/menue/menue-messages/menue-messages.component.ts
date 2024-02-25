@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { UserChipComponent } from '../../../shared/components/user-chip/user-chip.component';
 import { User } from '../../../shared/models/user.class';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogShowUserComponent } from '../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
 import { Router } from '@angular/router';
+import { DataService } from '../../../shared/services/data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menue-messages',
@@ -16,19 +18,30 @@ import { Router } from '@angular/router';
 })
 export class MenueMessagesComponent {
   @Input() userActive: number | undefined;
-  @Input() users: User[] = [];
-  @Input() currentUserID: String = '';
   @Input() pathUserName: string = '';
-
 
   @Output() activeChannelChanged = new EventEmitter<number>();
   @Output() userSelected = new EventEmitter<number>();
 
+  private usersSubscription: Subscription = new Subscription();
+  users: User[] = [];
+
   usersVisible: boolean = true;
 
-  constructor(public dialog: MatDialog, private router: Router) {
-    //this.users = this.getUsers();
-    // console.log(this.users);
+  constructor(
+    public dialog: MatDialog, 
+    private DataService: DataService,
+    private router: Router) {
+  }
+
+  ngOnInit() {
+    this.usersSubscription = this.DataService.users$.subscribe(users => {
+      this.users = users;
+    });
+  }
+
+  ngOnDestroy() {
+    this.usersSubscription.unsubscribe();
   }
 
   toggleUsersVisibility() {

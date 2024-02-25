@@ -12,7 +12,7 @@
         <span>{{ data.channel.name }}</span>
     </div>
 
-    <app-input-add-user [allUsers]="data.allUsers" [currentMemberIDs]="data.currentMemberIDs"
+    <app-input-add-user [currentMemberIDs]="data.currentMemberIDs"
         (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved($event)"
         (selectedUsersChanged)="onSelectedUsersChanged($event)">
     </app-input-add-user>

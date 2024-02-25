@@ -19,7 +19,6 @@ export class ChannelService {
     async addChannel(channel: Channel) {
         try {
             const docRef = await addDoc(collection(this.firestore, "channels"), channel.toJSON());
-            console.log(docRef.id);
             return docRef.id;
         } catch (err) {
             console.error(err);

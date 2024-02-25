@@ -3,6 +3,7 @@ import { User } from '../../models/user.class';
 import { MatIconModule } from '@angular/material/icon';
 import { PresenceService } from '../../firebase-services/presence.service'; 
 import { Subscription } from 'rxjs';
+import { DataService } from '../../services/data.service';
 
 
 @Component({
@@ -19,11 +20,15 @@ export class UserChipComponent implements OnInit, OnDestroy {
   @Input() active:boolean = false;
   @Input() user!:User;
   @Input() smale = false;
-  @Input() currentUserID: String = '';
   userStatusSubscription!: Subscription;
   userStatus: string = 'offline';
+  currentUserID: string;
 
-  constructor(private presenceService: PresenceService) {}
+  constructor(
+    private presenceService: PresenceService,
+    private DataService: DataService) {
+    this.currentUserID = this.DataService.currentUser.id!;
+  }
 
   @Output() deleteUser: EventEmitter<User> = new EventEmitter<User>();
 

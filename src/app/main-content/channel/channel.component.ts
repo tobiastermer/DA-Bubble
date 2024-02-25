@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { HeaderChannelComponent } from './header/header-channel/header-channel.component';
 import { ChannelMsgComponent } from './chat/channel-msg/channel-msg.component';
@@ -18,6 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ThreadsComponent } from './threads/threads.component';
 import { MessageComponent } from '../../shared/components/message/message.component';
 import { CommonModule } from '@angular/common';
+import { DataService } from '../../shared/services/data.service';
 
 @Component({
   selector: 'app-channel',
@@ -39,9 +40,11 @@ import { CommonModule } from '@angular/common';
 })
 export class ChannelComponent {
 
-  @Input() users: User[] = [];
-  @Input() channels: Channel[] = [];
-  @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' });
+  // @Input() users: User[] = [];
+  // @Input() channels: Channel[] = [];
+  // @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' });
+
+  currentUser: User;
 
   chat: 'channel' | 'message' | 'new' = 'channel';
   oldTimeStemp!: string;
@@ -49,6 +52,9 @@ export class ChannelComponent {
 
   threadMsg: ChannelMessage | undefined;
   threadChannel: Channel | undefined;
+
+  users: User[] = [];
+  channels: Channel[] = [];
 
   currentChannelID: string = ''
   currentChannel: Channel = new Channel({ id: 'Channel lädt', name: 'Channel lädt', description: 'Channel lädt', ownerID: 'abcde' });
@@ -58,13 +64,15 @@ export class ChannelComponent {
 
   chatUser!: User;
 
+  private usersSubscription: Subscription = new Subscription();
   private channelMembershipSubscription?: Subscription;
   private channelMessagesSubscription?: Subscription;
-
+  private channelSubscription: Subscription = new Subscription();
 
   constructor(private channelService: ChannelService,
     private membershipService: MembershipService,
     private channelMessagesService: ChannelMessagesService,
+    private DataService: DataService,
     private router: ActivatedRoute,
   ) {
 
@@ -73,6 +81,37 @@ export class ChannelComponent {
       this.loadData(this.chat, params['idChat']);
       this.threadMsg = undefined;
     });
+
+    this.currentUser = this.DataService.currentUser!;
+
+  }
+
+  ngOnInit() {
+
+    this.channelSubscription.add(
+      this.DataService.channels$.subscribe(channels => {
+        this.channels = channels;
+      })
+    );
+
+    this.usersSubscription.add(
+      this.DataService.users$.subscribe(users => {
+        this.users = users;
+      })
+    );
+
+    console.log(this.channels);
+    console.log(this.users);
+    console.log(this.chat);
+
+  }
+
+  
+  ngOnDestroy() {
+    this.channelMembershipSubscription?.unsubscribe();
+    this.channelMessagesSubscription?.unsubscribe();
+    this.channelSubscription.unsubscribe();
+    this.usersSubscription.unsubscribe();
   }
 
 
@@ -117,7 +156,7 @@ export class ChannelComponent {
 
   // Functions for Channel 
   async loadChannelData() {
-    this.ngOnDestroy();
+    // this.ngOnDestroy();
     if (this.currentChannelID !== '') {
       this.loadMemberships();
       this.loadMessages();
@@ -197,8 +236,4 @@ export class ChannelComponent {
   }
 
 
-  ngOnDestroy() {
-    this.channelMembershipSubscription?.unsubscribe();
-    this.channelMessagesSubscription?.unsubscribe();
-  }
 }
