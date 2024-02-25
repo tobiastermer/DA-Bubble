@@ -13,7 +13,7 @@ export class DirectMessagesService {
 
     firestore: Firestore = inject(Firestore);
 
-    constructor() {  }
+    constructor() { }
 
     async addDirectMessage(directMessage: DirectMessage) {
         try {
@@ -39,12 +39,20 @@ export class DirectMessagesService {
         )
     }
 
-    getDirectMessages(userID: string) {
-        const q = query(collection(this.firestore, 'directMessages'), where("userIDs", "array-contains", userID));
+    getDirectMessages(currentUserID: string, userID2: string) {
+        const q = query(
+            collection(this.firestore, 'directMessages'),
+            where("userIDs", "array-contains", currentUserID)
+        );
+
         onSnapshot(q, (snapshot) => {
-            const directMessages = snapshot.docs.map(doc => DirectMessage.fromFirestore({id: doc.id, data: () => doc.data()}));
+            const directMessages = snapshot.docs
+                .map(doc => DirectMessage.fromFirestore({ id: doc.id, data: () => doc.data() }))
+                .filter(message => message.userIDs.includes(userID2));
+
             this.directMessagesSubject.next(directMessages);
         });
     }
+
 
 }

@@ -20,6 +20,8 @@ import { MessageComponent } from '../../shared/components/message/message.compon
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../shared/services/data.service';
 import { PositionService } from '../../shared/services/position.service';
+import { DirectMessage } from '../../shared/models/direct-message.class';
+import { DirectMessagesService } from '../../shared/firebase-services/direct-message.service';
 
 @Component({
   selector: 'app-channel',
@@ -63,18 +65,24 @@ export class ChannelComponent {
   currentChannelMembers: User[] = [];
   channelMessages: ChannelMessage[] = [];
 
+  directMessages: DirectMessage[] = [];
+
   chatUser!: User;
 
   private usersSubscription: Subscription = new Subscription();
+
   private channelMembershipSubscription?: Subscription;
   private channelMessagesSubscription?: Subscription;
   private channelSubscription: Subscription = new Subscription();
+
+  private directMessagesSubscription?: Subscription;
 
   menuOpen: boolean = true; // Standardwert
 
   constructor(private channelService: ChannelService,
     private membershipService: MembershipService,
     private channelMessagesService: ChannelMessagesService,
+    private directMessagesService: DirectMessagesService,
     private DataService: DataService,
     private router: ActivatedRoute,
     private positionService: PositionService
@@ -166,6 +174,7 @@ export class ChannelComponent {
       this.loadMessages();
       await this.fetchCurrentChannel();
       this.populateCurrentChannelMembers();
+      this.loadDirectMessages();
     }
   }
 
@@ -184,6 +193,14 @@ export class ChannelComponent {
     this.channelMessagesSubscription = this.channelMessagesService.channelMessages$.subscribe(channelMessages => {
       this.channelMessages = channelMessages.sort((a, b) => a.date - b.date);
     });
+  }
+
+  loadDirectMessages() {
+    this.directMessagesService.getDirectMessages('PT4yYauqYDFGDbalSPkk', 'Y4Pr2QVzYbi6hoE0iPI9');
+    this.directMessagesSubscription = this.directMessagesService.directMessages$.subscribe(directMessages => {
+      this.directMessages = directMessages.sort((a, b) => a.date - b.date);
+    });
+    console.log(this.directMessages);
   }
 
 
