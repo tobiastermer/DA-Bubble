@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, doc, collectionData, query, where, limit, orderBy, onSnapshot, addDoc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { User } from '../models/user.class'
 import { BehaviorSubject } from 'rxjs';
+import { getDocs } from 'firebase/firestore';
 
 @Injectable({
     providedIn: 'root'
@@ -66,6 +67,40 @@ export class UserService {
         } catch (error) {
             console.error("Error getting user doc:", error);
             return null;
+        }
+    }
+
+    async getUserByAuthUid(authUid: string): Promise<User | null> {
+        try {
+            const usersRef = collection(this.firestore, 'users');
+            const q = query(usersRef, where("uid", "==", authUid), limit(1));
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+                const docSnap = querySnapshot.docs[0];
+                return new User({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                });
+            } else {
+                console.log('Kein Usier in der Auth');
+                return null;
+            }
+        } catch (error) {
+            console.error("fehler beim abrufen der Auth", error);
+            return null;
+        }
+    }
+
+    async updateUserStatusByUid(uid: string, status: string): Promise<void> {
+        const usersRef = collection(this.firestore, "users");
+        const q = query(usersRef, where("uid", "==", uid));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+            const userDocRef = querySnapshot.docs[0].ref;
+            await updateDoc(userDocRef, { status: status });
+
+        } else {
+
         }
     }
 }

@@ -2,6 +2,7 @@
 
 .menu-users-container {
     @include dFlex($fd: column, $ai: flex-start, $gap: 25px);
+    width: 100%;
 
     .menu-users-header {
         @include dFlex($jc: space-between);

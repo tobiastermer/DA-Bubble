@@ -14,6 +14,7 @@ export class DataService {
   users!: User[];
   currentUser!: User;
   currentUserID!: string;
+  currentUserUID!: string;
   channels!: Channel[];
 
   getUserFromMessage(message: ChannelMessage): User {

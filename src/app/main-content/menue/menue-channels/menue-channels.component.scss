@@ -2,6 +2,7 @@
 
 .menu-channel-container {
     @include dFlex($fd: column, $ai: flex-start, $gap: 25px);
+    width: 100%;
 
     .menu-channel-header {
         @include dFlex($jc: space-between);

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MenueChannelsComponent } from './menue-channels/menue-channels.component';
 import { MenueMessagesComponent } from './menue-messages/menue-messages.component';
@@ -23,7 +23,7 @@ import { ActivatedRoute } from '@angular/router';
 export class MenueComponent {
   @Input() users: User[] = [];
   @Input() currentUserID: string = '';
-  @Input() userMemberships: Membership[] = [];
+  @Input() currentUserChannelIDs: string[] = [];
   @Input() channels: Channel[] = [];
 
   isMenuOpen: boolean = true;
@@ -32,7 +32,7 @@ export class MenueComponent {
   activeChannel: number | undefined;
   activeUser: number | undefined;
   pathUserName: string = '';
-
+  filteredChannels: Channel[] = [];
 
   constructor(private router: ActivatedRoute) {
     this.router.params.subscribe(params => {
@@ -40,6 +40,15 @@ export class MenueComponent {
     })
   }
 
+  ngOnInit() {
+    this.filterChannelsBasedOnCurrentUser();
+  }
+
+  filterChannelsBasedOnCurrentUser() {
+    // Filtert die Channels basierend auf den currentUserChannelIDs
+    this.filteredChannels = this.channels.filter(channel => this.currentUserChannelIDs.includes(channel.id));
+  }
+  
   toggleMenu() {
     // this.isMenuOpen = !this.isMenuOpen;
 
