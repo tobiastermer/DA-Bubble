@@ -20,7 +20,7 @@
 
 .menu-card {
     @include dFlex($fd: column, $ai: flex-start, $jc: flex-start, $gap: 25px);
-    width: 366px;
+    // width: 366px;
     height: 100%;
     border-radius: 30px;
     padding: 32px 30px 32px 30px;
@@ -35,7 +35,7 @@
 app-menue-header,
 app-menue-channels,
 app-menue-messages {
-    width: 100%;
+    width: 279.44px; //sonst sorgt Scrollbalken - wenn er ein- oder ausgeblendet ist - für unschönen Sprung
 }
 
 .menu-open {

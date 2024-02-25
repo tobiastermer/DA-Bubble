@@ -1,0 +1,47 @@
+import { Like } from './like.class';
+import { Reply } from './reply.class';
+
+export class DirectMessage {
+    id?: string;
+    date: number;
+    userIDs: string[];
+    fromUserID: string;
+    message: string;
+    attachmentID: string;
+    likes: Like[];
+    replies: Reply[];
+
+    constructor(obj: any = {}) {
+        this.id = obj.id;
+        this.date = obj.date ?? 0;
+        this.userIDs = obj.userIDs ?? '';
+        this.fromUserID = obj.fromUserID ?? '';
+        this.message = obj.message ?? '';
+        this.attachmentID = obj.attachmentID ?? '';
+        this.likes = obj.likes ?? [];
+        this.replies = obj.replies ?? [];
+    }
+
+    public toJSON() {
+        // Bedingte Einbeziehung der ID, nur wenn sie vorhanden ist
+        const json = {
+            date: this.date,
+            userIDs: this.userIDs,
+            fromUserID: this.fromUserID,
+            attachmentID: this.attachmentID,
+            message: this.message,
+            likes: this.likes.map(like => like.toJSON()),
+            replies: this.replies.map(reply => reply.toJSON())
+        };
+        return this.id ? { id: this.id, ...json } : json;
+    }
+
+    static fromFirestore(doc: any): DirectMessage {
+        return new DirectMessage({
+            id: doc.id,
+            ...doc.data(),
+            likes: doc.data().likes ? doc.data().likes.map(Like.fromFirestore) : [],
+            replies: doc.data().replies ? doc.data().replies.map(Reply.fromFirestore) : [],
+        });
+    }
+}
