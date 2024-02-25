@@ -1,9 +1,9 @@
 <section class="menu-channel-container">
     <div class="menu-channel-header">
-        <div class="menu-channel-header-left">
-            <div class="img-expand-channels icon-btn" (click)="toggleChannelsVisibility();"></div>
+        <div class="menu-channel-header-left" (click)="toggleChannelsVisibility();">
+            <div class="img-expand-channels icon" [ngClass]="{'rotated': !channelsVisible}"></div>
             <mat-card-title>
-                <img src="../../../../assets/img/icons/workspaces.png" alt="">
+                <div class="img-workspaces icon"></div>
                 Channels
             </mat-card-title>
         </div>

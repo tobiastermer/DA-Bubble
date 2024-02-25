@@ -3,6 +3,7 @@
 .channel-row {
     @include dFlex($jc: normal, $ai: normal, $gap: 20px);
     height: calc(100vh - 40px - 90px); // 40px padding 90px height header
+    transition: margin-left 0.7s;
 }
 
 .channel-card {
@@ -16,6 +17,7 @@
     @include dFlex($jc: space-between);
     padding: 25px 45px;
     box-shadow: $boxShadow;
+    border-radius: 30px;
 }
 
 .chat-space {
@@ -68,4 +70,14 @@
             color: $dkBlue;
         }
     }
+}
+
+.menu-opened {
+    margin-left: 0px;
+}
+
+.menu-closed {
+    margin-left: -386px;
+    /* Breite des Menüs */
+
 }

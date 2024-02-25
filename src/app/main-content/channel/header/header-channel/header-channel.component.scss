@@ -5,7 +5,7 @@
     padding-inline: 10px;
     height: 40px;
 
-    mat-card-title{
+    mat-card-title {
         font-size: 24px;
         font-weight: 700;
     }
@@ -28,13 +28,13 @@
         margin-right: 10px;
         height: 40px;
 
-        &:hover{
+        &:hover {
             cursor: pointer;
             background-color: $bgGrey;
             border-radius: 30px;
         }
 
-        span{
+        span {
             font-size: 20px;
             font-weight: 600;
         }

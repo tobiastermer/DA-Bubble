@@ -1,9 +1,9 @@
 <section class="menu-users-container">
     <div class="menu-users-header">
-        <div class="menu-users-header-left">
-            <div class="img-expand-users icon-btn" (click)="toggleUsersVisibility();"></div>
+        <div class="menu-users-header-left" (click)="toggleUsersVisibility();">
+            <div class="img-expand-users icon" [ngClass]="{'rotated': !usersVisible}"></div>
             <mat-card-title>
-                <img src="../../../../assets/img/icons/account_circle.png" alt="">
+                <div class="img-account-circle icon"></div>
                 Direktnachrichten
             </mat-card-title>
         </div>

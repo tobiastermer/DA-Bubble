@@ -8,6 +8,7 @@ import { Membership } from '../../shared/models/membership.class';
 import { Channel } from '../../shared/models/channel.class';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { PositionService } from '../../shared/services/position.service';
 
 @Component({
   selector: 'app-menue',
@@ -34,7 +35,11 @@ export class MenueComponent {
   pathUserName: string = '';
   filteredChannels: Channel[] = [];
 
-  constructor(private router: ActivatedRoute) {
+  menuOpen: boolean = true; // Standardwert
+
+  constructor(
+    private router: ActivatedRoute,
+    private positionService: PositionService) {
     this.router.params.subscribe(params => {
       this.pathUserName = params['idUser']
     })
@@ -42,6 +47,10 @@ export class MenueComponent {
 
   ngOnInit() {
     this.filterChannelsBasedOnCurrentUser();
+
+    this.positionService.isMenuOpen().subscribe(open => {
+      this.menuOpen = open;
+    });
   }
 
   filterChannelsBasedOnCurrentUser() {
@@ -49,22 +58,26 @@ export class MenueComponent {
     this.filteredChannels = this.channels.filter(channel => this.currentUserChannelIDs.includes(channel.id));
   }
   
-  toggleMenu() {
-    // this.isMenuOpen = !this.isMenuOpen;
+  // toggleMenu() {
+  //   // this.isMenuOpen = !this.isMenuOpen;
 
-    // open
-    if (this.isMenuOpen) {
-      this.isMenuOpen = false;
-      setTimeout(() => {
-        this.hideMenu = true;
-      }, 500);
-      // closed
-    } else {
-      this.hideMenu = false;
-      setTimeout(() => {
-        this.isMenuOpen = true
-      }, 100);
-    }
+  //   // open
+  //   if (this.isMenuOpen) {
+  //     this.isMenuOpen = false;
+  //     setTimeout(() => {
+  //       this.hideMenu = true;
+  //     }, 500);
+  //     // closed
+  //   } else {
+  //     this.hideMenu = false;
+  //     setTimeout(() => {
+  //       this.isMenuOpen = true
+  //     }, 100);
+  //   }
+  // }
+
+  toggleMenu() {
+    this.positionService.toggleMenu();
   }
 
   // Methoden zum Ändern des Hover-Zustands des Close-Overlays

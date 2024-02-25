@@ -17,14 +17,33 @@
                 height: 30px;
                 width: 30px;
                 background-image: url('../../../../assets/img/icons/arrow_drop_down_bk.png');
-
-                &:hover {
-                    background-image: url('../../../../assets/img/icons/arrow_drop_down_bl.png');
-                }
             }
 
             mat-card-title {
                 @include dFlex($jc: flex-start, $gap: 15px);
+
+                .img-account-circle {
+                    height: 30px;
+                    width: 30px;
+                    background-image: url('../../../../assets/img/icons/account_circle_bk.png');
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                .img-expand-users {
+                    background-image: url('../../../../assets/img/icons/arrow_drop_down_bl.png');
+                }
+
+                mat-card-title{
+                    color: $dkBlue;
+
+                    .img-account-circle {
+                        background-image: url('../../../../assets/img/icons/account_circle_bl.png');
+                    }
+                }
+                
             }
         }
     }

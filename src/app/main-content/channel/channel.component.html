@@ -1,4 +1,4 @@
-<div class="channel-row">
+<div class="channel-row" [ngClass]="{'menu-opened': menuOpen, 'menu-closed': !menuOpen}">
     <mat-card class="channel-card">
 
         @if (chat === 'channel') {

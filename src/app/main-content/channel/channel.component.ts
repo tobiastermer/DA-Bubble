@@ -19,6 +19,7 @@ import { ThreadsComponent } from './threads/threads.component';
 import { MessageComponent } from '../../shared/components/message/message.component';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../shared/services/data.service';
+import { PositionService } from '../../shared/services/position.service';
 
 @Component({
   selector: 'app-channel',
@@ -69,11 +70,14 @@ export class ChannelComponent {
   private channelMessagesSubscription?: Subscription;
   private channelSubscription: Subscription = new Subscription();
 
+  menuOpen: boolean = true; // Standardwert
+
   constructor(private channelService: ChannelService,
     private membershipService: MembershipService,
     private channelMessagesService: ChannelMessagesService,
     private DataService: DataService,
     private router: ActivatedRoute,
+    private positionService: PositionService
   ) {
 
     this.router.params.subscribe(params => {
@@ -100,13 +104,13 @@ export class ChannelComponent {
       })
     );
 
-    console.log(this.channels);
-    console.log(this.users);
-    console.log(this.chat);
+    this.positionService.isMenuOpen().subscribe(open => {
+      this.menuOpen = open;
+    });
 
   }
 
-  
+
   ngOnDestroy() {
     this.channelMembershipSubscription?.unsubscribe();
     this.channelMessagesSubscription?.unsubscribe();
@@ -135,7 +139,7 @@ export class ChannelComponent {
   }
 
 
-  checkTimeStemp(time:number): boolean{
+  checkTimeStemp(time: number): boolean {
     this.newTimeStemp = this.getTimeStemp(time);
     if (this.oldTimeStemp === this.newTimeStemp) return false
     this.oldTimeStemp = this.newTimeStemp
@@ -143,7 +147,7 @@ export class ChannelComponent {
   }
 
 
-  getTimeStemp(msgTime: number): string{
+  getTimeStemp(msgTime: number): string {
     let time = new Date(msgTime);
     let toDay = new Date();
     if (time.getUTCFullYear() !== toDay.getFullYear()) return time.toISOString().substring(0, 10)

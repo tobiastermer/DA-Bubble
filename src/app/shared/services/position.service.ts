@@ -1,5 +1,6 @@
 import { ElementRef, Injectable } from "@angular/core";
 import { DialogPosition } from "@angular/material/dialog";
+import { BehaviorSubject, Observable } from "rxjs";
 
 export interface ElementPos {
     y: number,
@@ -13,7 +14,7 @@ export interface ElementPos {
 })
 
 export class PositionService {
-
+    private menuOpen = new BehaviorSubject<boolean>(true); // Standardmäßig ist das Menü geöffnet
 
     getDialogPos(element: ElementRef | undefined): DialogPosition | undefined {
         if (!element) return undefined
@@ -55,6 +56,14 @@ export class PositionService {
             x: element.getBoundingClientRect().x,
             w: element.getBoundingClientRect().width,
         }
+    }
+
+    toggleMenu() {
+        this.menuOpen.next(!this.menuOpen.value);
+    }
+
+    isMenuOpen(): Observable<boolean> {
+        return this.menuOpen.asObservable();
     }
 
 }

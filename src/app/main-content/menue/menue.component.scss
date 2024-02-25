@@ -1,24 +1,5 @@
 @import './../../../styles.scss';
 
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  
-    &-track {
-      background: #f1f1f1;
-    }
-  
-    &-thumb {
-      background: #888;
-      -webkit-border-radius: 5px;
-      border-radius: 5px;
-  
-      &:hover {
-        background: #555;
-      }
-    }
-  }
-
 .icon-btn {
     background-size: auto;
     background-repeat: no-repeat;
@@ -29,6 +10,12 @@
         background-color: $bgGrey;
         border-radius: 50%;
     }
+}
+
+.icon {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .menu-card {
@@ -42,25 +29,21 @@
     overflow-y: auto;
     clip-path: inset(0 round 30px); // Wendet abgerundete Ecken auf den Inhalt an, inklusive Scrollbalken
     scrollbar-gutter: stable;
+    transition: transform 0.5s ease-in-out;
 }
 
-app-menue-header, app-menue-channels, app-menue-messages {
+app-menue-header,
+app-menue-channels,
+app-menue-messages {
     width: 100%;
 }
 
-// .content-scrollable {
-//     @include dFlex($fd: column, $jc: flex-start, $ai: flex-start, $gap: 25px);
-//     width: 100%;
-//     overflow-x: hidden;
-//     overflow-y: auto;
-// }
-
 .menu-open {
-    transform: translateX(0); // Menü sichtbar
+    transform: translateX(0);
 }
 
 .menu-closed {
-    transform: translateX(-120%); // Menü versteckt
+    transform: translateX(-100%);
 }
 
 .menu-overlay-close {
@@ -93,4 +76,8 @@ app-menue-header, app-menue-channels, app-menue-messages {
             color: $dkBlue;
         }
     }
+}
+
+.rotated {
+    transform: rotate(270deg);
 }

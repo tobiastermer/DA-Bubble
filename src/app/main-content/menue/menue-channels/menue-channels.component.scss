@@ -17,13 +17,33 @@
                 height: 30px;
                 width: 30px;
                 background-image: url('../../../../assets/img/icons/arrow_drop_down_bk.png');
-                &:hover {
-                    background-image: url('../../../../assets/img/icons/arrow_drop_down_bl.png');
-                }
             }
 
             mat-card-title {
                 @include dFlex($jc: flex-start, $gap: 15px);
+
+                .img-workspaces {
+                    height: 30px;
+                    width: 30px;
+                    background-image: url('../../../../assets/img/icons/workspaces_bk.png');
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                .img-expand-channels {
+                    background-image: url('../../../../assets/img/icons/arrow_drop_down_bl.png');
+                }
+
+                mat-card-title {
+                    color: $dkBlue;
+
+                    .img-workspaces {
+                        background-image: url('../../../../assets/img/icons/workspaces_bl.png');
+                    }
+                }
+
             }
         }
 
@@ -31,6 +51,7 @@
             height: 30px;
             width: 30px;
             background-image: url('../../../../assets/img/icons/add_bk.png');
+
             &:hover {
                 background-image: url('../../../../assets/img/icons/add_bl.png');
             }
@@ -71,7 +92,7 @@
 
         .active {
             background-color: $bgGrey;
-            
+
             .img-channel-hash {
                 background-image: url('../../../../assets/img/icons/hash_bl_16.png');
             }
