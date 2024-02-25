@@ -4,11 +4,11 @@
 
     <h2>Dein Profil bearbeiten</h2>
     <div class="avatar-container">
-        <img src="../../../../../assets/img/avatars/{{ data.user.avatar }}.svg" alt="">
+        <img src="{{ data.user.avatar }}" alt="">
     </div>
     <div class="input-container">
         <div class="label-container">
-            <img src="../../../../../assets/img/icons/account_circle.png" class="icon" alt="">
+            <img src="../../../../../assets/img/icons/account_circle_bk.png" class="icon" alt="">
             <span>Vollständiger Name</span>
         </div>
         <input type="text" [disabled]="loading" [(ngModel)]="data.user.name" matInput placeholder="Name">

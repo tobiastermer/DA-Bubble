@@ -16,6 +16,9 @@ import {
 import { User } from '../../../models/user.class';
 import { FormsModule } from '@angular/forms';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
+import { DataService } from '../../../services/data.service';
+import { Subscription } from 'rxjs';
+import { PresenceService } from '../../../firebase-services/presence.service';
 
 @Component({
   selector: 'app-dialog-show-user',
@@ -30,12 +33,32 @@ import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.co
 })
 export class DialogShowUserComponent {
 
+  userStatusSubscription!: Subscription;
+  userStatus: string = 'offline';
+  currentUserID: string;
+
   constructor(
     public dialogRef: MatDialogRef<DialogShowUserComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { user: User, currentUserID: String },
-    public dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) public data: { user: User },
+    public dialog: MatDialog,
+    private PresenceService: PresenceService,
+    private DataService: DataService,
   ) {
-    // console.log(this.data.user); 
+    this.currentUserID = this.DataService.currentUser.id!
+  }
+
+  ngOnInit() {
+    if (this.data.user && this.data.user.uid) {
+      this.userStatusSubscription = this.PresenceService.getUserStatus(this.data.user.uid).subscribe((status: string) => {
+        this.userStatus = status;
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.userStatusSubscription) {
+      this.userStatusSubscription.unsubscribe();
+    }
   }
 
   sendMessage() { }
@@ -44,10 +67,10 @@ export class DialogShowUserComponent {
     this.dialogRef.close();
   }
 
-  openDialogEditUser(user:User) {
+  openDialogEditUser(user: User) {
     this.dialog.open(DialogEditUserComponent, {
       panelClass: ['card-round-corners'],
-      data: {user},
+      data: { user },
     });
   }
 }

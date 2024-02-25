@@ -59,10 +59,10 @@ export class MenueMessagesComponent {
     return this.userActive === i;
   }
 
-  openDialog(user: User, currentUserID: String) {
+  openDialog(user: User) {
     this.dialog.open(DialogShowUserComponent, {
       panelClass: ['card-round-corners'],
-      data: { user, currentUserID },
+      data: { user },
     });
   }
 

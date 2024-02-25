@@ -50,10 +50,10 @@ export class DialogMembersComponent {
   }
 
 
-  openShowUserDialog() {
+  openShowUserDialog(user: User) {
     this.dialog.open(DialogShowUserComponent,{
       panelClass: ['card-round-corners'],
-      data: {},
+      data: { user },
     });
   }
 

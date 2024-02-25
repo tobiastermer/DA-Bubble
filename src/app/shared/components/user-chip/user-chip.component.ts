@@ -20,6 +20,7 @@ export class UserChipComponent implements OnInit, OnDestroy {
   @Input() active:boolean = false;
   @Input() user!:User;
   @Input() smale = false;
+  
   userStatusSubscription!: Subscription;
   userStatus: string = 'offline';
   currentUserID: string;
