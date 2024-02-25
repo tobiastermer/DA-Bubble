@@ -79,6 +79,9 @@ export class ChannelComponent {
     private router: ActivatedRoute,
     private positionService: PositionService
   ) {
+    console.log('channel Constructor')
+    this.channels = this.DataService.channels;
+    this.users = this.DataService.users;
 
     this.router.params.subscribe(params => {
       this.chat = params['chat'];
@@ -92,17 +95,17 @@ export class ChannelComponent {
 
   ngOnInit() {
 
-    this.channelSubscription.add(
-      this.DataService.channels$.subscribe(channels => {
-        this.channels = channels;
-      })
-    );
+    // this.channelSubscription.add(
+    //   this.DataService.channels$.subscribe(channels => {
+    //     this.channels = channels;
+    //   })
+    // );
 
-    this.usersSubscription.add(
-      this.DataService.users$.subscribe(users => {
-        this.users = users;
-      })
-    );
+    // this.usersSubscription.add(
+    //   this.DataService.users$.subscribe(users => {
+    //     this.users = users;
+    //   })
+    // );
 
     this.positionService.isMenuOpen().subscribe(open => {
       this.menuOpen = open;
@@ -160,7 +163,7 @@ export class ChannelComponent {
 
   // Functions for Channel 
   async loadChannelData() {
-    // this.ngOnDestroy();
+    this.ngOnDestroy();
     if (this.currentChannelID !== '') {
       this.loadMemberships();
       this.loadMessages();
