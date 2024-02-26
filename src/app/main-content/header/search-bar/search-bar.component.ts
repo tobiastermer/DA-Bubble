@@ -106,18 +106,18 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  filterUsers(inpuID:any){
+  filterUsers(inputID:any){
     this.filteredUsers = this.users.filter(
-      (user) => user.name && user.name.toLowerCase().includes(inpuID)
+      (user) => user.name && user.name.toLowerCase().includes(inputID)
     );
-    this.selectListVisible = !!inpuID && this.filteredUsers.length > 0;
+    this.selectListVisible = !!inputID && this.filteredUsers.length > 0;
   }
 
-  filterChannels(inpuID:any){
+  filterChannels(inputID:any){
     this.filteredChannels = this.channels.filter(
-      (channel) => channel.name && channel.name.toLowerCase().includes(inpuID)
+      (channel) => channel.name && channel.name.toLowerCase().includes(inputID)
     );
-    this.selectListVisible = !!inpuID && this.filteredUsers.length > 0;
+    this.selectListVisible = !!inputID && this.filteredUsers.length > 0 || this.filteredChannels.length > 0;
   }
 
   ngOnDestroy() {
