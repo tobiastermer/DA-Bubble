@@ -289,3 +289,40 @@
   right: 2px;
   top: 2px;
 }
+
+.likes-row {
+  @include dFlex($fd: row, $gap: 16px);
+
+  .sorted-like {
+    position: relative;
+
+    .emoji {
+      @include dFlex($fd: row, $gap: 4px);
+      border: 1px solid $lgPurple;
+      border-radius: 16px;
+      padding: 8px;
+    }
+
+    .hidden-like {
+      display: none;
+      position: absolute;
+      bottom: 45px;
+      background-color: $bgBlue;
+      border-radius: 20px 20px 20px 0;
+      padding: 20px;
+
+      span {
+        font-size: 30px;
+        text-align: center;
+      }
+
+    }
+
+    &:hover {
+      .hidden-like {
+        @include dFlex ($fd: column, $gap: 8px)
+      }
+    }
+
+  }
+}

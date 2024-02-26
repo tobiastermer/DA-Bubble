@@ -17,8 +17,7 @@ import { SelectAvatarComponent } from './auth/select-avatar/select-avatar.compon
     MainContentComponent,
     SignUpComponent,
     StartAnimationComponent,
-    SelectAvatarComponent,
-    
+    SelectAvatarComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

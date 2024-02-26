@@ -1,5 +1,5 @@
 export class Like {
-    emoji: number;
+    emoji: string;
     userID: string;
     date: number;
 
@@ -24,4 +24,9 @@ export class Like {
             date: doc.date,
         });
     }
+}
+
+export interface SortedLikes{
+    emoji: string,
+    usersIDs: string[]
 }

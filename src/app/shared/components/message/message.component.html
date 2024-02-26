@@ -17,6 +17,24 @@
             <span>Letzte Antwort {{ setTime(replaies[replaies.length-1].date) }}</span>
         </div>
         }
+        @if(sortedLikes.length > 0){
+            <div class="likes-row">
+                @for (like of sortedLikes; track $index) {
+                    <div class="sorted-like">
+                        <div class="emoji">
+                            {{ like.emoji }} {{ like.usersIDs.length }}
+                        </div>
+                        <div class="hidden-like">
+                            <span>{{ like.emoji }}</span>
+                            @for (name of sortedLikes[$index].usersIDs; track $index) {
+                                <a>{{ name }}</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            
+        }
         }
         @else {
         <div class="edit">
@@ -33,7 +51,8 @@
                     </button>
                 </div>
             </div>
-            <button class="icon-btn cancle-btn pos-abso-right-top" mat-fab extended color="primary" (click)="toggleEditMsg()">
+            <button class="icon-btn cancle-btn pos-abso-right-top" mat-fab extended color="primary"
+                (click)="toggleEditMsg()">
                 <mat-icon>close</mat-icon>
             </button>
         </div>
@@ -46,7 +65,7 @@
     <mat-card class="emoji-popup">
         <mat-card-content>
             @if (isChannelMsg) {
-            <mat-icon class="action-btn">add_reaction</mat-icon>
+            <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
             <mat-icon class="action-btn" (click)="setThreadOutput()">comment</mat-icon>
             @if (editPossible()){
             <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>

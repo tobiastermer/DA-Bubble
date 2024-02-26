@@ -5,13 +5,14 @@ import { MatCardModule } from '@angular/material/card';
 import { ChannelMessage } from '../../models/channel-message.class';
 import { User } from '../../models/user.class';
 import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show-user.component';
-import { DialogPosition, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { Reply } from '../../models/reply.class';
 import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
 import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
-import { ElementPos, PositionService } from '../../../shared/services/position.service';
+import { PositionService } from '../../../shared/services/position.service';
 import { DataService } from '../../services/data.service';
+import { Like, SortedLikes } from '../../models/like.class';
 
 
 @Component({
@@ -40,6 +41,8 @@ export class MessageComponent implements OnChanges {
   @ViewChild('msgText') msgText!: ElementRef;
   @ViewChild('emoijBtn') emoijBtn!: ElementRef;
 
+  allLikes: Like[] = [];
+  sortedLikes: SortedLikes[] = [];
   replaies: Reply[] = [];
 
   isEditMsg = false;
@@ -52,14 +55,41 @@ export class MessageComponent implements OnChanges {
     private messageFBS: ChannelMessagesService,
     private data: DataService,
     private PositionService: PositionService) {
-    this.currentUserID = data.currentUserID;
+    data.currentUser.id ? this.currentUserID = data.currentUser.id : this.currentUserID = '';
   }
 
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
-      if (this.msg instanceof ChannelMessage) this.replaies = this.msg.replies;
+      if (this.msg instanceof Reply) return
+      this.replaies = this.msg.replies;
+      this.allLikes = this.msg.likes;
+      this.sortedLikes = this.fillSortedLikes();
     }
+  }
+
+
+  fillSortedLikes(): SortedLikes[] {
+    let uniqueEmojis = this.getUniqueEmojis();
+    let sortedLikes: SortedLikes[] = [];
+    for (const emoji in uniqueEmojis) {
+      if (Object.prototype.hasOwnProperty.call(uniqueEmojis, emoji)) {
+        sortedLikes.push({ emoji, usersIDs: uniqueEmojis[emoji] });
+      }
+    }
+    return sortedLikes;
+  }
+
+
+  getUniqueEmojis() {
+    let uniqueEmojis: { [key: string]: string[] } = {};
+    this.allLikes.forEach(like => {
+      if (!uniqueEmojis[like.emoji]) uniqueEmojis[like.emoji] = [like.userID];
+      else if (!uniqueEmojis[like.emoji].includes(like.userID)) {
+          uniqueEmojis[like.emoji].push(like.userID);
+        }
+    });
+    return uniqueEmojis
   }
 
 
@@ -107,22 +137,41 @@ export class MessageComponent implements OnChanges {
 
 
   openDialogEmoji(): void {
-    let pos = this.PositionService.getDialogPos(this.emoijBtn);
     const dialogRef = this.dialog.open(DialogEmojiComponent, {
-      position: pos, panelClass: ['card-left-bottom-corner'],
+      panelClass: ['card-round-corners'],
       data: {},
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.addEmoji(result);
-        this.checkChange();
-      }
+      if (result && this.isEditMsg) return this.addEmojiToText(result);
+      if (result && !this.isEditMsg) return this.addLike(result);
     });
   }
 
 
-  addEmoji(emoji: string) {
+  addEmojiToText(emoji: string) {
     this.msgText.nativeElement.value = `${this.msgText.nativeElement.value}${emoji}`;
+    this.checkChange();
+  }
+
+
+  async addLike(emoji: string) {
+    if (this.msg instanceof ChannelMessage) {
+      let newLike = this.newLike(emoji);
+      for (let i = 0; i < this.msg.likes.length; i++) {
+        if (this.msg.likes[i].userID === newLike.userID) this.msg.likes.splice(i, 1);
+      }
+      this.msg.likes.push(newLike);
+      await this.messageFBS.updateChannelMessage(this.msg)
+    }
+  }
+
+
+  newLike(emoji: string): Like {
+    let like = new Like();
+    like.emoji = emoji;
+    like.userID = this.currentUserID;
+    like.date = new Date().getTime();
+    return like
   }
 
 
