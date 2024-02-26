@@ -1,6 +1,4 @@
 <div class="dialog-container">
-    
-    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
     <h2>Dein Profil bearbeiten</h2>
     <div class="avatar-container">
@@ -11,19 +9,23 @@
             <img src="../../../../../assets/img/icons/account_circle_bk.png" class="icon" alt="">
             <span>Vollständiger Name</span>
         </div>
-        <input type="text" [disabled]="loading" [(ngModel)]="data.user.name" matInput placeholder="Name">
+        <input type="text" [(ngModel)]="newName" matInput placeholder="{{ newName }}" (ngModelChange)="validateInputUserName()">
+        <div class="error-message">{{ userNameError }}</div>
     </div>
     <div class="input-container">
         <div class="label-container">
             <img src="../../../../../assets/img/icons/mail.png" class="icon" alt="">
             <span>E-Mail-Adresse</span>
         </div>
-        <input type="email" [disabled]="loading" [(ngModel)]="data.user.email" matInput placeholder="E-Mail-Adresse">
+        <input type="email" [(ngModel)]="newEmail" matInput placeholder="{{ newEmail }}" (ngModelChange)="validateInputUserEmail()">
+        <div class="error-message">{{ userEmailError }}</div>
     </div>
     <div class="button-container">
         <div mat-dialog-actions>
             <button mat-flat-button class="btn-cancel" (click)="closeDialog()">Abbrechen</button>
-            <button mat-flat-button class="btn-save" color="primary" (click)="saveUser()">Speichern</button>
+            <button mat-flat-button class="btn-save" color="primary"
+                [ngClass]="{'btn-enable': canSaveUser(), 'btn-disable': !canSaveUser()}" (click)="saveUser()"
+                [disabled]="!canSaveUser()">Speichern</button>
         </div>
     </div>
     <img src="../../../../../assets/img/icons/close.png" class="btn-close" (click)="closeDialog()" alt="close">

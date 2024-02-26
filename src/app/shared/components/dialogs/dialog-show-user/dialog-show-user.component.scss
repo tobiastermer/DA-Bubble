@@ -17,6 +17,11 @@ a {
     @include dFlex($fd: column, $ai: flex-start, $jc: flex-start, $gap: 45px);
     border-radius: 30px !important;
     width: 500px;
+
+    mat-progress-bar {
+        @include pAbsolute($t: 0px, $l: -15px);
+        width: 100%;
+    }
 }
 
 h2 {
