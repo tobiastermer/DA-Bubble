@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { UserChipComponent } from '../../../shared/components/user-chip/user-chip.component';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { Channel } from '../../../shared/models/channel.class';
 
 @Component({
   selector: 'app-search-bar',
@@ -26,6 +27,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SearchBarComponent implements AfterViewInit, OnDestroy {
   private usersSubscription!: Subscription;
+  private channelsSubscription!: Subscription;
 
   constructor(
     public dialog: MatDialog,
@@ -44,41 +46,85 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
 
   users: User[] = [];
   filteredUsers: User[] = [];
+  channels!: Channel[];
+  filteredChannels!: Channel[];
   selectListVisible: boolean = false;
   pathUserName: string = '';
+  showChannels: boolean = false;
 
   ngAfterViewInit() {
     // Initialisieren Sie die Users-Subscription
-    this.usersSubscription = this.DataService.users$.subscribe((users) => {
-      console.log('search-bar users', users)
+    this.usersSubscription = this.usersSubscriptionReturn();
+    this.channelsSubscription = this.channelSubscriptionReturn();
+  }
+
+  usersSubscriptionReturn(){
+    return this.DataService.users$.subscribe((users) => {
       this.users = users;
       this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
     });
   }
+
+  channelSubscriptionReturn(){
+    return this.DataService.channels$.subscribe((channels) => {
+      this.channels = channels;
+      this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
+    });
+  }
+
+
 
   closeList(){
     this.searchInput.nativeElement.value = '';
     this.selectListVisible = false;
   }
 
-  changePath(user:any) {
+  changeUserPath(user:any) {
     let name = user.name.replace(/\s/g, '_');
     this.router.navigate([this.pathUserName + '/message/' + name]);
     this.closeList()
   }
 
+  changeChannelPath(channel:any) {
+    let channelName = channel.name
+    this.router.navigate([this.pathUserName + '/channel/' + channelName]);
+    this.closeList()
+  }
+
   filter() {
     const search = this.searchInput.nativeElement.value.toLowerCase();
+    this.filterUsers(search);
+    this.filterChannels(search);
+    this.showChannel();
+  }
+
+  showChannel(){
+    if (this.filteredChannels.length > 0) {
+      this.showChannels = true;
+    } else {
+      this.showChannels = false;
+    }
+  }
+
+  filterUsers(inpuID:any){
     this.filteredUsers = this.users.filter(
-      (user) => user.name && user.name.toLowerCase().includes(search)
+      (user) => user.name && user.name.toLowerCase().includes(inpuID)
     );
-    this.selectListVisible = !!search && this.filteredUsers.length > 0;
+    this.selectListVisible = !!inpuID && this.filteredUsers.length > 0;
+  }
+
+  filterChannels(inpuID:any){
+    this.filteredChannels = this.channels.filter(
+      (channel) => channel.name && channel.name.toLowerCase().includes(inpuID)
+    );
+    this.selectListVisible = !!inpuID && this.filteredUsers.length > 0;
   }
 
   ngOnDestroy() {
     // Vergessen Sie nicht, die Subscription aufzuräumen, wenn die Komponente zerstört wird
     if (this.usersSubscription) {
       this.usersSubscription.unsubscribe();
+      this.channelsSubscription.unsubscribe();
     }
   }
 }

@@ -40,11 +40,44 @@
   height: 50vh;
   ul {
     list-style-type: none;
-    span {
+    li {
+      margin-top: 16px;
+    }
+    .categoryName {
       margin-left: 20px;
-      margin-bottom: 16px;
       font-size: 18px;
       font-weight: 600;
+    }
+  }
+}
+
+.channelList {
+  @include dFlex($jc: flex-start, $gap: 15px);
+  border-radius: 20px;
+  padding: 4px 20px 4px 20px;
+
+  .img-channel-hash {
+    height: 16px;
+    width: 16px;
+    background-image: url("../../../../assets/img/icons/hash_bk_16.png");
+  }
+
+  .channel-name {
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  &:hover {
+    background-color: $bgGrey;
+    cursor: pointer;
+
+    .img-channel-hash {
+      background-image: url("../../../../assets/img/icons/hash_bl_16.png");
+    }
+
+    .channel-name {
+      color: $dkBlue;
+      font-weight: 700;
     }
   }
 }

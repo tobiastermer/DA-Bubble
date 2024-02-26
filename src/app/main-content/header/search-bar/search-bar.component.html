@@ -2,16 +2,19 @@
     <input #searchInput type="text" (input)="filter()" matInput placeholder="DABubble durchsuchen">
     <mat-icon>search</mat-icon>
     <div class="search-container" [class.d-none]="!selectListVisible">
-        <ul class="filtered-users" >
-            <span>Users:</span>
+        <ul class="filtered" *ngIf="filteredUsers.length > 0">
+            <span class="categoryName">Users:</span>
             <li *ngFor="let user of filteredUsers;">
-                <app-user-chip (click)="changePath(user)" [user]="user" class="user-chip"></app-user-chip>
+                <app-user-chip (click)="changeUserPath(user)" [user]="user" class="user-chip"></app-user-chip>
             </li>
         </ul>
-        <ul class="filtered-users" >
-            <span>Channels:</span>
-            <li *ngFor="let user of filteredUsers;">
-                <app-user-chip (click)="changePath(user)" [user]="user" class="user-chip"></app-user-chip>
+        <ul class="filtered" *ngIf="showChannels">
+            <span class="categoryName">Channels:</span>
+            <li *ngFor="let channel of filteredChannels;">
+                <div class="channelList" (click)="changeChannelPath(channel)">
+                    <div class="img-channel-hash"></div>
+                    <span class="channel-name">{{ channel.name }}</span>
+                </div>
             </li>
         </ul>
     </div>
