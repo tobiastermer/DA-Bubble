@@ -19,13 +19,12 @@
 }
 
 .search-bar {
-  margin-right: 50px;
   width: 100%;
 }
 
 .user-head {
   flex: 1;
-  @include dFlex($gap: 20px, $jc: flex-end);
+  @include dFlex($gap: 10px, $jc: flex-end);
   height: 70px;
   cursor: pointer;
   .name {

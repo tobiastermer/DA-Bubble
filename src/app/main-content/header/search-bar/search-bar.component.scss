@@ -38,7 +38,9 @@
   overflow-y: auto;
   width: calc(100% - 50px);
   max-height: 50vh;
+  clip-path: inset(0 round 30px);
   ul {
+    padding:0;
     list-style-type: none;
     li {
       margin-top: 16px;
