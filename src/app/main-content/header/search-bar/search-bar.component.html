@@ -1,4 +1,18 @@
-<div class="search-container">
-    <input type="text" matInput placeholder="DABubble durchsuchen">
+<div class="searchBar-container" #searchBarContainer>
+    <input #searchInput type="text" (input)="filter()" matInput placeholder="DABubble durchsuchen">
     <mat-icon>search</mat-icon>
+    <div class="search-container" [class.d-none]="!selectListVisible">
+        <ul class="filtered-users" >
+            <span>Users:</span>
+            <li *ngFor="let user of filteredUsers;">
+                <app-user-chip (click)="changePath(user)" [user]="user" class="user-chip"></app-user-chip>
+            </li>
+        </ul>
+        <ul class="filtered-users" >
+            <span>Channels:</span>
+            <li *ngFor="let user of filteredUsers;">
+                <app-user-chip (click)="changePath(user)" [user]="user" class="user-chip"></app-user-chip>
+            </li>
+        </ul>
+    </div>
 </div>
