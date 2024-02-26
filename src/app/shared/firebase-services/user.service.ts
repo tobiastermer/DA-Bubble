@@ -59,7 +59,7 @@ export class UserService {
             }
             this.usersSubject.next(users);
         });
-    }    
+    }
 
     async getUserByID(userID: string): Promise<User | null> {
         try {
@@ -119,4 +119,54 @@ export class UserService {
 
         }
     }
+
+    validateInputUserName(newUserName: string, currentUserName: string | ''): string {
+        let userNameError = '';
+        const trimmedUserName = newUserName.trim();
+        if (trimmedUserName.length > 0) {
+            if (trimmedUserName.length < 2) {
+                userNameError = 'Der Name muss mindestens 2 Zeichen lang sein.';
+            } else if (!/^[a-zA-ZäöüÄÖÜß\-'\s]+$/.test(trimmedUserName)) {
+                userNameError = 'Der Name enthält unzulässige Zeichen.';
+            } else if (!this.userNameIsUnique(trimmedUserName, currentUserName)) {
+                userNameError = 'Ein User mit diesem Namen existiert bereits.';
+            }
+        }
+        return userNameError;
+    }
+    
+    validateInputUserEmail(newEmail: string, currentUserEmail: string | ''): string {
+        let userEmailError = '';
+        const trimmedEmail = newEmail.trim();
+        if (trimmedEmail.length > 0) {
+            const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (!emailRegex.test(trimmedEmail)) {
+                userEmailError = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
+            } else if (!this.userEmailIsUnique(trimmedEmail, currentUserEmail)) {
+                userEmailError = 'Ein User mit dieser E-Mail-Adresse existiert bereits.';
+            }
+        }
+        return userEmailError;
+    }
+
+    userNameIsUnique(name: string, currentUserName: string | ''): boolean {
+        if (name == currentUserName) {
+            return true;
+        } else {
+            const userNameLowerCase = name.toLowerCase();
+            const users: User[] = this.usersSubject.value;
+            return !users.some(user => user.name.toLowerCase() === userNameLowerCase);
+        }
+    }
+    
+    userEmailIsUnique(email: string, currentUserEmail: string | ''): boolean {
+        if (email == currentUserEmail) {
+            return true;
+        } else {
+            const userEmailLowerCase = email.toLowerCase();
+            const users: User[] = this.usersSubject.value;
+            return !users.some(user => user.email.toLowerCase() === userEmailLowerCase);
+        }
+    }
+
 }

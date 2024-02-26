@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, EventEmitter, Output, ViewChild, HostListener, ElementRef, Input, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectorRef, EventEmitter, Output, ViewChild, HostListener, ElementRef, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { User } from '../../../shared/models/user.class';
 import { UserChipComponent } from '../user-chip/user-chip.component';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './input-add-user.component.scss'
 })
 
-export class InputAddUserComponent implements OnInit, AfterViewInit {
+export class InputAddUserComponent implements OnInit, AfterViewInit, OnDestroy{
   @Input() currentMemberIDs: string[] = [];
 
   @Output() userAdded = new EventEmitter<User>();
