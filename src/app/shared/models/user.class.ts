@@ -34,4 +34,9 @@ export class User {
         });
     }
 
+
+    clone() {
+        return new User(this.toJSON());
+    }
+
 }

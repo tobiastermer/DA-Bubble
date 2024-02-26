@@ -19,6 +19,10 @@ import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.co
 import { DataService } from '../../../services/data.service';
 import { Subscription } from 'rxjs';
 import { PresenceService } from '../../../firebase-services/presence.service';
+import { UserService } from '../../../firebase-services/user.service';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dialog-show-user',
@@ -27,7 +31,7 @@ import { PresenceService } from '../../../firebase-services/presence.service';
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose, FormsModule],
+    MatDialogClose, FormsModule, MatProgressBarModule],
   templateUrl: './dialog-show-user.component.html',
   styleUrl: './dialog-show-user.component.scss'
 })
@@ -35,7 +39,9 @@ export class DialogShowUserComponent {
 
   userStatusSubscription!: Subscription;
   userStatus: string = 'offline';
+  currentUser: User;
   currentUserID: string;
+  loading: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<DialogShowUserComponent>,
@@ -43,8 +49,10 @@ export class DialogShowUserComponent {
     public dialog: MatDialog,
     private PresenceService: PresenceService,
     private DataService: DataService,
-  ) {
-    this.currentUserID = this.DataService.currentUser.id!
+    private UserService: UserService,
+    private router: Router) {
+    this.currentUserID = this.DataService.currentUser.id!;
+    this.currentUser = this.DataService.currentUser;
   }
 
   ngOnInit() {
@@ -61,16 +69,60 @@ export class DialogShowUserComponent {
     }
   }
 
-  sendMessage() { }
+  sendMessage(user: User) {
+    let name = user.name.replace(/\s/g, '_');
+    this.router.navigate(['/message/' + name]);
+  }
 
   closeDialog() {
     this.dialogRef.close();
   }
 
   openDialogEditUser(user: User) {
-    this.dialog.open(DialogEditUserComponent, {
+    const userCopy = user.clone();
+    const dialogRef = this.dialog.open(DialogEditUserComponent, {
       panelClass: ['card-round-corners'],
-      data: { user },
+      data: { user: userCopy },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.saveUser(result);
+      }
     });
   }
+
+  async saveUser(user: User) {
+    this.loading = true;
+    if (this.nameHasChanged(user) || this.emailHasChanged(user)) {
+      try {
+        await this.UserService.updateUser(user);
+        this.currentUser = user;
+        this.data.user = user;
+        this.DataService.currentUser = user;
+      } catch (error) {
+        this.dialog.open(DialogErrorComponent, {
+          panelClass: ['card-round-corners'],
+          data: { errorMessage: 'Es gab ein Problem beim Ändern des Profils. Bitte versuche es erneut.' }
+        });
+      }
+    } else {
+      console.log('Keine Änderungen erkannt.');
+    }
+    this.loading = false;
+  }
+
+
+  nameHasChanged(updatedUser: User) {
+    return this.data.user.name != updatedUser.name;
+  }
+
+  emailHasChanged(updatedUser: User) {
+    return this.data.user.email != updatedUser.email;
+  }
+
+  sendConfirmationEmail() {
+
+  }
+
 }
