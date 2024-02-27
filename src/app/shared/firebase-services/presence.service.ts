@@ -1,111 +1,123 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Auth, authState } from '@angular/fire/auth';
-import {
-  Database,
-  objectVal,
-  set,
-  ref,
-  onDisconnect,
-  serverTimestamp,
-  onValue,
-} from '@angular/fire/database';
+import { Database, objectVal, set, ref, onDisconnect, serverTimestamp } from '@angular/fire/database';
 import { first } from 'rxjs/operators';
 import { UserService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
+import { onValue } from 'firebase/database';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PresenceService {
-  constructor(
-    private auth: Auth,
-    private db: Database,
-    private userService: UserService
-  ) {
-    this.updateOnDisconnect();
+  private timeoutID: any;
+  private inactivityTimeout: any;
+
+  constructor(private auth: Auth, private db: Database, private userService: UserService) {
+    this.initPresence();
   }
 
-  async updateOnUserLogin(uid: string) {
-    //Status des Benutzers in der Realtime Database erstellen.
+  //Intialisierung des derzeitigen Status
+  private initPresence(): void {
+    this.updateOnDisconnect();
+    if (this.isPlatformBrowser()) {
+      this.addActivityListeners();
+    }
+  }
+
+  private isPlatformBrowser(): boolean {
+    return typeof window !== 'undefined';
+  }
+
+  // Status aktuallisierung im Realtime Speicher
+  private async setUserStatus(uid: string, status: string): Promise<void> {
     const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
+    const statusForDatabase = { state: status, last_changed: serverTimestamp() };
 
-    // Objekt für den Online-Status und serverseitiger Timestamp.
-    const isOnlineForDatabase = {
-      state: 'online',
-      last_changed: serverTimestamp(),
-    };
+    set(userStatusDatabaseRef, statusForDatabase)
+       
+      .catch((error) => console.error(`Error setting status for ${uid}:`, error));
+  }
 
-    // Den Benutzerstatus auf online machen.
+  //setzt den Aktivitätsstatus zurück
+  private resetTimer(): void {
+    authState(this.auth).pipe(first()).toPromise().then((user) => {
+      if (user) {
+        this.startInactivityTimer(user.uid);
+        this.setUserStatus(user.uid, 'online');
+      }
+    });
+  }
+
+  // startet den inactivitätsstatus ab 2min
+  private startInactivityTimer(uid: string): void {
+    clearTimeout(this.timeoutID);
+    this.timeoutID = setTimeout(() => this.setUserStatus(uid, 'away'), 60000);
+  }
+
+  //maus/tastatur kontrolle 
+  private addActivityListeners(): void {
+    const resetTimerBound = this.resetTimer.bind(this);
+    window.addEventListener('mousemove', resetTimerBound);
+    window.addEventListener('keydown', resetTimerBound);
+  }
+
+  private removeActivityListeners(): void {
+    const resetTimerBound = this.resetTimer.bind(this);
+    window.removeEventListener('mousemove', resetTimerBound);
+    window.removeEventListener('keydown', resetTimerBound);
+  }
+
+  // ändern des statuses zu online bei Login
+  async updateOnUserLogin(uid: string): Promise<void> {
+    const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
+    const isOnlineForDatabase = { state: 'online', last_changed: serverTimestamp() };
+
     await set(userStatusDatabaseRef, isOnlineForDatabase);
-
+    this.startInactivityTimer(uid);
     await this.userService.updateUserStatusByUid(uid, 'online');
 
+    this.monitorConnection(userStatusDatabaseRef);
+  }
+
+  //setzt den Status auf offline bei fensterschließung
+  private async monitorConnection(userStatusDatabaseRef: any): Promise<void> {
     const connectedRef = ref(this.db, '.info/connected');
     objectVal(connectedRef).subscribe((connected) => {
       if (connected === false) {
         return;
       }
-
-      //Wenn verbunden ist dann die onDisconnect()-Methode verwenden, um den Offline-Status zu setzen,
-      // diese wird dann ausgeführt sobald die verbindung verlorene geht z.b wenn das fenseter geschlossen wird.
-      onDisconnect(userStatusDatabaseRef).set({
-        state: 'offline',
-        last_changed: serverTimestamp(),
-      });
+      onDisconnect(userStatusDatabaseRef).set({ state: 'offline', last_changed: serverTimestamp() });
     });
   }
 
-  // funktion die den Online-/Offline-Status des Users beim Trennen der Verbindung aktualisiert.
-  async updateOnDisconnect() {
+  //status auf offline setzen bei logout
+  async updateOnDisconnect(): Promise<void> {
     const user = await authState(this.auth).pipe(first()).toPromise();
     if (user) {
       const uid = user.uid;
-      // In Users den status ändern .... geht nur für login und logout nicht bei schließen des fensters
       const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
-
-      await this.userService.updateUserStatusByUid(uid, 'offline');
-
-      const isOfflineForDatabase = {
-        state: 'offline',
-        last_changed: serverTimestamp(),
-      };
-
-      const isOnlineForDatabase = {
-        state: 'online',
-        last_changed: serverTimestamp(),
-      };
-
-      // Referenz für den real-time database Pfad .info/connected der true zurückgibt, wenn man verbunden.
-      const connectedRef = ref(this.db, '.info/connected');
-      objectVal(connectedRef).subscribe((connected) => {
-        if (connected === false) {
-          return;
-        }
-
-        // hier auch  die onDisconnect()-Methode verwenden, um den Offline-Status zu setzen,
-        // sobald der User die Verbindung verliert.
-        onDisconnect(userStatusDatabaseRef)
-          .set(isOfflineForDatabase)
-          .then(() => {
-            set(userStatusDatabaseRef, isOnlineForDatabase);
-          });
-      });
+      await this.setUserStatus(uid, 'offline');
+      this.monitorConnection(userStatusDatabaseRef);
     }
   }
 
-  //Holt sich den state/status aus der real-time db 
+  //funktion zu abfragen den aktuellen Statuses
   getUserStatus(uid: string): BehaviorSubject<string> {
     const statusSubject = new BehaviorSubject<string>('offline');
     const statusRef = ref(this.db, `/status/${uid}`);
 
-    onValue(statusRef, (snapshot: any) => { 
+    onValue(statusRef, (snapshot) => {
       const status = snapshot.val() ? snapshot.val().state : 'offline';
       statusSubject.next(status);
-    }, {
-      onlyOnce: false
     });
 
     return statusSubject;
   }
-}
 
+  ngOnDestroy(): void {
+    if (this.isPlatformBrowser()) {
+      this.removeActivityListeners();
+    }
+  }
+}
