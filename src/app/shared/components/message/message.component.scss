@@ -162,8 +162,72 @@
     transition: transform 0.3s ease, opacity 0.3s ease;
     border-radius: 20px 20px 20px 0px;
   }
+
+  .likes-row{
+    flex-direction: row-reverse;
+  }
 }
 
+.likes-row {
+  @include dFlex($fd: row, $gap: 8px);
+
+  .sorted-like {
+
+    .emoji {
+      @include dFlex($fd: row, $gap: 4px);
+      background-color: white;
+      border: 1px solid $lgPurple;
+      border-radius: 16px;
+      padding: 2px 8px;
+
+      div{
+        height: 20px;
+        width: 20px;
+        font-size: 16px;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .hidden-like {
+      display: none;
+      position: fixed;
+      z-index: 9;
+      background-color: $bgBlue;
+      border-radius: 20px 20px 20px 0;
+      padding: 20px;
+
+      div {
+        @include dFlex();
+        height: 35px;
+        font-size: 30px;
+        text-align: center;
+      }
+
+      a {
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 500;
+        color: white;
+      }
+
+      span {
+        font-size: 16px;
+        color: white;
+      }
+
+    }
+
+    &:hover {
+      .hidden-like {
+        @include dFlex ($fd: column, $gap: 8px)
+      }
+    }
+
+  }
+}
 
 // edit part
 
@@ -288,58 +352,4 @@
   position: absolute;
   right: 2px;
   top: 2px;
-}
-
-.likes-row {
-  @include dFlex($fd: row, $gap: 16px);
-
-  .sorted-like {
-
-    .emoji {
-      @include dFlex($fd: row, $gap: 4px);
-      border: 1px solid $lgPurple;
-      border-radius: 16px;
-      padding: 8px;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    .hidden-like {
-      display: none;
-      position: fixed;
-      z-index: 9;
-      background-color: $bgBlue;
-      border-radius: 20px 20px 20px 0;
-      padding: 20px;
-
-      div {
-        @include dFlex();
-        height: 35px;
-        font-size: 30px;
-        text-align: center;
-      }
-
-      a {
-        text-decoration: none;
-        font-size: 18px;
-        font-weight: 500;
-        color: white;
-      }
-
-      span {
-        font-size: 16px;
-        color: white;
-      }
-
-    }
-
-    &:hover {
-      .hidden-like {
-        @include dFlex ($fd: column, $gap: 8px)
-      }
-    }
-
-  }
 }

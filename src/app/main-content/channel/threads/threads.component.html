@@ -12,10 +12,11 @@
     </button>
   </header>
   <main>
-
+    <!-- MESSAGE OF THE THREAD -->
     <app-message [msg]="channelMsg"
       [user]="data.getUserFromMessage(channelMsg)" [isEditDisabled]="true"></app-message>
 
+    <!-- REPLY COUNTER -->
     <div class="response-counter">
       <div>{{ channelMsg.replies.length }}</div>
       <div>Antworten</div>
@@ -23,7 +24,6 @@
     </div>
 
     <!-- REPLY MESSAGE -->
-
     @for (reply of channelMsg.replies ; track $index) {
     <app-message [msg]="reply" [user]="data.getUserFromReply(reply)"
     [index]="$index" [channelMsg]="channelMsg"></app-message>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { Reply } from '../../models/reply.class';
 import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
 import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
-import { ElementPos, PositionService } from '../../../shared/services/position.service';
+import { PositionService } from '../../../shared/services/position.service';
 import { DataService } from '../../services/data.service';
 import { Like, SortedLikes } from '../../models/like.class';
 
@@ -50,7 +50,7 @@ export class MessageComponent implements OnChanges {
   isSaveEnable = false;
   currentUserID: string;
   oldText: string = '';
-  posLikesRow = 2; 
+  posLikesRow = 2;
 
   constructor(
     public dialog: MatDialog,
@@ -63,10 +63,10 @@ export class MessageComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
-      if (this.msg instanceof Reply) return
-      this.replaies = this.msg.replies;
       this.allLikes = this.msg.likes;
       this.sortedLikes = this.fillSortedLikes();
+      if (this.msg instanceof Reply) return
+      this.replaies = this.msg.replies;
     }
   }
 
@@ -88,8 +88,8 @@ export class MessageComponent implements OnChanges {
     this.allLikes.forEach(like => {
       if (!uniqueEmojis[like.emoji]) uniqueEmojis[like.emoji] = [like.userID];
       else if (!uniqueEmojis[like.emoji].includes(like.userID)) {
-          uniqueEmojis[like.emoji].push(like.userID);
-        }
+        uniqueEmojis[like.emoji].push(like.userID);
+      }
     });
     return uniqueEmojis
   }
@@ -157,14 +157,14 @@ export class MessageComponent implements OnChanges {
 
 
   async addLike(emoji: string) {
-    if (this.msg instanceof ChannelMessage) {
-      let newLike = this.newLike(emoji);
-      for (let i = 0; i < this.msg.likes.length; i++) {
-        if (this.msg.likes[i].userID === newLike.userID) this.msg.likes.splice(i, 1);
-      }
-      this.msg.likes.push(newLike);
-      await this.messageFBS.updateChannelMessage(this.msg)
+    let newLike = this.newLike(emoji);
+    for (let i = 0; i < this.msg.likes.length; i++) {
+      if (this.msg.likes[i].userID === newLike.userID) this.msg.likes.splice(i, 1);
     }
+    this.msg.likes.push(newLike);
+    if (this.msg instanceof ChannelMessage) await this.messageFBS.updateChannelMessage(this.msg)
+    else if (this.channelMsg) await this.messageFBS.updateChannelMessage(this.channelMsg)
+    this.sortedLikes = this.fillSortedLikes();
   }
 
 
@@ -177,7 +177,7 @@ export class MessageComponent implements OnChanges {
   }
 
 
-  setHiddenLikePos(){
+  setHiddenLikePos() {
     let pos = this.PositionService.getDialogPosWithCorner(this.likesRow, 'bottom');
     if (pos?.bottom) this.posLikesRow = parseInt(pos.bottom);
   }

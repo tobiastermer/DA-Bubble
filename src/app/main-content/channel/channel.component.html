@@ -1,4 +1,5 @@
-<div class="channel-row" [ngStyle]="{'gap': threadMsg ? '20px' : '0px'}" [ngClass]="{'menu-opened': menuOpen, 'menu-closed': !menuOpen}">
+<div class="channel-row" [ngStyle]="{'gap': threadMsg ? '20px' : '0px'}"
+    [ngClass]="{'menu-opened': menuOpen, 'menu-closed': !menuOpen}">
     <mat-card class="channel-card">
 
         @if (chat === 'channel') {
@@ -8,15 +9,15 @@
             @if (channelMessages.length <= 0) { <app-channel-msg [channel]="currentChannel" [owner]="'Willi'">
                 </app-channel-msg>
                 }
-                @for (message of channelMessages; track $index) {
-                
-                @if(checkTimeStemp(message.date)){
-                    <div class="day-section">
-                        <hr>
-                        <div>{{ newTimeStemp }}</div>
-                        <hr>
-                    </div>
-                }
+
+            @for (message of channelMessages; track $index) {
+            @if(checkTimeStemp(message.date)){
+                <div class="day-section">
+                    <hr>
+                    <div>{{ newTimeStemp }}</div>
+                    <hr>
+                </div>
+            }
 
 
                 <app-message [msg]="message" [user]="getUserFromMessage(message)" [isChannelMsg]="true"
