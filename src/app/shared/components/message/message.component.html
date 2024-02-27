@@ -72,12 +72,18 @@
     <mat-card class="emoji-popup">
         <mat-card-content>
             @if (isChannelMsg) {
+                @for (emoji of data.lastEmojis; track $index) {
+                    <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
+                }
             <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
             <mat-icon class="action-btn" (click)="setThreadOutput()">comment</mat-icon>
             @if (editPossible()){
             <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
             }
             } @else {
+                @for (emoji of data.lastEmojis; track $index) {
+                    <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
+                }
             <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
             @if (editPossible()){
             <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>

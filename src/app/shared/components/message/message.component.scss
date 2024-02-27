@@ -126,6 +126,19 @@
   }
 }
 
+.action-btn-emoji {
+  @include dFlex();
+  border-radius: 50%;
+  height: 26px;
+  width: 26px;
+  font-size: 20px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $dkBlue;
+  }
+}
+
 .current-user {
   flex-direction: row-reverse;
   padding: 8px 16px 8px 0px;
@@ -163,7 +176,7 @@
     border-radius: 20px 20px 20px 0px;
   }
 
-  .likes-row{
+  .likes-row {
     flex-direction: row-reverse;
   }
 }
@@ -180,7 +193,7 @@
       border-radius: 16px;
       padding: 2px 8px;
 
-      div{
+      div {
         height: 20px;
         width: 20px;
         font-size: 16px;

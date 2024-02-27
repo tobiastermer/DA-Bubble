@@ -18,6 +18,7 @@ export class DataService {
   currentUserID!: string; // ggf. löschen
   currentUserUID!: string; // ggf. löschen
   channels!: Channel[];
+  public lastEmojis!: string[];
 
   private usersSubject = new BehaviorSubject<User[]>([]);
   public users$ = this.usersSubject.asObservable();
@@ -60,6 +61,12 @@ export class DataService {
     if (!this.users) return ''
     const user = this.users.find(user => user.id === userID);
     return user ? user.name : '';
+  }
+
+  loadLastEmojis(){
+  let load = localStorage.getItem('lastEmojis');
+  if (load) this.lastEmojis =  load.split(',');
+  else this.lastEmojis = ['👍','😀'];
   }
 
 }

@@ -151,6 +151,7 @@ export class ChannelComponent {
 
 
   checkTimeStemp(time: number): boolean {
+    if (this.newTimeStemp && this.channelMessages.length == 1) return true
     this.newTimeStemp = this.getTimeStemp(time);
     if (this.oldTimeStemp === this.newTimeStemp) return false
     this.oldTimeStemp = this.newTimeStemp

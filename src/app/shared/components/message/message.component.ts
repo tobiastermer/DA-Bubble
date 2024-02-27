@@ -58,6 +58,7 @@ export class MessageComponent implements OnChanges {
     public data: DataService,
     private PositionService: PositionService) {
     data.currentUser.id ? this.currentUserID = data.currentUser.id : this.currentUserID = '';
+    if (!data.lastEmojis) this.data.loadLastEmojis()
   }
 
 
@@ -157,6 +158,7 @@ export class MessageComponent implements OnChanges {
 
 
   async addLike(emoji: string) {
+    this.saveEmojiLocal(emoji);
     let newLike = this.newLike(emoji);
     for (let i = 0; i < this.msg.likes.length; i++) {
       if (this.msg.likes[i].userID === newLike.userID) this.msg.likes.splice(i, 1);
@@ -165,6 +167,14 @@ export class MessageComponent implements OnChanges {
     if (this.msg instanceof ChannelMessage) await this.messageFBS.updateChannelMessage(this.msg)
     else if (this.channelMsg) await this.messageFBS.updateChannelMessage(this.channelMsg)
     this.sortedLikes = this.fillSortedLikes();
+  }
+
+
+  saveEmojiLocal(emoji: string) {
+    if (this.data.lastEmojis.includes(emoji)) return
+    this.data.lastEmojis.push(emoji);
+    if (this.data.lastEmojis.length > 2) this.data.lastEmojis.splice(0, (this.data.lastEmojis.length - 2));
+    localStorage.setItem('lastEmojis', this.data.lastEmojis.toString())
   }
 
 
