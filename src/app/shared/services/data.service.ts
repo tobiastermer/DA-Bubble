@@ -33,7 +33,7 @@ export class DataService {
     return user ? user : new User;
   }
 
-  getUserFromReply(reply: Reply):User {
+  getUserFromReply(reply: Reply): User {
     const user = this.users.find(user => user.id === reply.userID);
     return user ? user : new User;
   }
@@ -54,6 +54,12 @@ export class DataService {
 
   setCurrentUserChannels(channels: Channel[]) {
     this.currentUserChannelsSubject.next(channels);
+  }
+
+  public getUserNameById(userID: string): string {
+    if (!this.users) return ''
+    const user = this.users.find(user => user.id === userID);
+    return user ? user.name : '';
   }
 
 }

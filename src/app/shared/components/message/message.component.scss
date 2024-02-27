@@ -294,26 +294,43 @@
   @include dFlex($fd: row, $gap: 16px);
 
   .sorted-like {
-    position: relative;
 
     .emoji {
       @include dFlex($fd: row, $gap: 4px);
       border: 1px solid $lgPurple;
       border-radius: 16px;
       padding: 8px;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     .hidden-like {
       display: none;
-      position: absolute;
-      bottom: 45px;
+      position: fixed;
+      z-index: 9;
       background-color: $bgBlue;
       border-radius: 20px 20px 20px 0;
       padding: 20px;
 
-      span {
+      div {
+        @include dFlex();
+        height: 35px;
         font-size: 30px;
         text-align: center;
+      }
+
+      a {
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 500;
+        color: white;
+      }
+
+      span {
+        font-size: 16px;
+        color: white;
       }
 
     }

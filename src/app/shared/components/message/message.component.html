@@ -18,29 +18,33 @@
         </div>
         }
         @if(sortedLikes.length > 0){
-            <div class="likes-row">
-                @for (like of sortedLikes; track $index) {
-                    <div class="sorted-like">
-                        <div class="emoji">
-                            {{ like.emoji }} {{ like.usersIDs.length }}
-                        </div>
-                        <div class="hidden-like">
-                            <span>{{ like.emoji }}</span>
-                            @for (name of sortedLikes[$index].usersIDs; track $index) {
-                                <a>{{ name }}</a>
-                            }
-                        </div>
-                    </div>
-                }
+        <div #likesRow class="likes-row" (mousemove)="setHiddenLikePos()">
+            <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
+            @for (like of sortedLikes; track $index) {
+            <div class="sorted-like">
+                <div class="emoji">
+                    {{ like.emoji }} {{ like.usersIDs.length }}
+                </div>
+                <div class="hidden-like" [style.bottom.px]="posLikesRow">
+                    <div>{{ like.emoji }}</div>
+                    @for (nameID of sortedLikes[$index].usersIDs; track $index) {
+                    <a>{{ data.getUserNameById(nameID) }}</a>
+                    }
+                    @if (sortedLikes[$index].usersIDs.length > 1) {
+                    <span>haben reagiert</span>
+                    }@else { <span>hat reagiert</span> }
+                </div>
             </div>
-            
+            }
+        </div>
         }
+
         }
         @else {
         <div class="edit">
             <textarea #msgText class="edit-text" cols="30" rows="3" (input)="checkChange()">{{ msg.message }}</textarea>
             <div class="edit-bottom">
-                <mat-icon class="action-btn" #emoijBtn (click)="openDialogEmoji()">sentiment_satisfied</mat-icon>
+                <mat-icon class="action-btn" #emoijBtn (click)="openDialogEmoji()">add_reaction</mat-icon>
                 <div class="btn-area">
                     <button class="icon-btn delet-btn" mat-fab extended color="primary" (click)="deletMsg()">
                         <mat-icon>delete</mat-icon>
@@ -71,7 +75,7 @@
             <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
             }
             } @else {
-            <mat-icon class="action-btn">add_reaction</mat-icon>
+            <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
             @if (editPossible()){
             <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
             }

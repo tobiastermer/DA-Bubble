@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { Reply } from '../../models/reply.class';
 import { ChannelMessagesService } from '../../firebase-services/channel-message.service';
 import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
-import { PositionService } from '../../../shared/services/position.service';
+import { ElementPos, PositionService } from '../../../shared/services/position.service';
 import { DataService } from '../../services/data.service';
 import { Like, SortedLikes } from '../../models/like.class';
 
@@ -40,6 +40,7 @@ export class MessageComponent implements OnChanges {
 
   @ViewChild('msgText') msgText!: ElementRef;
   @ViewChild('emoijBtn') emoijBtn!: ElementRef;
+  @ViewChild('likesRow') likesRow!: ElementRef;
 
   allLikes: Like[] = [];
   sortedLikes: SortedLikes[] = [];
@@ -49,11 +50,12 @@ export class MessageComponent implements OnChanges {
   isSaveEnable = false;
   currentUserID: string;
   oldText: string = '';
+  posLikesRow = 2; 
 
   constructor(
     public dialog: MatDialog,
     private messageFBS: ChannelMessagesService,
-    private data: DataService,
+    public data: DataService,
     private PositionService: PositionService) {
     data.currentUser.id ? this.currentUserID = data.currentUser.id : this.currentUserID = '';
   }
@@ -172,6 +174,12 @@ export class MessageComponent implements OnChanges {
     like.userID = this.currentUserID;
     like.date = new Date().getTime();
     return like
+  }
+
+
+  setHiddenLikePos(){
+    let pos = this.PositionService.getDialogPosWithCorner(this.likesRow, 'bottom');
+    if (pos?.bottom) this.posLikesRow = parseInt(pos.bottom);
   }
 
 
