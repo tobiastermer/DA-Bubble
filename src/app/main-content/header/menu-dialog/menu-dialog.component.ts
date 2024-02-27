@@ -6,14 +6,17 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { DataService } from '../../../shared/services/data.service';
+
 import { DialogShowUserComponent } from '../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
 import { User } from '../../../shared/models/user.class';
 import { getAuth, signOut } from 'firebase/auth';
+import { PresenceService } from '../../../shared/firebase-services/presence.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-dialog',
   standalone: true,
-  imports: [CommonModule, MatDialogContent],
+  imports: [CommonModule, MatDialogContent,],
   templateUrl: './menu-dialog.component.html',
   styleUrl: './menu-dialog.component.scss',
 })
@@ -23,6 +26,8 @@ export class MenuDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<MenuDialogComponent>,
     public data: DataService,
+    private router: Router,
+    public presenceService: PresenceService,
     public dialog: MatDialog
   ) {}
 
@@ -43,14 +48,18 @@ export class MenuDialogComponent {
   }
 
   logOut() {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        console.log('ausgeloggt')
-      })
-      .catch((error) => {
-        // An error happened.
-      });
+    // const auth = getAuth();
+    // signOut(auth)
+    //   .then(() => {
+    //     // Sign-out successful.
+    //     console.log('ausgeloggt')
+    //   })
+    //   .catch((error) => {
+    //     // An error happened.
+    //   });
+
+    this.presenceService.updateOnDisconnect();
+    this.router.navigate(['login']);
+    this.closeDialog();
   }
 }
