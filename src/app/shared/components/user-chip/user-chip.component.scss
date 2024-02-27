@@ -67,18 +67,27 @@
 }
 
 .status-indicator {
-  width: 16px;
-  height: 16px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: red;
   display: inline-block;
   position: absolute;
   margin-top: 32px;
   left: 116px;
   border: 2px solid white;
   border-radius: 100%;
+  background: radial-gradient( circle at -2px -1px, white, red);
 }
 
 .status-indicator.online {
+  width: 14px;
+  height: 14px;
   background-color: $lgGreen;
+  background: radial-gradient( circle at -2px -1px, white, $lgGreen);
+}
+
+.status-indicator.away {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient( circle at -2px -1px, white, yellow);
 }
