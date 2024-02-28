@@ -133,13 +133,11 @@ export class InputTextareaComponent {
 
   addUserToMessageText(users: User[]) {
     if (!this.messageText) return;
-    let span = this.fillAtUserSpan(users)
-    this.messageText.nativeElement.appendChild(span);
+    this.appendChildForAllUsers(users)
     this.setCurserToEndPos()
   }
 
-  fillAtUserSpan(users: User[]) {
-    let outSpan = document.createElement('span');
+  appendChildForAllUsers(users: User[]) {
     users.forEach((user, index) => {
       let span = document.createElement('span');
       span.contentEditable = 'false';
@@ -147,10 +145,9 @@ export class InputTextareaComponent {
       span.style.color = 'blue';
       span.style.cursor = 'pointer';
       span.addEventListener('click', () => this.openShowUserDialog(user));
-      outSpan.appendChild(span);
-      if (index !== users.length - 1) outSpan.appendChild(document.createTextNode(' '))
+      this.messageText.nativeElement.appendChild(span)
+      this.messageText.nativeElement.appendChild(document.createTextNode(' '))
     });
-    return outSpan
   }
 
   openShowUserDialog(user: User) {
