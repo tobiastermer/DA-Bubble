@@ -5,6 +5,7 @@
   border-radius: 30px;
   padding: 4px 20px 4px 20px;
   font-size: 18px;
+  position: relative;
 
   .user-avatar {
     height: 50px;
@@ -73,7 +74,7 @@
   display: inline-block;
   position: absolute;
   margin-top: 32px;
-  left: 116px;
+  left: 60px;
   border: 2px solid white;
   border-radius: 100%;
   background: radial-gradient( circle at -2px -1px, white, red);

@@ -21,7 +21,6 @@ export class User {
             name: this.name,
             email: this.email,
             avatar: this.avatar,
-            status: this.status,
             // Bedingte Einbeziehung der ID, nur wenn sie vorhanden ist
             ...(this.id && { id: this.id }),
         };
