@@ -41,13 +41,13 @@
         </main>
         }
 
-        <app-input-textarea [channel]="currentChannel" [channelMsg]="true"></app-input-textarea>
+        <app-input-textarea [channel]="currentChannel" [channelMsg]="true" [members]="currentChannelMembers"></app-input-textarea>
 
     </mat-card>
 
     @if (chat === 'channel') {
     <app-threads [channelMsg]="threadMsg" [channel]="threadChannel"
-        (closeThread)="deletThreadValues($event)"></app-threads>
+        (closeThread)="deletThreadValues($event)" [currentChannelMembers]="currentChannelMembers"></app-threads>
     }
 
 </div>

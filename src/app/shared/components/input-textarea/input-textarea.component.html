@@ -1,8 +1,10 @@
 <!-- INPUT FORM AREA -->
 <div class="message-input">
-  <textarea class="message-input__textarea" #messageText placeholder="Antworten..."
-    (input)="updateButtonState(messageText.value)" (keydown.enter)="handleEnter($event, messageText.value)">
-  </textarea>
+
+  <div id="messageText" contenteditable="true" class="message-input__textarea" #messageText placeholder="Antworten..."
+    (input)="updateButtonState(messageText.innerText)" (keydown.enter)="handleEnter($event, messageText.innerText)">
+  </div>
+
   <div class="message-input__controls">
     <div class="message-input__actions">
       <div class="message-input__file-upload">
@@ -11,11 +13,14 @@
       </div>
       <hr />
       <mat-icon class="message-input__action-btn" #emoijBtn (click)="openDialogEmoji()">sentiment_satisfied</mat-icon>
-      <mat-icon class="message-input__action-btn" appClickOutside>alternate_email</mat-icon>
+      <mat-icon class="message-input__action-btn" #atUser (click)="openDialogAtUser()"
+        appClickOutside>alternate_email</mat-icon>
     </div>
-    <button class="message-input__send-btn" (click)="addNewMsg(messageText.value); messageText.value = ''"
+
+    <button class="message-input__send-btn" (click)="addNewMsg(messageText.innerText); messageText.innerText = ''"
       [disabled]="isButtonDisabled">
       <mat-icon>send</mat-icon>
     </button>
+
   </div>
 </div>

@@ -1,0 +1,13 @@
+<mat-card>
+
+    <app-input-add-user [currentMemberIDs]="data.currentMemberIDs" [searchAllUsers]="false"
+        (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved($event)"
+        (selectedUsersChanged)="onSelectedUsersChanged($event)" [FilterUsersMaxHeight]="150"> 
+    </app-input-add-user>
+
+    <div class="btn-area">
+        <button class="btn btn-close" (click)="onNoClick()">Abbrechen</button>
+        <button class="btn" [ngClass]="setBtnClass()" (click)="addUsers()">Hinzufügen</button>
+    </div>
+ 
+</mat-card>

@@ -9,6 +9,9 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { MatDialog } from '@angular/material/dialog';
 import { PositionService } from '../../../shared/services/position.service';
 import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
+import { User } from '../../models/user.class';
+import { DialogAtUserComponent } from '../dialogs/dialog-at-user/dialog-at-user.component';
+import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show-user.component';
 
 
 @Component({
@@ -26,15 +29,23 @@ export class InputTextareaComponent {
   @Input() channel!: Channel | undefined;
   @Input() msg!: ChannelMessage;
   @Input() channelMsg: Boolean = false;
+  @Input() members: User[] = [];
 
   @ViewChild('messageText') messageText!: ElementRef;
   @ViewChild('emoijBtn') emoijBtn!: ElementRef;
+  @ViewChild('atUser') atUser!: ElementRef;
 
   isButtonDisabled: boolean = true;
   isEmojiPickerVisible: boolean = false;
 
+  range?: Range;
+
+  currentMemberIDs: string[] = [];
+
+
+
   constructor(private data: DataService,
-    private messageFBS: ChannelMessagesService, 
+    private messageFBS: ChannelMessagesService,
     private PositionService: PositionService,
     public dialog: MatDialog) { }
 
@@ -51,7 +62,7 @@ export class InputTextareaComponent {
       if (textValue.trim()) {
         this.addNewMsg(textValue.trim());
         if (this.messageText) {
-          this.messageText.nativeElement.value = '';
+          this.messageText.nativeElement.innerText = '';
         }
       }
     }
@@ -106,10 +117,54 @@ export class InputTextareaComponent {
     return reply
   }
 
+  // @-Part
+
+  openDialogAtUser(): void {
+    let pos = this.PositionService.getDialogPosWithCorner(this.atUser, 'bottom');
+    this.currentMemberIDs = this.members.map(user => user.id!);
+    const dialogRef = this.dialog.open(DialogAtUserComponent, {
+      position: pos, panelClass: ['card-round-corners'], width: '350px',
+      data: { allUsers: this.data.users, currentMemberIDs: this.currentMemberIDs, channel: this.channel },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.addUserToMessageText(result);
+    });
+  }
+
+  addUserToMessageText(users: User[]) {
+    if (!this.messageText) return;
+    let span = this.fillAtUserSpan(users)
+    this.messageText.nativeElement.appendChild(span);
+    this.setCurserToEndPos()
+  }
+
+  fillAtUserSpan(users: User[]) {
+    let outSpan = document.createElement('span');
+    users.forEach((user, index) => {
+      let span = document.createElement('span');
+      span.contentEditable = 'false';
+      span.innerText = '@' + user.name;
+      span.style.color = 'blue';
+      span.style.cursor = 'pointer';
+      span.addEventListener('click', () => this.openShowUserDialog(user));
+      outSpan.appendChild(span);
+      if (index !== users.length - 1) outSpan.appendChild(document.createTextNode(' '))
+    });
+    return outSpan
+  }
+
+  openShowUserDialog(user: User) {
+    this.dialog.open(DialogShowUserComponent, {
+      panelClass: ['card-round-corners'],
+      data: { user: user },
+    });
+  }
 
   // Emoji part
 
   openDialogEmoji(): void {
+    const selection = window.getSelection();
+    if (selection) this.range = selection.getRangeAt(0);
     let pos = this.PositionService.getDialogPosEmojy(this.emoijBtn);
     let classCorner = pos?.right ? 'card-right-bottom-corner' : 'card-left-bottom-corner';
     const dialogRef = this.dialog.open(DialogEmojiComponent, {
@@ -123,7 +178,36 @@ export class InputTextareaComponent {
 
 
   addEmoji(emoji: string) {
-    this.messageText.nativeElement.value = `${this.messageText.nativeElement.value}${emoji}`;
+    if (!this.messageText) return;
+    if (this.range && this.isCurserAtMessageText()) {
+      this.range.insertNode(document.createTextNode(emoji));
+      this.setCurserToEndPos();
+    } else this.addEmojiToEndOfMessageText(emoji);
   }
 
+
+  isCurserAtMessageText() {
+    return this.range && this.range.commonAncestorContainer.parentElement && this.range.commonAncestorContainer.parentElement.id === 'messageText'
+  }
+
+
+  setCurserToEndPos() {
+    if (!this.range) return
+    const selection = window.getSelection();
+    if (!selection) return;
+    const newPosition = this.range.endOffset;
+    this.range.setStart(this.messageText.nativeElement, newPosition);
+    this.range.setEnd(this.messageText.nativeElement, newPosition);
+    selection.removeAllRanges();
+    selection.addRange(this.range);
+  }
+
+
+  addEmojiToEndOfMessageText(emoji: string) {
+    this.range = document.createRange();
+    this.range.setStart(this.messageText.nativeElement, this.messageText.nativeElement.childNodes.length);
+    this.range.setEnd(this.messageText.nativeElement, this.messageText.nativeElement.childNodes.length);
+    this.range.insertNode(document.createTextNode(emoji));
+    this.setCurserToEndPos();
+  }
 }

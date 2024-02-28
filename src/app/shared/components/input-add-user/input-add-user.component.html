@@ -6,7 +6,7 @@
                        class="user-chip"></app-user-chip>
     </div>
     <input #userInput class="user-input" type="text" placeholder="Namen eingeben" (input)="filterUsers()">
-    <ul class="filtered-users" [class.d-none]="!selectListVisible">
+    <ul class="filtered-users" [ngStyle]="{'max-height.px': FilterUsersMaxHeight}" [class.d-none]="!selectListVisible">
         <li *ngFor="let user of filteredUsers; trackBy: trackByFn" (click)="selectUser(user)">
             <app-user-chip [user]="user" class="user-chip"></app-user-chip>
         </li>

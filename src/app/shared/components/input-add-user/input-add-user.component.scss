@@ -29,14 +29,13 @@
         position: fixed;
         z-index: 100;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 25px;
+        padding: 10px 25px;
         margin-top: -8px;
         margin-left: 16px;
         background: white;
         border: 1px solid $lgPurple;
         border-radius: 0 30px 30px 30px;
         list-style-type: none;
-        max-height: 250px;
         overflow-y: auto;
         max-width: 300px;
     }

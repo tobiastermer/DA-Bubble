@@ -14,8 +14,11 @@ import { Subscription } from 'rxjs';
   styleUrl: './input-add-user.component.scss'
 })
 
-export class InputAddUserComponent implements OnInit, AfterViewInit, OnDestroy{
+export class InputAddUserComponent {
+
   @Input() currentMemberIDs: string[] = [];
+  @Input() FilterUsersMaxHeight: number = 250;
+  @Input() searchAllUsers: boolean = true;
 
   @Output() userAdded = new EventEmitter<User>();
   @Output() userRemoved = new EventEmitter<User>();
@@ -28,57 +31,50 @@ export class InputAddUserComponent implements OnInit, AfterViewInit, OnDestroy{
   filteredUsers: User[] = [];
   selectedUsers: User[] = [];
 
-  private usersSubscription!: Subscription;
-
   constructor(
     private DataService: DataService,
-    private cdr: ChangeDetectorRef, // Füge ChangeDetectorRef zu den Abhängigkeiten hinzu
-    ) {}
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {
-    // Initialisieren Sie die Users-Subscription
-    this.usersSubscription = this.DataService.users$.subscribe(users => {
-      this.users = users;
-      this.filterUsers();
-      this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
-    });
-  }
-
-  
-  ngOnDestroy() {
-    // Vergessen Sie nicht, die Subscription aufzuräumen, wenn die Komponente zerstört wird
-    if (this.usersSubscription) {
-      this.usersSubscription.unsubscribe();
-    }
+  ) {
+    this.users = this.DataService.users
   }
 
   stopPropagation(event: MouseEvent) {
     event.stopPropagation();
   }
 
-  // filterUsers() {
-  //   const search = this.userInput.nativeElement.value.toLowerCase();
-  //   this.filteredUsers = this.DataService.users$.filter(user =>
-  //     user.name &&
-  //     user.name.toLowerCase().includes(search) &&
-  //     !this.currentMemberIDs.includes(user.id!) &&
-  //     !this.selectedUsers.map(u => u.id).includes(user.id)
-  //   );
-  //   this.selectListVisible = !!search && this.filteredUsers.length > 0;
-  // }
 
   filterUsers() {
     const search = this.userInput.nativeElement.value.toLowerCase();
-    this.filteredUsers = this.users.filter(user =>
+    if (this.searchAllUsers) this.filteredUsers = this.filterInUsers(search);
+    else this.filteredUsers = this.filterMembers(search)
+    this.selectListVisible = !!search && this.filteredUsers.length > 0;
+  }
+
+
+  filterInUsers(search: string): User[] {
+    let users = this.users.filter(user =>
       user.name &&
       user.name.toLowerCase().includes(search) &&
       !this.currentMemberIDs.includes(user.id!) &&
       !this.selectedUsers.map(u => u.id).includes(user.id)
     );
-    this.selectListVisible = !!search && this.filteredUsers.length > 0;
+    return users
   }
+
+
+  filterMembers(search: string): User[] {
+    let memberUsers: User[] = [];
+    this.currentMemberIDs.forEach(id => {
+      let users = this.users.filter(user => user.id == id);
+      if (users.length > 0) memberUsers.push(users[0])
+    });
+    let users = memberUsers.filter(user =>
+      user.name &&
+      user.name.toLowerCase().includes(search) &&
+      !this.selectedUsers.map(u => u.id).includes(user.id)
+    );
+    return users
+  }
+
 
   selectUser(user: User) {
     this.selectedUsers.push(user);
@@ -88,6 +84,7 @@ export class InputAddUserComponent implements OnInit, AfterViewInit, OnDestroy{
     this.selectedUsersChanged.emit(this.selectedUsers);
   }
 
+
   removeUser(user: User) {
     this.selectedUsers = this.selectedUsers.filter(selectedUser => selectedUser.id !== user.id);
     this.userRemoved.emit(user);
@@ -95,9 +92,11 @@ export class InputAddUserComponent implements OnInit, AfterViewInit, OnDestroy{
     this.selectedUsersChanged.emit(this.selectedUsers);
   }
 
+
   trackByFn(index: number, item: User): any {
     return item.id;
   }
+
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {

@@ -32,13 +32,14 @@
   &__textarea {
     border: unset;
     resize: none;
-    width: 100%;
-
-    min-height: 70px;
-    max-height: 200px;
-    @include fontNunito(400, 16px);
     outline: none;
-
+    width: 100%;
+    height: 60px;
+    margin-bottom: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    @include fontNunito(400, 16px);
+    
     &:focus {
       outline: none;
     }
@@ -91,19 +92,3 @@
   min-height: 30px;
 }
 
-// emoji-mart{
-//   position: absolute;
-//     bottom: 65px;
-//     left: 80px;
-//     border-radius: 20px;
-
-//     .emoji-mart{
-//       border-radius: 20px;
-//     }
-
-//     .emoji-mart-anchor{
-//       &:hover{
-//         cursor: pointer;
-//       }
-//     }
-// }
