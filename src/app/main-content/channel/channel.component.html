@@ -3,7 +3,7 @@
     <mat-card class="channel-card">
 
         @if (chat === 'channel') {
-        <app-header-channel [channel]="currentChannel" [members]="currentChannelMembers"
+        <app-header-channel [channel]="currentChannel" [currentChannelID]="currentChannelID"
             [allUsers]="users"></app-header-channel>
         <main class="chat-space" [ngClass]="{'chat-space-empty': (channelMessages.length <= 0)}">
             @if (channelMessages.length <= 0) { <app-channel-msg [channel]="currentChannel" [owner]="'Willi'">

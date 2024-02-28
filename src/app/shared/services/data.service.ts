@@ -51,6 +51,8 @@ export class DataService {
 
   setChannels(channels: Channel[]) {
     this.channelsSubject.next(channels);
+    console.log(channels);
+    console.log(this.channelsSubject);
   }
 
   setCurrentUserChannels(channels: Channel[]) {

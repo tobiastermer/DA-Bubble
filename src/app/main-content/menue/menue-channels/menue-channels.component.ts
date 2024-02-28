@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output, Input, OnInit, OnDestroy } from '@angu
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { Channel } from '../../../shared/models/channel.class';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DialogAddChannelComponent } from './dialogs/dialog-add-channel/dialog-add-channel.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DataService } from '../../../shared/services/data.service';
@@ -21,14 +21,23 @@ export class MenueChannelsComponent implements OnInit, OnDestroy {
 
   @Output() channelSelected = new EventEmitter<number>();
 
-  private channelSubscription: Subscription = new Subscription();
+  pathChat: string = '';
+  pathContentName: string = '';
   channels: Channel[] = [];
-
   channelsVisible: boolean = true;
 
+  private channelSubscription: Subscription = new Subscription();
+
   constructor(private router: Router,
+    private activeRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private dataService: DataService) { }
+    private dataService: DataService) {
+    this.activeRoute.params.subscribe(params => {
+      this.pathChat = params['chat'];
+      this.pathContentName = params['idChat'];
+    })
+  }
+
 
   ngOnInit() {
     this.channelSubscription.add(
@@ -47,13 +56,14 @@ export class MenueChannelsComponent implements OnInit, OnDestroy {
   }
 
   changePath(activeChannelIndex: number) {
-    this.channelSelected.emit(activeChannelIndex);
+    // this.channelSelected.emit(activeChannelIndex);
     let name = this.channels[activeChannelIndex].name
     this.router.navigate([this.pathUserName + '/channel/' + name]);
   }
 
   isActiveChannel(i: number): boolean {
-    return this.channelActive === i;
+    // return this.channelActive === i;
+    return this.pathChat == "channel" && this.pathContentName == this.channels[i].name;
   }
 
   openDialogAddChannel() {

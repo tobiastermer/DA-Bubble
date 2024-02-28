@@ -12,6 +12,7 @@ import { Membership } from '../shared/models/membership.class';
 import { ChannelService } from '../shared/firebase-services/channel.service';
 import { Channel } from '../shared/models/channel.class';
 import { DataService } from '../shared/services/data.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-main-content',
@@ -41,7 +42,8 @@ export class MainContentComponent implements OnDestroy {
   constructor(private userService: UserService,
     private membershipService: MembershipService,
     private channelService: ChannelService,
-    private dataService: DataService) {
+    private dataService: DataService,
+    private router: ActivatedRoute) {
 
     this.currentUser = this.dataService.currentUser;
 
@@ -61,6 +63,8 @@ export class MainContentComponent implements OnDestroy {
     this.userMembershipSubscription = this.membershipService.userMemberships$.subscribe(userMemberships => {
       this.userMemberships = userMemberships;
     });
+
+
 
   }
 

@@ -8,11 +8,11 @@
     <div class="users-info">
         <div class="users" #membersInfo (click)="openDialogMembers()">
             <div class="users-list">
-                @for (member of members; track $index) {
+                @for (member of currentChannelMembers; track $index) {
                     <img src="{{member.avatar}}" alt="userName" class="user-avatar">
                 }
             </div>
-            <span>{{ members.length }}</span>
+            <span>{{ currentChannelMembers.length }}</span>
         </div>
         <button mat-icon-button class="icon-button" #addUser (click)="openDialogAddUser()">
             <mat-icon>person_add_alt</mat-icon>

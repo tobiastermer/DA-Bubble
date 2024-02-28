@@ -11,6 +11,8 @@ import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-chan
 import { MembershipService } from '../../../../shared/firebase-services/membership.service';
 import { PositionService } from '../../../../shared/services/position.service';
 import { DialogErrorComponent } from '../../../../shared/components/dialogs/dialog-error/dialog-error.component';
+import { Membership } from '../../../../shared/models/membership.class';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header-channel',
@@ -25,19 +27,39 @@ import { DialogErrorComponent } from '../../../../shared/components/dialogs/dial
 })
 export class HeaderChannelComponent {
 
-  @Input() members: User[] = [];
+  // @Input() members: User[] = [];
   @Input() channel: Channel = new Channel({});
   @Input() allUsers: User[] = [];
+  @Input() currentChannelID: string = '';
 
   @ViewChild('channleInfo') channelInfo?: ElementRef;
   @ViewChild('membersInfo') membersInfo?: ElementRef;
   @ViewChild('addUser') addUser?: ElementRef;
 
-  currentMemberIDs: string[] = [];
+  currentChannelMemberships: Membership[] = [];
+  currentChannelMembers: User[] = [];
+  currentChannelMemberIDs: string[] = [];
+
+  private channelMembershipSubscription?: Subscription;
 
   constructor(public dialog: MatDialog,
     private MembershipService: MembershipService,
     private PositionService: PositionService) {
+
+  }
+
+  ngOnInit() {
+    this.MembershipService.getChannelMemberships(this.currentChannelID);
+    this.channelMembershipSubscription = this.MembershipService.channelMemberships$.subscribe(channelMemberships => {
+      this.currentChannelMemberships = channelMemberships;
+      this.currentChannelMemberIDs = this.currentChannelMemberships.map(membership => membership.userID);
+      this.currentChannelMembers = this.allUsers.filter(user => user.id && this.currentChannelMemberIDs.includes(user.id));
+    });
+  }
+  
+
+  ngOnDestroy() {
+    this.channelMembershipSubscription?.unsubscribe();
   }
 
   changeImgBl() {
@@ -71,10 +93,10 @@ export class HeaderChannelComponent {
 
   openDialogMembers(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.membersInfo, 'right');
-    let members = this.members;
+    let members = this.currentChannelMembers;
     const dialogRef = this.dialog.open(DialogMembersComponent, {
       position: pos, panelClass: ['card-right-corner'],
-      data: { members: members },
+      data: { members: this.currentChannelMembers },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.openDialogAddUser();
@@ -83,10 +105,10 @@ export class HeaderChannelComponent {
 
   openDialogAddUser(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.addUser, 'right');
-    this.currentMemberIDs = this.members.map(user => user.id!);
+    this.currentChannelMemberIDs = this.currentChannelMembers.map(user => user.id!);
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
       position: pos, panelClass: ['card-right-corner'],
-      data: { allUsers: this.allUsers, currentMemberIDs: this.currentMemberIDs, channel: this.channel },
+      data: { allUsers: this.allUsers, currentMemberIDs: this.currentChannelMemberIDs, channel: this.channel },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) console.log(result);
@@ -100,7 +122,7 @@ export class HeaderChannelComponent {
         try {
           let membership = this.MembershipService.createMembership(user.id!, this.channel.id);
           await this.MembershipService.addMembership(membership);
-          this.members.push(user); // ggf. sauberer lösen durch unmittelbares Abo dieser Komponente auf members-Array
+          // this.members.push(user); // ggf. sauberer lösen durch unmittelbares Abo dieser Komponente auf members-Array
         } catch (err) {
           console.error(err);
           this.dialog.open(DialogErrorComponent, {
@@ -112,5 +134,6 @@ export class HeaderChannelComponent {
       }
     }
   }
+
   
 }
