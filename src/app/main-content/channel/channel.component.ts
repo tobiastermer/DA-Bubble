@@ -104,16 +104,16 @@ export class ChannelComponent {
   ngOnInit() {
 
     // this.channelSubscription.add(
-    //   this.DataService.channels$.subscribe(channels => {
-    //     this.channels = channels;
-    //   })
-    // );
+    //    this.DataService.channels$.subscribe(channels => {
+    //      this.channels = channels;
+    //    })
+    //  );
 
-    // this.usersSubscription.add(
-    //   this.DataService.users$.subscribe(users => {
-    //     this.users = users;
-    //   })
-    // );
+    //  this.usersSubscription.add(
+    //    this.DataService.users$.subscribe(users => {
+    //      this.users = users;
+    //    })
+    //  );
 
     this.positionService.isMenuOpen().subscribe(open => {
       this.menuOpen = open;
@@ -131,7 +131,7 @@ export class ChannelComponent {
 
 
   getChannelIdByName(name: string): string {
-    const channel = this.channels.find(channel => channel.name === name);
+    const channel = this.DataService.channels.find(channel => channel.name === name);
     return channel ? channel.id : '';
   }
 

@@ -33,6 +33,8 @@ export class MenueComponent {
   activeChannel: number | undefined;
   activeUser: number | undefined;
   pathUserName: string = '';
+  pathChat: string = '';
+  pathContentID: string = '';
   filteredChannels: Channel[] = [];
 
   menuOpen: boolean = true; // Standardwert
@@ -41,7 +43,9 @@ export class MenueComponent {
     private router: ActivatedRoute,
     private positionService: PositionService) {
     this.router.params.subscribe(params => {
-      this.pathUserName = params['idUser']
+      this.pathUserName = params['idUser'];
+      this.pathChat = params['chat'];
+      this.pathContentID = params['idChat'];
     })
   }
 
@@ -57,7 +61,7 @@ export class MenueComponent {
     // Filtert die Channels basierend auf den currentUserChannelIDs
     this.filteredChannels = this.channels.filter(channel => this.currentUserChannelIDs.includes(channel.id));
   }
-  
+
   // toggleMenu() {
   //   // this.isMenuOpen = !this.isMenuOpen;
 

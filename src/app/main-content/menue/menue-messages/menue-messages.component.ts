@@ -5,7 +5,7 @@ import { UserChipComponent } from '../../../shared/components/user-chip/user-chi
 import { User } from '../../../shared/models/user.class';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogShowUserComponent } from '../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../shared/services/data.service';
 import { Subscription } from 'rxjs';
 
@@ -23,15 +23,23 @@ export class MenueMessagesComponent {
   @Output() activeChannelChanged = new EventEmitter<number>();
   @Output() userSelected = new EventEmitter<number>();
 
-  private usersSubscription: Subscription = new Subscription();
+  pathChat: string = '';
+  pathContentName: string = '';
   users: User[] = [];
-
   usersVisible: boolean = true;
 
+  private usersSubscription: Subscription = new Subscription();
+
   constructor(
-    public dialog: MatDialog, 
+    public dialog: MatDialog,
     private DataService: DataService,
-    private router: Router) {
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+  ) {
+    this.activeRoute.params.subscribe(params => {
+      this.pathChat = params['chat'];
+      this.pathContentName = params['idChat'];
+    })
   }
 
   ngOnInit() {
@@ -50,13 +58,14 @@ export class MenueMessagesComponent {
 
 
   changePath(activeUserIndex: number) {
-    this.userSelected.emit(activeUserIndex); // Informiert die Parent-Komponente
+    // this.userSelected.emit(activeUserIndex); // Informiert die Parent-Komponente
     let name = this.users[activeUserIndex].name.replace(/\s/g, '_');
     this.router.navigate([this.pathUserName + '/message/' + name]);
   }
 
   isActiveUser(i: number): boolean {
-    return this.userActive === i;
+    // return this.userActive === i;
+    return this.pathChat == "message" && this.pathContentName == this.users[i].name.replace(/\s/g, '_');
   }
 
   openDialog(user: User) {
