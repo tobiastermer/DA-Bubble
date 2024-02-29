@@ -87,4 +87,11 @@ export class AuthService {
     await uploadBytes(storageRef, file);
     return getDownloadURL(storageRef);
   }
+
+
+  async uploadMsgData(file: File): Promise<string> {
+    const storageRef = ref(this.storage, `message_data/${Date.now()}_${file.name}`);
+    await uploadBytes(storageRef, file);
+    return getDownloadURL(storageRef);
+  }
 }

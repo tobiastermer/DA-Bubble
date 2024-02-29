@@ -12,6 +12,8 @@ import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.compo
 import { User } from '../../models/user.class';
 import { DialogAtUserComponent } from '../dialogs/dialog-at-user/dialog-at-user.component';
 import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show-user.component';
+import { AuthService } from '../../firebase-services/auth.service';
+import { DialogInfoComponent } from '../dialogs/dialog-info/dialog-info.component';
 
 
 @Component({
@@ -41,30 +43,29 @@ export class InputTextareaComponent {
   range?: Range;
 
   currentMemberIDs: string[] = [];
+  tempFile: any;
 
 
 
   constructor(private data: DataService,
     private messageFBS: ChannelMessagesService,
     private PositionService: PositionService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private authService: AuthService,) { }
+
 
   updateButtonState(textValue: string): void {
     this.isButtonDisabled = !textValue.trim();
   }
 
-  /////// INPUT FORM EVENTLISTENDER FOR KEYBOARD ENTER + SHIFT/ENTER///////
+
   handleEnter(event: Event, textValue: string): void {
     const keyboardEvent = event as KeyboardEvent;
-    if (keyboardEvent.shiftKey) {
-    } else {
-      event.preventDefault();
-      if (textValue.trim()) {
-        this.addNewMsg(textValue.trim());
-        if (this.messageText) {
-          this.messageText.nativeElement.innerText = '';
-        }
-      }
+    if (keyboardEvent.shiftKey) return
+    event.preventDefault();
+    if (textValue.trim()) {
+      this.addNewMsg(textValue.trim());
+      if (this.messageText) this.messageText.nativeElement.innerText = '';
     }
   }
 
@@ -76,7 +77,7 @@ export class InputTextareaComponent {
 
 
   async addNewChannelMsg(text: string) {
-    let newMsg: ChannelMessage | undefined = this.fillChannelMsg(text);
+    let newMsg: ChannelMessage | undefined = await this.fillChannelMsg(text);
     let id: any;
     if (!newMsg) return
     id = await this.messageFBS.addChannelMessage(newMsg);
@@ -86,7 +87,7 @@ export class InputTextareaComponent {
   }
 
 
-  fillChannelMsg(text: string) {
+  async fillChannelMsg(text: string) {
     if (!this.data.currentUser.id) return
     if (!this.channel || this.channel.id === '') return
     let msg = new ChannelMessage();
@@ -94,19 +95,20 @@ export class InputTextareaComponent {
     msg.channelID = this.channel.id;
     msg.fromUserID = this.data.currentUser.id;
     msg.message = text;
+    msg.attachmentID = await this.uploadFile();
     return msg
   }
 
 
   async addNewReplyMsg(text: string) {
-    let newReply: Reply | undefined = this.fillReplyMsg(text)
+    let newReply: Reply | undefined = await this.fillReplyMsg(text)
     if (!newReply || !this.msg) return
     this.msg.replies.push(newReply);
     await this.messageFBS.updateChannelMessage(this.msg);
   }
 
 
-  fillReplyMsg(text: string) {
+  async fillReplyMsg(text: string) {
     if (!this.data.currentUser.id) return
     if (!this.channel || this.channel.id === '') return
     let reply = new Reply();
@@ -114,6 +116,7 @@ export class InputTextareaComponent {
     reply.channelID = this.channel.id;
     reply.userID = this.data.currentUser.id;
     reply.message = text;
+    reply.attachmentID = await this.uploadFile();
     return reply
   }
 
@@ -207,4 +210,78 @@ export class InputTextareaComponent {
     this.range.insertNode(document.createTextNode(emoji));
     this.setCurserToEndPos();
   }
+
+
+
+
+
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    const supportedFileTypes = ['image/jpeg', 'image/png', 'application/pdf']
+    if (!file) return;
+    if ((file.size / 1024 / 1024) > 1) {
+      return this.openDialogInfo('Ihre Datei ist zu groß. Maximale Größe beträgt 1.5MB.');
+    }
+    if (!supportedFileTypes.includes(file.type)) {
+      return this.openDialogInfo('Nur .jpg / .png oder .pdf Dateiformate werden unterstützt.');
+    }
+    this.tempFile = file;
+    this.addFileToMessageText(file);
+  }
+
+
+  openDialogInfo(info: String): void {
+    this.dialog.open(DialogInfoComponent, {
+      panelClass: ['card-round-corners'],
+      data: { info },
+    });
+  }
+
+
+  addFileToMessageText(file: File) {
+    if (!this.messageText) return;
+    this.appendChildForFile(file);
+    this.setCurserToEndPos();
+  }
+
+
+  appendChildForFile(file: File) {
+    let div = document.createElement('div');
+    div.contentEditable = 'false';
+    div.classList.add('file-overview');
+    div.appendChild(this.getImgByFileType(file));
+    div.appendChild(this.getSpanByFileName(file));
+    this.messageText.nativeElement.insertBefore(div, this.messageText.nativeElement.firstChild);
+    this.messageText.nativeElement.appendChild(document.createElement('br'));
+  }
+
+
+  getImgByFileType(file: File): Element {
+    let img = document.createElement('img');
+    img.src = 'assets/img/icons/upload_file.png';
+    img.alt = file.type;
+    return img
+  }
+
+
+  getSpanByFileName(file: File): Element {
+    let span = document.createElement('span');
+    span.innerText = file.name;
+    return span
+  }
+
+
+  async uploadFile() {
+    if (!this.tempFile) return ''
+    let retUrl = '';
+    await this.authService.uploadMsgData(this.tempFile).then((url) => {
+      retUrl = url;
+    }).catch((error) => {
+      console.error("Fehler beim Hochladen des Bildes: ", error);
+      this.openDialogInfo("Fehler beim Hochladen des Bildes.");
+    });
+    return retUrl
+  }
+
 }
