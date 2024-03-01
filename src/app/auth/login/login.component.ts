@@ -103,7 +103,7 @@ export class LoginComponent {
       this.updateUserStatus(uid);
       const user = await this.userService.getUserByAuthUid(uid);
       if (user) {
-        this.dataService.currentUser = user;
+        this.dataService.setCurrentUser(user);
         this.navigateToChat(user.id ?? '');
       } else {
         this.showError('Benutzer nicht gefunden.');
@@ -146,10 +146,13 @@ export class LoginComponent {
       const guestData = await this.userService.getUserByID(this.guestUserId);
 
       setTimeout(() => {
-        this.dataService.currentUser = guestData!;
+        // Speichern des Gastbenutzers im Local Storage über DataService
+        this.dataService.setCurrentUser(guestData!);
         this.router.navigate([`/${uid}`]);
       }, 800);
-    } catch (error) { }
+    } catch (error) {
+      console.error('Fehler beim Gastlogin', error);
+    }
   }
 
   openSignUp() {

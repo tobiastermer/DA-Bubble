@@ -10,12 +10,12 @@ import { Router } from '@angular/router';
 import { sendPasswordResetEmail } from '@angular/fire/auth';
 import { Auth } from '@angular/fire/auth';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { AuthService } from '../../shared/firebase-services/auth.service'; 
+import { AuthService } from '../../shared/firebase-services/auth.service';
 
 @Component({
   selector: 'app-pw-reset',
   standalone: true,
-  imports: [ MatInputModule,MatCardModule, MatIconModule, FormsModule, MatFormFieldModule, ReactiveFormsModule,CommonModule],
+  imports: [MatInputModule, MatCardModule, MatIconModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, CommonModule],
   templateUrl: './pw-reset.component.html',
   styleUrl: './pw-reset.component.scss',
   animations: [
@@ -29,9 +29,9 @@ import { AuthService } from '../../shared/firebase-services/auth.service';
 })
 export class PwResetComponent {
   sendSuccess = false;
-  errorMessage= false;
+  errorMessage = false;
   pwResetForm: FormGroup;
-  constructor(private fb: FormBuilder, private router: Router, private afAuth: Auth,  private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router: Router, private afAuth: Auth, private authService: AuthService) {
     this.pwResetForm = this.fb.group({
       email: ['', [Validators.required, Validators.email, this.emailDomainValidator]],
     });
@@ -41,9 +41,9 @@ export class PwResetComponent {
     if (this.pwResetForm.valid) {
       const email = this.pwResetForm.get('email')?.value;
       try {
-        const exists = await this.authService.emailExists(email); 
+        const exists = await this.authService.emailExists(email);
         if (!exists) {
-          this.errorMessage= true;
+          this.errorMessage = true;
           setTimeout(() => {
             this.errorMessage = false;
           }, 1500);
@@ -76,25 +76,25 @@ export class PwResetComponent {
   getFirstEmailError() {
     const emailErrors = this.pwResetForm.get('email')?.errors;
     if (!emailErrors) return null;
-  
+
     if (emailErrors['required']) return 'E-Mail eingeben';
     if (emailErrors['email']) return 'Bitte richtige E-Mail eingeben';
-    
+
     return 'Bitte richtige E-Mail eingeben';
-  
+
     return null;
   }
 
 
-  openLogin(){
+  openLogin() {
     const signUpCard = document.querySelector('.pw-reset');
-   
-     signUpCard?.classList.add('slide-out-down');
-       
-  
-     setTimeout(() => {
+
+    signUpCard?.classList.add('slide-out-down');
+
+
+    setTimeout(() => {
       this.router.navigate(['/login']);
-     }, 800);
-    
+    }, 800);
+
   }
 }

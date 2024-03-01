@@ -18,6 +18,7 @@ export class UserService {
         private dataService: DataService
     ) {
         this.getAllUsers();
+        
     }
 
     async addUser(user: User) {

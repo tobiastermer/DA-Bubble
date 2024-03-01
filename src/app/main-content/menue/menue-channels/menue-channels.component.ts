@@ -16,7 +16,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./menue-channels.component.scss'] // Achtung: Korrektur von styleUrl zu styleUrls
 })
 export class MenueChannelsComponent implements OnInit, OnDestroy {
-  @Input() channelActive: number | undefined;
   @Input() pathUserName: string = '';
 
   @Output() channelSelected = new EventEmitter<number>();
@@ -38,7 +37,6 @@ export class MenueChannelsComponent implements OnInit, OnDestroy {
     })
   }
 
-
   ngOnInit() {
     this.channelSubscription.add(
       this.dataService.currentUserChannels$.subscribe(channels => {
@@ -56,13 +54,11 @@ export class MenueChannelsComponent implements OnInit, OnDestroy {
   }
 
   changePath(activeChannelIndex: number) {
-    // this.channelSelected.emit(activeChannelIndex);
     let name = this.channels[activeChannelIndex].name
     this.router.navigate([this.pathUserName + '/channel/' + name]);
   }
 
   isActiveChannel(i: number): boolean {
-    // return this.channelActive === i;
     return this.pathChat == "channel" && this.pathContentName == this.channels[i].name;
   }
 

@@ -17,7 +17,6 @@ import { Subscription } from 'rxjs';
   styleUrl: './menue-messages.component.scss'
 })
 export class MenueMessagesComponent {
-  @Input() userActive: number | undefined;
   @Input() pathUserName: string = '';
 
   @Output() activeChannelChanged = new EventEmitter<number>();
@@ -58,13 +57,11 @@ export class MenueMessagesComponent {
 
 
   changePath(activeUserIndex: number) {
-    // this.userSelected.emit(activeUserIndex); // Informiert die Parent-Komponente
     let name = this.users[activeUserIndex].name.replace(/\s/g, '_');
     this.router.navigate([this.pathUserName + '/message/' + name]);
   }
 
   isActiveUser(i: number): boolean {
-    // return this.userActive === i;
     return this.pathChat == "message" && this.pathContentName == this.users[i].name.replace(/\s/g, '_');
   }
 
