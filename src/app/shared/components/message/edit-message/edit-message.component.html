@@ -1,0 +1,26 @@
+<div class="edit">
+    <div #msgText id="messageText" class="edit-text" contenteditable="true" (input)="checkChange()">
+        <app-text-output [msg]="msg" [isUserCurrentUser]="(isUserCurrentUser)" 
+        [isEdit]="true"></app-text-output>
+    </div>
+            
+    <div class="edit-bottom">
+        <mat-icon class="action-btn" #emoijBtn (click)="openDialogEmoji()">add_reaction</mat-icon>
+        <div class="btn-area">
+            <button class="icon-btn delet-btn" mat-fab extended color="primary" (click)="deletMsg()">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <button class="icon-btn safe-btn" mat-fab extended color="primary" (click)="saveMsg()"
+                [ngClass]="{'btn-disable': !isSaveEnable}">
+                <mat-icon>save</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <mat-progress-bar mode="indeterminate" [ngClass]="{'d-none': !isLoading }" ></mat-progress-bar>
+
+    <button class="icon-btn cancle-btn pos-abso-right-top" mat-fab extended color="primary"
+        (click)="closeEdit()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

@@ -13,6 +13,8 @@ import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.compo
 import { PositionService } from '../../../shared/services/position.service';
 import { DataService } from '../../services/data.service';
 import { Like, SortedLikes } from '../../models/like.class';
+import { TextOutputComponent } from './text-output/text-output.component';
+import { EditMessageComponent } from './edit-message/edit-message.component';
 
 
 @Component({
@@ -22,7 +24,9 @@ import { Like, SortedLikes } from '../../models/like.class';
     MatIconModule,
     MatDividerModule,
     MatCardModule,
-    CommonModule
+    CommonModule,
+    TextOutputComponent,
+    EditMessageComponent
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
@@ -38,7 +42,6 @@ export class MessageComponent implements OnChanges {
 
   @Output() threadOutput: EventEmitter<ChannelMessage> = new EventEmitter<ChannelMessage>();
 
-  @ViewChild('msgText') msgText!: ElementRef;
   @ViewChild('emoijBtn') emoijBtn!: ElementRef;
   @ViewChild('likesRow') likesRow!: ElementRef;
 
@@ -47,10 +50,10 @@ export class MessageComponent implements OnChanges {
   replaies: Reply[] = [];
 
   isEditMsg = false;
-  isSaveEnable = false;
   currentUserID: string;
   oldText: string = '';
   posLikesRow = 2;
+  message= '';
 
   constructor(
     public dialog: MatDialog,
@@ -116,6 +119,11 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  setMsgText(text: string) {
+    this.message = text;
+  }
+
+
   // edit functions
 
   editPossible(): boolean {
@@ -129,13 +137,6 @@ export class MessageComponent implements OnChanges {
 
   toggleEditMsg() {
     this.isEditMsg = !this.isEditMsg;
-    this.isEditMsg ? (this.oldText = this.msg.message) : this.isSaveEnable = false;
-  }
-
-
-  checkChange() {
-    if (!this.isEditMsg) return
-    (this.oldText != this.msgText.nativeElement.value) ? this.isSaveEnable = true : this.isSaveEnable = false;
   }
 
 
@@ -145,15 +146,9 @@ export class MessageComponent implements OnChanges {
       data: {},
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result && this.isEditMsg) return this.addEmojiToText(result);
       if (result && !this.isEditMsg) return this.addLike(result);
+      else return
     });
-  }
-
-
-  addEmojiToText(emoji: string) {
-    this.msgText.nativeElement.value = `${this.msgText.nativeElement.value}${emoji}`;
-    this.checkChange();
   }
 
 
@@ -190,52 +185,6 @@ export class MessageComponent implements OnChanges {
   setHiddenLikePos() {
     let pos = this.PositionService.getDialogPosWithCorner(this.likesRow, 'bottom');
     if (pos?.bottom) this.posLikesRow = parseInt(pos.bottom);
-  }
-
-
-  async deletMsg() {
-    this.isEditMsg = false;
-    if (this.msg instanceof ChannelMessage) await this.deletChannelMsg(this.msg)
-    else await this.deletReplyMsg(this.msg)
-  }
-
-
-  async deletChannelMsg(msg: ChannelMessage) {
-    if (msg.fromUserID !== this.currentUserID) return
-    else await this.messageFBS.deleteChannelMessage(msg)
-  }
-
-
-  async deletReplyMsg(msg: Reply) {
-    if (msg.userID !== this.currentUserID) return
-    if (!this.channelMsg) return
-    this.channelMsg.replies.splice(this.index, 1)
-    await this.messageFBS.updateChannelMessage(this.channelMsg)
-  }
-
-
-  async saveMsg() {
-    if (!this.isSaveEnable) return
-    this.isSaveEnable = false;
-    this.msg.message = this.msgText.nativeElement.value;
-    this.isEditMsg = false;
-    if (this.msg instanceof ChannelMessage) await this.saveChannelMsg(this.msg);
-    else await this.saveReplyMsg(this.msg);
-  }
-
-
-  async saveChannelMsg(msg: ChannelMessage) {
-    if (msg.fromUserID !== this.currentUserID) return
-    else await this.messageFBS.updateChannelMessage(msg)
-    return
-  }
-
-
-  async saveReplyMsg(msg: Reply) {
-    if (msg.userID !== this.currentUserID) return
-    if (!this.channelMsg) return
-    this.channelMsg.replies[this.index] = msg;
-    await this.messageFBS.updateChannelMessage(this.channelMsg)
   }
 
 }

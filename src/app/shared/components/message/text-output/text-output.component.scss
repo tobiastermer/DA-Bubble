@@ -1,0 +1,57 @@
+@import '../../../../../styles.scss';
+
+.download {
+    @include dFlex($gap: 8px);
+    width: fit-content;
+    height: 30px;
+    border: 1px solid $dkGrey;
+    border-radius: 10px;
+    padding: 2px 6px;
+    margin-bottom: 5px;
+
+    img:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+    }
+
+    a {
+        font-weight: 700;
+        color: black;
+
+        &:hover {
+            cursor: pointer;
+            transform: scale(1.02);
+        }
+    }
+}
+
+.current-user {
+    border-color: $bgGrey;
+
+    a {
+        color: white;
+    }
+}
+
+.edit {
+    background-color: $dkGrey;
+
+    img:hover {
+        cursor: unset;
+        transform: scale(1);
+    }
+
+    a {
+        font-weight: 700;
+        color: black;
+
+        &:hover {
+            cursor: unset;
+            transform: scale(1);
+        }
+    }
+}
+
+.message {
+    margin: 0;
+}
