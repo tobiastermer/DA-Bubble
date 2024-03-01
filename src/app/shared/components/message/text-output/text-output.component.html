@@ -1,0 +1,14 @@
+@if (!isFileAttached) {
+<p class="message">{{msg?.message}}</p>
+} @else {
+<div class="download" [ngClass]="{'current-user': isUserCurrentUser, 'edit': isEdit}" contenteditable="false">
+    <img src="./.. /../../../../../../assets/img/icons/download_file.png" alt="download_file"
+    (click)="downloadDocument(msg?.attachmentID, fileName)">
+    @if (!isEdit) {
+        <a href="{{ msg?.attachmentID }}" target="_blank">{{ fileName }}</a>
+    } @else {
+        <a>{{ fileName }}</a>
+    }
+</div>
+<p class="message">{{ message }}</p>
+}

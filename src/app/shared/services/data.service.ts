@@ -29,7 +29,7 @@ export class DataService {
   private currentUserChannelsSubject = new BehaviorSubject<Channel[]>([]);
   public currentUserChannels$ = this.currentUserChannelsSubject.asObservable();
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   logCurrentUserData() {
     console.log('Aktueller Benutzer:', this.currentUser);

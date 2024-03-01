@@ -21,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss'
 })
-export class MainContentComponent implements OnDestroy {
+export class MainContentComponent implements OnInit {
   users: User[] = [];
   channels: Channel[] = [];
   userMemberships: Membership[] = [];
@@ -68,8 +68,8 @@ export class MainContentComponent implements OnDestroy {
 
   }
 
-  async ngOnInit() {
-    // await this.fetchCurrentUser();
+  ngOnInit() {
+    this.dataService.logCurrentUserData();
     this.subscribeToUserChannels();
   }
 

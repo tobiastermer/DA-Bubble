@@ -3,13 +3,16 @@
 
     <!-- Message Info / Edit -->
     <div class="details">
-        @if (!isEditMsg) {  <!-- Message Info Part -->
+        @if (!isEditMsg) { <!-- Message Info Part -->
         <div class="name-timestamp">
             <h3 (click)="openShowUserDialog(user)">{{ user.name }}</h3>
             <span>{{ setTime(msg.date) }} Uhr</span>
         </div>
         <mat-card class="message-card">
-            <mat-card-content>{{ msg.message }}</mat-card-content>
+            <mat-card-content>
+                <app-text-output [msg]="msg" [isUserCurrentUser]="(user.id == currentUserID)"
+                    (msgChanged)="setMsgText($event)"></app-text-output>
+            </mat-card-content>
         </mat-card>
         <!-- Replay Part -->
         @if(isChannelMsg && replaies.length > 0){
@@ -26,7 +29,7 @@
             <div class="sorted-like">
                 <div class="emoji">
                     @if(like.usersIDs.length > 1){ <div>{{ like.emoji }}</div> <span>{{ like.usersIDs.length }}</span> }
-                    @else {  <div>{{ like.emoji }}</div>  }
+                    @else { <div>{{ like.emoji }}</div> }
                 </div>
                 <div class="hidden-like" [style.bottom.px]="posLikesRow">
                     <div>{{ like.emoji }}</div>
@@ -43,26 +46,9 @@
         }
 
         }
-        @else {             <!-- Message Edit Part -->
-        <div class="edit">
-            <textarea #msgText class="edit-text" cols="30" rows="3" (input)="checkChange()">{{ msg.message }}</textarea>
-            <div class="edit-bottom">
-                <mat-icon class="action-btn" #emoijBtn (click)="openDialogEmoji()">add_reaction</mat-icon>
-                <div class="btn-area">
-                    <button class="icon-btn delet-btn" mat-fab extended color="primary" (click)="deletMsg()">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <button class="icon-btn safe-btn" mat-fab extended color="primary" (click)="saveMsg()"
-                        [ngClass]="{'btn-disable': !isSaveEnable}">
-                        <mat-icon>save</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <button class="icon-btn cancle-btn pos-abso-right-top" mat-fab extended color="primary"
-                (click)="toggleEditMsg()">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
+        @else { 
+        <app-edit-message [msg]="msg" [index]="index" [channelMsg]="channelMsg" [isUserCurrentUser]="true"
+            [isEditMsg]="isEditMsg" (closeEvent)="toggleEditMsg()"></app-edit-message>
         }
 
     </div>
@@ -72,18 +58,18 @@
     <mat-card class="emoji-popup">
         <mat-card-content>
             @if (isChannelMsg) {
-                @for (emoji of data.lastEmojis; track $index) {
-                    <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
-                }
+            @for (emoji of data.lastEmojis; track $index) {
+            <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
+            }
             <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
             <mat-icon class="action-btn" (click)="setThreadOutput()">comment</mat-icon>
             @if (editPossible()){
             <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
             }
             } @else {
-                @for (emoji of data.lastEmojis; track $index) {
-                    <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
-                }
+            @for (emoji of data.lastEmojis; track $index) {
+            <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
+            }
             <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
             @if (editPossible()){
             <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
