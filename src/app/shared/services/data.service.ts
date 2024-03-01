@@ -1,9 +1,10 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject } from "rxjs";
 import { ChannelMessage } from "../models/channel-message.class";
 import { User } from "../models/user.class";
 import { Channel } from "../models/channel.class";
 import { Reply } from "../models/reply.class";
+import { isPlatformBrowser } from '@angular/common';
 
 
 @Injectable({
@@ -16,7 +17,6 @@ export class DataService {
   users!: User[];
   currentUser!: User;
   currentUserID!: string; // ggf. löschen
-  currentUserUID!: string; // ggf. löschen
   channels!: Channel[];
   public lastEmojis!: string[];
 
@@ -28,6 +28,31 @@ export class DataService {
 
   private currentUserChannelsSubject = new BehaviorSubject<Channel[]>([]);
   public currentUserChannels$ = this.currentUserChannelsSubject.asObservable();
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  logCurrentUserData() {
+    console.log('Aktueller Benutzer:', this.currentUser);
+    console.log('Aktuelle Benutzer-ID:', this.currentUserID);
+    console.log(
+      'Kanäle:',
+      this.currentUserChannelsSubject.getValue()
+    );
+  }
+
+  setCurrentUser(user: User) {
+    this.currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  loadCurrentUser() {
+    if (isPlatformBrowser(this.platformId)) {
+      const userJson = localStorage.getItem('currentUser');
+      if (userJson) {
+        this.currentUser = JSON.parse(userJson);
+      }
+    }
+  }
 
   getUserFromMessage(message: ChannelMessage): User {
     const user = this.users.find(user => user.id === message.fromUserID);

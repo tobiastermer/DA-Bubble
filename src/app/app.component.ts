@@ -5,6 +5,7 @@ import { MainContentComponent } from './main-content/main-content.component';
 import { StartAnimationComponent } from './auth/start-animation/start-animation.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { SelectAvatarComponent } from './auth/select-avatar/select-avatar.component';
+import { DataService } from './shared/services/data.service';
 
 
 
@@ -25,9 +26,13 @@ import { SelectAvatarComponent } from './auth/select-avatar/select-avatar.compon
 export class AppComponent {
   title = 'DA-Bubble';
 
-  constructor(private router: Router) {
+  constructor(private router: Router,private dataService: DataService) {
    
   }
+  ngOnInit() {
+    this.dataService.loadCurrentUser();
+  }
+
 
  
 }
