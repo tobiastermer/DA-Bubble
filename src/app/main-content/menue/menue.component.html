@@ -1,9 +1,9 @@
 <!-- The menu itself -->
-<mat-card class="menu-card" [class.menu-open]="menuOpen" [class.menu-closed]="!menuOpen"
+<mat-card class="menu-card" [class.menu-open]="isMenuOpen" [class.menu-closed]="!isMenuOpen"
     [ngStyle]="{'display': hideMenu ? 'none' : 'flex'}">
     <app-menue-header [pathUserName]="pathUserName"></app-menue-header>
-    <app-menue-channels [pathUserName]="pathUserName" (channelSelected)="setActiveChannel($event)"></app-menue-channels>
-    <app-menue-messages [pathUserName]="pathUserName" (userSelected)="setActiveMessage($event)"></app-menue-messages>
+    <app-menue-channels [pathUserName]="pathUserName"></app-menue-channels>
+    <app-menue-messages [pathUserName]="pathUserName"></app-menue-messages>
 </mat-card>
 
 <!-- The overlay-button for toggling visibility -->
