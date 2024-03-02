@@ -11,9 +11,10 @@ export const routes: Routes = [
     { path: '', component: StartAnimationComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signUp', component: SignUpComponent },
+    { path: 'pw-reset', component: PwResetComponent },
+    { path: 'new-pw', component: NewPwComponent },
     { path: 'select-avatar', component: SelectAvatarComponent },
     { path: ':idUser', component: MainContentComponent },
     { path: ':idUser/:chat/:idChat', component: MainContentComponent },
-    { path: 'pw-reset', component: PwResetComponent },
-    { path: 'new-pw', component: NewPwComponent }
+     
 ];
