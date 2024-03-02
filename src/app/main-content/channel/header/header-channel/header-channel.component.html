@@ -9,7 +9,7 @@
         <div class="users" #membersInfo (click)="openDialogMembers()">
             <div class="users-list">
                 @for (member of currentChannelMembers; track $index) {
-                    <img src="{{member.avatar}}" alt="userName" class="user-avatar">
+                    <img class="user-avatar" [src]="member.avatar" (error)="onImageError($event)" alt="userName">
                 }
             </div>
             <span>{{ currentChannelMembers.length }}</span>

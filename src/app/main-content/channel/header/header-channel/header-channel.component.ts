@@ -13,6 +13,9 @@ import { PositionService } from '../../../../shared/services/position.service';
 import { DialogErrorComponent } from '../../../../shared/components/dialogs/dialog-error/dialog-error.component';
 import { Membership } from '../../../../shared/models/membership.class';
 import { Subscription } from 'rxjs';
+import { DataService } from '../../../../shared/services/data.service';
+import { ChannelService } from '../../../../shared/firebase-services/channel.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-header-channel',
@@ -27,39 +30,85 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderChannelComponent {
 
-  // @Input() members: User[] = [];
   @Input() channel: Channel = new Channel({});
-  @Input() allUsers: User[] = [];
   @Input() currentChannelID: string = '';
 
   @ViewChild('channleInfo') channelInfo?: ElementRef;
   @ViewChild('membersInfo') membersInfo?: ElementRef;
   @ViewChild('addUser') addUser?: ElementRef;
 
+  allUsers: User[] = [];
   currentChannelMemberships: Membership[] = [];
   currentChannelMembers: User[] = [];
   currentChannelMemberIDs: string[] = [];
 
+  private usersSubscription: Subscription = new Subscription();
   private channelMembershipSubscription?: Subscription;
 
   constructor(public dialog: MatDialog,
     private MembershipService: MembershipService,
-    private PositionService: PositionService) {
+    private PositionService: PositionService,
+    private DataService: DataService,
+    private route: ActivatedRoute,
+    private channelService: ChannelService,) {
+
+    this.allUsers = this.DataService.users;
 
   }
 
   ngOnInit() {
-    this.MembershipService.getChannelMemberships(this.currentChannelID);
-    this.channelMembershipSubscription = this.MembershipService.channelMemberships$.subscribe(channelMemberships => {
-      this.currentChannelMemberships = channelMemberships;
-      this.currentChannelMemberIDs = this.currentChannelMemberships.map(membership => membership.userID);
-      this.currentChannelMembers = this.allUsers.filter(user => user.id && this.currentChannelMemberIDs.includes(user.id));
+    this.usersSubscription.add(
+      this.DataService.users$.subscribe(users => {
+        this.allUsers = users;
+      })
+    );
+  
+    this.route.params.subscribe(params => {
+      const channelName = params['idChat'];
+  
+      this.getChannelIdByName(channelName).then(channelId => {
+        if (channelId) {
+          this.currentChannelID = channelId;
+          this.loadChannel(channelId);
+  
+          this.MembershipService.getChannelMemberships(this.currentChannelID);
+          this.channelMembershipSubscription = this.MembershipService.channelMemberships$.subscribe(channelMemberships => {
+            this.currentChannelMemberships = channelMemberships;
+            this.currentChannelMemberIDs = this.currentChannelMemberships.map(membership => membership.userID);
+            this.currentChannelMembers = this.allUsers.filter(user => user.id && this.currentChannelMemberIDs.includes(user.id));
+          });
+        }
+      });
+    });
+  }
+  
+
+  private loadChannel(channelId: string) {
+    this.channelService.getChannelByID(channelId).then(channel => {
+      if (channel) {
+        this.channel = channel;
+      } else {
+        console.error('Channel nicht gefunden');
+      }
+    }).catch(error => {
+      console.error('Fehler beim Abrufen des Channels:', error);
+    });
+  }
+
+  getChannelIdByName(name: string): Promise<string> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('Aktuelle Channels in DataService sind: ', this.DataService.channels);
+        const channel = this.DataService.channels.find(channel => channel.name === name);
+        resolve(channel ? channel.id : '');
+      }, 800);
     });
   }
   
 
   ngOnDestroy() {
     this.channelMembershipSubscription?.unsubscribe();
+    this.usersSubscription?.unsubscribe();
   }
 
   changeImgBl() {
@@ -135,5 +184,10 @@ export class HeaderChannelComponent {
     }
   }
 
-  
+  // Methode zum Setzen des Ersatzbildes
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '../../../assets/img/avatars/unknown.jpg';
+  }
+
+
 }

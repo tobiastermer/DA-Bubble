@@ -103,17 +103,17 @@ export class ChannelComponent {
 
   ngOnInit() {
 
-    // this.channelSubscription.add(
-    //    this.DataService.channels$.subscribe(channels => {
-    //      this.channels = channels;
-    //    })
-    //  );
+    //  this.channelSubscription.add(
+    //     this.DataService.channels$.subscribe(channels => {
+    //       this.channels = channels;
+    //     })
+    //   );
 
-    //  this.usersSubscription.add(
-    //    this.DataService.users$.subscribe(users => {
-    //      this.users = users;
-    //    })
-    //  );
+    //   this.usersSubscription.add(
+    //     this.DataService.users$.subscribe(users => {
+    //       this.users = users;
+    //     })
+    //   );
 
     this.positionService.isMenuOpen().subscribe(open => {
       this.menuOpen = open;
@@ -196,6 +196,7 @@ export class ChannelComponent {
     this.channelMessagesService.getChannelMessages(this.currentChannelID);
     this.channelMessagesSubscription = this.channelMessagesService.channelMessages$.subscribe(channelMessages => {
       this.channelMessages = channelMessages.sort((a, b) => a.date - b.date);
+      console.log('Channel Messages: ', this.channelMessages);
     });
   }
 
@@ -229,7 +230,7 @@ export class ChannelComponent {
 
 
   getUserFromMessage(message: ChannelMessage): User {
-    const user = this.users.find(user => user.id === message.fromUserID);
+    const user = this.DataService.users.find(user => user.id === message.fromUserID);
     return user ? user : new User;
   }
 

@@ -6,10 +6,9 @@
     <app-search-bar class="search-bar"></app-search-bar>
 
     <div class="user-head" (click)="openDialog()">
-        <span class="name">{{data.currentUser.name}}</span>
-
+        <span class="name">{{currentUser.name}}</span>
         <div class="avater">
-            <img src={{data.currentUser.avatar}}>
+            <img src={{currentUser.avatar}}>
         </div>
         <div class="menu-btn">
             <img src="./../../../assets/img/icons/expand_more_bk.png">

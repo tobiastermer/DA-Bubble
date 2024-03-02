@@ -29,7 +29,7 @@ export class DataService {
   private currentUserChannelsSubject = new BehaviorSubject<Channel[]>([]);
   public currentUserChannels$ = this.currentUserChannelsSubject.asObservable();
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   logCurrentUserData() {
     console.log('Aktueller Benutzer:', this.currentUser);
@@ -50,6 +50,7 @@ export class DataService {
       const userJson = localStorage.getItem('currentUser');
       if (userJson) {
         this.currentUser = JSON.parse(userJson);
+        this.currentUserID = this.currentUser.id!;
       }
     }
   }
@@ -76,8 +77,6 @@ export class DataService {
 
   setChannels(channels: Channel[]) {
     this.channelsSubject.next(channels);
-    console.log(channels);
-    console.log(this.channelsSubject);
   }
 
   setCurrentUserChannels(channels: Channel[]) {

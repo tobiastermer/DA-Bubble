@@ -1,9 +1,9 @@
 <section class="direct-message">
     <div (click)="openShowUserDialog(user)">
-        <img src="{{ user.avatar }}" alt="avatar">
+        <img [src]="user.avatar" (error)="onImageError($event)" alt="Avatar">
         <h3>{{ user.name }}</h3>
     </div>
-    <span>Dise Unterhaltung findet nur zwichen 
+    <span>Dise Unterhaltung findet nur zwischen 
         <a (click)="openShowUserDialog(user)" >{{ user.name }}</a>
          und dir statt.</span>
 </section>

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../../models/user.class';
 import { MatIconModule } from '@angular/material/icon';
-import { PresenceService } from '../../firebase-services/presence.service'; 
+import { PresenceService } from '../../firebase-services/presence.service';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 
@@ -17,10 +17,10 @@ import { DataService } from '../../services/data.service';
 })
 export class UserChipComponent implements OnInit, OnDestroy {
 
-  @Input() active:boolean = false;
-  @Input() user!:User;
+  @Input() active: boolean = false;
+  @Input() user!: User;
   @Input() smale = false;
-  
+
   userStatusSubscription!: Subscription;
   userStatus: string = 'offline';
   currentUserID: string;
@@ -28,6 +28,7 @@ export class UserChipComponent implements OnInit, OnDestroy {
   constructor(
     private presenceService: PresenceService,
     private DataService: DataService) {
+
     this.currentUserID = this.DataService.currentUser.id!;
   }
 
@@ -38,7 +39,15 @@ export class UserChipComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.user && this.user.uid) {
+    if (!this.user) {
+      this.user = new User({
+        id: '',
+        uid: '',
+        email: 'Lädt...',
+        name: 'Lädt...',
+        avatar: '../../../../../assets/img/avatars/unknown.jpg'
+      });
+    } else if (this.user && this.user.uid) {
       this.userStatusSubscription = this.presenceService.getUserStatus(this.user.uid).subscribe((status: string) => {
         this.userStatus = status;
       });
@@ -51,5 +60,9 @@ export class UserChipComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Methode zum Setzen des Ersatzbildes
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '../../../../assets/img/avatars/unknown.jpg';
+  }
 
 }

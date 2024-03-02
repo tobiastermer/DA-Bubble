@@ -2,7 +2,7 @@
     <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
     <h2>Profil</h2>
     <div class="avatar-container">
-        <img src="{{ data.user.avatar }}" alt="">
+        <img [src]="data.user.avatar" (error)="onImageError($event)" alt="Avatar">
     </div>
     <div class="name-status-container">
         <div class="name-container">

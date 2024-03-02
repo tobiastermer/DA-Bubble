@@ -64,4 +64,9 @@ export class DialogEditUserComponent {
     this.dialogRef.close();
   }
 
+  // Methode zum Setzen des Ersatzbildes
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '../../assets/img/avatars/unknown.jpg';
+  }
+
 }

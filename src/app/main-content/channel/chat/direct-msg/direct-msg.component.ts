@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from '../../../../shared/models/user.class';
 import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,6 +19,17 @@ export class DirectMsgComponent {
     public dialog: MatDialog,
   ) { }
 
+  ngOnInit() {
+    if (!this.user) {
+      this.user = new User({
+        id: '',
+        uid: '',
+        email: 'Lädt...',
+        name: 'Lädt...',
+        avatar: '../../../../../assets/img/avatars/unknown.jpg'
+      });
+    }
+  }
 
   openShowUserDialog(user: User) {
     this.dialog.open(DialogShowUserComponent, {
@@ -27,4 +38,7 @@ export class DirectMsgComponent {
     });
   }
 
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '../../../assets/img/avatars/unknown.jpg';
+  }
 }

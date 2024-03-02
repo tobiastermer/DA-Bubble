@@ -1,5 +1,5 @@
 <div class="message" [ngClass]="{'current-user': (user.id == currentUserID)}">
-    <img class="avatar" src="{{ user.avatar }}" alt="" (click)="openShowUserDialog(user)" />
+    <img class="avatar" [src]="user.avatar" (error)="onImageError($event)" (click)="openShowUserDialog(user)" alt="Avatar">
 
     <!-- Message Info / Edit -->
     <div class="details">

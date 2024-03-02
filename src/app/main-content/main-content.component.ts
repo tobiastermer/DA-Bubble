@@ -59,7 +59,7 @@ export class MainContentComponent implements OnInit {
       this.dataService.setChannels(channels);
     });
 
-    this.membershipService.getUserMemberships(this.dataService.currentUser?.id!);
+    this.membershipService.getUserMemberships(this.currentUser.id);
     this.userMembershipSubscription = this.membershipService.userMemberships$.subscribe(userMemberships => {
       this.userMemberships = userMemberships;
     });

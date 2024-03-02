@@ -2,7 +2,7 @@
 
     <h2>Dein Profil bearbeiten</h2>
     <div class="avatar-container">
-        <img src="{{ data.user.avatar }}" alt="">
+        <img [src]="data.user.avatar" (error)="onImageError($event)" alt="Avatar">
     </div>
     <div class="input-container">
         <div class="label-container">

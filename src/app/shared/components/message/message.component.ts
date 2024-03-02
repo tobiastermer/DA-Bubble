@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -53,7 +53,7 @@ export class MessageComponent implements OnChanges {
   currentUserID: string;
   oldText: string = '';
   posLikesRow = 2;
-  message= '';
+  message = '';
 
   constructor(
     public dialog: MatDialog,
@@ -64,6 +64,17 @@ export class MessageComponent implements OnChanges {
     if (!data.lastEmojis) this.data.loadLastEmojis()
   }
 
+  ngOnInit() {
+    if (!this.user) {
+      this.user = new User({
+        id: '',
+        uid: '',
+        email: 'Lädt...',
+        name: 'Lädt...',
+        avatar: '../../../../../assets/img/avatars/unknown.jpg'
+      });
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
@@ -185,6 +196,11 @@ export class MessageComponent implements OnChanges {
   setHiddenLikePos() {
     let pos = this.PositionService.getDialogPosWithCorner(this.likesRow, 'bottom');
     if (pos?.bottom) this.posLikesRow = parseInt(pos.bottom);
+  }
+
+  // Methode zum Setzen des Ersatzbildes
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '../../../../assets/img/avatars/unknown.jpg';
   }
 
 }

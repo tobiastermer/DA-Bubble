@@ -13,8 +13,6 @@ export const routes: Routes = [
     { path: 'signUp', component: SignUpComponent },
     { path: 'select-avatar', component: SelectAvatarComponent },
     { path: ':idUser', component: MainContentComponent },
-    // { path: ':idUser/:idChannel', component: MainContentComponent },
-    // { path: ':idUser/:idChannel/:idChat', component: MainContentComponent },
     { path: ':idUser/:chat/:idChat', component: MainContentComponent },
     { path: 'pw-reset', component: PwResetComponent },
     { path: 'new-pw', component: NewPwComponent }

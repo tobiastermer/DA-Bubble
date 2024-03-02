@@ -8,6 +8,7 @@ import {
 } from '@angular/material/dialog';
 import { MenuDialogComponent } from './menu-dialog/menu-dialog.component';
 import { DataService } from '../../shared/services/data.service';
+import { User } from '../../shared/models/user.class';
 
 
 @Component({
@@ -19,8 +20,21 @@ import { DataService } from '../../shared/services/data.service';
 })
 export class HeaderComponent {
   dropDown: boolean = false;
+  currentUser: User = new User({
+    id: '',
+    uid: '',
+    email: 'Lädt...',
+    name: 'Lädt...',
+    avatar: './../../../assets/img/avatars/unknown.jpg'
+  });
 
-  constructor(public dialog: MatDialog, public data: DataService) {}
+  constructor(
+    public dialog: MatDialog,
+    private DataService: DataService,
+  ) {
+    this.currentUser = this.DataService.currentUser!;
+
+  }
 
   openDialog() {
     this.dialog.open(MenuDialogComponent, {
