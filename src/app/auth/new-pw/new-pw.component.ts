@@ -7,11 +7,14 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
+import { Auth, updateEmail } from '@angular/fire/auth';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
 import { applyActionCode, confirmPasswordReset } from '@angular/fire/auth';
 import { isPlatformBrowser } from '@angular/common';
+import { Firestore } from '@angular/fire/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
+import { DataService } from '../../shared/services/data.service';
 
 @Component({
   selector: 'app-new-pw',
@@ -34,11 +37,12 @@ export class NewPwComponent implements OnInit {
   showSuccessPopup = false; 
   isPasswordReset = false;
   isEmailVerify = false;
+  newEmailVerify = false;
   mode: string | null = null;
   
 
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private afAuth: Auth, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private fb: FormBuilder,private firestore: Firestore ,private dataservice:DataService, private route: ActivatedRoute, private afAuth: Auth, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
     this.pwResetForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],      
@@ -49,12 +53,15 @@ export class NewPwComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.oobCode = params['oobCode'];
       this.mode = params['mode'];
-
+  
       if (this.mode === 'verifyEmail' && this.oobCode) {
-        applyActionCode(this.afAuth,this.oobCode);
-        this.verifyEmail() ;
+        applyActionCode(this.afAuth, this.oobCode);
+        this.verifyEmail();
       } else if (this.mode === 'resetPassword' && this.oobCode) {
         this.isPasswordReset = true;
+      } else if (this.mode === 'verifyAndChangeEmail' && this.oobCode) {
+        applyActionCode(this.afAuth, this.oobCode);
+        this.updatetEmail();
       }
     });
   }
@@ -67,10 +74,23 @@ export class NewPwComponent implements OnInit {
       
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 800);
+      }, 1200);
     }
   }
 
+  async updatetEmail() {
+    if (isPlatformBrowser(this.platformId)) { 
+      this.newEmailVerify = true;
+      const signUpCard = document.querySelector('.sign-up');
+      signUpCard?.classList.add('slide-out-down');
+      
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 1200);
+    }
+  }
+
+  
 
   checkPasswords(group: FormGroup) {
     const pass = group.get('password')?.value;

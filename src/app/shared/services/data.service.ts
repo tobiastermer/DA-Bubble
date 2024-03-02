@@ -1,19 +1,15 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { BehaviorSubject } from "rxjs";
-import { ChannelMessage } from "../models/channel-message.class";
-import { User } from "../models/user.class";
-import { Channel } from "../models/channel.class";
-import { Reply } from "../models/reply.class";
+import { BehaviorSubject } from 'rxjs';
+import { ChannelMessage } from '../models/channel-message.class';
+import { User } from '../models/user.class';
+import { Channel } from '../models/channel.class';
+import { Reply } from '../models/reply.class';
 import { isPlatformBrowser } from '@angular/common';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
-
 export class DataService {
-
   users!: User[];
   currentUser!: User;
   currentUserID!: string; // ggf. löschen
@@ -29,15 +25,12 @@ export class DataService {
   private currentUserChannelsSubject = new BehaviorSubject<Channel[]>([]);
   public currentUserChannels$ = this.currentUserChannelsSubject.asObservable();
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   logCurrentUserData() {
     console.log('Aktueller Benutzer:', this.currentUser);
     console.log('Aktuelle Benutzer-ID:', this.currentUserID);
-    console.log(
-      'Kanäle:',
-      this.currentUserChannelsSubject.getValue()
-    );
+    console.log('Kanäle:', this.currentUserChannelsSubject.getValue());
   }
 
   setCurrentUser(user: User) {
@@ -56,19 +49,19 @@ export class DataService {
   }
 
   getUserFromMessage(message: ChannelMessage): User {
-    const user = this.users.find(user => user.id === message.fromUserID);
-    return user ? user : new User;
+    const user = this.users.find((user) => user.id === message.fromUserID);
+    return user ? user : new User();
   }
 
   getUserFromReply(reply: Reply): User {
-    const user = this.users.find(user => user.id === reply.userID);
-    return user ? user : new User;
+    const user = this.users.find((user) => user.id === reply.userID);
+    return user ? user : new User();
   }
 
   getUserByName(name: string): User | undefined {
-    const user = this.users.find(user => user.name === name);
+    const user = this.users.find((user) => user.name === name);
     if (user) return user;
-    else return
+    else return;
   }
 
   setUsers(users: User[]) {
@@ -84,8 +77,8 @@ export class DataService {
   }
 
   public getUserNameById(userID: string): string {
-    if (!this.users) return ''
-    const user = this.users.find(user => user.id === userID);
+    if (!this.users) return '';
+    const user = this.users.find((user) => user.id === userID);
     return user ? user.name : '';
   }
 
@@ -94,5 +87,4 @@ export class DataService {
     if (load) this.lastEmojis = load.split(',');
     else this.lastEmojis = ['👍', '😀'];
   }
-
 }

@@ -49,10 +49,8 @@ export class PwResetComponent {
           }, 1500);
           return;
         }
-        await sendPasswordResetEmail(this.afAuth, email, {
-          url: 'http://localhost:4200/new-pw', // Ändern vor Deploy
-          handleCodeInApp: true,
-        });
+        await sendPasswordResetEmail(this.afAuth, email
+        );
         this.sendSuccess = true;
         setTimeout(() => this.router.navigate(['/login']), 2000);
       } catch (error) {

@@ -19,6 +19,8 @@ import { AuthService } from '../../shared/firebase-services/auth.service';
 import { UserService } from '../../shared/firebase-services/user.service';
 import { PresenceService } from '../../shared/firebase-services/presence.service';
 import { DataService } from '../../shared/services/data.service';
+import { doc } from '@angular/fire/firestore';
+import { getDoc, setDoc } from 'firebase/firestore';
 
 @Component({
   selector: 'app-login',
@@ -91,11 +93,14 @@ export class LoginComponent {
         emailInLowerCase,
         password
       );
+      await this.authService.updateEmailInFirestoreIfNeeded(userCredential.user.uid, emailInLowerCase);
       this.handleSuccessfulLogin(userCredential);
     } catch (error) {
       this.handleError(error);
     }
   }
+
+
 
   async handleSuccessfulLogin(userCredential: any) {
     if (userCredential.user && userCredential.user.emailVerified) {
@@ -116,9 +121,8 @@ export class LoginComponent {
   async updateUserStatus(uid: string) {
     try {
       await this.presenceService.updateOnUserLogin(uid);
-      console.log('Status auf online gesetzt für UID:', uid);
     } catch (error) {
-      console.error('Fehler beim Setzen des Benutzerstatus:', error);
+      
     }
   }
 

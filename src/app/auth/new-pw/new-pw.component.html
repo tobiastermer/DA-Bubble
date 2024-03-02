@@ -7,6 +7,10 @@
     <h1>Super! Deine E-Mail wurde erfolgreich verifiziert.</h1>
   </mat-card>
 
+  <mat-card class="email-verify" *ngIf="newEmailVerify">
+    <h1>Super! Deine E-Mail wurde erfolgreich geändert.</h1>
+  </mat-card>
+
   <mat-card class="pw-reset" *ngIf="isPasswordReset" @slideInUp>
     <mat-card-header>
       <mat-card-title class="pw-reset__header"
