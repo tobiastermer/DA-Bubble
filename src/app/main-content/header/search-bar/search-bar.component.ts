@@ -66,13 +66,11 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
   }
 
   channelSubscriptionReturn(){
-    return this.DataService.channels$.subscribe((channels) => {
+    return this.DataService.currentUserChannels$.subscribe((channels) => {
       this.channels = channels;
       this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
     });
   }
-
-
 
   closeList(){
     this.searchInput.nativeElement.value = '';

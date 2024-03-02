@@ -1,11 +1,22 @@
 <header class="header-channel">
     <h2>Neue Nachricht</h2>
-    <input #inp class="user-input" type="text"
-    placeholder="An: #channel oder @jemand" (input)="filterUsers()">
-    <ul class="filterd-users" [class.d-none]="!selectListVisible">
-        @for (user of filterdUsers; track $index) {
-        <app-user-chip [user]="user"></app-user-chip>
-        }
-    </ul>
-    
+    <input #searchInput class="user-input" type="text"
+    placeholder="An: #channel oder @jemand" (input)="filter()">
+    <div class="search-container" [class.d-none]="!selectListVisible">
+        <ul class="filtered" *ngIf="filteredUsers.length > 0">
+            <span class="categoryName">Users:</span>
+            <li *ngFor="let user of filteredUsers;">
+                <app-user-chip (click)="changeUserPath(user)" [user]="user" class="user-chip"></app-user-chip>
+            </li>
+        </ul>
+        <ul class="filtered" *ngIf="showChannels">
+            <span class="categoryName">Channels:</span>
+            <li *ngFor="let channel of filteredChannels;">
+                <div class="channelList" (click)="changeChannelPath(channel)">
+                    <div class="img-channel-hash"></div>
+                    <span class="channel-name">{{ channel.name }}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
 </header>

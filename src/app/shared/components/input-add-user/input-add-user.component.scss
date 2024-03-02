@@ -38,6 +38,7 @@
         list-style-type: none;
         overflow-y: auto;
         max-width: 300px;
+        clip-path: inset(0px round 0px 30px 30px);
     }
 
     .user-chip {
