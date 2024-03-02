@@ -100,6 +100,7 @@ export class AuthService {
     await uploadBytes(storageRef, file);
     return getDownloadURL(storageRef);
   }
+<<<<<<< HEAD
 
   async uploadMsgData(file: File): Promise<string> {
     const storageRef = ref(
@@ -124,4 +125,6 @@ export class AuthService {
       }
     }
   }
+=======
+>>>>>>> 8299c67af9c7b4ae8aea9a245470bd6636d5665a
 }
