@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from '../../../../shared/services/data.service';
 import { ChannelService } from '../../../../shared/firebase-services/channel.service';
 import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header-channel',
@@ -24,6 +25,7 @@ import { ActivatedRoute } from '@angular/router';
     MatCardModule,
     MatIconModule,
     MatButtonModule,
+    CommonModule
   ],
   templateUrl: './header-channel.component.html',
   styleUrl: './header-channel.component.scss'
@@ -41,6 +43,8 @@ export class HeaderChannelComponent {
   currentChannelMemberships: Membership[] = [];
   currentChannelMembers: User[] = [];
   currentChannelMemberIDs: string[] = [];
+  displayMembers: User[] = [];
+  additionalMembersCount: number = 0;
 
   private usersSubscription: Subscription = new Subscription();
   private channelMembershipSubscription?: Subscription;
@@ -76,10 +80,12 @@ export class HeaderChannelComponent {
             this.currentChannelMemberships = channelMemberships;
             this.currentChannelMemberIDs = this.currentChannelMemberships.map(membership => membership.userID);
             this.currentChannelMembers = this.allUsers.filter(user => user.id && this.currentChannelMemberIDs.includes(user.id));
+            this.calculateDisplayMembers();
           });
         }
       });
     });
+
   }
   
 
@@ -97,14 +103,20 @@ export class HeaderChannelComponent {
 
   getChannelIdByName(name: string): Promise<string> {
     return new Promise((resolve) => {
-      setTimeout(() => {
+      // setTimeout(() => {
         console.log('Aktuelle Channels in DataService sind: ', this.DataService.channels);
         const channel = this.DataService.channels.find(channel => channel.name === name);
         resolve(channel ? channel.id : '');
-      }, 800);
+      // }, 800);
     });
   }
-  
+
+  calculateDisplayMembers() {
+    const maxDisplayCount = 7;
+    this.displayMembers = this.currentChannelMembers.slice(0, maxDisplayCount);
+    const additionalCount = this.currentChannelMembers.length - maxDisplayCount;
+    this.additionalMembersCount = additionalCount > 0 ? additionalCount : 0;
+  }  
 
   ngOnDestroy() {
     this.channelMembershipSubscription?.unsubscribe();

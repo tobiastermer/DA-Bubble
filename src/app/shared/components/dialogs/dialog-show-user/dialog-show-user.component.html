@@ -10,8 +10,8 @@
             <a (click)="openDialogEditUser(data.user)" *ngIf="data.user.id == currentUserID">Bearbeiten</a>
         </div>
         <div class="status-icon-with-label">
-            <div class="status-indicator" [class.online]="userStatus === 'online'"></div>
-            <span class="status-label" [class.online]="userStatus === 'online'">{{ userStatus }}</span>
+            <div class="status-indicator" [class.online]="userStatus === 'online'" [class.away]="userStatus === 'away'"></div>
+            <span class="status-label" [class.online]="userStatus === 'online'" [class.away]="userStatus === 'away'">{{ userStatus }}</span>
         </div>
     </div>
     <div class="mail-container">

@@ -70,11 +70,15 @@ h2 {
             width: 16px;
             border-radius: 50%;
             border: 1px solid white;
-            background-color: red;
+            background: radial-gradient(circle at -2px -1px, white, red);
         }
 
         .status-indicator.online {
-            background-color: $lgGreen;
+            background: radial-gradient(circle at -2px -1px, white, $lgGreen);
+        }
+
+        .status-indicator.away {
+            background: radial-gradient(circle at -2px -1px, white, yellow);
         }
 
         .status-label {
@@ -85,6 +89,10 @@ h2 {
 
         .status-label.online {
             color: $lgGreen;
+        }
+
+        .status-label.away {
+            color: yellow;
         }
 
     }

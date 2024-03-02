@@ -7,10 +7,18 @@
     </div>
     <div class="users-info">
         <div class="users" #membersInfo (click)="openDialogMembers()">
-            <div class="users-list">
+            <!-- <div class="users-list">
                 @for (member of currentChannelMembers; track $index) {
                     <img class="user-avatar" [src]="member.avatar" (error)="onImageError($event)" alt="userName">
                 }
+            </div> -->
+            <div class="users-list">
+                <ng-container *ngFor="let member of displayMembers; let i = index">
+                    <img class="user-avatar" [src]="member.avatar" (error)="onImageError($event)" alt="userName">
+                </ng-container>
+                <ng-container *ngIf="additionalMembersCount > 0">
+                    <div class="user-avatar additional-members">+{{additionalMembersCount}}</div>
+                </ng-container>
             </div>
             <span>{{ currentChannelMembers.length }}</span>
         </div>
