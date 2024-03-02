@@ -86,7 +86,6 @@ export class MembershipService {
 
 
     getChannelMemberships(channelID: string) {
-        console.log('Übergebene CHannel ID ist: ', channelID);
         if (channelID) {
             const q = query(collection(this.firestore, 'memberships'), where("channelID", "==", channelID));
             onSnapshot(q, (snapshot) => {
