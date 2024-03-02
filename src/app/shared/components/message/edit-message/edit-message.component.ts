@@ -10,6 +10,7 @@ import { ChannelMessagesService } from '../../../firebase-services/channel-messa
 import { DataService } from '../../../services/data.service';
 import { DialogEmojiComponent } from '../../dialogs/dialog-emoji/dialog-emoji.component';
 import { AddEmojiService } from '../../../services/add-emoji.service';
+import { StorageService } from '../../../firebase-services/storage.service';
 
 @Component({
   selector: 'app-edit-message',
@@ -50,7 +51,8 @@ export class EditMessageComponent {
     public dialog: MatDialog,
     private messageFBS: ChannelMessagesService,
     public data: DataService,
-    public addEmoji: AddEmojiService
+    public addEmoji: AddEmojiService,
+    private storage: StorageService
   ) {
     data.currentUser.id ? this.currentUserID = data.currentUser.id : this.currentUserID = '';
     if (!data.lastEmojis) this.data.loadLastEmojis()
@@ -79,7 +81,7 @@ export class EditMessageComponent {
       data: {},
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result && this.isEditMsg){
+      if (result && this.isEditMsg) {
         this.addEmojiToText(result);
         return
       }
@@ -98,6 +100,8 @@ export class EditMessageComponent {
   async deletMsg() {
     if (this.isLoading) return
     this.isLoading = true;
+    debugger
+    if (this.msg.attachmentID) this.storage.deleteDoc(this.msg.attachmentID)
     if (this.msg instanceof ChannelMessage) await this.deletChannelMsg(this.msg)
     else await this.deletReplyMsg(this.msg)
     this.isLoading = false;
@@ -107,12 +111,16 @@ export class EditMessageComponent {
 
   async deletChannelMsg(msg: ChannelMessage) {
     if (msg.fromUserID !== this.currentUserID) return
-    else await this.messageFBS.deleteChannelMessage(msg)
+    for (const reply of msg.replies) {
+      if (reply.attachmentID !== '') await this.storage.deleteDoc(reply.attachmentID)
+    };
+    await this.messageFBS.deleteChannelMessage(msg)
   }
 
 
   async deletReplyMsg(msg: Reply) {
     if (msg.userID !== this.currentUserID) return
+    if (msg.attachmentID !== '') await this.storage.deleteDoc(msg.attachmentID)
     if (!this.channelMsg) return
     this.channelMsg.replies.splice(this.index, 1)
     await this.messageFBS.updateChannelMessage(this.channelMsg)

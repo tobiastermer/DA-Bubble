@@ -1,7 +1,7 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogInfoComponent } from '../components/dialogs/dialog-info/dialog-info.component';
-import { AuthService } from '../firebase-services/auth.service';
+import { StorageService } from '../firebase-services/storage.service';
 import { File } from 'buffer';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class FileService {
 
   constructor(
     public dialog: MatDialog,
-    private authService: AuthService,
+    private storage: StorageService,
   ) { }
 
 
@@ -79,7 +79,7 @@ export class FileService {
   async uploadFile(file: globalThis.File) {
     if (!this.element) return ''
     let retUrl = '';
-    await this.authService.uploadMsgData(file).then((url) => {
+    await this.storage.uploadMsgData(file).then((url) => {
       retUrl = url;
     }).catch((error) => {
       console.error("Fehler beim Hochladen des Bildes: ", error);

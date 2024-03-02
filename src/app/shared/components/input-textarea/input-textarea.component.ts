@@ -36,6 +36,7 @@ export class InputTextareaComponent {
   @Input() members: User[] = [];
 
   @ViewChild('messageText') messageText!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('emoijBtn') emoijBtn!: ElementRef;
   @ViewChild('atUser') atUser!: ElementRef;
 
@@ -73,6 +74,7 @@ export class InputTextareaComponent {
     setTimeout(() => {
       if (!this.messageText.nativeElement.querySelector('#uploadFile')) {
         this.tempFile = undefined;
+        if (this.fileInput) this.fileInput.nativeElement.value = '';
         this.updateButtonState();
       }
     }, 5);
@@ -140,8 +142,8 @@ export class InputTextareaComponent {
     return reply
   }
 
+  
   // @-Part
-
   openDialogAtUser(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.atUser, 'bottom');
     this.currentMemberIDs = this.members.map(user => user.id!);
@@ -153,6 +155,7 @@ export class InputTextareaComponent {
       if (result) this.addUserToMessageText(result);
     });
   }
+
 
   addUserToMessageText(users: User[]) {
     if (!this.messageText) return;
@@ -202,6 +205,7 @@ export class InputTextareaComponent {
 
 
   selectFile(event: any) {
+    debugger
     if (this.tempFile) this.changeFile();
     this.fileService.element = this.messageText;
     this.tempFile = this.fileService.onFileSelected(event);

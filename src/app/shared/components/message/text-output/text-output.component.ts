@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DialogInfoComponent } from '../../dialogs/dialog-info/dialog-info.component';
 import { MatDialog } from '@angular/material/dialog';
 import { isPlatformBrowser } from '@angular/common';
+import { StorageService } from '../../../firebase-services/storage.service';
 
 @Component({
   selector: 'app-text-output',
@@ -37,8 +38,9 @@ export class TextOutputComponent implements OnChanges {
 
   constructor(
     public dialog: MatDialog,
+    private storage: StorageService,
     @Inject(PLATFORM_ID) private platformId: Object
-    ) { }
+  ) { }
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -75,31 +77,8 @@ export class TextOutputComponent implements OnChanges {
   async downloadDocument(url: string | undefined, fileName: string): Promise<void> {
     if (this.isEdit) return
     if (!url) return
-    if (isPlatformBrowser(this.platformId)) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) this.openDialogInfo('Netzwerkantwort war nicht erfolgreich');
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(blobUrl);
-      } catch (error) {
-        this.openDialogInfo('Fehler beim Herunterladen des Dokuments');
-        console.error('Fehler beim Herunterladen des Dokuments:', error);
-      }
-    }
+    if (!isPlatformBrowser(this.platformId)) return
+    await this.storage.downloadFromSorage(url, fileName)
   }
 
-
-  openDialogInfo(info: String): void {
-    this.dialog.open(DialogInfoComponent, {
-      panelClass: ['card-round-corners'],
-      data: { info },
-    });
-  }
 }
