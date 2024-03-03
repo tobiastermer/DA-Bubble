@@ -79,7 +79,7 @@ export class DialogShowUserComponent {
   }
 
   openDialogEditUser(user: User) {
-    const userCopy = user.clone();
+    const userCopy = new User({ ...user });
     const dialogRef = this.dialog.open(DialogEditUserComponent, {
       panelClass: ['card-round-corners'],
       data: { user: userCopy },
@@ -94,7 +94,10 @@ export class DialogShowUserComponent {
 
   async saveUser(user: User) {
     this.loading = true;
-    if (this.nameHasChanged(user) || this.emailHasChanged(user)) {
+    const nameHasChanged = this.nameHasChanged(user);
+    const emailHasChanged = this.emailHasChanged(user);
+    
+    if (nameHasChanged || emailHasChanged) {
       try {
         await this.UserService.updateUser(user);
         this.currentUser = user;

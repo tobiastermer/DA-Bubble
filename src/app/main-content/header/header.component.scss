@@ -31,6 +31,10 @@
     white-space: nowrap;
     font-size: 22px;
     font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    display: block;
   }
   .avater {
     @include dFlex();

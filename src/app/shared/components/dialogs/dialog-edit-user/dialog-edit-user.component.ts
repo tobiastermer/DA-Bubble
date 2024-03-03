@@ -19,6 +19,7 @@ import { UserService } from '../../../firebase-services/user.service';
 import { verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { Auth } from '@angular/fire/auth';
 import { DataService } from '../../../services/data.service';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-dialog-edit-user',
@@ -91,6 +92,12 @@ export class DialogEditUserComponent {
       if (currentUser) {
         try {
           await verifyBeforeUpdateEmail(currentUser, this.newEmail);
+          if (user.email !== this.newEmail) {
+            this.dialog.open(DialogErrorComponent, {
+              panelClass: ['card-round-corners'],
+              data: { errorMessage: 'Deine neue Email-Adresse wird erst wirksam, sobald du die Änderung bestätigt hast. Schaue gleich in deinem E-Mail-Postfach nach und bestätige die Änderung mit Klick auf den Link.' }
+            });
+          }  
         } catch (error) {
           console.error(error);
         }
