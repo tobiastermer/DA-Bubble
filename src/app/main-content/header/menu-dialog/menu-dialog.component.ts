@@ -14,11 +14,10 @@ import { PresenceService } from '../../../shared/firebase-services/presence.serv
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 
-
 @Component({
   selector: 'app-menu-dialog',
   standalone: true,
-  imports: [CommonModule, MatDialogContent,],
+  imports: [CommonModule, MatDialogContent],
   templateUrl: './menu-dialog.component.html',
   styleUrl: './menu-dialog.component.scss',
 })

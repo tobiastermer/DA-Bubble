@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Auth, authState } from '@angular/fire/auth';
-import { Database, objectVal, set, ref, onDisconnect, serverTimestamp } from '@angular/fire/database';
+import {
+  Database,
+  objectVal,
+  set,
+  ref,
+  onDisconnect,
+  serverTimestamp,
+} from '@angular/fire/database';
 import { first } from 'rxjs/operators';
 import { UserService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
@@ -13,7 +20,11 @@ export class PresenceService {
   private timeoutID: any;
   private inactivityTimeout: any;
 
-  constructor(private auth: Auth, private db: Database, private userService: UserService) {
+  constructor(
+    private auth: Auth,
+    private db: Database,
+    private userService: UserService
+  ) {
     this.initPresence();
   }
 
@@ -32,21 +43,27 @@ export class PresenceService {
   // Status aktuallisierung im Realtime Speicher
   private async setUserStatus(uid: string, status: string): Promise<void> {
     const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
-    const statusForDatabase = { state: status, last_changed: serverTimestamp() };
+    const statusForDatabase = {
+      state: status,
+      last_changed: serverTimestamp(),
+    };
 
-    set(userStatusDatabaseRef, statusForDatabase)
-       
-      .catch((error) => console.error(`Error setting status for ${uid}:`, error));
+    set(userStatusDatabaseRef, statusForDatabase).catch((error) =>
+      console.error(`status ${uid}:`, error)
+    );
   }
 
   //setzt den Aktivitätsstatus zurück
   private resetTimer(): void {
-    authState(this.auth).pipe(first()).toPromise().then((user) => {
-      if (user) {
-        this.startInactivityTimer(user.uid);
-        this.setUserStatus(user.uid, 'online');
-      }
-    });
+    authState(this.auth)
+      .pipe(first())
+      .toPromise()
+      .then((user) => {
+        if (user) {
+          this.startInactivityTimer(user.uid);
+          this.setUserStatus(user.uid, 'online');
+        }
+      });
   }
 
   // startet den inactivitätsstatus ab 2min
@@ -55,7 +72,7 @@ export class PresenceService {
     this.timeoutID = setTimeout(() => this.setUserStatus(uid, 'away'), 60000);
   }
 
-  //maus/tastatur kontrolle 
+  //maus/tastatur kontrolle
   private addActivityListeners(): void {
     const resetTimerBound = this.resetTimer.bind(this);
     window.addEventListener('mousemove', resetTimerBound);
@@ -71,7 +88,10 @@ export class PresenceService {
   // ändern des statuses zu online bei Login
   async updateOnUserLogin(uid: string): Promise<void> {
     const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
-    const isOnlineForDatabase = { state: 'online', last_changed: serverTimestamp() };
+    const isOnlineForDatabase = {
+      state: 'online',
+      last_changed: serverTimestamp(),
+    };
 
     await set(userStatusDatabaseRef, isOnlineForDatabase);
     this.startInactivityTimer(uid);
@@ -87,19 +107,39 @@ export class PresenceService {
       if (connected === false) {
         return;
       }
-      onDisconnect(userStatusDatabaseRef).set({ state: 'offline', last_changed: serverTimestamp() });
+      onDisconnect(userStatusDatabaseRef).set({
+        state: 'offline',
+        last_changed: serverTimestamp(),
+      });
     });
   }
 
   //status auf offline setzen bei logout
   async updateOnDisconnect(): Promise<void> {
     const user = await authState(this.auth).pipe(first()).toPromise();
+    const guestUid = 't8WOIhqo9BYogI9FmZhtCHP7K3t1'; // Die UID des Gastkontos
+
     if (user) {
       const uid = user.uid;
-      const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
-      await this.setUserStatus(uid, 'offline');
-      this.monitorConnection(userStatusDatabaseRef);
+      // Überprüfen, ob der Benutzer der Gastbenutzer ist
+      if (uid === guestUid) {
+        await this.setGuestOfflineDirectly(guestUid);
+      } else {
+        const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
+        await this.setUserStatus(uid, 'offline');
+        this.monitorConnection(userStatusDatabaseRef);
+      }
     }
+  }
+
+  //geht nicht !
+  async setGuestOfflineDirectly(uid: string): Promise<void> {
+    const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
+    await set(userStatusDatabaseRef, {
+      state: 'offline',
+      last_changed: serverTimestamp(),
+    });
+    await this.setUserStatus(uid, 'offline');
   }
 
   //funktion zu abfragen den aktuellen Statuses
@@ -113,6 +153,18 @@ export class PresenceService {
     });
 
     return statusSubject;
+  }
+
+  async updateGuestStatus(uid: string, status: string): Promise<void> {
+    const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
+    const statusForDatabase = {
+      state: status,
+      last_changed: serverTimestamp(),
+    };
+
+    await set(userStatusDatabaseRef, statusForDatabase).catch((error) =>
+      console.error(error)
+    );
   }
 
   ngOnDestroy(): void {
