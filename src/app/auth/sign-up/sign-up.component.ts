@@ -19,7 +19,11 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthService } from '../../shared/firebase-services/auth.service';
 import { map } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
-import { slideAnimation, slideInUpAnimation, slideOutDownAnimation } from '../../shared/services/animations';
+import {
+  slideAnimation,
+  slideInUpAnimation,
+  slideOutDownAnimation,
+} from '../../shared/services/animations';
 
 @Component({
   selector: 'app-sign-up',
@@ -35,11 +39,10 @@ import { slideAnimation, slideInUpAnimation, slideOutDownAnimation } from '../..
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
-  animations: [slideInUpAnimation,slideOutDownAnimation,slideAnimation]
+  animations: [slideInUpAnimation, slideOutDownAnimation, slideAnimation],
 })
 export class SignUpComponent implements OnInit {
-  animationState= 'in'
-
+  animationState = 'in';
 
   ngOnInit(): void {
     this.prefillForm();
@@ -152,15 +155,13 @@ export class SignUpComponent implements OnInit {
   }
 
   openLogin() {
-    this.animationState = 'out'; // Ändere den Zustand für die Ausgangsanimation
+    this.animationState = 'out';
     setTimeout(() => {
-      // Führe die Navigation aus, nachdem die Animation Zeit hatte, zu enden
       this.router.navigate(['/login']);
-    }, 850); // Annahme: Die Ausgangsanimation dauert 800ms, +50ms als Puffer
+    }, 850);
   }
 
   async onSubmit() {
-
     this.formSubmitted = true;
     if (this.signUpForm.valid) {
       let { email, password, name } = this.signUpForm.value;
@@ -171,13 +172,10 @@ export class SignUpComponent implements OnInit {
         JSON.stringify({ name, email, password })
       );
 
-
       localStorage.setItem(
         'tempUser',
         JSON.stringify({ name, email, password })
       );
-
-      
 
       setTimeout(() => {
         this.router.navigate(['/select-avatar']);
@@ -186,9 +184,8 @@ export class SignUpComponent implements OnInit {
       console.log('Formular ist ungültig.');
     }
   }
-  
+
   changeAnimationState(newState: string) {
     this.animationState = newState;
   }
-  
 }

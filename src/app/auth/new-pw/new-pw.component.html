@@ -3,11 +3,11 @@
     <img src="./assets/img/logo_+_text.png" />
   </div>
 
-  <mat-card class="email-verify" *ngIf="isEmailVerify">
+  <mat-card class="email-verify" @slideInUp *ngIf="isEmailVerify">
     <h1>Super! Deine E-Mail wurde erfolgreich verifiziert.</h1>
   </mat-card>
 
-  <mat-card class="email-verify" *ngIf="newEmailVerify">
+  <mat-card class="email-verify" @slideInUp *ngIf="newEmailVerify">
     <h1>Super! Deine E-Mail wurde erfolgreich geändert.</h1>
   </mat-card>
 

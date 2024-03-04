@@ -12,6 +12,7 @@ import { first } from 'rxjs/operators';
 import { UserService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
 import { onValue } from 'firebase/database';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +20,14 @@ import { onValue } from 'firebase/database';
 export class PresenceService {
   private timeoutID: any;
   private inactivityTimeout: any;
+  private guestUid = 't8WOIhqo9BYogI9FmZhtCHP7K3t1';
+  private trackingEnabled = false;
 
   constructor(
     private auth: Auth,
     private db: Database,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {
     this.initPresence();
   }
@@ -59,10 +63,9 @@ export class PresenceService {
       .pipe(first())
       .toPromise()
       .then((user) => {
-        if (user) {
-          this.startInactivityTimer(user.uid);
-          this.setUserStatus(user.uid, 'online');
-        }
+        const uid = user ? user.uid : this.guestUid;
+        this.startInactivityTimer(uid);
+        this.setUserStatus(uid, 'online');
       });
   }
 
@@ -74,6 +77,7 @@ export class PresenceService {
 
   //maus/tastatur kontrolle
   private addActivityListeners(): void {
+    if (!this.trackingEnabled) return;
     const resetTimerBound = this.resetTimer.bind(this);
     window.addEventListener('mousemove', resetTimerBound);
     window.addEventListener('keydown', resetTimerBound);
@@ -117,29 +121,10 @@ export class PresenceService {
   //status auf offline setzen bei logout
   async updateOnDisconnect(): Promise<void> {
     const user = await authState(this.auth).pipe(first()).toPromise();
-    const guestUid = 't8WOIhqo9BYogI9FmZhtCHP7K3t1'; // Die UID des Gastkontos
-
-    if (user) {
-      const uid = user.uid;
-      // Überprüfen, ob der Benutzer der Gastbenutzer ist
-      if (uid === guestUid) {
-        await this.setGuestOfflineDirectly(guestUid);
-      } else {
-        const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
-        await this.setUserStatus(uid, 'offline');
-        this.monitorConnection(userStatusDatabaseRef);
-      }
-    }
-  }
-
-  //geht nicht !
-  async setGuestOfflineDirectly(uid: string): Promise<void> {
+    const uid = user ? user.uid : this.guestUid;
     const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
-    await set(userStatusDatabaseRef, {
-      state: 'offline',
-      last_changed: serverTimestamp(),
-    });
     await this.setUserStatus(uid, 'offline');
+    this.monitorConnection(userStatusDatabaseRef);
   }
 
   //funktion zu abfragen den aktuellen Statuses
@@ -155,6 +140,17 @@ export class PresenceService {
     return statusSubject;
   }
 
+  //Guest funktionen
+
+  async setGuestOfflineDirectly(uid: string): Promise<void> {
+    const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
+    await set(userStatusDatabaseRef, {
+      state: 'offline',
+      last_changed: serverTimestamp(),
+    });
+    this.stopGuestTracking();
+  }
+
   async updateGuestStatus(uid: string, status: string): Promise<void> {
     const userStatusDatabaseRef = ref(this.db, `/status/${uid}`);
     const statusForDatabase = {
@@ -165,6 +161,16 @@ export class PresenceService {
     await set(userStatusDatabaseRef, statusForDatabase).catch((error) =>
       console.error(error)
     );
+  }
+
+  startGuestTracking(): void {
+    this.trackingEnabled = true;
+    this.addActivityListeners();
+  }
+
+  stopGuestTracking(): void {
+    this.removeActivityListeners();
+    this.trackingEnabled = false;
   }
 
   ngOnDestroy(): void {

@@ -21,7 +21,7 @@ import { PresenceService } from '../../shared/firebase-services/presence.service
 import { DataService } from '../../shared/services/data.service';
 import { doc } from '@angular/fire/firestore';
 import { getDoc, setDoc } from 'firebase/firestore';
-import { slideOutDownAnimation } from '../../shared/services/animations';
+import { errorAnimation, slideOutDownAnimation } from '../../shared/services/animations';
 
 @Component({
   selector: 'app-login',
@@ -39,15 +39,7 @@ import { slideOutDownAnimation } from '../../shared/services/animations';
   styleUrl: './login.component.scss',
   animations: [
     slideOutDownAnimation,
-    trigger('errorAnimation', [
-      transition(':enter', [
-        style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate(
-          '0.5s ease-out',
-          style({ transform: 'translateY(0)', opacity: 1 })
-        ),
-      ]),
-    ]),
+    errorAnimation
   ],
 })
 export class LoginComponent {
@@ -158,10 +150,12 @@ export class LoginComponent {
     try {
       const guestData = await this.userService.getUserByID(this.guestUserId);
       await this.presenceService.updateGuestStatus("t8WOIhqo9BYogI9FmZhtCHP7K3t1", 'online');
+      this.presenceService.startGuestTracking();
+      
       this.showLoginCard = false;
 
       setTimeout(() => {
-        // Speichern des Gastbenutzers im Local Storage über DataService
+        
         this.dataService.setCurrentUser(guestData!);
         this.router.navigate([`/${userId}`]);
         this.showLoginCard = true;

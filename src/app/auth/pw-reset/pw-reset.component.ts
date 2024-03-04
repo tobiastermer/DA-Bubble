@@ -9,8 +9,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { sendPasswordResetEmail } from '@angular/fire/auth';
 import { Auth } from '@angular/fire/auth';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthService } from '../../shared/firebase-services/auth.service';
+import { slideInUpAnimation } from '../../shared/services/animations';
 
 @Component({
   selector: 'app-pw-reset',
@@ -19,12 +19,7 @@ import { AuthService } from '../../shared/firebase-services/auth.service';
   templateUrl: './pw-reset.component.html',
   styleUrl: './pw-reset.component.scss',
   animations: [
-    trigger('slideInUp', [
-      transition(':enter', [
-        style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate('0.5s ease-out', style({ transform: 'translateY(0)', opacity: 1 })),
-      ]),
-    ]),
+  slideInUpAnimation
   ],
 })
 export class PwResetComponent {

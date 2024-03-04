@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/firebase-services/auth.service';
+import { slideInUpAnimation } from '../../shared/services/animations';
 
 @Component({
   selector: 'app-select-avatar',
@@ -13,15 +13,7 @@ import { AuthService } from '../../shared/firebase-services/auth.service';
   templateUrl: './select-avatar.component.html',
   styleUrl: './select-avatar.component.scss',
   animations: [
-    trigger('slideInUp', [
-      transition(':enter', [
-        style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate(
-          '0.5s ease-out',
-          style({ transform: 'translateY(0)', opacity: 1 })
-        ),
-      ]),
-    ]),
+    slideInUpAnimation
   ],
 })
 export class SelectAvatarComponent implements OnInit {

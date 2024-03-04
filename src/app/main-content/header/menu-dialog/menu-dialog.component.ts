@@ -49,23 +49,19 @@ export class MenuDialogComponent {
     this.closeDialog();
   }
 
-  logOut() {
-    // const auth = getAuth();
-    // signOut(auth)
-    //   .then(() => {
-    //     // Sign-out successful.
-    //     console.log('ausgeloggt')
-    //   })
-    //   .catch((error) => {
-    //     // An error happened.
-    //   });
-
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('currentUser');
-    }
-
-    this.presenceService.updateOnDisconnect();
-    this.router.navigate(['login']);
-    this.closeDialog();
+  async logOut() {
+    this.presenceService.updateOnDisconnect().then(() => {
+      this.presenceService.updateGuestStatus("t8WOIhqo9BYogI9FmZhtCHP7K3t1", 'offline');
+      this.presenceService.stopGuestTracking();
+      
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.removeItem('currentUser');
+      }
+      
+      this.router.navigate(['login']);
+      this.closeDialog();
+    }).catch((error) => {
+      console.error("Fehler beim Setzen des Offline-Status", error);
+    });
   }
 }

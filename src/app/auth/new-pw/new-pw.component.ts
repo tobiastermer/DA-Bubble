@@ -7,14 +7,13 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Auth, updateEmail } from '@angular/fire/auth';
-import { animate, style, transition, trigger } from '@angular/animations';
+import { Auth, } from '@angular/fire/auth';
 import { ActivatedRoute } from '@angular/router';
 import { applyActionCode, confirmPasswordReset } from '@angular/fire/auth';
 import { isPlatformBrowser } from '@angular/common';
 import { Firestore } from '@angular/fire/firestore';
-import { doc, updateDoc } from 'firebase/firestore';
 import { DataService } from '../../shared/services/data.service';
+import { slideInUpAnimation } from '../../shared/services/animations';
 
 @Component({
   selector: 'app-new-pw',
@@ -23,12 +22,7 @@ import { DataService } from '../../shared/services/data.service';
   templateUrl: './new-pw.component.html',
   styleUrl: './new-pw.component.scss',
   animations: [
-    trigger('slideInUp', [
-      transition(':enter', [
-        style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate('0.5s ease-in ', style({ transform: 'translateY(0)', opacity: 1 })),
-      ]),
-    ]),
+  slideInUpAnimation
   ],
 })
 export class NewPwComponent implements OnInit {
@@ -69,24 +63,20 @@ export class NewPwComponent implements OnInit {
   verifyEmail() {
     if (isPlatformBrowser(this.platformId)) { 
       this.isEmailVerify = true;
-      const signUpCard = document.querySelector('.sign-up');
-      signUpCard?.classList.add('slide-out-down');
-      
+    
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 1200);
+      }, 1500);
     }
   }
 
   async updatetEmail() {
     if (isPlatformBrowser(this.platformId)) { 
       this.newEmailVerify = true;
-      const signUpCard = document.querySelector('.sign-up');
-      signUpCard?.classList.add('slide-out-down');
-      
+       
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 1200);
+      }, 1500);
     }
   }
 

@@ -35,3 +35,13 @@ export const slideOutDownAnimation = trigger('slideOutDown', [
       animate('0.8s ease', style({ transform: 'translateY(100%)', opacity: 0 })),
     ]),
   ]);
+
+  export const errorAnimation = trigger('errorAnimation', [
+    transition(':enter', [
+      style({ transform: 'translateY(100%)', opacity: 0 }),
+      animate(
+        '0.5s ease-out',
+        style({ transform: 'translateY(0)', opacity: 1 })
+      ),
+    ]),
+  ]);

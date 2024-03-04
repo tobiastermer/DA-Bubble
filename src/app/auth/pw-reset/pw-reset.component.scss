@@ -179,6 +179,7 @@ form {
 }
 
 .success-popup {
+  z-index:2000;
     display: flex;
     justify-content: center;
     flex-direction: row;
