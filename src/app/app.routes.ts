@@ -7,6 +7,7 @@ import { SelectAvatarComponent } from './auth/select-avatar/select-avatar.compon
 import { PwResetComponent } from './auth/pw-reset/pw-reset.component';
 import { NewPwComponent } from './auth/new-pw/new-pw.component';
 
+
 export const routes: Routes = [
     { path: '', component: StartAnimationComponent },
     { path: 'login', component: LoginComponent },

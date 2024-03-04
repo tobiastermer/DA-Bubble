@@ -9,6 +9,7 @@ import {
 import { MenuDialogComponent } from './menu-dialog/menu-dialog.component';
 import { DataService } from '../../shared/services/data.service';
 import { User } from '../../shared/models/user.class';
+import { slideInRightAnimationSlow } from '../../shared/services/animations';
 
 
 @Component({
@@ -17,6 +18,10 @@ import { User } from '../../shared/models/user.class';
   imports: [CommonModule, SearchBarComponent, MatDialogModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  animations: [
+    slideInRightAnimationSlow
+    
+  ],
 })
 export class HeaderComponent {
   dropDown: boolean = false;

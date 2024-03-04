@@ -36,6 +36,9 @@ $text-color-black: black;
     transform: translate(-50%, -50%);
     animation: moveToCorner 1s ease-in 1s forwards;
     
+    @media (max-width:1000px){
+      animation: moveToTop 1s ease-in 1s forwards;
+    }
     
   }
 
@@ -44,6 +47,9 @@ $text-color-black: black;
     width: 150px;
     animation: sizeDown 1s ease-in 1s forwards, spin 1s linear 1s;
     
+    @media (max-width:1000px){
+      animation: sizeDown 1s ease-in 1s forwards, NoSpin 1s linear 1s;
+    }
   }
 }
 
@@ -128,5 +134,23 @@ $text-color-black: black;
 
 
 
+@media (max-width: 1000px){
 
+  @keyframes moveToTop {
+    to {
+      top: 100px;
+      transform: translateX(-60%);
+    }
+  }
+
+  @keyframes Nospin {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(0deg);
+    }
+  }
+
+}
 

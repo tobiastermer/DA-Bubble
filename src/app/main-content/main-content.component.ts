@@ -12,13 +12,19 @@ import { ChannelService } from '../shared/firebase-services/channel.service';
 import { Channel } from '../shared/models/channel.class';
 import { DataService } from '../shared/services/data.service';
 import { ActivatedRoute } from '@angular/router';
+import { slideInRightAnimationSlow, slideInUpAnimation, slideInUpAnimationSlow, slideInleftAnimationSlow } from '../shared/services/animations';
 
 @Component({
   selector: 'app-main-content',
   standalone: true,
   imports: [HeaderComponent, MenueComponent, ChannelComponent],
   templateUrl: './main-content.component.html',
-  styleUrl: './main-content.component.scss'
+  styleUrl: './main-content.component.scss',
+  animations: [
+    slideInUpAnimationSlow,
+    slideInleftAnimationSlow,
+    
+  ],
 })
 export class MainContentComponent implements OnInit {
   users: User[] = [];
