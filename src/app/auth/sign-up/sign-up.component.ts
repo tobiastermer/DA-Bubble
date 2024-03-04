@@ -19,6 +19,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthService } from '../../shared/firebase-services/auth.service';
 import { map } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
+import { slideAnimation, slideInUpAnimation, slideOutDownAnimation } from '../../shared/services/animations';
 
 @Component({
   selector: 'app-sign-up',
@@ -34,19 +35,12 @@ import { Observable, from } from 'rxjs';
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
-  animations: [
-    trigger('slideInUp', [
-      transition(':enter', [
-        style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate(
-          '0.5s ease-out',
-          style({ transform: 'translateY(0)', opacity: 1 })
-        ),
-      ]),
-    ]),
-  ],
+  animations: [slideInUpAnimation,slideOutDownAnimation,slideAnimation]
 })
 export class SignUpComponent implements OnInit {
+  animationState= 'in'
+
+
   ngOnInit(): void {
     this.prefillForm();
   }
@@ -158,16 +152,15 @@ export class SignUpComponent implements OnInit {
   }
 
   openLogin() {
-    const signUpCard = document.querySelector('.sign-up');
-
-    signUpCard?.classList.add('slide-out-down');
-
+    this.animationState = 'out'; // Ändere den Zustand für die Ausgangsanimation
     setTimeout(() => {
+      // Führe die Navigation aus, nachdem die Animation Zeit hatte, zu enden
       this.router.navigate(['/login']);
-    }, 800);
+    }, 850); // Annahme: Die Ausgangsanimation dauert 800ms, +50ms als Puffer
   }
 
   async onSubmit() {
+
     this.formSubmitted = true;
     if (this.signUpForm.valid) {
       let { email, password, name } = this.signUpForm.value;
@@ -178,14 +171,13 @@ export class SignUpComponent implements OnInit {
         JSON.stringify({ name, email, password })
       );
 
-      const signUpCard = document.querySelector('.sign-up');
 
       localStorage.setItem(
         'tempUser',
         JSON.stringify({ name, email, password })
       );
 
-      signUpCard?.classList.add('slide-out-down');
+      
 
       setTimeout(() => {
         this.router.navigate(['/select-avatar']);
@@ -194,4 +186,9 @@ export class SignUpComponent implements OnInit {
       console.log('Formular ist ungültig.');
     }
   }
+  
+  changeAnimationState(newState: string) {
+    this.animationState = newState;
+  }
+  
 }

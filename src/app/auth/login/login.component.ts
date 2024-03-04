@@ -21,6 +21,7 @@ import { PresenceService } from '../../shared/firebase-services/presence.service
 import { DataService } from '../../shared/services/data.service';
 import { doc } from '@angular/fire/firestore';
 import { getDoc, setDoc } from 'firebase/firestore';
+import { slideOutDownAnimation } from '../../shared/services/animations';
 
 @Component({
   selector: 'app-login',
@@ -37,18 +38,13 @@ import { getDoc, setDoc } from 'firebase/firestore';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   animations: [
+    slideOutDownAnimation,
     trigger('errorAnimation', [
       transition(':enter', [
         style({ transform: 'translateY(100%)', opacity: 0 }),
         animate(
           '0.5s ease-out',
           style({ transform: 'translateY(0)', opacity: 1 })
-        ),
-      ]),
-      transition(':leave', [
-        animate(
-          '0.5s ease-out',
-          style({ transform: 'translateY(100%)', opacity: 0 })
         ),
       ]),
     ]),
@@ -60,6 +56,8 @@ export class LoginComponent {
   error = false;
   errorMessage = '';
   guestUserId: string = 'PT4yYauqYDFGDbalSPkk';
+  showLoginCard = true;
+  isGuestLogin = false;
 
   constructor(
     private fb: FormBuilder,
@@ -68,7 +66,7 @@ export class LoginComponent {
     private authService: AuthService,
     private userService: UserService,
     private presenceService: PresenceService,
-    private dataService: DataService,
+    private dataService: DataService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -78,10 +76,17 @@ export class LoginComponent {
 
   async onLoginSubmit() {
     this.formSubmitted = true;
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      await this.loginUser(email, password);
+    if (this.isGuestLogin) {
+     
+      this.onGuestLogin(this.guestUserId);
     } else {
+     
+      if (this.loginForm.valid) {
+        const { email, password } = this.loginForm.value;
+        await this.loginUser(email, password);
+      } else {
+       
+      }
     }
   }
 
@@ -93,14 +98,15 @@ export class LoginComponent {
         emailInLowerCase,
         password
       );
-      await this.authService.updateEmailInFirestoreIfNeeded(userCredential.user.uid, emailInLowerCase);
+      await this.authService.updateEmailInFirestoreIfNeeded(
+        userCredential.user.uid,
+        emailInLowerCase
+      );
       this.handleSuccessfulLogin(userCredential);
     } catch (error) {
       this.handleError(error);
     }
   }
-
-
 
   async handleSuccessfulLogin(userCredential: any) {
     if (userCredential.user && userCredential.user.emailVerified) {
@@ -121,13 +127,16 @@ export class LoginComponent {
   async updateUserStatus(uid: string) {
     try {
       await this.presenceService.updateOnUserLogin(uid);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 
   navigateToChat(userId: string) {
-    this.router.navigate([`/${userId}`]);
+    this.showLoginCard = false;
+    setTimeout(() => {
+      this.router.navigate([`/${userId}`]);
+      this.showLoginCard = true;
+    }, 800);
+    
   }
 
   showError(message: string) {
@@ -142,17 +151,22 @@ export class LoginComponent {
     this.showError('Email oder Passwort falsch.');
   }
 
-  async onGuestLogin(uid: string): Promise<void> {
-    const loginCard = document.querySelector('.login');
-    loginCard?.classList.add('slide-out-down');
+  async onGuestLogin(userId: string): Promise<void> {
+    this.isGuestLogin = true;
+    this.removeValidators();
 
     try {
       const guestData = await this.userService.getUserByID(this.guestUserId);
+      await this.presenceService.updateGuestStatus("t8WOIhqo9BYogI9FmZhtCHP7K3t1", 'online');
+      this.showLoginCard = false;
 
       setTimeout(() => {
         // Speichern des Gastbenutzers im Local Storage über DataService
         this.dataService.setCurrentUser(guestData!);
-        this.router.navigate([`/${uid}`]);
+        this.router.navigate([`/${userId}`]);
+        this.showLoginCard = true;
+        this.isGuestLogin = false;
+        
       }, 800);
     } catch (error) {
       console.error('Fehler beim Gastlogin', error);
@@ -160,13 +174,12 @@ export class LoginComponent {
   }
 
   openSignUp() {
-    const loginCard = document.querySelector('.login');
-
-    loginCard?.classList.add('slide-out-down');
-
+    this.showLoginCard = false;
     setTimeout(() => {
       this.router.navigate(['/signUp']);
+      this.showLoginCard = true;
     }, 800);
+    
   }
 
   async onGoogleSignIn() {
@@ -188,4 +201,13 @@ export class LoginComponent {
       this.router.navigate(['/pw-reset']);
     }, 800);
   }
+
+
+  removeValidators() {
+    this.loginForm.get('email')!.clearValidators(); 
+    this.loginForm.get('email')!.updateValueAndValidity();
+    this.loginForm.get('password')!.clearValidators();
+    this.loginForm.get('password')!.updateValueAndValidity();
+  }
+  
 }
