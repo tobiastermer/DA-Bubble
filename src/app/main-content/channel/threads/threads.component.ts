@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -9,6 +9,8 @@ import { Channel } from '../../../shared/models/channel.class';
 import { MessageComponent } from '../../../shared/components/message/message.component';
 import { DataService } from '../../../shared/services/data.service';
 import { User } from '../../../shared/models/user.class';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogInfoComponent } from '../../../shared/components/dialogs/dialog-info/dialog-info.component';
 
 @Component({
   selector: 'app-threads',
@@ -25,17 +27,39 @@ import { User } from '../../../shared/models/user.class';
   templateUrl: './threads.component.html',
   styleUrl: './threads.component.scss',
 })
-export class ThreadsComponent {
+export class ThreadsComponent implements OnChanges {
+
+  channel!: Channel | undefined;
 
   @Input() channelMsg!: ChannelMessage | undefined;
-  @Input() channel!: Channel | undefined;
   @Input() currentChannelMembers: User[] = [];
 
-  @Output() closeThread: EventEmitter<boolean>= new EventEmitter<boolean>();
+  @Output() closeThread: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(public data: DataService) { }
+  constructor(
+    public data: DataService,
+    public dialog: MatDialog,) { }
 
-  setCloseTread(){
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes) {
+      if (this.channelMsg?.channelID) {
+        this.channel = this.data.channels.find(channel => channel.id === this.channelMsg?.channelID);
+        if (!this.channel) return this.openDialogInfo('Kein Channel gefunden');
+      }
+    }
+  }
+
+
+  setCloseTread() {
     this.closeThread.emit(true)
+  }
+
+
+  openDialogInfo(info: String): void {
+    this.dialog.open(DialogInfoComponent, {
+      panelClass: ['card-round-corners'],
+      data: { info },
+    });
   }
 }

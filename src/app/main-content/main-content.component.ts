@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { MenueComponent } from './menue/menue.component';
 import { ChannelComponent } from './channel/channel.component';
-import { ThreadsComponent } from './channel/threads/threads.component';
 import { User } from '../shared/models/user.class';
 import { UserService } from '../shared/firebase-services/user.service';
 import { Subscription, combineLatest } from 'rxjs';
@@ -65,10 +64,6 @@ export class MainContentComponent implements OnInit {
         this.userMemberships = userMemberships;
       });
     }
-    
-
-
-
   }
 
   ngOnInit() {

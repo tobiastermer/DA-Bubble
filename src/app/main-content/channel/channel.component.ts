@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { HeaderChannelComponent } from './header/header-channel/header-channel.component';
 import { ChannelMsgComponent } from './chat/channel-msg/channel-msg.component';
@@ -22,6 +22,8 @@ import { DataService } from '../../shared/services/data.service';
 import { PositionService } from '../../shared/services/position.service';
 import { DirectMessage } from '../../shared/models/direct-message.class';
 import { DirectMessagesService } from '../../shared/firebase-services/direct-message.service';
+import { DialogInfoComponent } from '../../shared/components/dialogs/dialog-info/dialog-info.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-channel',
@@ -43,9 +45,6 @@ import { DirectMessagesService } from '../../shared/firebase-services/direct-mes
 })
 export class ChannelComponent {
 
-  // @Input() users: User[] = [];
-  // @Input() channels: Channel[] = [];
-  // @Input() currentUser: User = new User({ id: 'User lädt', name: 'User lädt', avatar: 1, email: 'User lädt', status: '' });
 
   currentUser: User;
 
@@ -69,25 +68,24 @@ export class ChannelComponent {
 
   chatUser!: User;
 
-  private usersSubscription: Subscription = new Subscription();
 
   private channelMembershipSubscription?: Subscription;
   private channelMessagesSubscription?: Subscription;
-  private channelSubscription: Subscription = new Subscription();
 
   private directMessagesSubscription?: Subscription;
 
   menuOpen: boolean = true; // Standardwert
 
-  constructor(private channelService: ChannelService,
+  constructor(
+    private channelService: ChannelService,
     private membershipService: MembershipService,
     private channelMessagesService: ChannelMessagesService,
     private directMessagesService: DirectMessagesService,
     private DataService: DataService,
     private router: ActivatedRoute,
-    private positionService: PositionService
+    private positionService: PositionService,
+    public dialog: MatDialog,
   ) {
-    console.log('channel Constructor')
     this.channels = this.DataService.channels;
     this.users = this.DataService.users;
 
@@ -98,35 +96,19 @@ export class ChannelComponent {
     });
 
     this.currentUser = this.DataService.currentUser!;
-
   }
 
+
   ngOnInit() {
-
-    //  this.channelSubscription.add(
-    //     this.DataService.channels$.subscribe(channels => {
-    //       this.channels = channels;
-    //     })
-    //   );
-
-    //   this.usersSubscription.add(
-    //     this.DataService.users$.subscribe(users => {
-    //       this.users = users;
-    //     })
-    //   );
-
     this.positionService.isMenuOpen().subscribe(open => {
       this.menuOpen = open;
     });
-
   }
 
 
   ngOnDestroy() {
     this.channelMembershipSubscription?.unsubscribe();
     this.channelMessagesSubscription?.unsubscribe();
-    this.channelSubscription.unsubscribe();
-    this.usersSubscription.unsubscribe();
   }
 
 
@@ -170,7 +152,6 @@ export class ChannelComponent {
   }
 
 
-  // Functions for Channel 
   async loadChannelData() {
     this.ngOnDestroy();
     if (this.currentChannelID !== '') {
@@ -187,7 +168,6 @@ export class ChannelComponent {
     this.membershipService.getChannelMemberships(this.currentChannelID);
     this.channelMembershipSubscription = this.membershipService.channelMemberships$.subscribe(channelMemberships => {
       this.currentChannelMemberships = channelMemberships;
-      // console.log('Members of current Channel: ', this.currentChannelMemberships);
     });
   }
 
@@ -199,6 +179,7 @@ export class ChannelComponent {
       console.log('Channel Messages: ', this.channelMessages);
     });
   }
+
 
   loadDirectMessages() {
     this.directMessagesService.getDirectMessages('PT4yYauqYDFGDbalSPkk', 'Y4Pr2QVzYbi6hoE0iPI9');
@@ -215,9 +196,10 @@ export class ChannelComponent {
       if (channel) {
         this.currentChannel = channel;
       } else {
-        console.error('Channel nicht gefunden');
+        this.openDialogInfo('Channel nicht gefunden');
       }
     } catch (error) {
+      this.openDialogInfo('Fehler beim Abrufen des aktuellen Channels')
       console.error('Fehler beim Abrufen des aktuellen Channels:', error);
     }
   }
@@ -235,7 +217,6 @@ export class ChannelComponent {
   }
 
 
-  // Functions for direct messeges
   loadChatUserData(idChat: string) {
     let name = idChat.replace(/_/g, ' ');
     let user = this.getUserByName(name);
@@ -250,10 +231,8 @@ export class ChannelComponent {
   }
 
 
-
   setThreadValues(msg: ChannelMessage) {
-    this.threadMsg = new ChannelMessage(msg)
-    this.threadChannel = new Channel(this.channels.find(channel => channel.id === this.threadMsg?.channelID));
+    this.threadMsg = new ChannelMessage(msg) 
   }
 
 
@@ -262,4 +241,10 @@ export class ChannelComponent {
   }
 
 
+  openDialogInfo(info: String): void {
+    this.dialog.open(DialogInfoComponent, {
+      panelClass: ['card-round-corners'],
+      data: { info },
+    });
+  }
 }

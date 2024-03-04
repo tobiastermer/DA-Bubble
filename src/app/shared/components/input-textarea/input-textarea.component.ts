@@ -137,7 +137,7 @@ export class InputTextareaComponent {
     reply.date = new Date().getTime();
     reply.channelID = this.channel.id;
     reply.userID = this.data.currentUser.id;
-    reply.message = text;
+    reply.message = text.replace(/^\n+/, '');
     reply.attachmentID = await this.fileService.uploadFile(this.tempFile);
     return reply
   }
@@ -205,7 +205,6 @@ export class InputTextareaComponent {
 
 
   selectFile(event: any) {
-    debugger
     if (this.tempFile) this.changeFile();
     this.fileService.element = this.messageText;
     this.tempFile = this.fileService.onFileSelected(event);
