@@ -21,7 +21,7 @@ import { PositionService } from '../../shared/services/position.service';
   styleUrl: './menue.component.scss'
 })
 export class MenueComponent {
-  @Input() users: User[] = [];
+users: User[] = [];
   @Input() currentUserID: string = '';
   @Input() currentUserChannelIDs: string[] = [];
   @Input() channels: Channel[] = [];

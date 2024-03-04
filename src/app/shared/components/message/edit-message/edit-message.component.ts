@@ -11,6 +11,7 @@ import { DataService } from '../../../services/data.service';
 import { DialogEmojiComponent } from '../../dialogs/dialog-emoji/dialog-emoji.component';
 import { AddEmojiService } from '../../../services/add-emoji.service';
 import { StorageService } from '../../../firebase-services/storage.service';
+import { DirectMessage } from '../../../models/direct-message.class';
 
 @Component({
   selector: 'app-edit-message',
@@ -28,7 +29,7 @@ export class EditMessageComponent {
 
   @ViewChild('msgText') msgText!: ElementRef;
 
-  @Input() msg!: ChannelMessage | Reply;
+  @Input() msg!: ChannelMessage | DirectMessage | Reply;
   @Input() index!: number;
   @Input() channelMsg!: ChannelMessage;
 
@@ -103,7 +104,8 @@ export class EditMessageComponent {
     debugger
     if (this.msg.attachmentID) this.storage.deleteDoc(this.msg.attachmentID)
     if (this.msg instanceof ChannelMessage) await this.deletChannelMsg(this.msg)
-    else await this.deletReplyMsg(this.msg)
+    // 
+    if (this.msg instanceof Reply) await this.deletReplyMsg(this.msg)
     this.isLoading = false;
     this.closeEdit()
   }
@@ -133,7 +135,8 @@ export class EditMessageComponent {
     this.isLoading = true;
     this.msg.message = this.msgText.nativeElement.innerText.trim();
     if (this.msg instanceof ChannelMessage) await this.saveChannelMsg(this.msg);
-    else await this.saveReplyMsg(this.msg);
+    // 
+    if (this.msg instanceof Reply) await this.saveReplyMsg(this.msg);
     this.isLoading = false;
     this.closeEdit();
   }

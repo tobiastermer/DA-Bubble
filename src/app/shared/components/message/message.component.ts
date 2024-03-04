@@ -15,6 +15,7 @@ import { DataService } from '../../services/data.service';
 import { Like, SortedLikes } from '../../models/like.class';
 import { TextOutputComponent } from './text-output/text-output.component';
 import { EditMessageComponent } from './edit-message/edit-message.component';
+import { DirectMessage } from '../../models/direct-message.class';
 
 
 @Component({
@@ -33,7 +34,7 @@ import { EditMessageComponent } from './edit-message/edit-message.component';
 })
 export class MessageComponent implements OnChanges {
 
-  @Input() msg!: ChannelMessage | Reply;
+  @Input() msg!: ChannelMessage | DirectMessage | Reply;
   @Input() channelMsg!: ChannelMessage;
   @Input() index!: number;
   @Input() user!: User;
@@ -139,9 +140,10 @@ export class MessageComponent implements OnChanges {
 
   editPossible(): boolean {
     if (this.isEditDisabled) return false
-    let out;
+    let out = false;
     if (this.msg instanceof ChannelMessage) (this.msg.fromUserID === this.currentUserID) ? out = true : out = false;
-    else (this.msg.userID === this.currentUserID) ? out = true : out = false;
+    if (this.msg instanceof DirectMessage) (this.msg.fromUserID === this.currentUserID) ? out = true : out = false;
+    if (this.msg instanceof Reply) (this.msg.userID === this.currentUserID) ? out = true : out = false;
     return out
   }
 

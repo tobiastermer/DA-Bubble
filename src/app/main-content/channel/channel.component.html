@@ -9,14 +9,14 @@
                 </app-channel-msg>
                 }
 
-            @for (message of channelMessages; track $index) {
-            @if(checkTimeStemp(message.date)){
+                @for (message of channelMessages; track $index) {
+                @if(checkTimeStemp(message.date)){
                 <div class="day-section">
                     <hr>
                     <div>{{ newTimeStemp }}</div>
                     <hr>
                 </div>
-            }
+                }
 
 
                 <app-message [msg]="message" [user]="getUserFromMessage(message)" [isChannelMsg]="true"
@@ -28,8 +28,21 @@
         @else if (chat === 'message') {
         <app-direct-message [user]="chatUser"></app-direct-message>
         <main class="chat-space">
-            <app-direct-msg [user]="chatUser"></app-direct-msg>
+            @if (directMessages.length <= 0) { <app-direct-msg [user]="chatUser"></app-direct-msg>}
 
+                @for (message of directMessages; track $index) {
+                @if(checkTimeStemp(message.date)){
+                <div class="day-section">
+                    <hr>
+                    <div>{{ newTimeStemp }}</div>
+                    <hr>
+                </div>
+                }
+
+
+                <app-message [msg]="message" [user]="getUserFromMessage(message)" [isChannelMsg]="true"
+                    (threadOutput)="setThreadValues($event)"></app-message>
+                }
         </main>
         }
 
@@ -40,13 +53,14 @@
         </main>
         }
 
-        <app-input-textarea [channel]="currentChannel" [channelMsg]="true" [members]="currentChannelMembers"></app-input-textarea>
+        <app-input-textarea [channel]="currentChannel" [chatUserId]="getChatUserId()" [chat]="chat"
+            [members]="currentChannelMembers"></app-input-textarea>
 
     </mat-card>
 
     @if (chat === 'channel') {
-    <app-threads [channelMsg]="threadMsg"
-        (closeThread)="deletThreadValues($event)" [currentChannelMembers]="currentChannelMembers"></app-threads>
+    <app-threads [channelMsg]="threadMsg" (closeThread)="deletThreadValues($event)"
+        [currentChannelMembers]="currentChannelMembers"></app-threads>
     }
 
 </div>

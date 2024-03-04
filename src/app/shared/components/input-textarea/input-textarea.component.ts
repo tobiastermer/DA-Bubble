@@ -16,6 +16,8 @@ import { AuthService } from '../../firebase-services/auth.service';
 import { DialogInfoComponent } from '../dialogs/dialog-info/dialog-info.component';
 import { AddEmojiService } from '../../services/add-emoji.service';
 import { FileService } from '../../services/file.service';
+import { DirectMessage } from '../../models/direct-message.class';
+import { DirectMessagesService } from '../../firebase-services/direct-message.service';
 
 
 @Component({
@@ -32,7 +34,8 @@ export class InputTextareaComponent {
 
   @Input() channel!: Channel | undefined;
   @Input() msg!: ChannelMessage;
-  @Input() channelMsg: Boolean = false;
+  @Input() chat: 'channel' | 'message' | 'new' = 'channel';
+  @Input() chatUserId!: string | undefined;
   @Input() members: User[] = [];
 
   @ViewChild('messageText') messageText!: ElementRef;
@@ -52,7 +55,8 @@ export class InputTextareaComponent {
 
   constructor(
     private data: DataService,
-    private messageFBS: ChannelMessagesService,
+    private channelMsgService: ChannelMessagesService,
+    private directMsgService: DirectMessagesService,
     private PositionService: PositionService,
     public dialog: MatDialog,
     public addEmoji: AddEmojiService,
@@ -93,8 +97,9 @@ export class InputTextareaComponent {
 
 
   addNewMsg(text: string) {
-    if (this.channelMsg) this.addNewChannelMsg(text)
-    else this.addNewReplyMsg(text)
+    if (this.chat === 'channel') this.addNewChannelMsg(text)
+    if (this.chat === 'message') this.addNewDirectMsg(text)
+    if (this.chat === 'new') this.addNewReplyMsg(text)
   }
 
 
@@ -102,10 +107,10 @@ export class InputTextareaComponent {
     let newMsg: ChannelMessage | undefined = await this.fillChannelMsg(text);
     let id: any;
     if (!newMsg) return
-    id = await this.messageFBS.addChannelMessage(newMsg);
+    id = await this.channelMsgService.addChannelMessage(newMsg);
     if (!id) return
     newMsg.id = id;
-    await this.messageFBS.updateChannelMessage(newMsg);
+    await this.channelMsgService.updateChannelMessage(newMsg);
   }
 
 
@@ -126,7 +131,7 @@ export class InputTextareaComponent {
     let newReply: Reply | undefined = await this.fillReplyMsg(text)
     if (!newReply || !this.msg) return
     this.msg.replies.push(newReply);
-    await this.messageFBS.updateChannelMessage(this.msg);
+    await this.channelMsgService.updateChannelMessage(this.msg);
   }
 
 
@@ -140,6 +145,30 @@ export class InputTextareaComponent {
     reply.message = text.replace(/^\n+/, '');
     reply.attachmentID = await this.fileService.uploadFile(this.tempFile);
     return reply
+  }
+
+
+  async addNewDirectMsg(text: string) {
+    let newMsg: DirectMessage | undefined = await this.fillDirectMsg(text);
+    let id: any;
+    if (!newMsg) return
+    id = await this.directMsgService.addDirectMessage(newMsg);
+    if (!id) return
+    newMsg.id = id;
+    await this.directMsgService.updateDirectMessage(newMsg);
+  }
+
+
+  async fillDirectMsg(text: string) {
+    if (!this.data.currentUser.id) return
+    if (!this.chatUserId) return
+    let msg = new DirectMessage();
+    msg.date = new Date().getTime();
+    msg.userIDs = [this.data.currentUser.id, this.chatUserId];
+    msg.fromUserID = this.data.currentUser.id;
+    msg.message = text.replace(/^\n+/, '');
+    if (this.tempFile) msg.attachmentID = await this.fileService.uploadFile(this.tempFile);
+    return msg
   }
 
   

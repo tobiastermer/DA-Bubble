@@ -6,6 +6,7 @@ import { DialogInfoComponent } from '../../dialogs/dialog-info/dialog-info.compo
 import { MatDialog } from '@angular/material/dialog';
 import { isPlatformBrowser } from '@angular/common';
 import { StorageService } from '../../../firebase-services/storage.service';
+import { DirectMessage } from '../../../models/direct-message.class';
 
 @Component({
   selector: 'app-text-output',
@@ -24,7 +25,7 @@ import { StorageService } from '../../../firebase-services/storage.service';
 
 export class TextOutputComponent implements OnChanges {
 
-  @Input() msg?: ChannelMessage | Reply;
+  @Input() msg?: ChannelMessage | DirectMessage | Reply;
   @Input() isUserCurrentUser: boolean = false;
   @Input() isEdit: boolean = false;
 

@@ -10,7 +10,7 @@ import { Channel } from '../../shared/models/channel.class';
 import { ChannelService } from '../../shared/firebase-services/channel.service';
 import { Membership } from '../../shared/models/membership.class';
 import { MembershipService } from '../../shared/firebase-services/membership.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { HeaderNewMsgComponent } from './header/header-new-msg/header-new-msg.component';
 import { ChannelMessage } from '../../shared/models/channel-message.class';
 import { ChannelMessagesService } from '../../shared/firebase-services/channel-message.service';
@@ -55,6 +55,8 @@ export class ChannelComponent {
   threadMsg: ChannelMessage | undefined;
   threadChannel: Channel | undefined;
 
+  private usersSubscription: Subscription = new Subscription();
+
   users: User[] = [];
   channels: Channel[] = [];
 
@@ -71,7 +73,6 @@ export class ChannelComponent {
 
   private channelMembershipSubscription?: Subscription;
   private channelMessagesSubscription?: Subscription;
-
   private directMessagesSubscription?: Subscription;
 
   menuOpen: boolean = true; // Standardwert
@@ -87,19 +88,23 @@ export class ChannelComponent {
     public dialog: MatDialog,
   ) {
     this.channels = this.DataService.channels;
-    this.users = this.DataService.users;
+    // this.users = this.DataService.users;
+    this.currentUser = this.DataService.currentUser;
 
     this.router.params.subscribe(params => {
       this.chat = params['chat'];
       this.loadData(this.chat, params['idChat']);
       this.threadMsg = undefined;
     });
-
-    this.currentUser = this.DataService.currentUser!;
   }
 
 
   ngOnInit() {
+
+    this.usersSubscription = this.DataService.users$.subscribe(users => {
+      this.users = users;
+    });
+
     this.positionService.isMenuOpen().subscribe(open => {
       this.menuOpen = open;
     });
@@ -109,6 +114,8 @@ export class ChannelComponent {
   ngOnDestroy() {
     this.channelMembershipSubscription?.unsubscribe();
     this.channelMessagesSubscription?.unsubscribe();
+    this.directMessagesSubscription?.unsubscribe();
+    this.usersSubscription.unsubscribe();
   }
 
 
@@ -126,6 +133,7 @@ export class ChannelComponent {
     }
     if (chat === 'message') {
       this.loadChatUserData(idChat);
+      this.loadDirectMessages();
     }
     if (chat === 'new') { }
 
@@ -159,7 +167,6 @@ export class ChannelComponent {
       this.loadMessages();
       await this.fetchCurrentChannel();
       this.populateCurrentChannelMembers();
-      this.loadDirectMessages();
     }
   }
 
@@ -182,11 +189,13 @@ export class ChannelComponent {
 
 
   loadDirectMessages() {
-    this.directMessagesService.getDirectMessages('PT4yYauqYDFGDbalSPkk', 'Y4Pr2QVzYbi6hoE0iPI9');
+    this.ngOnDestroy();
+    if (!this.currentUser || !this.currentUser.id) return console.error('current user id is missing');
+    if (!this.chatUser || !this.chatUser.id) return console.error('chat user id is missing');
+    this.directMessagesService.getDirectMessages(this.currentUser.id, this.chatUser.id);
     this.directMessagesSubscription = this.directMessagesService.directMessages$.subscribe(directMessages => {
       this.directMessages = directMessages.sort((a, b) => a.date - b.date);
     });
-    console.log(this.directMessages);
   }
 
 
@@ -211,7 +220,7 @@ export class ChannelComponent {
   }
 
 
-  getUserFromMessage(message: ChannelMessage): User {
+  getUserFromMessage(message: ChannelMessage | DirectMessage): User {
     const user = this.DataService.users.find(user => user.id === message.fromUserID);
     return user ? user : new User;
   }
@@ -231,8 +240,14 @@ export class ChannelComponent {
   }
 
 
+  getChatUserId(): undefined | string {
+    if (!this.chatUser) return undefined
+    else return this.chatUser.id
+  }
+
+
   setThreadValues(msg: ChannelMessage) {
-    this.threadMsg = new ChannelMessage(msg) 
+    this.threadMsg = new ChannelMessage(msg)
   }
 
 

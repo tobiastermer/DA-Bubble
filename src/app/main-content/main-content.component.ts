@@ -49,16 +49,16 @@ export class MainContentComponent implements OnInit {
     this.usersSubscription = this.userService.users$.subscribe(users => {
       this.users = users;
       this.dataService.users = users;
-      this.dataService.setUsers(users);
+      this.dataService.setUsers(users); // Wozu wird das benötigt? 
     });
 
     this.channelsSubscription = this.channelService.channels$.subscribe(channels => {
       this.channels = channels;
       this.dataService.channels = channels;
-      this.dataService.setChannels(channels);
+      // this.dataService.setChannels(channels); // Wozu wird das benötigt? 
     });
 
-    if(this.currentUser) {
+    if (this.currentUser) {
       this.membershipService.getUserMemberships(this.currentUser.id);
       this.userMembershipSubscription = this.membershipService.userMemberships$.subscribe(userMemberships => {
         this.userMemberships = userMemberships;
@@ -67,7 +67,7 @@ export class MainContentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataService.logCurrentUserData();
+    // this.dataService.logCurrentUserData();
     this.subscribeToUserChannels();
   }
 
@@ -116,9 +116,8 @@ export class MainContentComponent implements OnInit {
     ).subscribe(filteredChannels => {
       this.dataService.setCurrentUserChannels(filteredChannels);
     });
-  
+
     this.userChannelsSubscription.add(subscription);
   }
-  
 
 }
