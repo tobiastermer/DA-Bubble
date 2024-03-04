@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -35,13 +35,13 @@ import { DirectMessage } from '../../models/direct-message.class';
 export class MessageComponent implements OnChanges {
 
   @Input() msg!: ChannelMessage | DirectMessage | Reply;
-  @Input() channelMsg!: ChannelMessage;
+  @Input() channelMsg!: ChannelMessage | DirectMessage;
   @Input() index!: number;
   @Input() user!: User;
   @Input() isChannelMsg: Boolean = false;
   @Input() isEditDisabled: Boolean = false;
 
-  @Output() threadOutput: EventEmitter<ChannelMessage> = new EventEmitter<ChannelMessage>();
+  @Output() threadOutput: EventEmitter<ChannelMessage | DirectMessage> = new EventEmitter<ChannelMessage | DirectMessage>();
 
   @ViewChild('emoijBtn') emoijBtn!: ElementRef;
   @ViewChild('likesRow') likesRow!: ElementRef;
@@ -126,7 +126,8 @@ export class MessageComponent implements OnChanges {
 
 
   setThreadOutput() {
-    if (this.msg instanceof ChannelMessage) this.threadOutput.emit(this.msg)
+    if (this.msg instanceof ChannelMessage ) this.threadOutput.emit(this.msg)
+    if (this.msg instanceof DirectMessage ) this.threadOutput.emit(this.msg)
     else return
   }
 
@@ -164,7 +165,7 @@ export class MessageComponent implements OnChanges {
     });
   }
 
-
+// Hier muss noch das für direcktnachrichten was gemacht werden
   async addLike(emoji: string) {
     this.saveEmojiLocal(emoji);
     let newLike = this.newLike(emoji);
@@ -173,7 +174,7 @@ export class MessageComponent implements OnChanges {
     }
     this.msg.likes.push(newLike);
     if (this.msg instanceof ChannelMessage) await this.messageFBS.updateChannelMessage(this.msg)
-    else if (this.channelMsg) await this.messageFBS.updateChannelMessage(this.channelMsg)
+    else if (this.channelMsg instanceof ChannelMessage) await this.messageFBS.updateChannelMessage(this.channelMsg)
     this.sortedLikes = this.fillSortedLikes();
   }
 

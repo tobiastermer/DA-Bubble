@@ -5,6 +5,7 @@ import { User } from '../models/user.class';
 import { Channel } from '../models/channel.class';
 import { Reply } from '../models/reply.class';
 import { isPlatformBrowser } from '@angular/common';
+import { DirectMessage } from '../models/direct-message.class';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +49,7 @@ export class DataService {
     }
   }
 
-  getUserFromMessage(message: ChannelMessage): User {
+  getUserFromMessage(message: ChannelMessage | DirectMessage): User {
     const user = this.users.find((user) => user.id === message.fromUserID);
     return user ? user : new User();
   }

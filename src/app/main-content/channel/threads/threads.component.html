@@ -1,4 +1,4 @@
-@if(channelMsg){
+@if(chatMsg){
 
 <mat-card class="thread-panel">
   <header class="thread-header">
@@ -13,25 +13,25 @@
   </header>
   <main>
     <!-- MESSAGE OF THE THREAD -->
-    <app-message [msg]="channelMsg"
-      [user]="data.getUserFromMessage(channelMsg)" [isEditDisabled]="true"></app-message>
+    <app-message [msg]="chatMsg"
+      [user]="data.getUserFromMessage(chatMsg)" [isEditDisabled]="true"></app-message>
 
     <!-- REPLY COUNTER -->
     <div class="response-counter">
-      <div>{{ channelMsg.replies.length }}</div>
+      <div>{{ chatMsg.replies.length }}</div>
       <div>Antworten</div>
       <mat-divider></mat-divider>
     </div>
 
     <!-- REPLY MESSAGE -->
-    @for (reply of channelMsg.replies ; track $index) {
+    @for (reply of chatMsg.replies ; track $index) {
     <app-message [msg]="reply" [user]="data.getUserFromReply(reply)"
-    [index]="$index" [channelMsg]="channelMsg"></app-message>
+    [index]="$index" [channelMsg]="chatMsg"></app-message>
     }
 
   </main>
 
-  <app-input-textarea [channel]="channel" [msg]="channelMsg" [members]="currentChannelMembers"></app-input-textarea>
+  <app-input-textarea [channel]="channel" [msg]="chatMsg" [members]="currentChannelMembers"></app-input-textarea>
 
 </mat-card>
 

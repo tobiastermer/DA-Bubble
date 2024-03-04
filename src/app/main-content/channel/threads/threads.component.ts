@@ -11,6 +11,7 @@ import { DataService } from '../../../shared/services/data.service';
 import { User } from '../../../shared/models/user.class';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogInfoComponent } from '../../../shared/components/dialogs/dialog-info/dialog-info.component';
+import { DirectMessage } from '../../../shared/models/direct-message.class';
 
 @Component({
   selector: 'app-threads',
@@ -31,7 +32,7 @@ export class ThreadsComponent implements OnChanges {
 
   channel!: Channel | undefined;
 
-  @Input() channelMsg!: ChannelMessage | undefined;
+  @Input() chatMsg!: ChannelMessage | DirectMessage | undefined;
   @Input() currentChannelMembers: User[] = [];
 
   @Output() closeThread: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -43,10 +44,15 @@ export class ThreadsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
-      if (this.channelMsg?.channelID) {
-        this.channel = this.data.channels.find(channel => channel.id === this.channelMsg?.channelID);
-        if (!this.channel) return this.openDialogInfo('Kein Channel gefunden');
+      debugger
+      if (!this.chatMsg) return;
+      if ('channelID' in this.chatMsg) {
+        const channelMsg = this.chatMsg as ChannelMessage;
+        if (channelMsg.channelID) {
+          this.channel = this.data.channels.find(channel => channel.id === channelMsg.channelID);
+        }
       }
+      if (!this.channel) this.openDialogInfo('Kein Channel gefunden');
     }
   }
 

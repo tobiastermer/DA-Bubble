@@ -44,15 +44,25 @@ export class DirectMessagesService {
             collection(this.firestore, 'directMessages'),
             where("userIDs", "array-contains", currentUserID)
         );
-
-        onSnapshot(q, (snapshot) => {
-            const directMessages = snapshot.docs
-                .map(doc => DirectMessage.fromFirestore({ id: doc.id, data: () => doc.data() }))
-                .filter(message => message.userIDs.includes(userID2));
-
-            this.directMessagesSubject.next(directMessages);
-        });
+        if (currentUserID === userID2){
+            onSnapshot(q, (snapshot) => {
+                const directMessages = snapshot.docs
+                    .map(doc => DirectMessage.fromFirestore({ id: doc.id, data: () => doc.data() }))
+                    .filter(message => (message.userIDs[0].includes(currentUserID) && message.userIDs[1].includes(userID2)));
+                this.directMessagesSubject.next(directMessages);
+            });
+        } else {
+            onSnapshot(q, (snapshot) => {
+                const directMessages = snapshot.docs
+                    .map(doc => DirectMessage.fromFirestore({ id: doc.id, data: () => doc.data() }))
+                    .filter(message => message.userIDs.includes(currentUserID && userID2));
+                this.directMessagesSubject.next(directMessages);
+            });
+        }
     }
+
+
+    
 
 
 }

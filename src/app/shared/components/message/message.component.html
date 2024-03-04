@@ -62,7 +62,9 @@
             <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
             }
             <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
-            <mat-icon class="action-btn" (click)="setThreadOutput()">comment</mat-icon>
+            @if (true) {
+                <mat-icon class="action-btn" (click)="setThreadOutput()">comment</mat-icon>
+            }
             @if (editPossible()){
             <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
             }

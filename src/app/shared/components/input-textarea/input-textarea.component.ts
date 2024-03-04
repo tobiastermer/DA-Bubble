@@ -33,7 +33,7 @@ import { DirectMessagesService } from '../../firebase-services/direct-message.se
 export class InputTextareaComponent {
 
   @Input() channel!: Channel | undefined;
-  @Input() msg!: ChannelMessage;
+  @Input() msg!: ChannelMessage | DirectMessage;
   @Input() chat: 'channel' | 'message' | 'new' = 'channel';
   @Input() chatUserId!: string | undefined;
   @Input() members: User[] = [];
@@ -131,6 +131,7 @@ export class InputTextareaComponent {
     let newReply: Reply | undefined = await this.fillReplyMsg(text)
     if (!newReply || !this.msg) return
     this.msg.replies.push(newReply);
+    if (this.msg instanceof DirectMessage) return
     await this.channelMsgService.updateChannelMessage(this.msg);
   }
 

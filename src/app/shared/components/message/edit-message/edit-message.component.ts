@@ -12,6 +12,7 @@ import { DialogEmojiComponent } from '../../dialogs/dialog-emoji/dialog-emoji.co
 import { AddEmojiService } from '../../../services/add-emoji.service';
 import { StorageService } from '../../../firebase-services/storage.service';
 import { DirectMessage } from '../../../models/direct-message.class';
+import { DirectMessagesService } from '../../../firebase-services/direct-message.service';
 
 @Component({
   selector: 'app-edit-message',
@@ -31,7 +32,7 @@ export class EditMessageComponent {
 
   @Input() msg!: ChannelMessage | DirectMessage | Reply;
   @Input() index!: number;
-  @Input() channelMsg!: ChannelMessage;
+  @Input() channelMsg!: ChannelMessage | DirectMessage;
 
   @Input() isUserCurrentUser: boolean = false;
   @Input() isEditMsg: boolean = false;
@@ -50,7 +51,8 @@ export class EditMessageComponent {
 
   constructor(
     public dialog: MatDialog,
-    private messageFBS: ChannelMessagesService,
+    private channelMsgService: ChannelMessagesService,
+    private directMsgService: DirectMessagesService,
     public data: DataService,
     public addEmoji: AddEmojiService,
     private storage: StorageService
@@ -116,7 +118,7 @@ export class EditMessageComponent {
     for (const reply of msg.replies) {
       if (reply.attachmentID !== '') await this.storage.deleteDoc(reply.attachmentID)
     };
-    await this.messageFBS.deleteChannelMessage(msg)
+    await this.channelMsgService.deleteChannelMessage(msg)
   }
 
 
@@ -125,7 +127,8 @@ export class EditMessageComponent {
     if (msg.attachmentID !== '') await this.storage.deleteDoc(msg.attachmentID)
     if (!this.channelMsg) return
     this.channelMsg.replies.splice(this.index, 1)
-    await this.messageFBS.updateChannelMessage(this.channelMsg)
+    if (this.channelMsg instanceof ChannelMessage) await this.channelMsgService.updateChannelMessage(this.channelMsg)
+    else (await this.directMsgService.updateDirectMessage(this.channelMsg))
   }
 
 
@@ -135,7 +138,7 @@ export class EditMessageComponent {
     this.isLoading = true;
     this.msg.message = this.msgText.nativeElement.innerText.trim();
     if (this.msg instanceof ChannelMessage) await this.saveChannelMsg(this.msg);
-    // 
+    if (this.msg instanceof DirectMessage) await this.saveDirectMsg(this.msg);
     if (this.msg instanceof Reply) await this.saveReplyMsg(this.msg);
     this.isLoading = false;
     this.closeEdit();
@@ -144,7 +147,14 @@ export class EditMessageComponent {
 
   async saveChannelMsg(msg: ChannelMessage) {
     if (msg.fromUserID !== this.currentUserID) return
-    else await this.messageFBS.updateChannelMessage(msg)
+    else await this.channelMsgService.updateChannelMessage(msg)
+    return
+  }
+
+
+  async saveDirectMsg(msg: DirectMessage) {
+    if (msg.fromUserID !== this.currentUserID) return
+    else await this.directMsgService.updateDirectMessage(msg)
     return
   }
 
@@ -153,7 +163,8 @@ export class EditMessageComponent {
     if (msg.userID !== this.currentUserID) return
     if (!this.channelMsg) return
     this.channelMsg.replies[this.index] = msg;
-    await this.messageFBS.updateChannelMessage(this.channelMsg)
+    if (this.channelMsg instanceof ChannelMessage) await this.channelMsgService.updateChannelMessage(this.channelMsg)
+    else await this.directMsgService.updateDirectMessage(this.channelMsg)
   }
 
 }

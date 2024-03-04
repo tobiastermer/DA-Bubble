@@ -52,7 +52,7 @@ export class ChannelComponent {
   oldTimeStemp!: string;
   newTimeStemp!: string;
 
-  threadMsg: ChannelMessage | undefined;
+  threadMsg: ChannelMessage | DirectMessage | undefined;
   threadChannel: Channel | undefined;
 
   private usersSubscription: Subscription = new Subscription();
@@ -246,8 +246,9 @@ export class ChannelComponent {
   }
 
 
-  setThreadValues(msg: ChannelMessage) {
-    this.threadMsg = new ChannelMessage(msg)
+  setThreadValues(msg: ChannelMessage | DirectMessage) {
+    if (msg instanceof ChannelMessage) this.threadMsg = new ChannelMessage(msg) 
+    else this.threadMsg = new DirectMessage(msg) 
   }
 
 
