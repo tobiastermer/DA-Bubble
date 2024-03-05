@@ -12,12 +12,12 @@ import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.compo
 import { User } from '../../models/user.class';
 import { DialogAtUserComponent } from '../dialogs/dialog-at-user/dialog-at-user.component';
 import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show-user.component';
-import { AuthService } from '../../firebase-services/auth.service';
-import { DialogInfoComponent } from '../dialogs/dialog-info/dialog-info.component';
 import { AddEmojiService } from '../../services/add-emoji.service';
 import { FileService } from '../../services/file.service';
 import { DirectMessage } from '../../models/direct-message.class';
 import { DirectMessagesService } from '../../firebase-services/direct-message.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -26,6 +26,8 @@ import { DirectMessagesService } from '../../firebase-services/direct-message.se
   imports: [
     MatIconModule,
     PickerComponent,
+    MatProgressBarModule,
+    CommonModule
   ],
   templateUrl: './input-textarea.component.html',
   styleUrl: './input-textarea.component.scss',
@@ -34,7 +36,7 @@ export class InputTextareaComponent {
 
   @Input() channel!: Channel | undefined;
   @Input() msg!: ChannelMessage | DirectMessage;
-  @Input() chat: 'channel' | 'message' | 'new' = 'channel';
+  @Input() chat: 'channel' | 'message' | 'reply' = 'channel';
   @Input() chatUserId!: string | undefined;
   @Input() members: User[] = [];
 
@@ -45,6 +47,7 @@ export class InputTextareaComponent {
 
   isButtonDisabled: boolean = true;
   isEmojiPickerVisible: boolean = false;
+  isLoading: boolean = false;
 
   range?: Range;
 
@@ -65,9 +68,10 @@ export class InputTextareaComponent {
 
 
   updateButtonState() {
-    if (this.messageText && this.messageText.nativeElement.innerText.trim()) return this.isButtonDisabled = false
-    if (this.tempFile) return this.isButtonDisabled = false
-    return this.isButtonDisabled = true
+    if (this.isLoading) return this.isButtonDisabled = true;
+    if (this.messageText && this.messageText.nativeElement.innerText.trim()) return this.isButtonDisabled = false;
+    if (this.tempFile) return this.isButtonDisabled = false;
+    return this.isButtonDisabled = true;
   }
 
 
@@ -97,9 +101,17 @@ export class InputTextareaComponent {
 
 
   addNewMsg(text: string) {
+    this.isLoading = true;
+    this.isButtonDisabled = true;
     if (this.chat === 'channel') this.addNewChannelMsg(text)
     if (this.chat === 'message') this.addNewDirectMsg(text)
-    if (this.chat === 'new') this.addNewReplyMsg(text)
+    if (this.chat === 'reply') this.addNewReplyMsg(text)
+  }
+
+
+  unsetLoading(){
+    this.isLoading = false;
+    this.updateButtonState();
   }
 
 
@@ -110,7 +122,8 @@ export class InputTextareaComponent {
     id = await this.channelMsgService.addChannelMessage(newMsg);
     if (!id) return
     newMsg.id = id;
-    await this.channelMsgService.updateChannelMessage(newMsg);
+    await this.channelMsgService.updateChannelMessage(newMsg);    
+    this.unsetLoading();
   }
 
 
@@ -127,28 +140,6 @@ export class InputTextareaComponent {
   }
 
 
-  async addNewReplyMsg(text: string) {
-    let newReply: Reply | undefined = await this.fillReplyMsg(text)
-    if (!newReply || !this.msg) return
-    this.msg.replies.push(newReply);
-    if (this.msg instanceof DirectMessage) return
-    await this.channelMsgService.updateChannelMessage(this.msg);
-  }
-
-
-  async fillReplyMsg(text: string) {
-    if (!this.data.currentUser.id) return
-    if (!this.channel || this.channel.id === '') return
-    let reply = new Reply();
-    reply.date = new Date().getTime();
-    reply.channelID = this.channel.id;
-    reply.userID = this.data.currentUser.id;
-    reply.message = text.replace(/^\n+/, '');
-    reply.attachmentID = await this.fileService.uploadFile(this.tempFile);
-    return reply
-  }
-
-
   async addNewDirectMsg(text: string) {
     let newMsg: DirectMessage | undefined = await this.fillDirectMsg(text);
     let id: any;
@@ -157,6 +148,7 @@ export class InputTextareaComponent {
     if (!id) return
     newMsg.id = id;
     await this.directMsgService.updateDirectMessage(newMsg);
+    this.unsetLoading();
   }
 
 
@@ -170,6 +162,29 @@ export class InputTextareaComponent {
     msg.message = text.replace(/^\n+/, '');
     if (this.tempFile) msg.attachmentID = await this.fileService.uploadFile(this.tempFile);
     return msg
+  }
+
+
+  async addNewReplyMsg(text: string) {
+    let newReply: Reply | undefined = await this.fillReplyMsg(text)
+    if (!newReply || !this.msg) return
+    this.msg.replies.push(newReply);
+    if (this.msg instanceof DirectMessage) await this.directMsgService.updateDirectMessage(this.msg);
+    else await this.channelMsgService.updateChannelMessage(this.msg);    
+    this.unsetLoading();
+  }
+
+
+  async fillReplyMsg(text: string) {
+    if (!this.data.currentUser.id) return
+    if ((!this.channel || this.channel.id === '') && this.msg instanceof ChannelMessage) return
+    let reply = new Reply();
+    reply.date = new Date().getTime();
+    if (this.msg instanceof ChannelMessage && this.channel) reply.channelID = this.channel.id;
+    reply.userID = this.data.currentUser.id;
+    reply.message = text.replace(/^\n+/, '');
+    reply.attachmentID = await this.fileService.uploadFile(this.tempFile);
+    return reply
   }
 
   

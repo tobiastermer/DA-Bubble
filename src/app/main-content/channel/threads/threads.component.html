@@ -4,7 +4,10 @@
   <header class="thread-header">
     <div class="header-title">
       <h2>Thread</h2>
-      <p>#{{ channel?.name }}</p>
+      @if(channel?.name){
+        <p>#{{ channel?.name }}</p>
+      }
+      
       <!--Channel-->
     </div>
     <button class="close-button" (click)="setCloseTread()">
@@ -31,7 +34,8 @@
 
   </main>
 
-  <app-input-textarea [channel]="channel" [msg]="chatMsg" [members]="currentChannelMembers"></app-input-textarea>
+  <app-input-textarea [channel]="channel" [msg]="chatMsg" [chat]="'reply'"
+   [members]="currentChannelMembers"></app-input-textarea>
 
 </mat-card>
 

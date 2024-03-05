@@ -103,10 +103,9 @@ export class EditMessageComponent {
   async deletMsg() {
     if (this.isLoading) return
     this.isLoading = true;
-    debugger
     if (this.msg.attachmentID) this.storage.deleteDoc(this.msg.attachmentID)
     if (this.msg instanceof ChannelMessage) await this.deletChannelMsg(this.msg)
-    // 
+    if (this.msg instanceof DirectMessage) await this.deletDirectMsg(this.msg)
     if (this.msg instanceof Reply) await this.deletReplyMsg(this.msg)
     this.isLoading = false;
     this.closeEdit()
@@ -119,6 +118,15 @@ export class EditMessageComponent {
       if (reply.attachmentID !== '') await this.storage.deleteDoc(reply.attachmentID)
     };
     await this.channelMsgService.deleteChannelMessage(msg)
+  }
+
+
+  async deletDirectMsg(msg: DirectMessage) {
+    if (msg.fromUserID !== this.currentUserID) return
+    for (const reply of msg.replies) {
+      if (reply.attachmentID !== '') await this.storage.deleteDoc(reply.attachmentID)
+    };
+    await this.directMsgService.deleteDirectMessage(msg)
   }
 
 

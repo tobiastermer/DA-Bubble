@@ -16,6 +16,7 @@ import { Like, SortedLikes } from '../../models/like.class';
 import { TextOutputComponent } from './text-output/text-output.component';
 import { EditMessageComponent } from './edit-message/edit-message.component';
 import { DirectMessage } from '../../models/direct-message.class';
+import { DirectMessagesService } from '../../firebase-services/direct-message.service';
 
 
 @Component({
@@ -58,7 +59,8 @@ export class MessageComponent implements OnChanges {
 
   constructor(
     public dialog: MatDialog,
-    private messageFBS: ChannelMessagesService,
+    private channelMsgService: ChannelMessagesService,
+    private directMsgService: DirectMessagesService,
     public data: DataService,
     private PositionService: PositionService) {
     data.currentUser.id ? this.currentUserID = data.currentUser.id : this.currentUserID = '';
@@ -165,7 +167,7 @@ export class MessageComponent implements OnChanges {
     });
   }
 
-// Hier muss noch das für direcktnachrichten was gemacht werden
+
   async addLike(emoji: string) {
     this.saveEmojiLocal(emoji);
     let newLike = this.newLike(emoji);
@@ -173,8 +175,10 @@ export class MessageComponent implements OnChanges {
       if (this.msg.likes[i].userID === newLike.userID) this.msg.likes.splice(i, 1);
     }
     this.msg.likes.push(newLike);
-    if (this.msg instanceof ChannelMessage) await this.messageFBS.updateChannelMessage(this.msg)
-    else if (this.channelMsg instanceof ChannelMessage) await this.messageFBS.updateChannelMessage(this.channelMsg)
+    if (this.msg instanceof ChannelMessage) await this.channelMsgService.updateChannelMessage(this.msg);
+    else if (this.msg instanceof DirectMessage) await this.directMsgService.updateDirectMessage(this.msg);
+    else if (this.channelMsg instanceof ChannelMessage) await this.channelMsgService.updateChannelMessage(this.channelMsg);
+    else if (this.channelMsg instanceof DirectMessage) await this.directMsgService.updateDirectMessage(this.channelMsg);
     this.sortedLikes = this.fillSortedLikes();
   }
 

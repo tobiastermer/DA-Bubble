@@ -44,7 +44,6 @@ export class ThreadsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
-      debugger
       if (!this.chatMsg) return;
       if ('channelID' in this.chatMsg) {
         const channelMsg = this.chatMsg as ChannelMessage;
@@ -52,6 +51,7 @@ export class ThreadsComponent implements OnChanges {
           this.channel = this.data.channels.find(channel => channel.id === channelMsg.channelID);
         }
       }
+      else return
       if (!this.channel) this.openDialogInfo('Kein Channel gefunden');
     }
   }

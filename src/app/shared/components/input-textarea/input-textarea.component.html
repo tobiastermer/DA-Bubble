@@ -19,6 +19,8 @@
         appClickOutside>alternate_email</mat-icon>
     </div>
 
+    <mat-progress-bar mode="indeterminate" [ngClass]="{'d-none': !isLoading }" ></mat-progress-bar>
+
     <button class="message-input__send-btn" (click)="addNewMsg(messageText.innerText); messageText.innerText = ''"
       [disabled]="isButtonDisabled">
       <mat-icon>send</mat-icon>

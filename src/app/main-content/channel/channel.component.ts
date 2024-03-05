@@ -10,7 +10,7 @@ import { Channel } from '../../shared/models/channel.class';
 import { ChannelService } from '../../shared/firebase-services/channel.service';
 import { Membership } from '../../shared/models/membership.class';
 import { MembershipService } from '../../shared/firebase-services/membership.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { HeaderNewMsgComponent } from './header/header-new-msg/header-new-msg.component';
 import { ChannelMessage } from '../../shared/models/channel-message.class';
 import { ChannelMessagesService } from '../../shared/firebase-services/channel-message.service';
@@ -49,6 +49,7 @@ export class ChannelComponent {
   currentUser: User;
 
   chat: 'channel' | 'message' | 'new' = 'channel';
+  chatInput:  'channel' | 'message' | 'reply' = 'channel';
   oldTimeStemp!: string;
   newTimeStemp!: string;
 
@@ -129,11 +130,13 @@ export class ChannelComponent {
     if (chat === 'channel') {
       this.currentChannelID = this.getChannelIdByName(idChat);
       this.loadChannelData();
+      this.chatInput = chat;
       return
     }
     if (chat === 'message') {
       this.loadChatUserData(idChat);
       this.loadDirectMessages();
+      this.chatInput = chat;
     }
     if (chat === 'new') { }
 
