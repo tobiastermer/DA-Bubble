@@ -174,10 +174,6 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  getChannelFromMessage(channelID: string){
-    
-  }
-
 
   getDateOfTimestemp(time: number | undefined): string {
     if (!time) return '';
