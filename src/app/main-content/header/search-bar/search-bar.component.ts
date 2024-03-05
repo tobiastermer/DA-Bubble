@@ -34,7 +34,7 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private DataService: DataService,
+    public DataService: DataService,
     private ChannelMessagesService: ChannelMessagesService,
     private cdr: ChangeDetectorRef,
     private router: Router,
@@ -56,9 +56,13 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
   filteredChannels!: Channel[];
   filteredMessages!: ChannelMessage[];
 
+  nameFromChannel:string = '';
+  userFromMessage:string = '';
+
   selectListVisible: boolean = false;
   pathUserName: string = '';
   showChannels: boolean = false;
+  showMessages: boolean = false;
 
   ngAfterViewInit() {
     // Initialisieren Sie die Users-Subscription
@@ -82,10 +86,12 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
   }
 
   channelMessageSubscriptionReturn() {
-    return this.ChannelMessagesService.allChannelMessages$.subscribe((message) => {
-      this.messages = message;
-      this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
-    });
+    return this.ChannelMessagesService.allChannelMessages$.subscribe(
+      (message) => {
+        this.messages = message;
+        this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
+      }
+    );
   }
 
   closeList() {
@@ -111,6 +117,7 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     this.filterChannels(search);
     this.filterMessages(search);
     this.showChannel();
+    this.showMessage();
   }
 
   showChannel() {
@@ -118,6 +125,14 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       this.showChannels = true;
     } else {
       this.showChannels = false;
+    }
+  }
+
+  showMessage() {
+    if (this.filterMessages.length > 0) {
+      this.showMessages = true;
+    } else {
+      this.showMessages = false;
     }
   }
 
@@ -139,13 +154,15 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
 
   filterMessages(inputID: any) {
     this.filteredMessages = this.messages.filter(
-      (messages) => messages.message && messages.message.toLowerCase().includes(inputID),
+      (messages) =>
+        messages.message && messages.message.toLowerCase().includes(inputID)
     );
-    console.log('messages',this.filteredMessages);
+    console.log('messages', this.filteredMessages);
     this.selectListVisible =
       (!!inputID && this.filteredUsers.length > 0) ||
       (!!inputID && this.filteredChannels.length > 0) ||
       (!!inputID && this.filteredMessages.length > 0);
+
   }
 
   ngOnDestroy() {
@@ -153,6 +170,46 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     if (this.usersSubscription) {
       this.usersSubscription.unsubscribe();
       this.channelsSubscription.unsubscribe();
+      this.channelMessagesSubscription.unsubscribe();
     }
+  }
+
+  getChannelFromMessage(channelID: string){
+    
+  }
+
+
+  getDateOfTimestemp(time: number | undefined): string {
+    if (!time) return '';
+    else {
+      let date = new Date(time);
+      let months = [
+        'Jan.',
+        'Feb.',
+        'Mär.',
+        'Apr.',
+        'Mai',
+        'Jun.',
+        'Jul.',
+        'Aug.',
+        'Sep.',
+        'Okt.',
+        'Nov.',
+        'Dec.',
+      ];
+      let day = date.getDay();
+      let month = months[date.getMonth()];
+      let year = date.getFullYear();
+      return day + ' ' + month + ' ' + year;
+    }
+  }
+
+  setTime(timestemp: number): string {
+    let date = new Date(timestemp);
+    return date.getHours() + ':' + date.getMinutes()
+  }
+
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = './../../assets/img/avatars/unknown.jpg';
   }
 }

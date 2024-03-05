@@ -63,5 +63,6 @@ export class MenuDialogComponent {
     }).catch((error) => {
       console.error("Fehler beim Setzen des Offline-Status", error);
     });
+    this.presenceService.updateGuestStatus("t8WOIhqo9BYogI9FmZhtCHP7K3t1", 'offline');
   }
 }

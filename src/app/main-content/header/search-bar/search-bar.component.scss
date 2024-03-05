@@ -40,7 +40,7 @@
   max-height: 50vh;
   clip-path: inset(0 round 30px);
   ul {
-    padding:0;
+    padding: 0;
     list-style-type: none;
     li {
       margin-top: 16px;
@@ -91,5 +91,32 @@
 
   &:hover {
     transform: scale(0.9);
+  }
+}
+
+.user-avatar {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+}
+.messageContainer {
+  @include dFlex($ai: flex-start, $gap: 5px);
+  flex-direction: column;
+
+  .messageHeader {
+    @include dFlex($ai: flex-start, $gap: 5px);
+    .message-time{
+      font-size: 10px;
+      color: #808080;
+    }
+    .user-name {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+  .message-channel-name{
+    font-size: 12px;
+    color: #808080;
   }
 }
