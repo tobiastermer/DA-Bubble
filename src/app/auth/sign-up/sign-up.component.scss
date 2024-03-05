@@ -40,11 +40,13 @@ $fontFigtree: "Figtree", sans-serif;
         font-weight: 400;
         transition: ease-in-out 0.3s;
       }
+
       &:active {
         transform: scale(0.98);
       }
     }
-  }}
+  }
+}
 
 .sign-up {
   padding: 42px;
@@ -54,6 +56,7 @@ $fontFigtree: "Figtree", sans-serif;
   box-shadow: $boxShadow;
   overflow: hidden;
   z-index: 100;
+  margin-bottom: 16px;
 
   &__header,
   &__subtitle {
@@ -68,6 +71,7 @@ $fontFigtree: "Figtree", sans-serif;
 
   &__subtitle {
     @include fontNunito($weight: 400, $size: 20px);
+    max-width: 500px;
   }
 
   &__form-field {
@@ -84,12 +88,13 @@ $fontFigtree: "Figtree", sans-serif;
       @include fontNunito($weight: 500, $size: 18px);
     }
   }
+
   &__checkbox-section {
     display: flex;
     box-sizing: border-box;
     width: 100%;
     padding-bottom: 40px;
-    margin-bottom: 32px;
+    // margin-bottom: 32px;
   }
 
   &__checkbox {
@@ -111,14 +116,17 @@ $fontFigtree: "Figtree", sans-serif;
 
   &__checkbox-error {
     position: absolute;
-    bottom: 88px;
+    bottom: 104px;
     left: 82px;
     animation: checkboxAnimation 0.3s ease-in forwards;
     @include fontNunito($weight: 400, $size: 14px);
   }
 
   &__next-button {
-    @include pAbsolute(unset, 53px, 40px, unset, unset);
+    // @include pAbsolute(unset, 53px, 40px, unset, unset);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 
     button {
       transition: background-color 0.3s ease-in-out;
@@ -132,9 +140,10 @@ $fontFigtree: "Figtree", sans-serif;
 
       &:hover {
         cursor: pointer;
-      }}
+      }
+    }
 
-     .valid-form {
+    .valid-form {
       background-color: $dkBlue;
       animation: buttonFadeIn 0.3s ease-in-out;
 
@@ -143,6 +152,7 @@ $fontFigtree: "Figtree", sans-serif;
         border: 1px solid $bgBlue;
         background-color: $bgBlue;
       }
+
       &:active {
         transform: scale(0.98);
       }
@@ -158,8 +168,8 @@ $fontFigtree: "Figtree", sans-serif;
     padding: 8px;
     justify-content: center;
     align-items: center;
-    
-    
+
+
 
     button {
       padding-top: 3px;
@@ -172,8 +182,8 @@ $fontFigtree: "Figtree", sans-serif;
         background-color: $bgGrey;
         color: $dkBlue;
         transform: scale(1.01);
-        
-      
+
+
         transition: ease-in-out 0.3s;
       }
 
@@ -206,7 +216,7 @@ form {
   border: transparent;
 }
 
-:host ::ng-deep .mdc-form-field > label {
+:host ::ng-deep .mdc-form-field>label {
   @include fontNunito($weight: 400, $size: 18px);
 }
 
@@ -214,11 +224,7 @@ form {
   height: 36px !important;
 }
 
-:host
-  ::ng-deep
-  .mdc-checkbox
-  .mdc-checkbox__native-control:enabled:focus:checked
-  ~ .mdc-checkbox__background {
+:host ::ng-deep .mdc-checkbox .mdc-checkbox__native-control:enabled:focus:checked~.mdc-checkbox__background {
   background-color: $dkBlue;
   border: $dkBlue;
 }
@@ -228,6 +234,7 @@ form {
     opacity: 0;
     transform: translateY(-20%);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -238,13 +245,14 @@ form {
   from {
     background-color: grey;
   }
+
   to {
     background-color: $dkBlue;
   }
 }
 
 .valid-form {
-  background-color: $dkBlue !important; 
+  background-color: $dkBlue !important;
   animation: buttonFadeIn 0.3s ease-in-out;
 
   &:hover {
@@ -259,3 +267,60 @@ form {
 :host ::ng-deep .mdc-notched-outline__leading {
   border-color: transparent !important ;
 }*/
+
+
+@media (max-width: $mobile-breakpoint) {
+
+  .background-container {
+    justify-content: safe center;
+    overflow-y: auto;
+
+    &__logo {
+      position: unset;
+      top: unset;
+      left: unset;
+      margin: 30px;
+    }
+
+  }
+
+  .sign-up {
+    width: calc(100% - 32px);
+    height: unset;
+    padding: 35px 20px 35px 20px;
+    overflow: unset;
+
+    &__header {
+      padding: 0px 0px 24px;
+      font-size: 32px;
+    }
+
+    &__arrow-back {
+      position: absolute;
+      top: 28px;
+      left: 12px;
+    }
+
+    &__checkbox-error {
+      bottom: 87px;
+      left: 60px;
+    }
+
+  }
+
+  .mat-mdc-card-header {
+    display: flex;
+    padding: 0;
+  }
+
+  .mat-mdc-card-header-text {
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 400px) {
+
+
+
+}

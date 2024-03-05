@@ -23,9 +23,11 @@
         </div>
       </mat-card>
       <mat-card class="avatar__my-upload">
-        <span>Eigenes Bild anwenden</span>
+        <span class="mobile-hidden">Eigenes Bild anwenden</span>
+        <span class="desktop-hidden">Oder</span>
         <div class="form-group">
-          <button (click)="fileInput.click()">Datei Hochladen</button>
+          <button class="mobile-hidden" (click)="fileInput.click()">Datei Hochladen</button>
+          <button class="desktop-hidden" (click)="fileInput.click()">Eigenes Bild hochladen</button>
           <input
             type="file"
             #fileInput
@@ -59,7 +61,7 @@
       </mat-card>
     </div>
   </mat-card>
-  <div class="background-container__legals">
+  <div class="background-container__legals mobile-hidden">
     <a href="">Impressum</a>
    <a href="">Datenschutz</a>
   </div>

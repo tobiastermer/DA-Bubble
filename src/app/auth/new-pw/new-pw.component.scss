@@ -54,6 +54,7 @@ $fontFigtree: "Figtree", sans-serif;
   box-shadow: $boxShadow;
   overflow: hidden;
   animation: slideInUp 0.5s ease-in forwards;
+  margin-bottom: 16px;
 
   &__header,
   &__subtitle {
@@ -86,7 +87,10 @@ $fontFigtree: "Figtree", sans-serif;
   }
 
   &__next-button {
-    @include pAbsolute(unset, 142px, 40px, unset, unset);
+    // @include pAbsolute(unset, 142px, 40px, unset, unset);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 
     button {
       transition: background-color 0.3s ease-in-out;
@@ -97,6 +101,7 @@ $fontFigtree: "Figtree", sans-serif;
       color: $bgGrey;
       border-radius: 28px;
       @include fontNunito($weight: 700, $size: 18px);
+      margin-right: 100px;
 
       &:hover {
         cursor: pointer;
@@ -153,7 +158,8 @@ $fontFigtree: "Figtree", sans-serif;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    margin-bottom: 82px;
+    // margin-bottom: 82px;
+    margin-bottom: 0px;
     color: grey;
   }
 }
@@ -287,3 +293,72 @@ form {
 .slide-in-up {
   animation: slideInUp 0.5s ease forwards;
 }
+
+
+:host ::ng-deep .mat-mdc-card-header-text {
+  width: 100% !important;
+}
+
+@media (max-width: $mobile-breakpoint) {
+
+  .background-container {
+    justify-content: safe center;
+    overflow-y: auto;
+
+    &__logo {
+      position: unset;
+      top: unset;
+      left: unset;
+      margin: 30px;
+    }
+
+  }
+
+  .pw-reset {
+    width: calc(100% - 32px);
+    height: unset;
+    padding: 35px 20px 35px 20px;
+    overflow: unset;
+
+    &__arrow-back {
+      position: absolute;
+      top: 28px;
+      left: 12px;
+    }
+
+    &__header {
+      padding: 0px 0px 24px;
+      font-size: 32px;
+    }
+
+    .mat-mdc-card-header {
+      padding: 0;
+
+      mat-card-title {
+        width: 100%;
+      }
+    }
+
+    &__form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+    &__next-button {
+      button {
+        margin-right: 0px;
+      }
+    }
+
+
+
+    .mat-mdc-form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+  }
+
+}
+
+@media (max-width: 400px) {}

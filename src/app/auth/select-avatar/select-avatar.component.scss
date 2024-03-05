@@ -40,11 +40,13 @@ $fontFigtree: "Figtree", sans-serif;
         font-weight: 400;
         transition: ease-in-out 0.3s;
       }
+
       &:active {
         transform: scale(0.98);
       }
     }
-  }}
+  }
+}
 
 .avatar {
   padding: 46px;
@@ -52,6 +54,7 @@ $fontFigtree: "Figtree", sans-serif;
   @include dFlex(column, center, 36px);
   gap: 36px;
   box-shadow: $boxShadow;
+  margin-bottom: 16px;
 
   &__header {
     text-align: center;
@@ -70,6 +73,7 @@ $fontFigtree: "Figtree", sans-serif;
 
   &__profile-image {
     box-shadow: unset;
+
     img {
       width: 136px;
       height: 136px;
@@ -124,7 +128,7 @@ $fontFigtree: "Figtree", sans-serif;
     flex-direction: row;
     align-items: center;
     justify-content: baseline;
-    margin-bottom: 32px;
+    margin-bottom: 0px;
     gap: 24px;
     font-size: 20px;
     box-shadow: unset;
@@ -147,6 +151,7 @@ $fontFigtree: "Figtree", sans-serif;
         color: white;
         transition: ease-in-out 0.3s;
       }
+
       &:active {
         transform: scale(0.98);
       }
@@ -154,7 +159,10 @@ $fontFigtree: "Figtree", sans-serif;
   }
 
   &__next-button {
-    @include pAbsolute(unset, 53px, 10px, unset, unset);
+    // @include pAbsolute(unset, 53px, 10px, unset, unset);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 
     button {
       transition: background-color 0.3s ease-in-out;
@@ -165,6 +173,7 @@ $fontFigtree: "Figtree", sans-serif;
       color: $bgGrey;
       border-radius: 28px;
       @include fontNunito($weight: 700, $size: 18px);
+      margin-right: 20px;
 
       &:hover {
         cursor: pointer;
@@ -175,20 +184,22 @@ $fontFigtree: "Figtree", sans-serif;
       background-color: $dkBlue;
       animation: buttonFadeIn 0.3s ease-in-out;
 
-    
+
     }
   }
 
   .valid-form {
     background-color: $dkBlue;
-      &:hover {
-        cursor: pointer;
-        border: 1px solid $bgBlue;
-        background-color: $bgBlue;
-      }
-      &:active {
-        transform: scale(0.98);
-      }
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid $bgBlue;
+      background-color: $bgBlue;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
   }
 }
 
@@ -203,29 +214,29 @@ $fontFigtree: "Figtree", sans-serif;
   align-items: center;
   background-color: transparent;
   box-shadow: unset;
-    
-    
 
-    button {
-      padding-top: 3px;
-      border: unset;
-      background-color: transparent;
-      border-radius: 100%;
 
-      &:hover {
-        cursor: pointer;
-        background-color: $bgGrey;
-        color: $dkBlue;
-        transform: scale(1.01);
-        
-      
-        transition: ease-in-out 0.3s;
-      }
 
-      &:active {
-        transform: scale(0.98);
-      }
+  button {
+    padding-top: 3px;
+    border: unset;
+    background-color: transparent;
+    border-radius: 100%;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $bgGrey;
+      color: $dkBlue;
+      transform: scale(1.01);
+
+
+      transition: ease-in-out 0.3s;
     }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
 }
 
 .error-message {
@@ -247,6 +258,7 @@ $fontFigtree: "Figtree", sans-serif;
     @include fontNunito($weight: 600, $size: 14px);
     margin: 0 0 10px 0;
   }
+
   button {
     transition: background-color 0.3s ease-in-out;
     background-color: $dkBlue;
@@ -288,7 +300,7 @@ $fontFigtree: "Figtree", sans-serif;
   margin-top: 8px;
   @include fontNunito($weight: 700, $size: 36px);
 
-  p{
+  p {
     margin-top: 10px;
     font-size: 16px;
   }
@@ -305,11 +317,13 @@ $fontFigtree: "Figtree", sans-serif;
 .slide-up {
   animation: slideUp 1s forwards;
 }
+
 @keyframes fadeOut {
   from {
     opacity: 1;
     transform: scale(1);
   }
+
   to {
     opacity: 0;
     transform: scale(0.5);
@@ -321,6 +335,7 @@ $fontFigtree: "Figtree", sans-serif;
     opacity: 0;
     transform: scale(0.5);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -332,16 +347,19 @@ $fontFigtree: "Figtree", sans-serif;
     opacity: 0;
     transform: translateY(100%);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 @keyframes slideInUp {
   from {
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -355,8 +373,9 @@ $fontFigtree: "Figtree", sans-serif;
 @keyframes slideOutDown {
   from {
     transform: translateY(0);
-    
+
   }
+
   to {
     transform: translateY(150%);
   }
@@ -365,3 +384,81 @@ $fontFigtree: "Figtree", sans-serif;
 .slide-out-down {
   animation: slideOutDown 0.8s ease forwards;
 }
+
+
+:host ::ng-deep .mat-mdc-card-header-text {
+  width: 100% !important;
+}
+
+@media (max-width: $mobile-breakpoint) {
+
+  .background-container {
+    justify-content: safe center;
+    overflow-y: auto;
+
+    &__logo {
+      position: unset;
+      top: unset;
+      left: unset;
+      margin: 30px;
+    }
+
+  }
+
+  .avatar {
+    width: calc(100% - 32px);
+    height: unset;
+    padding: 35px 20px 35px 20px;
+    overflow: unset;
+    gap: 0px !important;
+
+    .arrow-back {
+      position: absolute;
+      top: 28px;
+      left: 12px;
+    }
+
+    &__header {
+      padding: 0px 0px 24px;
+      font-size: 32px;
+    }
+
+    .mat-mdc-card-header {
+      padding: 0;
+
+      mat-card-title {
+        width: 100%;
+      }
+    }
+
+    &__form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+    &__next-button {
+      button {
+        margin-right: 0px;
+      }
+    }
+
+    &__select-pic {
+      overflow-x: auto;
+    }
+
+    .mat-mdc-form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+    &__my-upload {
+      button {
+        width: unset;
+      }
+    }
+
+  }
+
+}
+
+@media (max-width: 400px) {}

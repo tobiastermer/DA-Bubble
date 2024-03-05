@@ -39,6 +39,7 @@ $fontFigtree: "Figtree", sans-serif;
         font-weight: 400;
         transition: ease-in-out 0.3s;
       }
+
       &:active {
         transform: scale(0.98);
       }
@@ -74,6 +75,7 @@ $fontFigtree: "Figtree", sans-serif;
         color: $dkBlue;
         transition: ease-in-out 0.3s;
       }
+
       &:active {
         transform: scale(0.98);
       }
@@ -179,6 +181,7 @@ $fontFigtree: "Figtree", sans-serif;
         border: 1px solid $bgBlue;
         background-color: $bgBlue;
       }
+
       &:active {
         transform: scale(0.98);
       }
@@ -213,6 +216,7 @@ $fontFigtree: "Figtree", sans-serif;
         color: white;
         transition: ease-in-out 0.3s;
       }
+
       &:active {
         transform: scale(0.98);
       }
@@ -251,7 +255,7 @@ form {
   border: transparent;
 }
 
-:host ::ng-deep .mdc-form-field > label {
+:host ::ng-deep .mdc-form-field>label {
   @include fontNunito($weight: 400, $size: 18px);
 }
 
@@ -259,11 +263,7 @@ form {
   height: 36px !important;
 }
 
-:host
-  ::ng-deep
-  .mdc-checkbox
-  .mdc-checkbox__native-control:enabled:focus:checked
-  ~ .mdc-checkbox__background {
+:host ::ng-deep .mdc-checkbox .mdc-checkbox__native-control:enabled:focus:checked~.mdc-checkbox__background {
   background-color: $dkBlue;
   border: $dkBlue;
 }
@@ -272,6 +272,7 @@ form {
   from {
     background-color: grey;
   }
+
   to {
     background-color: $dkBlue;
   }
@@ -281,6 +282,7 @@ form {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -357,6 +359,7 @@ form {
   from {
     transform: translateY(0);
   }
+
   to {
     transform: translateY(150%);
   }
@@ -372,21 +375,100 @@ form {
   border-color: transparent !important ;
 }*/
 .error-popup {
-z-index: 200;
-display: flex;
-justify-content: center;
-align-items: center;
-max-width: 530px;
-height: 150px;
-min-width: 300px;
-padding: 8px;
-position: absolute;
-top: 30%;
-background-color: $dkBlue;
-color: white;
-border-radius: 30px 30px 0px 30px;
-margin-top: 8px;
-@include fontNunito($weight: 700, $size: 30px);
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 530px;
+  height: 150px;
+  min-width: 300px;
+  padding: 8px;
+  position: absolute;
+  top: 30%;
+  background-color: $dkBlue;
+  color: white;
+  border-radius: 30px 30px 0px 30px;
+  margin-top: 8px;
+  @include fontNunito($weight: 700, $size: 30px);
 
+}
+
+@media (max-width: $mobile-breakpoint) {
+
+  .background-container {
+    justify-content: safe center;
+    overflow-y: auto;
+
+    &__logo {
+      position: unset;
+      top: unset;
+      left: unset;
+      margin: 30px;
+    }
+
+    &__sign-up-box {
+      position: unset;
+      top: unset;
+      right: unset;
+      margin: 30px;
+
+      p {
+        padding: 7px 18px;
+        border: 1px solid #797ef3;
+      }
+    }
+  }
+
+
+  .login {
+    width: calc(100% - 32px);
+    height: unset;
+    padding: 35px 20px 35px 20px;
+    overflow: unset;
+
+    &__header {
+      padding: 0px 0px 36px;
+    }
+
+  }
+
+  .mat-mdc-card-header {
+    display: flex;
+    padding: 0;
+  }
+
+  .mat-mdc-card-header-text {
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 400px) {
+
+  .login {
+
+    &__bottom-container {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    &__sign-in {
+      width: 100%;
+
+      button {
+        width: 100%;
+      }
+
+    }
+
+    &__guest {
+      width: 100%;
+
+      button {
+        width: 100%;
+      }
+
+    }
+  }
 
 }

@@ -14,7 +14,7 @@ $fontFigtree: "Figtree", sans-serif;
   position: relative;
   animation: backgroundFadeIn 1s ease-in forwards;
   overflow: hidden;
-  
+
 
   &__logo {
     @include pAbsolute(32px, unset, unset, 32px, unset);
@@ -41,11 +41,13 @@ $fontFigtree: "Figtree", sans-serif;
         font-weight: 400;
         transition: ease-in-out 0.3s;
       }
+
       &:active {
         transform: scale(0.98);
       }
     }
-  }}
+  }
+}
 
 .pw-reset {
   padding: 42px;
@@ -55,7 +57,8 @@ $fontFigtree: "Figtree", sans-serif;
   box-shadow: $boxShadow;
   overflow: hidden;
   z-index: 100;
-  
+  margin-bottom: 16px;
+
 
   &__header,
   &__subtitle {
@@ -89,7 +92,10 @@ $fontFigtree: "Figtree", sans-serif;
 
 
   &__next-button {
-    @include pAbsolute(unset, 80px, 40px, unset, unset);
+    // @include pAbsolute(unset, 80px, 40px, unset, unset);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 
     button {
       transition: background-color 0.3s ease-in-out;
@@ -100,12 +106,14 @@ $fontFigtree: "Figtree", sans-serif;
       color: $bgGrey;
       border-radius: 28px;
       @include fontNunito($weight: 700, $size: 18px);
+      margin-right: 46px;
 
       &:hover {
         cursor: pointer;
-      }}
+      }
+    }
 
-     .valid-form {
+    .valid-form {
       background-color: $dkBlue;
       animation: buttonFadeIn 0.3s ease-in-out;
 
@@ -114,6 +122,7 @@ $fontFigtree: "Figtree", sans-serif;
         border: 1px solid $bgBlue;
         background-color: $bgBlue;
       }
+
       &:active {
         transform: scale(0.98);
       }
@@ -129,8 +138,8 @@ $fontFigtree: "Figtree", sans-serif;
     padding: 8px;
     justify-content: center;
     align-items: center;
-    
-    
+
+
 
     button {
       padding-top: 3px;
@@ -143,8 +152,8 @@ $fontFigtree: "Figtree", sans-serif;
         background-color: $bgGrey;
         color: $dkBlue;
         transform: scale(1.01);
-        
-      
+
+
         transition: ease-in-out 0.3s;
       }
 
@@ -154,12 +163,13 @@ $fontFigtree: "Figtree", sans-serif;
     }
   }
 
-  &__footer{
+  &__footer {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    margin-bottom: 82px;
+    margin-bottom: 30px;
     color: grey;
+    max-width: 380px;
   }
 }
 
@@ -179,30 +189,30 @@ form {
 }
 
 .success-popup {
-  z-index:2000;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    max-width: 530px;
-    gap: 12px;
-    height: 150px;
-    min-width: 300px;
-    padding: 8px;
-    position: absolute;
-    top: 30%;
-    background-color: $dkBlue;
-    color: white;
-    border-radius: 30px 30px 0px 30px;
-    margin-top: 8px;
-    line-height: normal;
-    @include fontNunito($weight: 700, $size: 36px);
-  
-    img{
-        padding-left: 16px;
-        margin-top: -16px;
-    }
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  max-width: 530px;
+  gap: 12px;
+  height: 150px;
+  min-width: 300px;
+  padding: 8px;
+  position: absolute;
+  top: 30%;
+  background-color: $dkBlue;
+  color: white;
+  border-radius: 30px 30px 0px 30px;
+  margin-top: 8px;
+  line-height: normal;
+  @include fontNunito($weight: 700, $size: 36px);
+
+  img {
+    padding-left: 16px;
+    margin-top: -16px;
   }
+}
 
 :host ::ng-deep .mdc-text-field--outlined {
   --mdc-outlined-text-field-container-shape: 28px;
@@ -211,7 +221,7 @@ form {
   border: transparent;
 }
 
-:host ::ng-deep .mdc-form-field > label {
+:host ::ng-deep .mdc-form-field>label {
   @include fontNunito($weight: 400, $size: 18px);
 }
 
@@ -220,7 +230,7 @@ form {
 }
 
 .mat-mdc-form-field {
-    padding: 0px 48px;
+  padding: 0px 48px;
 }
 
 
@@ -229,13 +239,14 @@ form {
   from {
     background-color: grey;
   }
+
   to {
     background-color: $dkBlue;
   }
 }
 
 .valid-form {
-  background-color: $dkBlue !important; 
+  background-color: $dkBlue !important;
   animation: buttonFadeIn 0.3s ease-in-out;
 
   &:hover {
@@ -246,8 +257,9 @@ form {
 @keyframes slideOutDown {
   from {
     transform: translateY(0);
-    
+
   }
+
   to {
     transform: translateY(200%);
   }
@@ -262,6 +274,7 @@ form {
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -271,3 +284,72 @@ form {
 .slide-in-up {
   animation: slideInUp 0.5s ease forwards;
 }
+
+
+@media (max-width: $mobile-breakpoint) {
+
+  .background-container {
+    justify-content: safe center;
+    overflow-y: auto;
+
+    &__logo {
+      position: unset;
+      top: unset;
+      left: unset;
+      margin: 30px;
+    }
+
+  }
+
+  .pw-reset {
+    width: calc(100% - 32px);
+    height: unset;
+    padding: 35px 20px 35px 20px;
+    overflow: unset;
+
+    &__arrow-back {
+      position: absolute;
+      top: 28px;
+      left: 12px;
+    }
+
+    &__header {
+      padding: 0px 0px 24px;
+      font-size: 32px;
+    }
+
+    .mat-mdc-card-header {
+      padding: 0;
+
+      mat-card-title {
+        width: 100%;
+      }
+    }
+
+    &__form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+    &__next-button {
+      button {
+        margin-right: 0px;
+      }
+    }
+
+
+
+    .mat-mdc-form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+  }
+
+}
+
+:host ::ng-deep .mat-mdc-card-header-text {
+  width: 100% !important;
+}
+
+@media (max-width: 400px) {}

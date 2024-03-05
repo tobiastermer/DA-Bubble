@@ -11,19 +11,17 @@ $text-color-black: black;
 .start-screen {
   position: absolute;
   top: 0;
- 
+
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(
-    1.46deg,
-    $primary-gradient-start 1.22%,
-    $primary-gradient-end 98%
-  );
+  background: linear-gradient(1.46deg,
+      $primary-gradient-start 1.22%,
+      $primary-gradient-end 98%);
   animation: fadeOutBackground 1s ease-in-out 2s forwards;
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
 
   &_content {
     position: absolute;
@@ -35,21 +33,27 @@ $text-color-black: black;
     gap: 20px;
     transform: translate(-50%, -50%);
     animation: moveToCorner 1s ease-in 1s forwards;
-    
-    @media (max-width:1000px){
+
+    @media (max-width:1000px) {
       animation: moveToTop 1s ease-in 1s forwards;
     }
-    
+
   }
 
   &_logo {
     height: 150px;
     width: 150px;
     animation: sizeDown 1s ease-in 1s forwards, spin 1s linear 1s;
-    
-    @media (max-width:1000px){
+
+    @media (max-width:1000px) {
       animation: sizeDown 1s ease-in 1s forwards, NoSpin 1s linear 1s;
     }
+
+    @media (max-width: $mobile-breakpoint) {
+      height: 100px;
+      width: 100px;
+    }
+
   }
 }
 
@@ -64,29 +68,37 @@ $text-color-black: black;
   align-items: center;
   overflow: hidden;
   animation: revealText 2s ease-in forwards;
-  @include fontNunito($weight: 700, $size: 64px)
+  @include fontNunito($weight: 700, $size: 64px);
+
+  @media (max-width: $mobile-breakpoint) {
+    font-size: 48px;
+  }
 }
 
 @keyframes spin {
   from {
     transform: rotateY(0deg);
   }
+
   to {
     transform: rotateY(-360deg);
   }
 }
 
 @keyframes revealText {
+
   0%,
   50% {
     width: 0%;
     font-size: 64px;
     color: $text-color-white;
   }
+
   50%,
   95% {
     width: 100%;
   }
+
   95%,
   100% {
     font-size: 32px;
@@ -99,6 +111,7 @@ $text-color-black: black;
     height: 150px;
     width: 150px;
   }
+
   to {
     height: 70px;
     width: 70px;
@@ -110,6 +123,7 @@ $text-color-black: black;
     opacity: 1;
     ;
   }
+
   100% {
     opacity: 0;
   }
@@ -127,6 +141,7 @@ $text-color-black: black;
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -134,11 +149,11 @@ $text-color-black: black;
 
 
 
-@media (max-width: 1000px){
+@media (max-width: 1000px) {
 
   @keyframes moveToTop {
     to {
-      top: 100px;
+      top: 30px;
       transform: translateX(-60%);
     }
   }
@@ -147,10 +162,10 @@ $text-color-black: black;
     from {
       transform: rotateY(0deg);
     }
+
     to {
       transform: rotateY(0deg);
     }
   }
 
 }
-
