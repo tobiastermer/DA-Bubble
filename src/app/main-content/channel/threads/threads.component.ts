@@ -44,7 +44,6 @@ export class ThreadsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
-      debugger
       if (!this.chatMsg) return;
       if ('channelID' in this.chatMsg) {
         const channelMsg = this.chatMsg as ChannelMessage;

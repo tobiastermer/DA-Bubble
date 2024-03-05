@@ -17,28 +17,33 @@ import { UserChipComponent } from '../../../shared/components/user-chip/user-chi
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Channel } from '../../../shared/models/channel.class';
+import { ChannelMessagesService } from '../../../shared/firebase-services/channel-message.service';
+import { ChannelMessage } from '../../../shared/models/channel-message.class';
 
 @Component({
   selector: 'app-search-bar',
   standalone: true,
-  imports: [MatInputModule, MatIconModule,CommonModule,UserChipComponent],
+  imports: [MatInputModule, MatIconModule, CommonModule, UserChipComponent],
   templateUrl: './search-bar.component.html',
   styleUrl: './search-bar.component.scss',
 })
 export class SearchBarComponent implements AfterViewInit, OnDestroy {
   private usersSubscription!: Subscription;
   private channelsSubscription!: Subscription;
+  private channelMessagesSubscription!: Subscription;
 
   constructor(
     public dialog: MatDialog,
     private DataService: DataService,
+    private ChannelMessagesService: ChannelMessagesService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private activeRouter: ActivatedRoute,
+    private activeRouter: ActivatedRoute
   ) {
-    this.activeRouter.params.subscribe(params => {
-      this.pathUserName = params['idUser']
-    })
+    ChannelMessagesService.getAllChannelMessages();
+    this.activeRouter.params.subscribe((params) => {
+      this.pathUserName = params['idUser'];
+    });
   }
 
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
@@ -47,7 +52,10 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
   users: User[] = [];
   filteredUsers: User[] = [];
   channels!: Channel[];
+  messages!: ChannelMessage[];
   filteredChannels!: Channel[];
+  filteredMessages!: ChannelMessage[];
+
   selectListVisible: boolean = false;
   pathUserName: string = '';
   showChannels: boolean = false;
@@ -56,47 +64,56 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     // Initialisieren Sie die Users-Subscription
     this.usersSubscription = this.usersSubscriptionReturn();
     this.channelsSubscription = this.channelSubscriptionReturn();
+    this.channelMessagesSubscription = this.channelMessageSubscriptionReturn();
   }
 
-  usersSubscriptionReturn(){
+  usersSubscriptionReturn() {
     return this.DataService.users$.subscribe((users) => {
       this.users = users;
       this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
     });
   }
 
-  channelSubscriptionReturn(){
+  channelSubscriptionReturn() {
     return this.DataService.currentUserChannels$.subscribe((channels) => {
       this.channels = channels;
       this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
     });
   }
 
-  closeList(){
+  channelMessageSubscriptionReturn() {
+    return this.ChannelMessagesService.allChannelMessages$.subscribe((message) => {
+      this.messages = message;
+      this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
+    });
+  }
+
+  closeList() {
     this.searchInput.nativeElement.value = '';
     this.selectListVisible = false;
   }
 
-  changeUserPath(user:any) {
+  changeUserPath(user: any) {
     let name = user.name.replace(/\s/g, '_');
     this.router.navigate([this.pathUserName + '/message/' + name]);
-    this.closeList()
+    this.closeList();
   }
 
-  changeChannelPath(channel:any) {
-    let channelName = channel.name
+  changeChannelPath(channel: any) {
+    let channelName = channel.name;
     this.router.navigate([this.pathUserName + '/channel/' + channelName]);
-    this.closeList()
+    this.closeList();
   }
 
   filter() {
     const search = this.searchInput.nativeElement.value.toLowerCase();
     this.filterUsers(search);
     this.filterChannels(search);
+    this.filterMessages(search);
     this.showChannel();
   }
 
-  showChannel(){
+  showChannel() {
     if (this.filteredChannels.length > 0) {
       this.showChannels = true;
     } else {
@@ -104,18 +121,31 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  filterUsers(inputID:any){
+  filterUsers(inputID: any) {
     this.filteredUsers = this.users.filter(
       (user) => user.name && user.name.toLowerCase().includes(inputID)
     );
     this.selectListVisible = !!inputID && this.filteredUsers.length > 0;
   }
 
-  filterChannels(inputID:any){
+  filterChannels(inputID: any) {
     this.filteredChannels = this.channels.filter(
       (channel) => channel.name && channel.name.toLowerCase().includes(inputID)
     );
-    this.selectListVisible = !!inputID && this.filteredUsers.length > 0 || !!inputID && this.filteredChannels.length > 0;
+    this.selectListVisible =
+      (!!inputID && this.filteredUsers.length > 0) ||
+      (!!inputID && this.filteredChannels.length > 0);
+  }
+
+  filterMessages(inputID: any) {
+    this.filteredMessages = this.messages.filter(
+      (messages) => messages.message && messages.message.toLowerCase().includes(inputID),
+    );
+    console.log('messages',this.filteredMessages);
+    this.selectListVisible =
+      (!!inputID && this.filteredUsers.length > 0) ||
+      (!!inputID && this.filteredChannels.length > 0) ||
+      (!!inputID && this.filteredMessages.length > 0);
   }
 
   ngOnDestroy() {
