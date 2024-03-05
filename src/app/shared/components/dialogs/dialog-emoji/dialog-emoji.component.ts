@@ -1,12 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 @Component({
   selector: 'app-dialog-emoji',
   standalone: true,
   imports: [
-    PickerComponent
+    PickerComponent,
+    EmojiComponent
   ],
   templateUrl: './dialog-emoji.component.html',
   styleUrl: './dialog-emoji.component.scss'
