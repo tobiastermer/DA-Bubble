@@ -17,5 +17,24 @@
                 </div>
             </li>
         </ul>
+        <ul class="filtered" *ngIf="showMessage">
+            <span class="categoryName">Messages:</span>
+            <li *ngFor="let message of filteredMessages;">
+                <div class="channelList">
+                    <img class="user-avatar" [src]="DataService.getUserAvatarById(message.fromUserID)"
+                        (error)="onImageError($event)" alt="Avatar">
+                    <div class="messageContainer">
+                        <div class="messageHeader">
+                            <span class="user-name">{{ DataService.getUserNameById(message.fromUserID) }}</span>
+                            <span class="message-time">{{ getDateOfTimestemp(message.date) }}
+                                {{setTime(message.date)}}</span>
+                        </div>
+                        <span> {{ message.message }}</span>
+                        <span class="message-channel-name"> #{{DataService.getChannelNameById(message.channelID)}}</span>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
     </div>
 </div>

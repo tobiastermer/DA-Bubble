@@ -83,6 +83,18 @@ export class DataService {
     return user ? user.name : '';
   }
 
+  public getUserAvatarById(userID: string): string {
+    if (!this.users) return '';
+    const user = this.users.find((user) => user.id === userID);
+    return user ? user.avatar : '';
+  }
+
+  public getChannelNameById(channelID: string): string {
+    if (!this.channels) return '';
+    const channel = this.channels.find((channel) => channel.id === channelID);
+    return channel ? channel.name : '';
+  }
+
   loadLastEmojis() {
     let load = localStorage.getItem('lastEmojis');
     if (load) this.lastEmojis = load.split(',');
