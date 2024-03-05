@@ -11,9 +11,12 @@ export class ChannelMessagesService {
     private channelMessagesSubject = new BehaviorSubject<ChannelMessage[]>([]);
     public channelMessages$ = this.channelMessagesSubject.asObservable();
 
+    private allChannelMessagesSubject = new BehaviorSubject<ChannelMessage[]>([]);
+    public allChannelMessages$ = this.allChannelMessagesSubject.asObservable();
+
     firestore: Firestore = inject(Firestore);
 
-    constructor() {  }
+    constructor() { }
 
     async addChannelMessage(channelMessage: ChannelMessage) {
         try {
@@ -47,4 +50,11 @@ export class ChannelMessagesService {
         });
     }
 
+    getAllChannelMessages() {
+        const q = query(collection(this.firestore, 'channelConversations'));
+        onSnapshot(q, (snapshot) => {
+            let messages = snapshot.docs.map(doc => ChannelMessage.fromFirestore({ id: doc.id, data: () => doc.data() }));
+            this.allChannelMessagesSubject.next(messages);
+        });
+    }
 }
