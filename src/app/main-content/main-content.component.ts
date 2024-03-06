@@ -12,11 +12,13 @@ import { ChannelService } from '../shared/firebase-services/channel.service';
 import { Channel } from '../shared/models/channel.class';
 import { DataService } from '../shared/services/data.service';
 import { slideInUpAnimationSlow, slideInleftAnimationSlow } from '../shared/services/animations';
+import { PositionService } from '../shared/services/position.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main-content',
   standalone: true,
-  imports: [HeaderComponent, MenueComponent, ChannelComponent],
+  imports: [HeaderComponent, MenueComponent, ChannelComponent, CommonModule],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss',
   animations: [
@@ -30,6 +32,8 @@ export class MainContentComponent implements OnInit {
   channels: Channel[] = [];
   userMemberships: Membership[] = [];
   currentUserChannels: Channel[] = [];
+  isMenuVisible: Boolean = true;
+  isChannelVisible: Boolean = false;
 
   // wird später dynamisiert
   currentUserID: string = 's4vgY2BWfL0LIKBJIEOQ';
@@ -48,6 +52,7 @@ export class MainContentComponent implements OnInit {
     private membershipService: MembershipService,
     private channelService: ChannelService,
     private dataService: DataService,
+    private positionService: PositionService,
     ) {
 
     this.currentUser = this.dataService.currentUser;
@@ -70,9 +75,17 @@ export class MainContentComponent implements OnInit {
     }
   }
 
-  
+
   ngOnInit() {
     this.subscribeToUserChannels();
+
+    this.positionService.isResponsiveWindowVisible('menu').subscribe(isVisible => {
+      this.isMenuVisible = isVisible;
+    });
+
+    this.positionService.isResponsiveWindowVisible('channel').subscribe(isVisible => {
+      this.isChannelVisible = isVisible;
+    });
   }
 
 

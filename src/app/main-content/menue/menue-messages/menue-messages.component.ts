@@ -8,6 +8,7 @@ import { DialogShowUserComponent } from '../../../shared/components/dialogs/dial
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../shared/services/data.service';
 import { Subscription } from 'rxjs';
+import { PositionService } from '../../../shared/services/position.service';
 
 @Component({
   selector: 'app-menue-messages',
@@ -34,6 +35,7 @@ export class MenueMessagesComponent implements OnDestroy {
     private DataService: DataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
+    private positionService: PositionService,
   ) {
     this.activeRoute.params.subscribe(params => {
       this.pathChat = params['chat'];
@@ -57,6 +59,7 @@ export class MenueMessagesComponent implements OnDestroy {
 
 
   changePath(activeUserIndex: number) {
+    this.positionService.setActiveResponsiveWindow('channel');
     let name = this.users[activeUserIndex].name.replace(/\s/g, '_');
     this.router.navigate([this.pathUserName + '/message/' + name]);
   }

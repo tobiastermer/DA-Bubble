@@ -10,12 +10,14 @@ import { MenuDialogComponent } from './menu-dialog/menu-dialog.component';
 import { DataService } from '../../shared/services/data.service';
 import { User } from '../../shared/models/user.class';
 import { slideInRightAnimationSlow } from '../../shared/services/animations';
+import { PositionService } from '../../shared/services/position.service';
+import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, SearchBarComponent, MatDialogModule],
+  imports: [CommonModule, SearchBarComponent, MatDialogModule, MatCardModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   animations: [
@@ -32,13 +34,21 @@ export class HeaderComponent {
     name: 'Lädt...',
     avatar: './../../../assets/img/avatars/unknown.jpg'
   });
+  isMenuVisible: Boolean = true;
 
   constructor(
     public dialog: MatDialog,
     private DataService: DataService,
+    private positionService: PositionService,
   ) {
     this.currentUser = this.DataService.currentUser!;
 
+  }
+
+  ngOnInit() {
+    this.positionService.isResponsiveWindowVisible('menu').subscribe(isVisible => {
+      this.isMenuVisible = isVisible;
+    });
   }
 
   openDialog() {
@@ -59,5 +69,8 @@ export class HeaderComponent {
     }
   }
 
+  goToMenu() {
+    this.positionService.setActiveResponsiveWindow('menu');
+  }
 
 }

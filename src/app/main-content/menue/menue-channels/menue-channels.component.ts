@@ -7,6 +7,7 @@ import { DialogAddChannelComponent } from './dialogs/dialog-add-channel/dialog-a
 import { MatDialog } from '@angular/material/dialog';
 import { DataService } from '../../../shared/services/data.service';
 import { Subscription } from 'rxjs';
+import { PositionService } from '../../../shared/services/position.service';
 
 @Component({
   selector: 'app-menue-channels',
@@ -30,7 +31,8 @@ export class MenueChannelsComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private dataService: DataService) {
+    private dataService: DataService,
+    private positionService: PositionService) {
     this.activeRoute.params.subscribe(params => {
       this.pathChat = params['chat'];
       this.pathContentName = params['idChat'];
@@ -54,6 +56,7 @@ export class MenueChannelsComponent implements OnInit, OnDestroy {
   }
 
   changePath(activeChannelIndex: number) {
+    this.positionService.setActiveResponsiveWindow('channel');
     let name = this.channels[activeChannelIndex].name
     this.router.navigate([this.pathUserName + '/channel/' + name]);
   }

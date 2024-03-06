@@ -1,6 +1,13 @@
 <div @slideInRightSlow class="header-content">
-    <div class="logo">
+
+    <div *ngIf="isMenuVisible" class="logo">
         <img src="./../../../assets/img/logo_+_text.png" alt="Logo">
+    </div>
+
+    <div *ngIf="!isMenuVisible" class="menu-header-left desktop-hidden" (click)="goToMenu()">
+        <img src="../../../../assets/img/icons/expand_more_bk.png" class="expand-icon" alt="expand-icon">
+        <img src="../../../../assets/img/workspace-logo.png" class="workspace-logo" alt="workspace-logo">
+        <mat-card-title>Code learning</mat-card-title>
     </div>
 
     <app-search-bar class="search-bar mobile-hidden"></app-search-bar>

@@ -18,6 +18,25 @@
   flex: 1;
 }
 
+.menu-header-left {
+  @include dFlex($jc: flex-start, $gap: 15px);
+  display: flex !important;
+
+  .expand-icon {
+    transform: rotate(90deg);
+  }
+
+  .workspace-logo {
+      height: 50px;
+      width: auto;
+  }
+
+  mat-card-title{
+      font-size: 18px;
+      font-weight: 700;
+  }
+}
+
 .search-bar {
   width: 100%;
 }

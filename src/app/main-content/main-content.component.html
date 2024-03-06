@@ -1,5 +1,5 @@
 <app-header></app-header>
 <main>
-    <app-menue @slideInUpSlow></app-menue>
-    <app-channel @slideInLeftSlow></app-channel>
+    <app-menue @slideInUpSlow *ngIf="isMenuVisible"></app-menue>
+    <app-channel @slideInLeftSlow *ngIf="isChannelVisible"></app-channel>
 </main> 
