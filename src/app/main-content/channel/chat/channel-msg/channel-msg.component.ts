@@ -1,10 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { Channel } from '../../../../shared/models/channel.class';
 import { Subscription } from 'rxjs';
 import { ChannelService } from '../../../../shared/firebase-services/channel.service';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../../shared/services/data.service';
-import { MembershipService } from '../../../../shared/firebase-services/membership.service';
 
 @Component({
   selector: 'app-channel-msg',
@@ -21,51 +20,14 @@ export class ChannelMsgComponent {
 
   currentChannelID: string = '';
 
+
+  // private idChat: string = '';
+  // private channelsSubscription: Subscription;
+
   constructor(
-    private MembershipService: MembershipService,
-    private DataService: DataService,
-    private route: ActivatedRoute,
-    private channelService: ChannelService,) {
+    private DataService: DataService
+    ) { }
 
-
-  }
-
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      const channelName = params['idChat'];
-      console.log('ChannelName laut Route ist: ', channelName);
-
-      this.getChannelIdByName(channelName).then(channelId => {
-        console.log('ChannelID laut Route ist: ', channelId);
-        if (channelId) {
-          this.currentChannelID = channelId;
-          this.loadChannel(channelId);
-        }
-      });
-    });
-  }
-
-  private loadChannel(channelId: string) {
-    this.channelService.getChannelByID(channelId).then(channel => {
-      if (channel) {
-        this.channel = channel;
-      } else {
-        console.error('Channel nicht gefunden');
-      }
-    }).catch(error => {
-      console.error('Fehler beim Abrufen des Channels:', error);
-    });
-  }
-
-  getChannelIdByName(name: string): Promise<string> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('Aktuelle Channels in DataService sind: ', this.DataService.channels);
-        const channel = this.DataService.channels.find(channel => channel.name === name);
-        resolve(channel ? channel.id : '');
-      }, 800);
-    });
-  }
 
   getDateOfTimestemp(time: number | undefined): string {
     if (!time) return ''
@@ -78,7 +40,5 @@ export class ChannelMsgComponent {
       return day + ' ' + month + ' ' + year
     }
   }
-
-
 
 }

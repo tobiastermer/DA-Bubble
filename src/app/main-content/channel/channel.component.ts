@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { HeaderChannelComponent } from './header/header-channel/header-channel.component';
 import { ChannelMsgComponent } from './chat/channel-msg/channel-msg.component';
@@ -43,23 +43,23 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss'
 })
-export class ChannelComponent {
+export class ChannelComponent implements OnDestroy {
 
 
   currentUser: User;
 
   chat: 'channel' | 'message' | 'new' = 'channel';
-  chatInput:  'channel' | 'message' | 'reply' = 'channel';
+  idChat!: string;
+
+  chatInput: 'channel' | 'message' | 'reply' = 'channel';
   oldTimeStemp!: string;
   newTimeStemp!: string;
 
   threadMsg: ChannelMessage | DirectMessage | undefined;
   threadChannel: Channel | undefined;
 
-  private usersSubscription: Subscription = new Subscription();
-
   users: User[] = [];
-  channels: Channel[] = [];
+  channels!: Channel[];
 
   currentChannelID: string = ''
   currentChannel: Channel = new Channel({ id: 'Channel lädt', name: 'Channel lädt', description: 'Channel lädt', ownerID: 'abcde' });
@@ -71,6 +71,8 @@ export class ChannelComponent {
 
   chatUser!: User;
 
+  private usersSubscription: Subscription;
+  private channelsSubscription: Subscription;
 
   private channelMembershipSubscription?: Subscription;
   private channelMessagesSubscription?: Subscription;
@@ -88,22 +90,23 @@ export class ChannelComponent {
     private positionService: PositionService,
     public dialog: MatDialog,
   ) {
-    this.channels = this.DataService.channels;
-    // this.users = this.DataService.users;
+
     this.currentUser = this.DataService.currentUser;
 
     this.router.params.subscribe(params => {
       this.chat = params['chat'];
-      this.loadData(this.chat, params['idChat']);
+      this.idChat = params['idChat'];
+      if (this.channels) this.loadData(this.chat, this.idChat);
       this.threadMsg = undefined;
     });
-  }
-
-
-  ngOnInit() {
 
     this.usersSubscription = this.DataService.users$.subscribe(users => {
       this.users = users;
+    });
+
+    this.channelsSubscription = this.DataService.channels$.subscribe(channels => {
+      this.channels = channels;
+      this.loadData(this.chat, this.idChat);
     });
 
     this.positionService.isMenuOpen().subscribe(open => {
@@ -117,60 +120,35 @@ export class ChannelComponent {
     this.channelMessagesSubscription?.unsubscribe();
     this.directMessagesSubscription?.unsubscribe();
     this.usersSubscription.unsubscribe();
-  }
-
-
-  getChannelIdByName(name: string): string {
-    const channel = this.DataService.channels.find(channel => channel.name === name);
-    return channel ? channel.id : '';
+    this.channelsSubscription.unsubscribe();
   }
 
 
   loadData(chat: 'channel' | 'message' | 'new', idChat: string) {
-    if (chat === 'channel') {
-      this.currentChannelID = this.getChannelIdByName(idChat);
-      this.loadChannelData();
-      this.chatInput = chat;
-      return
-    }
-    if (chat === 'message') {
-      this.loadChatUserData(idChat);
-      this.loadDirectMessages();
-      this.chatInput = chat;
-    }
-    if (chat === 'new') { }
-
+    if (chat === 'channel') return this.channelData(idChat);
+    if (chat === 'message') return this.directData(idChat);
   }
 
 
-  checkTimeStemp(time: number): boolean {
-    if (this.newTimeStemp && this.channelMessages.length == 1) return true
-    this.newTimeStemp = this.getTimeStemp(time);
-    if (this.oldTimeStemp === this.newTimeStemp) return false
-    this.oldTimeStemp = this.newTimeStemp
-    return true
+  channelData(idChat: string) {
+    this.currentChannelID = this.getChannelIdByName(idChat);
+    this.loadChannelData();
+    this.chatInput = 'channel';
   }
 
 
-  getTimeStemp(msgTime: number): string {
-    let time = new Date(msgTime);
-    let toDay = new Date();
-    if (time.getUTCFullYear() !== toDay.getFullYear()) return time.toISOString().substring(0, 10)
-    if (time.toDateString() === toDay.toDateString()) return 'Heute'
-    const weekday = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-    const month = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-    return weekday[time.getUTCDay()] + ', ' + time.getDate() + ' ' + month[time.getUTCMonth()]
+  getChannelIdByName(name: string): string {
+    const channel = this.channels.find(channel => channel.name === name);
+    return channel ? channel.id : '';
   }
 
 
   async loadChannelData() {
-    this.ngOnDestroy();
-    if (this.currentChannelID !== '') {
-      this.loadMemberships();
-      this.loadMessages();
-      await this.fetchCurrentChannel();
-      this.populateCurrentChannelMembers();
-    }
+    if (this.currentChannelID === '') return
+    this.loadMemberships();
+    this.loadMessages();
+    await this.fetchCurrentChannel();
+    this.populateCurrentChannelMembers();
   }
 
 
@@ -186,13 +164,11 @@ export class ChannelComponent {
     this.channelMessagesService.getChannelMessages(this.currentChannelID);
     this.channelMessagesSubscription = this.channelMessagesService.channelMessages$.subscribe(channelMessages => {
       this.channelMessages = channelMessages.sort((a, b) => a.date - b.date);
-      console.log('Channel Messages: ', this.channelMessages);
     });
   }
 
 
   loadDirectMessages() {
-    this.ngOnDestroy();
     if (!this.currentUser || !this.currentUser.id) return console.error('current user id is missing');
     if (!this.chatUser || !this.chatUser.id) return console.error('chat user id is missing');
     this.directMessagesService.getDirectMessages(this.currentUser.id, this.chatUser.id);
@@ -223,8 +199,15 @@ export class ChannelComponent {
   }
 
 
+  directData(idChat: string) {
+    this.loadChatUserData(idChat);
+    this.loadDirectMessages();
+    this.chatInput = 'message';
+  }
+
+
   getUserFromMessage(message: ChannelMessage | DirectMessage): User {
-    const user = this.DataService.users.find(user => user.id === message.fromUserID);
+    const user = this.users.find(user => user.id === message.fromUserID);
     return user ? user : new User;
   }
 
@@ -250,13 +233,33 @@ export class ChannelComponent {
 
 
   setThreadValues(msg: ChannelMessage | DirectMessage) {
-    if (msg instanceof ChannelMessage) this.threadMsg = new ChannelMessage(msg) 
-    else this.threadMsg = new DirectMessage(msg) 
+    if (msg instanceof ChannelMessage) this.threadMsg = new ChannelMessage(msg)
+    else this.threadMsg = new DirectMessage(msg)
   }
 
 
   deletThreadValues(delet: boolean) {
     if (delet) this.threadMsg = undefined;
+  }
+
+
+  checkTimeStemp(time: number): boolean {
+    if (this.newTimeStemp && this.channelMessages.length == 1) return true
+    this.newTimeStemp = this.getTimeStemp(time);
+    if (this.oldTimeStemp === this.newTimeStemp) return false
+    this.oldTimeStemp = this.newTimeStemp
+    return true
+  }
+
+
+  getTimeStemp(msgTime: number): string {
+    let time = new Date(msgTime);
+    let toDay = new Date();
+    if (time.getUTCFullYear() !== toDay.getFullYear()) return time.toISOString().substring(0, 10)
+    if (time.toDateString() === toDay.toDateString()) return 'Heute'
+    const weekday = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const month = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    return weekday[time.getUTCDay()] + ', ' + time.getDate() + ' ' + month[time.getUTCMonth()]
   }
 
 

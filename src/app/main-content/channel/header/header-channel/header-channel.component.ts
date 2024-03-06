@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,8 +14,6 @@ import { DialogErrorComponent } from '../../../../shared/components/dialogs/dial
 import { Membership } from '../../../../shared/models/membership.class';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../../../shared/services/data.service';
-import { ChannelService } from '../../../../shared/firebase-services/channel.service';
-import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -30,10 +28,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './header-channel.component.html',
   styleUrl: './header-channel.component.scss'
 })
-export class HeaderChannelComponent {
+export class HeaderChannelComponent implements OnDestroy, OnChanges {
 
   @Input() channel: Channel = new Channel({});
-  @Input() currentChannelID: string = '';
+  @Input() currentChannelID!: string;
 
   @ViewChild('channleInfo') channelInfo?: ElementRef;
   @ViewChild('membersInfo') membersInfo?: ElementRef;
@@ -46,82 +44,47 @@ export class HeaderChannelComponent {
   displayMembers: User[] = [];
   additionalMembersCount: number = 0;
 
-  private usersSubscription: Subscription = new Subscription();
+  private usersSubscription: Subscription;
   private channelMembershipSubscription?: Subscription;
 
-  constructor(public dialog: MatDialog,
+  constructor(
+    public dialog: MatDialog,
     private MembershipService: MembershipService,
     private PositionService: PositionService,
     private DataService: DataService,
-    private route: ActivatedRoute,
-    private channelService: ChannelService,) {
-
-    this.allUsers = this.DataService.users;
-
-  }
-
-  ngOnInit() {
-    this.usersSubscription.add(
-      this.DataService.users$.subscribe(users => {
-        this.allUsers = users;
-      })
-    );
-  
-    this.route.params.subscribe(params => {
-      const channelName = params['idChat'];
-  
-      this.getChannelIdByName(channelName).then(channelId => {
-        if (channelId) {
-          this.currentChannelID = channelId;
-          this.loadChannel(channelId);
-  
-          this.MembershipService.getChannelMemberships(this.currentChannelID);
-          this.channelMembershipSubscription = this.MembershipService.channelMemberships$.subscribe(channelMemberships => {
-            this.currentChannelMemberships = channelMemberships;
-            this.currentChannelMemberIDs = this.currentChannelMemberships.map(membership => membership.userID);
-            this.currentChannelMembers = this.allUsers.filter(user => user.id && this.currentChannelMemberIDs.includes(user.id));
-            this.calculateDisplayMembers();
-          });
-        }
-      });
-    });
-
-  }
-  
-
-  private loadChannel(channelId: string) {
-    this.channelService.getChannelByID(channelId).then(channel => {
-      if (channel) {
-        this.channel = channel;
-      } else {
-        console.error('Channel nicht gefunden');
-      }
-    }).catch(error => {
-      console.error('Fehler beim Abrufen des Channels:', error);
+  ) {
+    this.usersSubscription = this.DataService.users$.subscribe(users => {
+      this.allUsers = users;
     });
   }
 
-  getChannelIdByName(name: string): Promise<string> {
-    return new Promise((resolve) => {
-      // setTimeout(() => {
-        console.log('Aktuelle Channels in DataService sind: ', this.DataService.channels);
-        const channel = this.DataService.channels.find(channel => channel.name === name);
-        resolve(channel ? channel.id : '');
-      // }, 800);
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes) return
+    if (!this.currentChannelID) return
+    this.MembershipService.getChannelMemberships(this.currentChannelID);
+    this.channelMembershipSubscription = this.MembershipService.channelMemberships$.subscribe(channelMemberships => {
+      this.currentChannelMemberships = channelMemberships;
+      this.currentChannelMemberIDs = this.currentChannelMemberships.map(membership => membership.userID);
+      this.currentChannelMembers = this.allUsers.filter(user => user.id && this.currentChannelMemberIDs.includes(user.id));
+      this.calculateDisplayMembers();
     });
   }
+
+
+  ngOnDestroy() {
+    this.channelMembershipSubscription?.unsubscribe();
+    this.usersSubscription.unsubscribe();
+  }
+
 
   calculateDisplayMembers() {
     const maxDisplayCount = 7;
     this.displayMembers = this.currentChannelMembers.slice(0, maxDisplayCount);
     const additionalCount = this.currentChannelMembers.length - maxDisplayCount;
     this.additionalMembersCount = additionalCount > 0 ? additionalCount : 0;
-  }  
-
-  ngOnDestroy() {
-    this.channelMembershipSubscription?.unsubscribe();
-    this.usersSubscription?.unsubscribe();
   }
+
 
   changeImgBl() {
     if (!this.channelInfo) return;
@@ -140,9 +103,9 @@ export class HeaderChannelComponent {
     this.channelInfo.nativeElement.lastChild.src = srcImg2;
   }
 
+
   openDialogChannel(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.channelInfo, 'left');
-    let channel = this.channel;
     const dialogRef = this.dialog.open(DialogChannelComponent, {
       width: '750px',
       position: pos, panelClass: ['card-left-corner'],
@@ -152,9 +115,9 @@ export class HeaderChannelComponent {
     });
   }
 
+
   openDialogMembers(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.membersInfo, 'right');
-    let members = this.currentChannelMembers;
     const dialogRef = this.dialog.open(DialogMembersComponent, {
       position: pos, panelClass: ['card-right-corner'],
       data: { members: this.currentChannelMembers },
@@ -163,6 +126,7 @@ export class HeaderChannelComponent {
       if (result) this.openDialogAddUser();
     });
   }
+
 
   openDialogAddUser(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.addUser, 'right');
@@ -177,13 +141,13 @@ export class HeaderChannelComponent {
     });
   }
 
+
   async saveAddedMembers(selectedUsers: User[]) {
     if (selectedUsers) {
       for (let user of selectedUsers) {
         try {
           let membership = this.MembershipService.createMembership(user.id!, this.channel.id);
           await this.MembershipService.addMembership(membership);
-          // this.members.push(user); // ggf. sauberer lösen durch unmittelbares Abo dieser Komponente auf members-Array
         } catch (err) {
           console.error(err);
           this.dialog.open(DialogErrorComponent, {
@@ -196,10 +160,9 @@ export class HeaderChannelComponent {
     }
   }
 
+
   // Methode zum Setzen des Ersatzbildes
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = '../../../assets/img/avatars/unknown.jpg';
   }
-
-
 }

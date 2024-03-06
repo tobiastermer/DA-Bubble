@@ -194,7 +194,7 @@ export class InputTextareaComponent {
     this.currentMemberIDs = this.members.map(user => user.id!);
     const dialogRef = this.dialog.open(DialogAtUserComponent, {
       position: pos, panelClass: ['card-round-corners'], width: '350px',
-      data: { allUsers: this.data.users, currentMemberIDs: this.currentMemberIDs, channel: this.channel },
+      data: { currentMemberIDs: this.currentMemberIDs, channel: this.channel },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.addUserToMessageText(result);

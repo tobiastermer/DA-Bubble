@@ -59,7 +59,7 @@
     </mat-card>
 
     @if (chat === 'channel' || chat === 'message') {
-    <app-threads [chatMsg]="threadMsg" (closeThread)="deletThreadValues($event)"
+    <app-threads [chatMsg]="threadMsg" [channels]="channels" (closeThread)="deletThreadValues($event)"
         [currentChannelMembers]="currentChannelMembers"></app-threads>
     }
 

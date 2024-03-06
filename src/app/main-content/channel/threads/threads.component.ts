@@ -7,11 +7,11 @@ import { InputTextareaComponent } from '../../../shared/components/input-textare
 import { ChannelMessage } from '../../../shared/models/channel-message.class';
 import { Channel } from '../../../shared/models/channel.class';
 import { MessageComponent } from '../../../shared/components/message/message.component';
-import { DataService } from '../../../shared/services/data.service';
 import { User } from '../../../shared/models/user.class';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogInfoComponent } from '../../../shared/components/dialogs/dialog-info/dialog-info.component';
 import { DirectMessage } from '../../../shared/models/direct-message.class';
+import { DataService } from '../../../shared/services/data.service';
 
 @Component({
   selector: 'app-threads',
@@ -33,13 +33,15 @@ export class ThreadsComponent implements OnChanges {
   channel!: Channel | undefined;
 
   @Input() chatMsg!: ChannelMessage | DirectMessage | undefined;
+  @Input() channels: Channel[] = [];
   @Input() currentChannelMembers: User[] = [];
 
   @Output() closeThread: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
-    public data: DataService,
-    public dialog: MatDialog,) { }
+    public dialog: MatDialog,
+    public data: DataService
+    ) { }
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -48,7 +50,7 @@ export class ThreadsComponent implements OnChanges {
       if ('channelID' in this.chatMsg) {
         const channelMsg = this.chatMsg as ChannelMessage;
         if (channelMsg.channelID) {
-          this.channel = this.data.channels.find(channel => channel.id === channelMsg.channelID);
+          this.channel = this.channels.find(channel => channel.id === channelMsg.channelID);
         }
       }
       else return

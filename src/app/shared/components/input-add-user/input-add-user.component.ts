@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './input-add-user.component.scss'
 })
 
-export class InputAddUserComponent {
+export class InputAddUserComponent implements OnDestroy {
 
   @Input() currentMemberIDs: string[] = [];
   @Input() FilterUsersMaxHeight: number = 250;
@@ -31,11 +31,21 @@ export class InputAddUserComponent {
   filteredUsers: User[] = [];
   selectedUsers: User[] = [];
 
+  private usersSubscription: Subscription;
+
   constructor(
     private DataService: DataService,
   ) {
-    this.users = this.DataService.users
+    this.usersSubscription = this.DataService.users$.subscribe(users => {
+      this.users = users;
+    });
   }
+
+
+  ngOnDestroy() {
+    this.usersSubscription.unsubscribe();
+  }
+
 
   stopPropagation(event: MouseEvent) {
     event.stopPropagation();

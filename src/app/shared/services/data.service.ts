@@ -1,5 +1,5 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ChannelMessage } from '../models/channel-message.class';
 import { User } from '../models/user.class';
 import { Channel } from '../models/channel.class';
@@ -11,22 +11,52 @@ import { DirectMessage } from '../models/direct-message.class';
   providedIn: 'root',
 })
 export class DataService {
-  users!: User[];
-  currentUser!: User;
+
   currentUserID!: string; // ggf. löschen
-  channels!: Channel[];
+
+  private channels!: Channel[];
+
+  public currentUser!: User;
   public lastEmojis!: string[];
 
+  private users!: User[];
+
   private usersSubject = new BehaviorSubject<User[]>([]);
-  public users$ = this.usersSubject.asObservable();
-
   private channelsSubject = new BehaviorSubject<Channel[]>([]);
-  public channels$ = this.channelsSubject.asObservable();
-
   private currentUserChannelsSubject = new BehaviorSubject<Channel[]>([]);
-  public currentUserChannels$ = this.currentUserChannelsSubject.asObservable();
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+
+
+  get users$(): Observable<User[]> {
+    return this.usersSubject.asObservable();
+  }
+
+
+  setUsers(users: User[]): void {
+    this.usersSubject.next(users);
+    this.users = users;
+  }
+
+
+  get channels$(): Observable<Channel[]> {
+    return this.channelsSubject.asObservable();
+  }
+
+
+  setChannels(channels: Channel[]) {
+    this.channelsSubject.next(channels);
+  }
+
+
+  get currentUserChannels$(): Observable<Channel[]> {
+    return this.currentUserChannelsSubject.asObservable();
+  }
+
+
+
 
   logCurrentUserData() {
     console.log('Aktueller Benutzer:', this.currentUser);
@@ -65,13 +95,6 @@ export class DataService {
     else return;
   }
 
-  setUsers(users: User[]) {
-    this.usersSubject.next(users);
-  }
-
-  setChannels(channels: Channel[]) {
-    this.channelsSubject.next(channels);
-  }
 
   setCurrentUserChannels(channels: Channel[]) {
     this.currentUserChannelsSubject.next(channels);

@@ -11,8 +11,7 @@ import { Membership } from '../shared/models/membership.class';
 import { ChannelService } from '../shared/firebase-services/channel.service';
 import { Channel } from '../shared/models/channel.class';
 import { DataService } from '../shared/services/data.service';
-import { ActivatedRoute } from '@angular/router';
-import { slideInRightAnimationSlow, slideInUpAnimation, slideInUpAnimationSlow, slideInleftAnimationSlow } from '../shared/services/animations';
+import { slideInUpAnimationSlow, slideInleftAnimationSlow } from '../shared/services/animations';
 
 @Component({
   selector: 'app-main-content',
@@ -44,24 +43,23 @@ export class MainContentComponent implements OnInit {
   private userMembershipSubscription?: Subscription;
   private userChannelsSubscription: Subscription = new Subscription();
 
-  constructor(private userService: UserService,
+  constructor(
+    private userService: UserService,
     private membershipService: MembershipService,
     private channelService: ChannelService,
     private dataService: DataService,
-    private router: ActivatedRoute) {
+    ) {
 
     this.currentUser = this.dataService.currentUser;
 
     this.usersSubscription = this.userService.users$.subscribe(users => {
       this.users = users;
-      this.dataService.users = users;
-      this.dataService.setUsers(users); // Wozu wird das benötigt? 
+      this.dataService.setUsers(users);
     });
 
     this.channelsSubscription = this.channelService.channels$.subscribe(channels => {
       this.channels = channels;
-      this.dataService.channels = channels;
-      // this.dataService.setChannels(channels); // Wozu wird das benötigt? 
+      this.dataService.setChannels(channels);
     });
 
     if (this.currentUser) {
@@ -72,10 +70,11 @@ export class MainContentComponent implements OnInit {
     }
   }
 
+  
   ngOnInit() {
-    // this.dataService.logCurrentUserData();
     this.subscribeToUserChannels();
   }
+
 
   ngOnDestroy() {
     this.usersSubscription?.unsubscribe();
@@ -84,32 +83,6 @@ export class MainContentComponent implements OnInit {
     this.userChannelsSubscription?.unsubscribe();
   }
 
-  sortedUsers() {
-    const currentUser = this.users.find(user => user.id === this.currentUserID);
-    const otherUsers = this.users
-      .filter(user => user.id !== this.currentUserID)
-      .sort((a, b) => a.name.localeCompare(b.name));
-
-    if (currentUser) {
-      return [currentUser, ...otherUsers];
-    } else {
-      return otherUsers;
-    }
-  }
-
-  // private async fetchCurrentUser() {
-  //   try {
-  //     const user = await this.userService.getUserByID(this.currentUserID);
-  //     if (user) {
-  //       this.currentUser = user;
-  //       this.dataService.currentUser = user;
-  //     } else {
-  //       console.log('Benutzer nicht gefunden');
-  //     }
-  //   } catch (error) {
-  //     console.error('Fehler beim Abrufen des aktuellen Benutzers:', error);
-  //   }
-  // }
 
   private subscribeToUserChannels() {
     const subscription = combineLatest([
