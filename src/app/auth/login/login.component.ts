@@ -21,7 +21,10 @@ import { PresenceService } from '../../shared/firebase-services/presence.service
 import { DataService } from '../../shared/services/data.service';
 import { doc } from '@angular/fire/firestore';
 import { getDoc, setDoc } from 'firebase/firestore';
-import { errorAnimation, slideOutDownAnimation } from '../../shared/services/animations';
+import {
+  errorAnimation,
+  slideOutDownAnimation,
+} from '../../shared/services/animations';
 
 @Component({
   selector: 'app-login',
@@ -37,10 +40,7 @@ import { errorAnimation, slideOutDownAnimation } from '../../shared/services/ani
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  animations: [
-    slideOutDownAnimation,
-    errorAnimation
-  ],
+  animations: [slideOutDownAnimation, errorAnimation],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -69,15 +69,12 @@ export class LoginComponent {
   async onLoginSubmit() {
     this.formSubmitted = true;
     if (this.isGuestLogin) {
-     
       this.onGuestLogin(this.guestUserId);
     } else {
-     
       if (this.loginForm.valid) {
         const { email, password } = this.loginForm.value;
         await this.loginUser(email, password);
       } else {
-       
       }
     }
   }
@@ -128,7 +125,6 @@ export class LoginComponent {
       this.router.navigate([`/${userId}`]);
       this.showLoginCard = true;
     }, 800);
-    
   }
 
   showError(message: string) {
@@ -149,18 +145,18 @@ export class LoginComponent {
 
     try {
       const guestData = await this.userService.getUserByID(this.guestUserId);
-      await this.presenceService.updateGuestStatus("t8WOIhqo9BYogI9FmZhtCHP7K3t1", 'online');
+      await this.presenceService.updateGuestStatus(
+        't8WOIhqo9BYogI9FmZhtCHP7K3t1',
+        'online'
+      );
       this.presenceService.startGuestTracking();
-      
       this.showLoginCard = false;
 
       setTimeout(() => {
-        
         this.dataService.setCurrentUser(guestData!);
         this.router.navigate([`/${userId}`]);
         this.showLoginCard = true;
         this.isGuestLogin = false;
-        
       }, 800);
     } catch (error) {
       console.error('Fehler beim Gastlogin', error);
@@ -173,16 +169,24 @@ export class LoginComponent {
       this.router.navigate(['/signUp']);
       this.showLoginCard = true;
     }, 800);
-    
   }
 
   async onGoogleSignIn() {
     try {
       const userCredential = await this.authService.signInWithGoogle();
-      const uid = userCredential.uid;
-      this.router.navigate([`/${uid}/chat/idChat`]);
+      if (userCredential) {
+        const uid = userCredential.uid;
+        const user = await this.userService.getUserByAuthUid(uid);
+        if (user) {
+          this.dataService.setCurrentUser(user);
+          await this.presenceService.updateOnUserLogin(uid);
+          this.navigateToChat(user.id ?? '');
+        } else {
+          console.error('Benutzerdaten konnten nicht geladen werden.');
+        }
+      }
     } catch (error) {
-      console.error('Fehler', error);
+      console.error('Fehler beim Google-Login', error);
     }
   }
 
@@ -196,12 +200,10 @@ export class LoginComponent {
     }, 800);
   }
 
-
   removeValidators() {
-    this.loginForm.get('email')!.clearValidators(); 
+    this.loginForm.get('email')!.clearValidators();
     this.loginForm.get('email')!.updateValueAndValidity();
     this.loginForm.get('password')!.clearValidators();
     this.loginForm.get('password')!.updateValueAndValidity();
   }
-  
 }

@@ -1,0 +1,37 @@
+<div class="background-container">
+  <div class="background-container__logo">
+    <img src="./assets/img/logo_+_text.png" />
+  </div>
+
+  <mat-card class="imprint" [@slideAnimation]="animationState">
+    <mat-card-content>
+      <div class="imprint__header">
+        <div class="imprint__arrow-back">
+          <mat-icon (click)="openLogin()">arrow_back</mat-icon>
+        </div>
+        <span class="imprint__headline">Impressum</span>
+
+        <div class="imprint__info">
+          <h3 class="imprint__adress">Angaben gemäß § 5 TMG</h3>
+          <p>Sebastian Brosda</p>
+          <h4 class="imprint__adress">Postanschrift</h4>
+          <p>Zum Upjever Forst 5<br />26419 Schortens<br /></p>
+          <h4 class="imprint__adress">Kontakt</h4>
+          <p>
+            Telefon: +49 176 31452768<br />E-Mail: hi&#64;sebastianbrosda.de
+          </p>
+          <h4 class="imprint__adress">Hinweise zur Website</h4>
+          <p>
+            Das Impressum wurde mit dem<br>
+            <a
+              target="_blank"
+              href="https://www.activemind.de/datenschutz/impressums-generator/"
+              >Impressums-Generator der activeMind AG</a
+            >
+            erstellt.
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

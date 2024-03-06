@@ -6,6 +6,7 @@ import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { SelectAvatarComponent } from './auth/select-avatar/select-avatar.component';
 import { PwResetComponent } from './auth/pw-reset/pw-reset.component';
 import { NewPwComponent } from './auth/new-pw/new-pw.component';
+import { ImprintComponent } from './auth/imprint/imprint.component';
 
 
 export const routes: Routes = [
@@ -13,6 +14,8 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signUp', component: SignUpComponent },
     { path: 'pw-reset', component: PwResetComponent },
+    { path: 'imprint', component: ImprintComponent },
+  
     { path: 'new-pw', component: NewPwComponent },
     { path: 'select-avatar', component: SelectAvatarComponent },
     { path: ':idUser', component: MainContentComponent },

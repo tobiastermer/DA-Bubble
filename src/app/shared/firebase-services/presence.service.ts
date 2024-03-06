@@ -75,18 +75,16 @@ export class PresenceService {
     this.timeoutID = setTimeout(() => this.setUserStatus(uid, 'away'), 60000);
   }
 
-  //maus/tastatur kontrolle
+  private resetTimerBound = this.resetTimer.bind(this);
+
   private addActivityListeners(): void {
-    if (!this.trackingEnabled) return;
-    const resetTimerBound = this.resetTimer.bind(this);
-    window.addEventListener('mousemove', resetTimerBound);
-    window.addEventListener('keydown', resetTimerBound);
+    window.addEventListener('mousemove', this.resetTimerBound);
+    window.addEventListener('keydown', this.resetTimerBound);
   }
 
   private removeActivityListeners(): void {
-    const resetTimerBound = this.resetTimer.bind(this);
-    window.removeEventListener('mousemove', resetTimerBound);
-    window.removeEventListener('keydown', resetTimerBound);
+    window.removeEventListener('mousemove', this.resetTimerBound);
+    window.removeEventListener('keydown', this.resetTimerBound);
   }
 
   // ändern des statuses zu online bei Login
@@ -102,6 +100,10 @@ export class PresenceService {
     await this.userService.updateUserStatusByUid(uid, 'online');
 
     this.monitorConnection(userStatusDatabaseRef);
+
+    // Aktiviere das Tracking und füge Aktivitätslistener hinzu
+    this.trackingEnabled = true;
+    this.addActivityListeners();
   }
 
   //setzt den Status auf offline bei fensterschließung
@@ -148,7 +150,7 @@ export class PresenceService {
       state: 'offline',
       last_changed: serverTimestamp(),
     });
-    this.stopGuestTracking();
+    this.stopTracking();
   }
 
   async updateGuestStatus(uid: string, status: string): Promise<void> {
@@ -168,7 +170,7 @@ export class PresenceService {
     this.addActivityListeners();
   }
 
-  stopGuestTracking(): void {
+  stopTracking(): void {
     this.removeActivityListeners();
     this.trackingEnabled = false;
   }

@@ -52,7 +52,7 @@ export class MenuDialogComponent {
   async logOut() {
     this.presenceService.updateOnDisconnect().then(() => {
       this.presenceService.updateGuestStatus("t8WOIhqo9BYogI9FmZhtCHP7K3t1", 'offline');
-      this.presenceService.stopGuestTracking();
+      this.presenceService.stopTracking();
       
       if (isPlatformBrowser(this.platformId)) {
         localStorage.removeItem('currentUser');
