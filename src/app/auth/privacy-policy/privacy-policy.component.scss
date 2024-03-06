@@ -1,0 +1,118 @@
+@import "../../../styles.scss";
+
+$fontFigtree: "Figtree", sans-serif;
+
+.background-container {
+  @include dFlex(column, center, center);
+  width: 100vw;
+  max-width: 1920px;
+  height: 100vh;
+  margin: 0 auto;
+  z-index: 100;
+  background-color: $bgGrey;
+  position: relative;
+  animation: backgroundFadeIn 1s ease-in forwards;
+  overflow: hidden;
+
+  &__logo {
+    @include pAbsolute(32px, unset, unset, 32px, unset);
+  }
+
+  &__legals {
+    @include dFlex(row, center, center, 16px);
+    position: absolute;
+    bottom: 48px;
+    margin-top: 10px;
+    font-family: $fontFigtree;
+
+    a {
+      color: $bgBlue;
+      border-radius: 20px;
+      padding: 2px 8px;
+      transition: ease-in-out 0.3s;
+      border: 1px solid transparent;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $dkBlue;
+        color: $dkBlue;
+        font-weight: 400;
+        transition: ease-in-out 0.3s;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+.privacy {
+  width: 660px;
+  height: 648px;
+  padding: 32px;
+  border-radius: 30px;
+  @include dFlex(column, start, 36px);
+  gap: 36px;
+  box-shadow: $boxShadow;
+  overflow: scroll;
+  z-index: 100;
+  margin-bottom: 16px;
+  align-items: center;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__headline {
+    color: $dkBlue;
+    padding-bottom: 32px;
+    @include fontNunito($weight: 700, $size: 46px);
+  }
+
+  &__adress {
+    color: $dkBlue;
+    padding: 36px;
+    @include fontNunito($weight: 700, $size: 32px);
+    padding-bottom: 0px;
+  }
+
+  h2 {
+    color: $dkBlue;
+    text-align: center;
+  }
+
+  p {
+    @include fontNunito($weight: 400, $size: 16px);
+    text-align: center;
+    line-height: 20px;
+  }
+
+  li {
+    @include fontNunito($weight: 400, $size: 14px);
+  }
+
+  &__arrow-back {
+    position: absolute;
+    top: 52px;
+    left: 42px;
+    cursor: pointer;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  a {
+    color: $dkBlue;
+    cursor: pointer;
+  }
+}
+
+.break {
+  word-break: break-all;
+}
