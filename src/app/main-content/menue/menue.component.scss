@@ -81,3 +81,20 @@ app-menue-messages {
 .rotated {
     transform: rotate(270deg);
 }
+
+@media (max-width: $mobile-breakpoint) {
+
+    .menu-card {
+        padding: 0px 6px 0px 12px;
+        clip-path: unset;
+        box-shadow: none !important;
+    }
+
+    app-menue-header,
+    app-menue-channels,
+    app-menue-messages {
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {}

@@ -1,3 +1,5 @@
+@import './../../styles.scss';
+
 main {
     width: calc(100vw - 40px);
     height: calc(100vh - 40px - 90px);
@@ -5,14 +7,30 @@ main {
     display: flex;
     gap: 20px;
 
-    app-menue{
+    app-menue {
         overflow: hidden;
     }
 
-    app-channel{
+    app-channel {
         flex: 2;
         width: calc(100% - 40px);
     }
 
     overflow: hidden;
 }
+
+@media (max-width: $mobile-breakpoint) {
+
+    main {
+        height: calc(100vh - 172px - 30px);
+        background-color: white;
+        padding: 0px 20px 30px 20px;
+
+        app-menue {
+            width: 100%;
+        }
+    }
+
+}
+
+@media (max-width: 400px) {}

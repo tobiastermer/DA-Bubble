@@ -15,6 +15,10 @@ $dkPurple: #444df2; // for buttons
 
 $bgdGrey: #686868; // ******!!doppelt!!*******
 
+.bg-white {
+  background-color: white;
+}
+
 /////////// border + shadows /////////////
 
 $boxShadow: 0px 2px 10px 0px #00000014;
@@ -254,7 +258,7 @@ a {
 }
 
 .desktop-hidden {
-  display: none;
+  display: none !important;
 }
 
 @media (max-width: $mobile-breakpoint) {
@@ -265,6 +269,11 @@ a {
 
   .desktop-hidden {
     display: unset !important;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
   }
 
 }
