@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, collectionData, query, where, limit, orderBy, onSnapshot, addDoc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, query, where, onSnapshot, addDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { ChannelMessage } from '../models/channel-message.class';
 
@@ -18,7 +18,13 @@ export class ChannelMessagesService {
 
     constructor() { }
 
-    async addChannelMessage(channelMessage: ChannelMessage) {
+
+    /**
+     * Adds a new channel message to Firestore.
+     * @param {ChannelMessage} channelMessage - The channel message to add.
+     * @returns {Promise<string | unknown>} A promise that resolves to the ID of the added document or an error object if an error occurs.
+     */
+    async addChannelMessage(channelMessage: ChannelMessage): Promise<string | unknown> {
         try {
             const docRef = await addDoc(collection(this.firestore, "channelConversations"), channelMessage.toJSON());
             console.log(docRef.id);
@@ -29,6 +35,11 @@ export class ChannelMessagesService {
         }
     }
 
+
+    /**
+     * Updates an existing channel message in Firestore.
+     * @param {ChannelMessage} channelMessage - The updated channel message.
+     */
     async updateChannelMessage(channelMessage: ChannelMessage) {
         if (channelMessage.id) {
             const docRef = doc(collection(this.firestore, 'channelConversations'), channelMessage.id);
@@ -36,20 +47,34 @@ export class ChannelMessagesService {
         }
     }
 
+
+    /**
+     * Deletes a channel message from Firestore.
+     * @param {ChannelMessage} channelMessage - The channel message to delete.
+     */
     async deleteChannelMessage(channelMessage: ChannelMessage) {
         await deleteDoc(doc(collection(this.firestore, 'channelConversations'), channelMessage.id)).catch(
             (err) => { console.log(err); }
         )
     }
 
+
+    /**
+     * Retrieves channel messages for a specific channel from Firestore and subscribes to changes.
+     * @param {string} channelID - The ID of the channel to retrieve messages for.
+     */
     getChannelMessages(channelID: string) {
         const q = query(collection(this.firestore, 'channelConversations'), where("channelID", "==", channelID));
         onSnapshot(q, (snapshot) => {
-            const channelMessages = snapshot.docs.map(doc => ChannelMessage.fromFirestore({id: doc.id, data: () => doc.data()}));
+            const channelMessages = snapshot.docs.map(doc => ChannelMessage.fromFirestore({ id: doc.id, data: () => doc.data() }));
             this.channelMessagesSubject.next(channelMessages);
         });
     }
 
+
+    /**
+     * Retrieves all channel messages from Firestore and subscribes to changes.
+     */
     getAllChannelMessages() {
         const q = query(collection(this.firestore, 'channelConversations'));
         onSnapshot(q, (snapshot) => {

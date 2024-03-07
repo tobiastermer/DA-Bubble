@@ -5,7 +5,6 @@ import {
   sendEmailVerification,
 } from '@angular/fire/auth';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
 import { GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import {
   ref,
@@ -22,16 +21,27 @@ export class AuthService {
   constructor(
     private afAuth: Auth,
     private firestore: Firestore,
-    private router: Router,
     private storage: Storage
-  ) {}
+  ) { }
 
+
+  /**
+  * Checks if a user with the given UID exists in the Firestore database.
+  * @param {string} uid - The UID of the user to check.
+  * @returns {Promise<boolean>} A promise that resolves to true if the user exists, false otherwise.
+  */
   async userExists(uid: string): Promise<boolean> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
     const docSnap = await getDoc(userDocRef);
     return docSnap.exists();
   }
 
+
+  /**
+   * Checks if an email address exists in the Firestore database.
+   * @param {string} email - The email address to check.
+   * @returns {Promise<boolean>} A promise that resolves to true if the email exists, false otherwise.
+   */
   async emailExists(email: string): Promise<boolean> {
     const usersRef = collection(this.firestore, 'users');
     const q = query(usersRef, where('email', '==', email));
@@ -39,6 +49,14 @@ export class AuthService {
     return !querySnapshot.empty;
   }
 
+
+  /**
+   * Saves account data for a user in Firestore and creates a new account using email and password authentication.
+   * @param {string} email - The email address of the user.
+   * @param {string} password - The password of the user.
+   * @param {string} name - The name of the user.
+   * @param {string} avatarPath - The path to the user's avatar image.
+   */
   async saveAccountDataUser(
     email: string,
     password: string,
@@ -68,7 +86,12 @@ export class AuthService {
     }
   }
 
-  async signInWithGoogle() {
+
+  /**
+   * Signs in a user using Google authentication and saves user data to Firestore.
+   * @returns {Promise<any>} A promise that resolves to the signed-in user.
+   */
+  async signInWithGoogle(): Promise<any> {
     try {
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(this.afAuth, provider);
@@ -80,6 +103,11 @@ export class AuthService {
     }
   }
 
+
+  /**
+   * Saves user data to Firestore.
+   * @param {any} user - The user object containing data to be saved.
+   */
   async saveUserData(user: any) {
     const userDocRef = doc(this.firestore, `users/${user.uid}`);
     await setDoc(
@@ -95,6 +123,12 @@ export class AuthService {
     );
   }
 
+
+  /**
+   * Uploads an avatar image file to Cloud Storage.
+   * @param {File} file - The avatar image file to upload.
+   * @returns {Promise<string>} A promise that resolves to the download URL of the uploaded image.
+   */
   async uploadAvatarImage(file: File): Promise<string> {
     const storageRef = ref(this.storage, `avatars/${Date.now()}_${file.name}`);
     await uploadBytes(storageRef, file);
@@ -102,6 +136,11 @@ export class AuthService {
   }
 
 
+  /**
+   * Uploads a message data file to Cloud Storage.
+   * @param {File} file - The message data file to upload.
+   * @returns {Promise<string>} A promise that resolves to the download URL of the uploaded file.
+   */
   async uploadMsgData(file: File): Promise<string> {
     const storageRef = ref(
       this.storage,
@@ -111,6 +150,12 @@ export class AuthService {
     return getDownloadURL(storageRef);
   }
 
+
+  /**
+   * Updates the email address of a user in Firestore if needed.
+   * @param {string} uid - The UID of the user whose email is to be updated.
+   * @param {string} newEmail - The new email address.
+   */
   async updateEmailInFirestoreIfNeeded(uid: string, newEmail: string) {
     const usersRef = collection(this.firestore, 'users');
     const q = query(usersRef, where('uid', '==', uid));

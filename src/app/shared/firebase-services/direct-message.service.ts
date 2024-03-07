@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, collectionData, query, where, limit, orderBy, onSnapshot, addDoc, getDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, query, where, onSnapshot, addDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { DirectMessage } from '../models/direct-message.class';
 
