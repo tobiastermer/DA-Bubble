@@ -162,7 +162,6 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       (!!inputID && this.filteredUsers.length > 0) ||
       (!!inputID && this.filteredChannels.length > 0) ||
       (!!inputID && this.filteredMessages.length > 0);
-
   }
 
   ngOnDestroy() {

@@ -15,7 +15,7 @@
     <div class="user-head" (click)="openDialog()">
         <span class="name mobile-hidden">{{currentUser.name}}</span>
         <div class="avater">
-            <img src={{currentUser.avatar}}>
+            <img src={{currentUser.avatar}} (error)="onImageError($event)">
         </div>
         <div class="menu-btn mobile-hidden">
             <img src="./../../../assets/img/icons/expand_more_bk.png">

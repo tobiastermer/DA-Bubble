@@ -74,4 +74,8 @@ export class HeaderComponent {
     this.positionService.setActiveResponsiveWindow('menu');
   }
 
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = './../../assets/img/avatars/unknown.jpg';
+  }
+
 }
