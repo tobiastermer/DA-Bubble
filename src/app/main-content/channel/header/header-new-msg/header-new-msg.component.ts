@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { User } from '../../../../shared/models/user.class';
 import { Channel } from '../../../../shared/models/channel.class';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { UserChipComponent } from '../../../../shared/components/user-chip/user-
   templateUrl: './header-new-msg.component.html',
   styleUrls: ['./header-new-msg.component.scss']
 })
-export class HeaderNewMsgComponent {
+export class HeaderNewMsgComponent implements OnDestroy {
   users: User[] = [];
   filteredUsers: User[] = [];
   channels: Channel[] = [];
@@ -36,7 +36,13 @@ export class HeaderNewMsgComponent {
     });
   }
 
-  ngOnInit() {
+
+  /**
+   * Initializes the component by subscribing to changes in users and current user channels.
+   * Updates the local users and channels arrays accordingly and marks for check to trigger change detection.
+   * @returns {void}
+   */
+  ngOnInit(): void {
     this.dataService.users$.subscribe((users) => {
       this.users = users;
       this.cdr.markForCheck(); // Verwenden Sie markForCheck für OnPush-Strategie
@@ -48,59 +54,110 @@ export class HeaderNewMsgComponent {
     });
   }
 
-  filter() {
+
+  /**
+   * Filters users or channels based on the search input value.
+   * Resets filters if the search input doesn't start with '@' or '#'.
+   * @returns {void}
+   */
+  filter(): void {
     const search = this.searchInput.nativeElement.value.toLowerCase();
-    if (search.startsWith('@')) {
-      this.filterUsers(search.slice(1));
-    } else if (search.startsWith('#')) {
-      this.filterChannels(search.slice(1));
-    } else {
-      this.resetFilters();
-    }
+    if (search.startsWith('@')) this.filterUsers(search.slice(1));
+    else if (search.startsWith('#')) this.filterChannels(search.slice(1));
+    else this.resetFilters();
   }
 
-  filterUsers(searchTerm: string) {
+
+  /**
+   * Filters users based on the provided search term.
+   * Updates filteredUsers array and visibility.
+   * @param {string} searchTerm - The search term used to filter users.
+   * @returns {void}
+   */
+  filterUsers(searchTerm: string): void {
     this.filteredUsers = this.users.filter(user => user.name.toLowerCase().includes(searchTerm));
     this.filteredChannels = [];
     this.updateVisibility();
   }
 
-  filterChannels(searchTerm: string) {
+
+  /**
+   * Filters channels based on the provided search term.
+   * Updates filteredChannels array and visibility.
+   * @param {string} searchTerm - The search term used to filter channels.
+   * @returns {void}
+   */
+  filterChannels(searchTerm: string): void {
     this.filteredChannels = this.channels.filter(channel => channel.name.toLowerCase().includes(searchTerm));
     this.filteredUsers = [];
     this.updateVisibility();
   }
 
-  updateVisibility() {
+
+  /**
+   * Updates visibility based on the filtered users and channels.
+   * @returns {void}
+   */
+  updateVisibility(): void {
     this.selectListVisible = this.filteredUsers.length > 0 || this.filteredChannels.length > 0;
     this.showChannels = this.filteredChannels.length > 0;
   }
 
-  resetFilters() {
+
+  /**
+   * Resets all filters and sets visibility to false.
+   * @returns {void}
+   */
+  resetFilters(): void {
     this.filteredUsers = [];
     this.filteredChannels = [];
     this.selectListVisible = false;
     this.showChannels = false;
   }
 
-  changeUserPath(user: User) {
+
+  /**
+   * Changes the route path based on the selected user.
+   * Navigates to the corresponding user message route and closes the list.
+   * @param {User} user - The selected user.
+   * @returns {void}
+   */
+  changeUserPath(user: User): void {
     const name = user.name.replace(/\s/g, '_');
     this.router.navigate([`${this.activeRouter.snapshot.params['idUser']}/message/${name}`]);
     this.closeList();
   }
 
-  changeChannelPath(channel: Channel) {
+
+  /**
+   * Changes the route path based on the selected channel.
+   * Navigates to the corresponding channel route and closes the list.
+   * @param {Channel} channel - The selected channel.
+   * @returns {void}
+   */
+  changeChannelPath(channel: Channel): void {
     const channelName = channel.name;
     this.router.navigate([`${this.activeRouter.snapshot.params['idUser']}/channel/${channelName}`]);
     this.closeList();
   }
 
-  closeList() {
+
+
+  /**
+   * Closes the list by resetting search input value and filters.
+   * @returns {void}
+   */
+  closeList(): void {
     this.searchInput.nativeElement.value = '';
     this.resetFilters();
   }
 
-  ngOnDestroy() {
-    // Cleanup, falls Subscriptions verwendet werden
+
+  /**
+   * Lifecycle hook that is called when the component is destroyed.
+   * It is used to unsubscribe from any subscriptions to prevent memory leaks.
+   * @returns {void}
+   */
+  ngOnDestroy(): void {
   }
 }
