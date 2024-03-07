@@ -19,7 +19,7 @@
                 }
 
 
-                <app-message [msg]="message" [user]="getUserFromMessage(message)" [isChannelMsg]="true"
+                <app-message [msg]="message" [user]="dataService.getUserFromMessage(message)" [isChannelMsg]="true"
                     (threadOutput)="setThreadValues($event)"></app-message>
                 }
         </main>
@@ -40,7 +40,7 @@
                 }
 
 
-                <app-message [msg]="message" [user]="getUserFromMessage(message)" [isChannelMsg]="true"
+                <app-message [msg]="message" [user]="dataService.getUserFromMessage(message)" [isChannelMsg]="true"
                     (threadOutput)="setThreadValues($event)"></app-message>
                 }
         </main>

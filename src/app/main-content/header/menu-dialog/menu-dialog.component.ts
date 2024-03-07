@@ -37,7 +37,7 @@ export class MenuDialogComponent {
     this.dialogRef.close();
   }
 
-  openDialog(user: User, currentUserID: String) {
+  openDialog(user: User, currentUserID: String | undefined) {
     this.dialog.open(DialogShowUserComponent, {
       panelClass: ['card-right-corner'],
       position: {

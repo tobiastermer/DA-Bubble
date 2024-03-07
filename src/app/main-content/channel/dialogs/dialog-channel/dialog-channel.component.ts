@@ -168,7 +168,7 @@ export class DialogChannelComponent {
 
   async deleteMembership() {
     this.loading = true;
-    const currentUserID = this.DataService.currentUserID;
+    const currentUserID = this.DataService.currentUser.id;
     if (currentUserID && this.channel!.id) {
       try {
         const memberships = await this.MembershipService.getMembershipID(currentUserID, this.channel!.id);
