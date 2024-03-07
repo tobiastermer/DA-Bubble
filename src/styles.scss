@@ -25,7 +25,7 @@ $boxShadow: 0px 2px 10px 0px #00000014;
 
 /////////// responsive /////////////
 
-$mobile-breakpoint: 660px; // muss analog dem position.service sein!!!
+$mobile-breakpoint: 400px; // muss analog dem position.service sein!!!
 $tablet-breakpoint: 1000px;
 $wide-breakpoint: 1250px;
 $bigscreen-breakpoint: 1920px;
@@ -261,7 +261,7 @@ a {
   display: none !important;
 }
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: $tablet-breakpoint) {
 
   .mobile-hidden {
     display: none !important;

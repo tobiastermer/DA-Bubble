@@ -91,7 +91,7 @@ export class PositionService {
     }
 
     isResponsiveWindowVisible(value: "menu" | "channel" | "thread" | "message" | "new"): Observable<boolean> {
-        const mobileBreakpoint = 660;
+        const mobileBreakpoint = 1000; // muss analog der styles.scss $tablet-breakpoint sein
         return combineLatest([
             this.windowWidth.asObservable(),
             this.responsiveActiveWindow.asObservable()

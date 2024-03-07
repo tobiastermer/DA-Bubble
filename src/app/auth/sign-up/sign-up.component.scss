@@ -269,7 +269,7 @@ form {
 }*/
 
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: $tablet-breakpoint) {
 
   .background-container {
     justify-content: safe center;
@@ -319,7 +319,7 @@ form {
 
 }
 
-@media (max-width: 400px) {
+@media (max-width: $mobile-breakpoint) {
 
 
 

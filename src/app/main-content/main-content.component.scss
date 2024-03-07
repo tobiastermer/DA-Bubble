@@ -19,7 +19,7 @@ main {
     overflow: hidden;
 }
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: $tablet-breakpoint) {
 
     main {
         height: calc(100vh - 172px - 30px);
@@ -33,4 +33,4 @@ main {
 
 }
 
-@media (max-width: 400px) {}
+@media (max-width: $mobile-breakpoint) {}

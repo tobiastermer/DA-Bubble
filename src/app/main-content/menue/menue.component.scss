@@ -82,7 +82,7 @@ app-menue-messages {
     transform: rotate(270deg);
 }
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: $tablet-breakpoint) {
 
     .menu-card {
         padding: 0px 6px 0px 12px;
@@ -97,4 +97,4 @@ app-menue-messages {
     }
 }
 
-@media (max-width: 400px) {}
+@media (max-width: $mobile-breakpoint) {}

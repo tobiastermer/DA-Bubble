@@ -34,7 +34,7 @@ $text-color-black: black;
     transform: translate(-50%, -50%);
     animation: moveToCorner 1s ease-in 1s forwards;
 
-    @media (max-width:1000px) {
+    @media (max-width: $tablet-breakpoint) {
       animation: moveToTop 1s ease-in 1s forwards;
     }
 
@@ -49,7 +49,7 @@ $text-color-black: black;
       animation: sizeDown 1s ease-in 1s forwards, NoSpin 1s linear 1s;
     }
 
-    @media (max-width: $mobile-breakpoint) {
+    @media (max-width: $tablet-breakpoint) {
       height: 100px;
       width: 100px;
     }
@@ -70,7 +70,7 @@ $text-color-black: black;
   animation: revealText 2s ease-in forwards;
   @include fontNunito($weight: 700, $size: 64px);
 
-  @media (max-width: $mobile-breakpoint) {
+  @media (max-width: $tablet-breakpoint) {
     font-size: 48px;
   }
 }
@@ -149,7 +149,7 @@ $text-color-black: black;
 
 
 
-@media (max-width: 1000px) {
+@media (max-width: $tablet-breakpoint) {
 
   @keyframes moveToTop {
     to {

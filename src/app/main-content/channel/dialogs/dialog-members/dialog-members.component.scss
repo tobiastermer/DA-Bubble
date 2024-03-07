@@ -52,7 +52,7 @@ mat-card {
     }
 }
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: $tablet-breakpoint) {
 
     mat-card {
         padding: 40px 20px;
@@ -61,4 +61,4 @@ mat-card {
 
 }
 
-@media (max-width: 400px) {}
+@media (max-width: $mobile-breakpoint) {}
