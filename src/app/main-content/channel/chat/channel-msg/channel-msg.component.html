@@ -1,8 +1,8 @@
 <section class="channel-message">
     <div>
         <div class="hash"></div>
-        <h3>{{ channel.name }}</h3>
+        <h3 (click)="openDialogChannel()">{{ channel.name }}</h3>
     </div>
-    <span> @if (owner) {<a>{{ owner }}</a> hat diesen Channel am {{ createDate }} erstellt. }
+    <span> @if (channel.ownerID) {<a (click)="openShowUserDialog(channel.ownerID)">{{ dataService.getUserNameById(channel.ownerID) }}</a> hat diesen Channel erstellt. }
         Das ist der Anfang des Channels</span>
 </section>

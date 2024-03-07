@@ -43,7 +43,7 @@ export class DataService {
    * Loads the current user from local storage if running in a browser environment.
    * @returns {void}
    */
-  loadCurrentUser():void {
+  loadCurrentUser(): void {
     if (isPlatformBrowser(this.platformId)) {
       const userJson = localStorage.getItem('currentUser');
       if (userJson) {
@@ -92,7 +92,7 @@ export class DataService {
    * @param {Channel[]} channels - The array of channels to set.
    * @returns {void}
    */
-  setChannels(channels: Channel[]):void {
+  setChannels(channels: Channel[]): void {
     this.channelsSubject.next(channels);
     this.channels = channels;
   }
@@ -112,7 +112,7 @@ export class DataService {
    * @param {Channel[]} channels - The array of channels associated with the current user to set.
    * @returns {void}
    */
-  setCurrentUserChannels(channels: Channel[]):void {
+  setCurrentUserChannels(channels: Channel[]): void {
     this.currentUserChannelsSubject.next(channels);
   }
 
@@ -148,6 +148,18 @@ export class DataService {
    */
   public getUserByName(name: string): User | undefined {
     const user = this.users.find((user) => user.name === name);
+    if (user) return user;
+    else return;
+  }
+
+
+  /**
+   * Retrieves the user object associated with the provided ID.
+   * @param {string} id - The ID of the user to retrieve.
+   * @returns {User | undefined} The user object associated with the provided ID, or undefined if not found.
+   */
+  public getUserById(id: string): User | undefined {
+    const user = this.users.find((user) => user.id === id);
     if (user) return user;
     else return;
   }
@@ -198,7 +210,7 @@ export class DataService {
    * If no emojis are found in local storage, default emojis are loaded.
    * @returns {void}
    */
-  public loadLastEmojis():void {
+  public loadLastEmojis(): void {
     let load = localStorage.getItem('lastEmojis');
     if (load) this.lastEmojis = load.split(',');
     else this.lastEmojis = ['👍', '😀'];
