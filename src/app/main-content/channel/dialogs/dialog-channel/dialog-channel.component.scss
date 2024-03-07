@@ -142,4 +142,16 @@ header {
     color: red;
     font-size: 0.875rem;
     margin-top: -10px;
+    line-height: 1;
 }
+
+@media (max-width: $mobile-breakpoint) {
+
+    mat-card {
+        padding: 40px 20px;
+        min-width: unset;
+    }
+
+}
+
+@media (max-width: 400px) {}

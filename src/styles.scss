@@ -276,4 +276,20 @@ a {
     height: 0px;
   }
 
+  .cdk-global-overlay-wrapper {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .cdk-overlay-pane {
+    margin-top: unset !important;
+    margin-right: unset !important;
+    margin-bottom: unset !important;
+    margin-left: unset !important;
+    max-width: unset !important;
+    width: calc(100% - 32px);
+    max-height: calc(100% - 32px);
+    border-radius: 30px 30px 30px 30px !important;
+  }
+
 }

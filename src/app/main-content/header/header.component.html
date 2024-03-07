@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<div @slideInLeftSlow class="desktop-hidden">
+<div @slideInLeftSlow class="desktop-hidden" *ngIf="isMenuVisible">
     <div class="header-content bg-white">
         <app-search-bar class="search-bar"></app-search-bar>
     </div>

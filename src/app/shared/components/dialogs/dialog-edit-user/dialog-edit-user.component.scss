@@ -14,7 +14,7 @@ a {
 .dialog-container {
     position: relative;
     padding: 40px;
-    @include dFlex($fd: column, $ai: flex-start, $jc: flex-start, $gap: 32px);
+    @include dFlex($fd: column, $ai: flex-start, $jc: flex-start, $gap: 16px);
     border-radius: 30px !important;
     width: 500px;
 
@@ -32,6 +32,7 @@ h2 {
 .avatar-container {
     @include dFlex($jc: center);
     width: 100%;
+    margin-bottom: 16px;
 
     img {
         height: 200px;
@@ -156,4 +157,18 @@ h2 {
     color: red;
     font-size: 0.875rem;
     margin-top: -10px;
+    line-height: 1;
 }
+
+@media (max-width: $mobile-breakpoint) {
+
+    .dialog-container {
+        border-radius: 30px !important;
+        width: unset;
+        padding: 40px 20px 40px 20px;
+
+    }
+  
+  }
+  
+  @media (max-width: 400px) {}

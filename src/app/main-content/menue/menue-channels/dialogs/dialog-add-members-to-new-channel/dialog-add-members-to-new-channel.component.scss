@@ -71,3 +71,14 @@ mat-card {
     }
 
 }
+
+@media (max-width: $mobile-breakpoint) {
+
+    mat-card {
+        padding: 40px 20px;
+        width: unset;
+    }
+
+}
+
+@media (max-width: 400px) {}
