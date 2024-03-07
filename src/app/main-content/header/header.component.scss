@@ -9,6 +9,7 @@
   position: relative;
   padding: 20px 20px 0px 20px;
   @include dFlex($gap: 20px, $jc: space-between);
+  z-index: 2;
 }
 
 .logo {
