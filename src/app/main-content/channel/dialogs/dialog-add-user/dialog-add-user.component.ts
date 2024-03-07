@@ -47,15 +47,31 @@ export class DialogAddUserComponent {
     @Inject(MAT_DIALOG_DATA) public data: { currentMemberIDs: string[], channel: Channel },
   ) { }
 
+
+  /**
+   * Closes the current dialog without any further action.
+   * @returns {void}
+   */
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  addUsers() {
+
+  /**
+   * Closes the current dialog and passes the selected users as the result.
+   * If no users are selected, the dialog is closed without passing any result.
+   * @returns {void}
+   */
+  addUsers(): void {
     if (this.selectedUsers.length == 0) return
     this.dialogRef.close(this.selectedUsers);
   }
 
+
+  /**
+   * Determines and returns the CSS classes for the button based on the number of selected users.
+   * @returns {any} - An object containing CSS classes for the button.
+   */
   setBtnClass(): any {
     return {
       'btn-disable': this.selectedUsers.length == 0,
@@ -63,17 +79,37 @@ export class DialogAddUserComponent {
     };
   }
 
-  onUserAdded(user: User) {
+
+  /**
+   * Event handler for when a user is added.
+   * Checks if the user is already selected, and if not, adds the user to the selected users list.
+   * @param {User} user - The user being added.
+   * @returns {void}
+   */
+  onUserAdded(user: User): void {
     if (!this.selectedUsers.find(u => u.id === user.id)) {
       this.selectedUsers.push(user);
     }
   }
 
-  onUserRemoved(user: User) {
+  /**
+   * Event handler for when a user is removed.
+   * Removes the specified user from the selected users list.
+   * @param {User} user - The user being removed.
+   * @returns {void}
+   */
+  onUserRemoved(user: User): void {
     this.selectedUsers = this.selectedUsers.filter(u => u.id !== user.id);
   }
 
-  onSelectedUsersChanged(users: User[]) {
+
+  /**
+   * Event handler for when the selected users are changed.
+   * Updates the list of selected users with the new list provided.
+   * @param {User[]} users - The new list of selected users.
+   * @returns {void}
+   */
+  onSelectedUsersChanged(users: User[]): void {
     this.selectedUsers = users;
   }
 

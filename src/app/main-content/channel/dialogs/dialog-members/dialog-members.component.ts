@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
 import { User } from '../../../../shared/models/user.class';
 import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
-import { Channel } from '../../../../shared/models/channel.class';
 
 @Component({
   selector: 'app-dialog-members',
@@ -40,27 +39,40 @@ export class DialogMembersComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogMembersComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: {members: User[]},
+    @Inject(MAT_DIALOG_DATA) public data: { members: User[] },
   ) {
     this.members = data.members;
   }
 
+
+  /**
+   * Closes the current dialog without taking any further action.
+   * @returns {void}
+   */
   onNoClick(): void {
     this.dialogRef.close();
   }
 
 
-  openShowUserDialog(user: User) {
-    this.dialog.open(DialogShowUserComponent,{
+  /**
+   * Opens a dialog to show detailed information about the specified user.
+   * @param {User} user - The user whose information will be displayed in the dialog.
+   * @returns {void}
+   */
+  openShowUserDialog(user: User): void {
+    this.dialog.open(DialogShowUserComponent, {
       panelClass: ['card-round-corners'],
       data: { user },
     });
   }
 
 
-  openAddUser(){
+  /**
+   * Closes the current dialog and indicates that the user should be added.
+   * @returns {void}
+   */
+  openAddUser(): void {
     this.dialogRef.close(true);
   }
-
 
 }
