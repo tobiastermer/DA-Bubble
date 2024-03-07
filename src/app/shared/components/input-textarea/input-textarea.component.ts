@@ -67,6 +67,9 @@ export class InputTextareaComponent {
   ) { }
 
 
+  /**
+   * Updates the state of the send button based on the message text and file attachment.
+   */
   updateButtonState() {
     if (this.isLoading) return this.isButtonDisabled = true;
     if (this.messageText && this.messageText.nativeElement.innerText.trim()) return this.isButtonDisabled = false;
@@ -75,6 +78,10 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Handles the backspace key press event to delete temporary file attachment.
+   * @param {Event} event - The keyboard event.
+   */
   onDelete(event: Event) {
     if (!(event instanceof KeyboardEvent)) return
     if (event.key !== 'Backspace') return
@@ -89,6 +96,11 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Handles the enter key press event to send the message.
+   * @param {Event} event - The keyboard event.
+   * @param {string} textValue - The text value of the message.
+   */
   handleEnter(event: Event, textValue: string): void {
     const keyboardEvent = event as KeyboardEvent;
     if (keyboardEvent.shiftKey) return
@@ -100,6 +112,10 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Adds a new message based on the chat type.
+   * @param {string} text - The text of the message.
+   */
   addNewMsg(text: string) {
     this.isLoading = true;
     this.isButtonDisabled = true;
@@ -109,12 +125,19 @@ export class InputTextareaComponent {
   }
 
 
-  unsetLoading(){
+  /**
+   * Unsets the loading state after sending the message.
+   */
+  unsetLoading() {
     this.isLoading = false;
     this.updateButtonState();
   }
 
 
+  /**
+   * Adds a new channel message with the provided text and optional file attachment.
+   * @param {string} text - The text content of the message.
+   */
   async addNewChannelMsg(text: string) {
     let newMsg: ChannelMessage | undefined = await this.fillChannelMsg(text);
     let id: any;
@@ -122,12 +145,17 @@ export class InputTextareaComponent {
     id = await this.channelMsgService.addChannelMessage(newMsg);
     if (!id) return
     newMsg.id = id;
-    await this.channelMsgService.updateChannelMessage(newMsg);    
+    await this.channelMsgService.updateChannelMessage(newMsg);
     this.unsetLoading();
   }
 
 
-  async fillChannelMsg(text: string) {
+  /**
+   * Fills a channel message object with the provided text and optional file attachment.
+   * @param {string} text - The text content of the message.
+   * @returns {Promise<ChannelMessage | undefined>} The filled channel message object.
+   */
+  async fillChannelMsg(text: string): Promise<ChannelMessage | undefined> {
     if (!this.data.currentUser.id) return
     if (!this.channel || this.channel.id === '') return
     let msg = new ChannelMessage();
@@ -140,6 +168,10 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Adds a new direct message with the provided text and optional file attachment.
+   * @param {string} text - The text content of the message.
+   */
   async addNewDirectMsg(text: string) {
     let newMsg: DirectMessage | undefined = await this.fillDirectMsg(text);
     let id: any;
@@ -152,7 +184,12 @@ export class InputTextareaComponent {
   }
 
 
-  async fillDirectMsg(text: string) {
+  /**
+   * Fills a direct message object with the provided text and optional file attachment.
+   * @param {string} text - The text content of the message.
+   * @returns {Promise<DirectMessage | undefined>} The filled direct message object.
+   */
+  async fillDirectMsg(text: string): Promise<DirectMessage | undefined> {
     if (!this.data.currentUser.id) return
     if (!this.chatUserId) return
     let msg = new DirectMessage();
@@ -165,17 +202,26 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Adds a new reply message with the provided text and optional file attachment.
+   * @param {string} text - The text content of the message.
+   */
   async addNewReplyMsg(text: string) {
     let newReply: Reply | undefined = await this.fillReplyMsg(text)
     if (!newReply || !this.msg) return
     this.msg.replies.push(newReply);
     if (this.msg instanceof DirectMessage) await this.directMsgService.updateDirectMessage(this.msg);
-    else await this.channelMsgService.updateChannelMessage(this.msg);    
+    else await this.channelMsgService.updateChannelMessage(this.msg);
     this.unsetLoading();
   }
 
 
-  async fillReplyMsg(text: string) {
+  /**
+   * Fills a reply message object with the provided text and optional file attachment.
+   * @param {string} text - The text content of the message.
+   * @returns {Promise<Reply | undefined>} The filled reply message object.
+   */
+  async fillReplyMsg(text: string): Promise<Reply | undefined> {
     if (!this.data.currentUser.id) return
     if ((!this.channel || this.channel.id === '') && this.msg instanceof ChannelMessage) return
     let reply = new Reply();
@@ -187,8 +233,10 @@ export class InputTextareaComponent {
     return reply
   }
 
-  
-  // @-Part
+
+  /**
+   * Opens the dialog for selecting users to mention in the message text.
+   */
   openDialogAtUser(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.atUser, 'bottom');
     this.currentMemberIDs = this.members.map(user => user.id!);
@@ -202,6 +250,10 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Adds users to the message text.
+   * @param {User[]} users - The array of users to add.
+   */
   addUserToMessageText(users: User[]) {
     if (!this.messageText) return;
     this.appendChildForAllUsers(users)
@@ -210,6 +262,10 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Appends user mentions to the message text.
+   * @param {User[]} users - The array of users to mention.
+   */
   appendChildForAllUsers(users: User[]) {
     users.forEach((user, index) => {
       let span = document.createElement('span');
@@ -224,6 +280,10 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Opens the dialog to show user details.
+   * @param {User} user - The user whose details to show.
+   */
   openShowUserDialog(user: User) {
     this.dialog.open(DialogShowUserComponent, {
       panelClass: ['card-round-corners'],
@@ -232,6 +292,9 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Opens the dialog for selecting an emoji.
+   */
   openDialogEmoji(): void {
     const selection = window.getSelection();
     if (selection) this.range = selection.getRangeAt(0);
@@ -249,6 +312,10 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Selects a file for attachment.
+   * @param {any} event - The file input change event.
+   */
   selectFile(event: any) {
     if (this.tempFile) this.changeFile();
     this.fileService.element = this.messageText;
@@ -257,6 +324,9 @@ export class InputTextareaComponent {
   }
 
 
+  /**
+   * Changes the attached file.
+   */
   changeFile() {
     let uploadFileElement = this.messageText.nativeElement.querySelector('#uploadFile');
     if (uploadFileElement) {

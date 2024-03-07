@@ -62,18 +62,27 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Closes the edit message dialog if not in loading state.
+   */
   closeEdit() {
     if (this.isLoading) return
     this.closeEvent.emit();
   }
 
 
+  /**
+   * Checks if there's a change in the message text.
+   */
   checkChange() {
     if (!this.isEditMsg) return
     (this.oldText != this.msgText.nativeElement.value) ? this.isSaveEnable = true : this.isSaveEnable = false;
   }
 
 
+  /**
+   * Opens the dialog for selecting an emoji.
+   */
   openDialogEmoji(): void {
     const selection = window.getSelection();
     if (selection) this.range = selection.getRangeAt(0);
@@ -93,6 +102,10 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Adds an emoji to the message text.
+   * @param {string} emoji - The emoji to add.
+   */
   addEmojiToText(emoji: string) {
     this.addEmoji.addEmoji(this.range, emoji, this.msgText)
     this.checkChange();
@@ -100,6 +113,9 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Deletes the current message if not in loading state.
+   */
   async deletMsg() {
     if (this.isLoading) return
     this.isLoading = true;
@@ -112,6 +128,10 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Deletes a channel message.
+   * @param {ChannelMessage} msg - The channel message to delete.
+   */
   async deletChannelMsg(msg: ChannelMessage) {
     if (msg.fromUserID !== this.currentUserID) return
     for (const reply of msg.replies) {
@@ -121,6 +141,10 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Deletes a direct message.
+   * @param {DirectMessage} msg - The direct message to delete.
+   */
   async deletDirectMsg(msg: DirectMessage) {
     if (msg.fromUserID !== this.currentUserID) return
     for (const reply of msg.replies) {
@@ -130,6 +154,10 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Deletes a reply message.
+   * @param {Reply} msg - The reply message to delete.
+   */
   async deletReplyMsg(msg: Reply) {
     if (msg.userID !== this.currentUserID) return
     if (msg.attachmentID !== '') await this.storage.deleteDoc(msg.attachmentID)
@@ -140,6 +168,9 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Saves the edited message if there are changes and not in loading state.
+   */
   async saveMsg() {
     if (!this.isSaveEnable || this.isLoading) return
     this.isSaveEnable = false;
@@ -153,6 +184,10 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Saves a channel message if the current user is the sender.
+   * @param {ChannelMessage} msg - The channel message to save.
+   */
   async saveChannelMsg(msg: ChannelMessage) {
     if (msg.fromUserID !== this.currentUserID) return
     else await this.channelMsgService.updateChannelMessage(msg)
@@ -160,6 +195,10 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Saves a direct message if the current user is the sender.
+   * @param {DirectMessage} msg - The direct message to save.
+   */
   async saveDirectMsg(msg: DirectMessage) {
     if (msg.fromUserID !== this.currentUserID) return
     else await this.directMsgService.updateDirectMessage(msg)
@@ -167,6 +206,10 @@ export class EditMessageComponent {
   }
 
 
+  /**
+   * Saves a reply message if the current user is the sender.
+   * @param {Reply} msg - The reply message to save.
+   */
   async saveReplyMsg(msg: Reply) {
     if (msg.userID !== this.currentUserID) return
     if (!this.channelMsg) return

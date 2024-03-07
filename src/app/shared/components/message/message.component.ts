@@ -67,6 +67,10 @@ export class MessageComponent implements OnChanges {
     if (!data.lastEmojis) this.data.loadLastEmojis()
   }
 
+
+  /**
+   * Initializes the component by setting default values for the user if not provided.
+   */
   ngOnInit() {
     if (!this.user) {
       this.user = new User({
@@ -79,6 +83,11 @@ export class MessageComponent implements OnChanges {
     }
   }
 
+
+  /**
+   * Responds to changes in data-bound properties.
+   * @param {SimpleChanges} changes - Object containing previous and current property values of the directive's data-bound properties.
+   */
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
       this.allLikes = this.msg.likes;
@@ -89,6 +98,10 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Fills the array of sorted likes based on unique emojis.
+   * @returns {SortedLikes[]} - The array of sorted likes.
+   */
   fillSortedLikes(): SortedLikes[] {
     let uniqueEmojis = this.getUniqueEmojis();
     let sortedLikes: SortedLikes[] = [];
@@ -101,6 +114,10 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Retrieves unique emojis from the likes.
+   * @returns {Record<string, string[]>} - Object containing unique emojis as keys and arrays of user IDs as values.
+   */
   getUniqueEmojis() {
     let uniqueEmojis: { [key: string]: string[] } = {};
     this.allLikes.forEach(like => {
@@ -113,12 +130,21 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Formats the timestamp into a readable time string.
+   * @param {number} timestamp - The timestamp to format.
+   * @returns {string} - The formatted time string.
+   */
   setTime(timestemp: number): string {
     let date = new Date(timestemp);
     return date.getHours() + ':' + date.getMinutes()
   }
 
 
+  /**
+   * Opens a dialog to display user information.
+   * @param {User} user - The user whose information is to be displayed.
+   */
   openShowUserDialog(user: User) {
     this.dialog.open(DialogShowUserComponent, {
       panelClass: ['card-round-corners'],
@@ -127,20 +153,29 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Emits the message to be displayed in the thread.
+   */
   setThreadOutput() {
-    if (this.msg instanceof ChannelMessage ) this.threadOutput.emit(this.msg)
-    if (this.msg instanceof DirectMessage ) this.threadOutput.emit(this.msg)
+    if (this.msg instanceof ChannelMessage) this.threadOutput.emit(this.msg)
+    if (this.msg instanceof DirectMessage) this.threadOutput.emit(this.msg)
     else return
   }
 
 
+  /**
+   * Sets the message text.
+   * @param {string} text - The message text to set.
+   */
   setMsgText(text: string) {
     this.message = text;
   }
 
 
-  // edit functions
-
+  /**
+   * Checks if editing the message is possible.
+   * @returns {boolean} - Indicates whether editing the message is possible.
+   */
   editPossible(): boolean {
     if (this.isEditDisabled) return false
     let out = false;
@@ -151,11 +186,17 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Toggles the edit message mode.
+   */
   toggleEditMsg() {
     this.isEditMsg = !this.isEditMsg;
   }
 
 
+  /**
+   * Opens the emoji dialog to add a like to the message.
+   */
   openDialogEmoji(): void {
     const dialogRef = this.dialog.open(DialogEmojiComponent, {
       panelClass: ['card-round-corners'],
@@ -168,6 +209,10 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Adds a like to the message.
+   * @param {string} emoji - The emoji to be added as a like.
+   */
   async addLike(emoji: string) {
     this.saveEmojiLocal(emoji);
     let newLike = this.newLike(emoji);
@@ -183,6 +228,10 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Saves the emoji locally if it is not already in the last emojis list.
+   * @param {string} emoji - The emoji to be saved locally.
+   */
   saveEmojiLocal(emoji: string) {
     if (this.data.lastEmojis.includes(emoji)) return
     this.data.lastEmojis.push(emoji);
@@ -191,6 +240,11 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Creates a new like object.
+   * @param {string} emoji - The emoji for the like.
+   * @returns {Like} - The newly created like object.
+   */
   newLike(emoji: string): Like {
     let like = new Like();
     like.emoji = emoji;
@@ -200,12 +254,19 @@ export class MessageComponent implements OnChanges {
   }
 
 
+  /**
+   * Sets the position of the hidden likes row.
+   */
   setHiddenLikePos() {
     let pos = this.PositionService.getDialogPosWithCorner(this.likesRow, 'bottom');
     if (pos?.bottom) this.posLikesRow = parseInt(pos.bottom);
   }
 
-  // Methode zum Setzen des Ersatzbildes
+
+  /**
+   * Handles the event when an image fails to load, setting a default image.
+   * @param {Event} event - The event triggered when the image fails to load.
+   */
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = '../../../../assets/img/avatars/unknown.jpg';
   }

@@ -34,10 +34,18 @@ export class UserChipComponent implements OnInit, OnDestroy {
 
   @Output() deleteUser: EventEmitter<User> = new EventEmitter<User>();
 
+
+  /**
+   * Emits an event to delete the user chip.
+   */
   onUserChipDelet() {
     this.deleteUser.emit(this.user);
   }
 
+
+  /**
+  * Initializes the component.
+  */
   ngOnInit() {
     if (!this.user) {
       this.user = new User({
@@ -54,13 +62,21 @@ export class UserChipComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  /**
+   * Cleans up resources before destroying the component.
+   */
   ngOnDestroy() {
     if (this.userStatusSubscription) {
       this.userStatusSubscription.unsubscribe();
     }
   }
 
-  // Methode zum Setzen des Ersatzbildes
+
+  /**
+   * Handles the event when an image fails to load, setting a default image.
+   * @param {Event} event - The event triggered when the image fails to load.
+   */
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = '../../../../assets/img/avatars/unknown.jpg';
   }

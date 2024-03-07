@@ -44,6 +44,10 @@ export class TextOutputComponent implements OnChanges {
   ) { }
 
 
+  /**
+   * Lifecycle hook that is called when any data-bound property of a directive changes.
+   * @param {SimpleChanges} changes - Object containing previous and current property values of the directive's data-bound properties.
+   */
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
       if (!this.msg) return
@@ -52,29 +56,47 @@ export class TextOutputComponent implements OnChanges {
   }
 
 
+  /**
+   * Checks the message for attachments and sets corresponding values.
+   */
   checkMsg() {
     this.isFileAttached = false
     if (this.msg?.attachmentID === '') return
     const files = ['.jpg', '.png', '.pdf'];
     files.forEach(file => {
-      if (this.msg?.message.indexOf(file) !== -1) {
-        let msg = this.msg?.message.split(file);
-        if (!msg) return
-        this.fileName = msg[0] + file;
-        this.message = msg[1].replace(/^\n+/, '');
-        this.emitValue(this.message);
-        this.isFileAttached = true;
-        return
-      }
+      if (this.msg?.message.indexOf(file) !== -1) return this.setMsgValues(file)
     });
   }
 
 
+  /**
+   * Sets values based on the attached file.
+   * @param {string} file - The file extension.
+   */
+  setMsgValues(file: any) {
+    let msg = this.msg?.message.split(file);
+    if (!msg) return
+    this.fileName = msg[0] + file;
+    this.message = msg[1].replace(/^\n+/, '');
+    this.emitValue(this.message);
+    this.isFileAttached = true;
+  }
+
+
+  /**
+   * Emits the changed message.
+   * @param {string} message - The updated message.
+   */
   emitValue(message: string) {
     this.msgChanged.emit(message);
   }
 
 
+  /**
+   * Downloads a document from the provided URL.
+   * @param {string | undefined} url - The URL of the document to download.
+   * @param {string} fileName - The name to save the downloaded file as.
+   */
   async downloadDocument(url: string | undefined, fileName: string): Promise<void> {
     if (this.isEdit) return
     if (!url) return

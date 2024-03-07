@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, EventEmitter, Output, ViewChild, HostListener, ElementRef, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, HostListener, ElementRef, Input, OnDestroy } from '@angular/core';
 import { User } from '../../../shared/models/user.class';
 import { UserChipComponent } from '../user-chip/user-chip.component';
 import { CommonModule } from '@angular/common';
@@ -34,24 +34,34 @@ export class InputAddUserComponent implements OnDestroy {
   private usersSubscription: Subscription;
 
   constructor(
-    private DataService: DataService,
+    private dataService: DataService,
   ) {
-    this.usersSubscription = this.DataService.users$.subscribe(users => {
+    this.usersSubscription = this.dataService.users$.subscribe(users => {
       this.users = users;
     });
   }
 
 
+  /**
+   * Unsubscribes from the users subscription to prevent memory leaks.
+   */
   ngOnDestroy() {
     this.usersSubscription.unsubscribe();
   }
 
 
+  /**
+   * Stops the propagation of the provided mouse event.
+   * @param {MouseEvent} event - The mouse event to stop propagation for.
+   */
   stopPropagation(event: MouseEvent) {
     event.stopPropagation();
   }
 
 
+  /**
+   * Filters users based on the input value in the user input field.
+   */
   filterUsers() {
     const search = this.userInput.nativeElement.value.toLowerCase();
     if (this.searchAllUsers) this.filteredUsers = this.filterInUsers(search);
@@ -60,6 +70,11 @@ export class InputAddUserComponent implements OnDestroy {
   }
 
 
+  /**
+   * Filters users in the list of all users.
+   * @param {string} search - The search query.
+   * @returns {User[]} - The filtered list of users.
+   */
   filterInUsers(search: string): User[] {
     let users = this.users.filter(user =>
       user.name &&
@@ -71,6 +86,11 @@ export class InputAddUserComponent implements OnDestroy {
   }
 
 
+  /**
+   * Filters members of the current group or channel.
+   * @param {string} search - The search query.
+   * @returns {User[]} - The filtered list of members.
+   */
   filterMembers(search: string): User[] {
     let memberUsers: User[] = [];
     this.currentMemberIDs.forEach(id => {
@@ -86,6 +106,10 @@ export class InputAddUserComponent implements OnDestroy {
   }
 
 
+  /**
+   * Selects a user and emits the userAdded event.
+   * @param {User} user - The user to be selected.
+   */
   selectUser(user: User) {
     this.selectedUsers.push(user);
     this.userAdded.emit(user);
@@ -95,6 +119,10 @@ export class InputAddUserComponent implements OnDestroy {
   }
 
 
+  /**
+   * Removes a user from the selected users list and emits the userRemoved event.
+   * @param {User} user - The user to be removed.
+   */
   removeUser(user: User) {
     this.selectedUsers = this.selectedUsers.filter(selectedUser => selectedUser.id !== user.id);
     this.userRemoved.emit(user);
@@ -103,11 +131,21 @@ export class InputAddUserComponent implements OnDestroy {
   }
 
 
+  /**
+   * TrackBy function for ngFor to improve rendering performance.
+   * @param {number} index - The index of the current item.
+   * @param {User} item - The current user item.
+   * @returns {any} - The unique identifier for the item.
+   */
   trackByFn(index: number, item: User): any {
     return item.id;
   }
 
 
+  /**
+   * Listens for click events on the document and closes the user selection list if clicked outside.
+   * @param {MouseEvent} event - The mouse event.
+   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     this.selectListVisible = false;
