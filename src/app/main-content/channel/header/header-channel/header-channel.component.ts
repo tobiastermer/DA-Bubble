@@ -51,14 +51,25 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
     public dialog: MatDialog,
     private MembershipService: MembershipService,
     private PositionService: PositionService,
-    private DataService: DataService,
+    private dataService: DataService,
   ) {
-    this.usersSubscription = this.DataService.users$.subscribe(users => {
+
+    /**
+     * Subscribes to the data service to get the list of users and assigns it to the component property.
+     * @returns {void}
+     */
+    this.usersSubscription = this.dataService.users$.subscribe(users => {
       this.allUsers = users;
     });
   }
 
 
+  /**
+   * Lifecycle hook that is called when one or more data-bound input properties change.
+   * Fetches channel memberships based on the current channel ID and updates relevant properties.
+   * @param {SimpleChanges} changes - An object containing each changed property.
+   * @returns {void}
+   */
   ngOnChanges(changes: SimpleChanges) {
     if (!changes) return
     if (!this.currentChannelID) return
@@ -72,13 +83,23 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
   }
 
 
-  ngOnDestroy() {
+  /**
+   * Lifecycle hook that is called when the component is destroyed.
+   * Unsubscribes from channel membership and user subscriptions to prevent memory leaks.
+   * @returns {void}
+   */
+  ngOnDestroy(): void {
     this.channelMembershipSubscription?.unsubscribe();
     this.usersSubscription.unsubscribe();
   }
 
 
-  calculateDisplayMembers() {
+  /**
+   * Calculates the display members based on the maximum display count.
+   * Sets the display members array and calculates additional members count if any.
+   * @returns {void}
+   */
+  calculateDisplayMembers(): void {
     const maxDisplayCount = 7;
     this.displayMembers = this.currentChannelMembers.slice(0, maxDisplayCount);
     const additionalCount = this.currentChannelMembers.length - maxDisplayCount;
@@ -86,24 +107,28 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
   }
 
 
-  changeImgBl() {
+  /**
+   * Changes the source of two images within the channel info element based on the specified color.
+   * If the channel info element is not available, the function returns early.
+   * @param {string} color - The color of the icons ('black' or 'blue').
+   * @returns {void}
+   */
+  changeImg(color: 'black' | 'blue'): void {
     if (!this.channelInfo) return;
-    const srcImg1 = "./../../../../../assets/img/icons/hash_bl_24.png";
-    const srcImg2 = "./../../../../../assets/img/icons/expand_more_bl.png";
+    let srcImg1 = './../../../../../assets/img/icons/hash_';
+    let srcImg2 = './../../../../../assets/img/icons/expand_more_';
+    (color === 'blue') ? srcImg1 = srcImg1 + "bl_24.png" : srcImg1 = srcImg1 + "bk_22.png";
+    (color === 'blue') ? srcImg2 = srcImg2 + "bl.png" : srcImg2 = srcImg2 + "bk.png";
     this.channelInfo.nativeElement.firstChild.src = srcImg1;
     this.channelInfo.nativeElement.lastChild.src = srcImg2;
   }
 
 
-  changeImgBk() {
-    if (!this.channelInfo) return;
-    const srcImg1 = "./../../../../../assets/img/icons/hash_bk_22.png";
-    const srcImg2 = "./../../../../../assets/img/icons/expand_more_bk.png";
-    this.channelInfo.nativeElement.firstChild.src = srcImg1;
-    this.channelInfo.nativeElement.lastChild.src = srcImg2;
-  }
-
-
+  /**
+   * Opens a dialog to manage the channel.
+   * If the channel info element is not available, the function returns early.
+   * @returns {void}
+   */
   openDialogChannel(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.channelInfo, 'left');
     const dialogRef = this.dialog.open(DialogChannelComponent, {
@@ -116,6 +141,11 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
   }
 
 
+  /**
+   * Opens a dialog to display channel members.
+   * If the members info element is not available, the function returns early.
+   * @returns {void}
+   */
   openDialogMembers(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.membersInfo, 'right');
     const dialogRef = this.dialog.open(DialogMembersComponent, {
@@ -128,6 +158,11 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
   }
 
 
+  /**
+   * Opens a dialog to add users to the channel.
+   * If the add user element is not available, the function returns early.
+   * @returns {void}
+   */
   openDialogAddUser(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.addUser, 'right');
     this.currentChannelMemberIDs = this.currentChannelMembers.map(user => user.id!);
@@ -142,7 +177,13 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
   }
 
 
-  async saveAddedMembers(selectedUsers: User[]) {
+  /**
+   * Saves the selected users as members of the channel.
+   * If no users are selected, the function returns early.
+   * @param {User[]} selectedUsers - The users selected to be added as members.
+   * @returns {void}
+   */
+  async saveAddedMembers(selectedUsers: User[]): Promise<void> {
     if (selectedUsers) {
       for (let user of selectedUsers) {
         try {
@@ -161,8 +202,13 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
   }
 
 
-  // Methode zum Setzen des Ersatzbildes
-  onImageError(event: Event) {
+  /**
+   * Event handler for when an image fails to load.
+   * Updates the source of the failed image to a default image.
+   * @param {Event} event - The event triggered when the image fails to load.
+   * @returns {void}
+   */
+  onImageError(event: Event): void {
     (event.target as HTMLImageElement).src = '../../../assets/img/avatars/unknown.jpg';
   }
 }
