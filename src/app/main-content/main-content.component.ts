@@ -11,19 +11,19 @@ import { Membership } from '../shared/models/membership.class';
 import { ChannelService } from '../shared/firebase-services/channel.service';
 import { Channel } from '../shared/models/channel.class';
 import { DataService } from '../shared/services/data.service';
-import { slideInUpAnimationSlow, slideInleftAnimationSlow } from '../shared/services/animations';
 import { PositionService } from '../shared/services/position.service';
 import { CommonModule } from '@angular/common';
+import { slideInUpAnimationSlow, slideInleftAnimationSlow } from '../shared/services/animations';
 
 @Component({
   selector: 'app-main-content',
   standalone: true,
-  imports: [HeaderComponent, MenueComponent, ChannelComponent, CommonModule],
+  imports: [HeaderComponent, MenueComponent, ChannelComponent, CommonModule,],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss',
   animations: [
     slideInUpAnimationSlow,
-    slideInleftAnimationSlow,
+    slideInleftAnimationSlow
     
   ],
 })

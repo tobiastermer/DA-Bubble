@@ -9,7 +9,7 @@ import {
 import { MenuDialogComponent } from './menu-dialog/menu-dialog.component';
 import { DataService } from '../../shared/services/data.service';
 import { User } from '../../shared/models/user.class';
-import { slideInRightAnimationSlow } from '../../shared/services/animations';
+import { slideInRightAnimationSlow, slideInleftAnimationSlow } from '../../shared/services/animations';
 import { PositionService } from '../../shared/services/position.service';
 import { MatCardModule } from '@angular/material/card';
 
@@ -21,7 +21,8 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   animations: [
-    slideInRightAnimationSlow
+    slideInRightAnimationSlow,
+    slideInleftAnimationSlow
     
   ],
 })
