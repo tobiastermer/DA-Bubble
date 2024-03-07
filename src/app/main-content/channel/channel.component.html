@@ -1,6 +1,6 @@
 <div class="channel-row" [ngStyle]="{'gap': threadMsg ? '20px' : '0px'}"
     [ngClass]="{'menu-opened': menuOpen, 'menu-closed': !menuOpen}">
-    <mat-card class="channel-card">
+    <mat-card class="channel-card" *ngIf="isChannelVisible">
 
         @if (chat === 'channel') {
         <app-header-channel [channel]="currentChannel" [currentChannelID]="currentChannelID"></app-header-channel>
@@ -60,7 +60,7 @@
 
     @if (chat === 'channel' || chat === 'message') {
     <app-threads [chatMsg]="threadMsg" [channels]="channels" (closeThread)="deletThreadValues($event)"
-        [currentChannelMembers]="currentChannelMembers"></app-threads>
+        [currentChannelMembers]="currentChannelMembers" *ngIf="isThreadVisible"></app-threads>
     }
 
 </div>

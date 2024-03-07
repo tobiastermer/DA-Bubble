@@ -134,9 +134,10 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
     const dialogRef = this.dialog.open(DialogChannelComponent, {
       width: '750px',
       position: pos, panelClass: ['card-left-corner'],
-      data: { channel: this.channel, allUsers: this.allUsers },
+      data: { channel: this.channel, allUsers: this.allUsers, members: this.currentChannelMembers },
     });
     dialogRef.afterClosed().subscribe(result => {
+      if (result) this.openDialogAddUser();
     });
   }
 

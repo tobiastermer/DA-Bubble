@@ -12,7 +12,7 @@ mat-card {
         @include pAbsolute($t: 0px, $l: -15px);
         width: 100%;
     }
-}    
+}
 
 header {
     @include dFlex($jc: space-between);
@@ -144,6 +144,59 @@ header {
     margin-top: -10px;
     line-height: 1;
 }
+
+.members {
+    @include dFlex($fd: column, $ai: flex-start, $gap: 10px, $jc: unset);
+    width: 100%;
+    margin-top: 16px;
+    margin-left: -12px;
+}
+
+.add-member {
+    @include dFlex($gap: 15px, $jc: flex-start);
+    border-radius: 30px;
+    padding: 12px 20px;
+    font-size: 18px;
+
+    button {
+        @include iButton($w: 32px, $h: 32px, $p: 3px, $hBgIC: $dkBlue)
+    }
+
+    &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        color: $dkBlue;
+
+        button {
+            @include iButton($w: 32px, $h: 32px, $p: 3px, $iC: $dkBlue, $hBgIC: $dkBlue)
+        }
+    }
+}
+
+.icon-btn {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: $bgGrey;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $lgPurple;
+    }
+}
+
+.img-edit {
+    background-image: url('../../../../../assets/img/icons/edit.png');
+}
+
+.img-save {
+    background-image: url('../../../../../assets/img/icons/check_circle.png');
+}
+
+
 
 @media (max-width: $tablet-breakpoint) {
 

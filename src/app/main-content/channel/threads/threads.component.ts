@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogInfoComponent } from '../../../shared/components/dialogs/dialog-info/dialog-info.component';
 import { DirectMessage } from '../../../shared/models/direct-message.class';
 import { DataService } from '../../../shared/services/data.service';
+import { PositionService } from '../../../shared/services/position.service';
 
 @Component({
   selector: 'app-threads',
@@ -40,7 +41,8 @@ export class ThreadsComponent implements OnChanges {
 
   constructor(
     public dialog: MatDialog,
-    public data: DataService
+    public data: DataService,
+    private positionService: PositionService,
   ) { }
 
 
@@ -72,6 +74,7 @@ export class ThreadsComponent implements OnChanges {
    * @returns {void}
    */
   setCloseTread(): void {
+    this.positionService.setThreadResponsiveWindow(false);
     this.closeThread.emit(true)
   }
 

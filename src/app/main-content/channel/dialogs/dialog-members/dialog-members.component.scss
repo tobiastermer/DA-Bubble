@@ -25,7 +25,7 @@ mat-card {
 }
 
 .members {
-    @include dFlex($fd: column, $ai: flex-starts, $gap: 10px, $jc: unset);
+    @include dFlex($fd: column, $ai: flex-start, $gap: 10px, $jc: unset);
     width: 100%;
     max-height: 400px;
     overflow-y: auto;

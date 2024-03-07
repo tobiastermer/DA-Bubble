@@ -62,7 +62,7 @@ export class MessageComponent implements OnChanges {
     private channelMsgService: ChannelMessagesService,
     private directMsgService: DirectMessagesService,
     public data: DataService,
-    private PositionService: PositionService) {
+    private positionService: PositionService) {
     data.currentUser.id ? this.currentUserID = data.currentUser.id : this.currentUserID = '';
     if (!data.lastEmojis) this.data.loadLastEmojis()
   }
@@ -157,9 +157,12 @@ export class MessageComponent implements OnChanges {
    * Emits the message to be displayed in the thread.
    */
   setThreadOutput() {
-    if (this.msg instanceof ChannelMessage) this.threadOutput.emit(this.msg)
-    if (this.msg instanceof DirectMessage) this.threadOutput.emit(this.msg)
-    else return
+    if (this.msg instanceof ChannelMessage || this.msg instanceof DirectMessage) {
+      this.positionService.setThreadResponsiveWindow(true);
+      this.threadOutput.emit(this.msg);
+    } else {
+      return
+    }
   }
 
 
@@ -258,7 +261,7 @@ export class MessageComponent implements OnChanges {
    * Sets the position of the hidden likes row.
    */
   setHiddenLikePos() {
-    let pos = this.PositionService.getDialogPosWithCorner(this.likesRow, 'bottom');
+    let pos = this.positionService.getDialogPosWithCorner(this.likesRow, 'bottom');
     if (pos?.bottom) this.posLikesRow = parseInt(pos.bottom);
   }
 

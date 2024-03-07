@@ -17,7 +17,9 @@ export interface ElementPos {
 
 export class PositionService {
     private menuOpen = new BehaviorSubject<boolean>(true); // Standardmäßig ist das Menü geöffnet
-    private responsiveActiveWindow = new BehaviorSubject<"menu" | "channel" | "thread" | "message" | "new">("menu");
+    private responsiveActiveWindow = new BehaviorSubject<"menu" | "channel">("menu");
+    private responsiveThreadWindow = new BehaviorSubject<Boolean>(false);
+    private responsiveChannelWindow = new BehaviorSubject<Boolean>(true);
     private windowWidth = new BehaviorSubject<number>(0); // Initialwert auf 0
 
     constructor(@Inject(PLATFORM_ID) private platformId: Object) {
@@ -86,7 +88,7 @@ export class PositionService {
         return this.menuOpen.asObservable();
     }
 
-    setActiveResponsiveWindow(value: "menu" | "channel" | "thread" | "message" | "new") {
+    setActiveResponsiveWindow(value: "menu" | "channel") {
         this.responsiveActiveWindow.next(value);
     }
 
@@ -94,7 +96,7 @@ export class PositionService {
         return this.responsiveActiveWindow.asObservable();
     }
 
-    isResponsiveWindowVisible(value: "menu" | "channel" | "thread" | "message" | "new"): Observable<boolean> {
+    isResponsiveWindowVisible(value: "menu" | "channel"): Observable<boolean> {
         const mobileBreakpoint = 1000; // muss analog der styles.scss $tablet-breakpoint sein
         return combineLatest([
             this.windowWidth.asObservable(),
@@ -110,4 +112,56 @@ export class PositionService {
         );
     }
 
+    // das Ganze auch für die Threads
+
+    setThreadResponsiveWindow(value: Boolean) {
+        this.responsiveThreadWindow.next(value);
+        this.responsiveChannelWindow.next(!value);
+    }
+
+    getThreadResponsiveWindow(): Observable<Boolean> {
+        return this.responsiveThreadWindow.asObservable();
+    }
+
+    isThreadWindowVisible(): Observable<Boolean> {
+        const mobileBreakpoint = 1000; // muss analog der styles.scss $tablet-breakpoint sein
+        return combineLatest([
+            this.windowWidth.asObservable(),
+            this.responsiveThreadWindow.asObservable()
+        ]).pipe(
+            map(([width, isThreadVisible]) => {
+                if (width > mobileBreakpoint) {
+                    return true;
+                } else {
+                    return isThreadVisible;
+                }
+            })
+        );
+    }
+
+    // und auch explizit für den Channel/Msg Part innerhalb der großen CHannel-Komponente
+
+    setChannelResponsiveWindow(value: Boolean) {
+        this.responsiveChannelWindow.next(value);
+    }
+
+    getChannelResponsiveWindow(): Observable<Boolean> {
+        return this.responsiveChannelWindow.asObservable();
+    }
+
+    isChannelWindowVisible(): Observable<Boolean> {
+        const mobileBreakpoint = 1000; // muss analog der styles.scss $tablet-breakpoint sein
+        return combineLatest([
+            this.windowWidth.asObservable(),
+            this.responsiveChannelWindow.asObservable()
+        ]).pipe(
+            map(([width, isChannelVisible]) => {
+                if (width > mobileBreakpoint) {
+                    return true;
+                } else {
+                    return isChannelVisible;
+                }
+            })
+        );
+    }
 }

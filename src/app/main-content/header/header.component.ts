@@ -71,6 +71,7 @@ export class HeaderComponent {
   }
 
   goToMenu() {
+    this.positionService.setThreadResponsiveWindow(false);
     this.positionService.setActiveResponsiveWindow('menu');
   }
 

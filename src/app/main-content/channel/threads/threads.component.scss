@@ -88,3 +88,35 @@ main {
   margin-left: 16px;
   margin-right: 16px;
 }
+
+@media (max-width: $tablet-breakpoint) {
+
+  .thread-panel {
+    width: 100%;
+    border-radius: 0px;
+  }
+
+  main {
+    width: 100%;
+    padding: 16px 0px;
+  }
+
+  .thread-header {
+    padding: 16px;
+    border-radius: 0px;
+  }
+
+  .header-title {
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .mat-divider {
+    margin-right: 0px;
+  }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

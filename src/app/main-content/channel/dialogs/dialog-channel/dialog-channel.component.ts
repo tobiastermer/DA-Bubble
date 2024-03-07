@@ -25,6 +25,7 @@ import { DataService } from '../../../../shared/services/data.service';
 import { Router } from '@angular/router';
 import { PositionService } from '../../../../shared/services/position.service';
 import { DialogErrorComponent } from '../../../../shared/components/dialogs/dialog-error/dialog-error.component';
+import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
 
 @Component({
   selector: 'app-dialog-channel',
@@ -57,12 +58,14 @@ export class DialogChannelComponent {
   channelNameError: string = '';
   channelDescrError: string = '';
 
+  members: User[]
+
   @ViewChild('userInp') userInp?: ElementRef;
   @ViewChild('applyInp') applyInp?: ElementRef;
 
   constructor(
     public dialogRef: MatDialogRef<DialogChannelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { channel: Channel, allUsers: User[] },
+    @Inject(MAT_DIALOG_DATA) public data: { channel: Channel, allUsers: User[], members: User[] },
     private ChannelService: ChannelService,
     private MembershipService: MembershipService,
     private DataService: DataService,
@@ -72,6 +75,7 @@ export class DialogChannelComponent {
   ) {
     if (!data) this.onNoClick();
     this.channel = data.channel;
+    this.members = data.members;
   }
 
 
@@ -280,6 +284,27 @@ export class DialogChannelComponent {
     } catch (error) {
       console.error("Fehler beim Löschen der Mitgliedschaft: ", error);
     }
+  }
+
+   /**
+   * Opens a dialog to show detailed information about the specified user.
+   * @param {User} user - The user whose information will be displayed in the dialog.
+   * @returns {void}
+   */
+   openShowUserDialog(user: User): void {
+    this.dialog.open(DialogShowUserComponent, {
+      panelClass: ['card-round-corners'],
+      data: { user },
+    });
+  }
+
+
+  /**
+   * Closes the current dialog and indicates that the user should be added.
+   * @returns {void}
+   */
+  openAddUser(): void {
+    this.dialogRef.close(true);
   }
 
 }

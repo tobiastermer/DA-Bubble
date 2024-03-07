@@ -41,6 +41,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     @include fontNunito(400, 16px);
+    word-break: break-all;
 
     &:focus {
       outline: none;

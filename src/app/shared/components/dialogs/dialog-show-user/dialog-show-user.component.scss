@@ -140,8 +140,6 @@ h2 {
 
 }
 
-
-
 .btn-close {
     @include pAbsolute($t: 50px, $r: 40px);
 
@@ -149,6 +147,26 @@ h2 {
         cursor: pointer;
     }
 }
+
+.icon-btn {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: $bgGrey;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $lgPurple;
+    }
+}
+
+.img-edit {
+    background-image: url('../../../../../assets/img/icons/edit.png');
+}
+
 
 @media (max-width: $tablet-breakpoint) {
 

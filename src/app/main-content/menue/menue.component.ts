@@ -6,7 +6,7 @@ import { MenueHeaderComponent } from './menue-header/menue-header.component';
 import { User } from '../../shared/models/user.class';
 import { Channel } from '../../shared/models/channel.class';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PositionService } from '../../shared/services/position.service';
 
 @Component({
@@ -37,9 +37,10 @@ users: User[] = [];
   filteredChannels: Channel[] = [];
 
   constructor(
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
+    private router: Router,
     private positionService: PositionService) {
-    this.router.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.pathUserName = params['idUser'];
       this.pathChat = params['chat'];
       this.pathContentID = params['idChat'];
@@ -76,6 +77,11 @@ users: User[] = [];
     } else {
       return this.isHovering ? "../../../assets/img/icons/open_menu_bl.png" : "../../../assets/img/icons/open_menu_bk.png";
     }
+  }
+
+  changePath() {
+    this.positionService.setActiveResponsiveWindow('channel');
+    this.router.navigate([this.pathUserName + '/new/message/']);
   }
 
 }

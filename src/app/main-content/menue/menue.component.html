@@ -7,9 +7,12 @@
 </mat-card>
 
 <!-- The overlay-button for toggling visibility -->
-<mat-card class="menu-overlay-close mobile-hidden" (click)="toggleMenu()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+<mat-card class="menu-overlay-close mobile-hidden" (click)="toggleMenu()" (mouseenter)="onMouseEnter()"
+    (mouseleave)="onMouseLeave()">
     <mat-card-title>
         {{ isMenuOpen ? 'Workspace-Menü schließen' : 'Workspace-Menü öffnen' }}
         <img [src]="getIconSource()" alt="menu-icon">
     </mat-card-title>
 </mat-card>
+
+<div class="img-new-msg icon-btn desktop-hidden" (click)="changePath()"></div>

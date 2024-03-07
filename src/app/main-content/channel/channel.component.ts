@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { HeaderChannelComponent } from './header/header-channel/header-channel.component';
 import { ChannelMsgComponent } from './chat/channel-msg/channel-msg.component';
@@ -69,6 +69,9 @@ export class ChannelComponent implements OnDestroy {
   directMessages: DirectMessage[] = [];
   chatUser!: User;
 
+  isThreadVisible: Boolean = false;
+  isChannelVisible: Boolean = true;
+
   private usersSubscription: Subscription;
   private channelsSubscription: Subscription;
 
@@ -138,6 +141,15 @@ export class ChannelComponent implements OnDestroy {
     });
   }
 
+  ngOnInit() {
+    this.positionService.isThreadWindowVisible().subscribe(isVisible => {
+      this.isThreadVisible = isVisible;
+    });
+
+    this.positionService.isChannelWindowVisible().subscribe(isVisible => {
+      this.isChannelVisible = isVisible;
+    });
+  }
 
   /**
    * Lifecycle hook called when the component is destroyed.
