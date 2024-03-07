@@ -4,11 +4,11 @@
     @include dFlex($jc: normal, $ai: normal);
     height: calc(100vh - 40px - 90px); // 40px padding 90px height header
     transition: margin-left 0.7s;
-  
+
     &.threads-visible {
-      @include dFlex($jc: normal, $ai: normal, $gap: 20px);
+        @include dFlex($jc: normal, $ai: normal, $gap: 20px);
     }
-  }
+}
 
 .channel-card {
     @include dFlex($fd: column, $jc: space-between, $ai: normal);
@@ -25,7 +25,7 @@
 }
 
 .chat-space {
-    padding: 20px;
+    padding: 20px 0px;
     height: 100%;
     overflow-y: auto;
 
@@ -41,7 +41,7 @@
 
 .day-section {
     @include dFlex($gap: 8px);
-    padding: 8px;
+    padding: 8px 20px;
 
     hr {
         width: 100%;
@@ -86,3 +86,33 @@
     /* Breite des Menüs */
 
 }
+
+@media (max-width: $tablet-breakpoint) {
+
+    .header-channel {
+        padding: 16px;
+        border-radius: 0px;
+    }
+
+    .channel-card {
+        border-radius: 0px;
+    }
+
+    .channel-row {
+        height: calc(100vh - 80px - 30px);
+    }
+
+    .mat-mdc-card {
+        box-shadow: none !important;
+    }
+
+    .chat-space {
+        padding: 16px 0px;
+    }
+
+    .day-section {
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: $mobile-breakpoint) {}

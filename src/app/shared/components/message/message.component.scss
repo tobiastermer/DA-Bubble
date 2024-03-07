@@ -6,7 +6,7 @@
 
 .message {
   position: relative;
-  padding: 8px 0px 8px 16px;
+  padding: 8px 20px 8px 36px;
   display: flex;
   gap: 20px;
   margin-bottom: 0px;
@@ -141,7 +141,7 @@
 
 .current-user {
   flex-direction: row-reverse;
-  padding: 8px 16px 8px 0px;
+  padding: 8px 36px 8px 20px;
 
   &:hover {
     .emoji-popup {
@@ -242,7 +242,7 @@
   }
 }
 
-app-edit-message{
+app-edit-message {
   width: 100%;
   padding-left: 10px;
 }
@@ -371,3 +371,18 @@ app-edit-message{
 //   right: 2px;
 //   top: 2px;
 // }
+
+
+@media (max-width: $tablet-breakpoint) {
+
+  .message {
+    padding: 8px 16px 8px 16px;
+  }
+
+  .current-user {
+    padding: 8px 16px 8px 16px;
+  }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

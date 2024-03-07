@@ -17,6 +17,11 @@
         color: $dkBlue;
     }
 
+    .hash-icon {
+        width: 24px;
+        height: 24px;
+    }
+
 }
 
 .users-info {
@@ -72,4 +77,21 @@
     width: 32px;
     height: 32px;
     font-size: 14px;
-  }
+}
+
+
+@media (max-width: $tablet-breakpoint) {
+
+    .channel-info {
+        mat-card-title {
+            font-size: 20px;
+        }
+
+        .hash-icon {
+            width: 17px;
+            height: 17px;
+        }
+    }
+}
+
+@media (max-width: $mobile-breakpoint) {}

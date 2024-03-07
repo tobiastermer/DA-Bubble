@@ -41,7 +41,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     @include fontNunito(400, 16px);
-    
+
     &:focus {
       outline: none;
     }
@@ -71,6 +71,7 @@
 
   &__file-upload {
     position: relative;
+
     input[type="file"] {
       display: none;
     }
@@ -94,10 +95,20 @@
   min-height: 30px;
 }
 
-mat-progress-bar{
+mat-progress-bar {
   position: absolute;
   border-radius: 20px;
   width: 100%;
   top: 0;
   left: 0;
 }
+
+
+@media (max-width: $tablet-breakpoint) {
+
+  .message-input {
+    margin: 16px 16px 0px 16px;
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {}

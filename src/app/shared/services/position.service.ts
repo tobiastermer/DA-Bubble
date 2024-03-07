@@ -1,7 +1,8 @@
-import { ElementRef, Injectable } from "@angular/core";
+import { ElementRef, Injectable, Inject, PLATFORM_ID } from "@angular/core";
 import { DialogPosition } from "@angular/material/dialog";
 import { BehaviorSubject, fromEvent, Observable, combineLatest, of } from 'rxjs';
 import { map, startWith, debounceTime } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface ElementPos {
     y: number,
@@ -17,18 +18,21 @@ export interface ElementPos {
 export class PositionService {
     private menuOpen = new BehaviorSubject<boolean>(true); // Standardmäßig ist das Menü geöffnet
     private responsiveActiveWindow = new BehaviorSubject<"menu" | "channel" | "thread" | "message" | "new">("menu");
-    private windowWidth = new BehaviorSubject<number>(window.innerWidth);
+    private windowWidth = new BehaviorSubject<number>(0); // Initialwert auf 0
 
-    constructor() {
-        // Fenster-Resize-Event abonnieren und die Fensterbreite aktualisieren
-        fromEvent(window, 'resize')
-            .pipe(
-                debounceTime(100), // Verzögerung, um Performance-Probleme zu vermeiden
-                map(() => window.innerWidth),
-                startWith(window.innerWidth) // Startwert setzen
-            )
-            .subscribe(width => this.windowWidth.next(width));
+    constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+        if (isPlatformBrowser(this.platformId)) {
+            this.windowWidth.next(window.innerWidth);
+            fromEvent(window, 'resize')
+                .pipe(
+                    debounceTime(100),
+                    map(() => window.innerWidth),
+                    startWith(window.innerWidth)
+                )
+                .subscribe(width => this.windowWidth.next(width));
+        }
     }
+
 
     getDialogPos(element: ElementRef | undefined): DialogPosition | undefined {
         if (!element) return undefined

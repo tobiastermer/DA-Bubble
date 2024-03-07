@@ -23,8 +23,13 @@
   @include dFlex($jc: flex-start, $gap: 15px);
   display: flex !important;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   .expand-icon {
     transform: rotate(90deg);
+    margin-left: 10px;
   }
 
   .workspace-logo {
