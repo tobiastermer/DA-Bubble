@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
@@ -50,14 +50,32 @@ export class DialogApplyComponent {
     public dialog: MatDialog,
   ) { }
 
-  answerNo() {
+
+  /**
+   * Closes the dialog with a response indicating 'false'.
+   * Typically used to reject an action when the user selects 'No'.
+   * @returns {void}
+   */
+  answerNo(): void {
     this.dialogRef.close(false);
   }
 
-  answerYes() {
+
+  /**
+   * Closes the dialog with a response indicating 'true'.
+   * Typically used to confirm an action when the user selects 'Yes'.
+   * @returns {void}
+   */
+  answerYes(): void {
     this.dialogRef.close(true);
   }
 
+
+  /**
+   * Closes the dialog without sending any response.
+   * Typically used when the user closes the dialog without making a selection.
+   * @returns {void}
+   */
   onNoClick(): void {
     this.dialogRef.close();
   }

@@ -21,7 +21,13 @@ export class DialogEmojiComponent {
     public dialog: MatDialog
   ) { }
 
-  public addEmoji(event:any) {
+
+  /**
+   * Adds the selected emoji to the dialog and closes it.
+   * @param {any} event - The event containing the selected emoji.
+   * @returns {void}
+   */
+  public addEmoji(event: any): void {
     this.dialogRef.close(`${event.emoji.native}`);
   }
 }

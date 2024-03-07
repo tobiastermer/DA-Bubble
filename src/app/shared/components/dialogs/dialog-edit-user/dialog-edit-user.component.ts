@@ -51,14 +51,19 @@ export class DialogEditUserComponent {
     public dialog: MatDialog,
     private UserService: UserService,
     private cdr: ChangeDetectorRef,
-    private auth: Auth,
-    private dataservice: DataService
+    private auth: Auth
   ) {
     this.newName = this.data.user.name;
     this.newEmail = this.data.user.email;
   }
 
-  validateInputUserName() {
+
+  /**
+   * Validates the input user name and updates the error message accordingly.
+   * Triggers manual change detection.
+   * @returns {void}
+   */
+  validateInputUserName(): void {
     this.userNameError = this.UserService.validateInputUserName(
       this.newName,
       this.data.user.name || ''
@@ -66,7 +71,13 @@ export class DialogEditUserComponent {
     this.cdr.detectChanges(); // Manuelle Auslösung der Änderungserkennung
   }
 
-  validateInputUserEmail() {
+
+  /**
+   * Validates the input user email and updates the error message accordingly.
+   * Triggers manual change detection.
+   * @returns {void}
+   */
+  validateInputUserEmail(): void {
     this.userEmailError = this.UserService.validateInputUserEmail(
       this.newEmail,
       this.data.user.email || ''
@@ -74,6 +85,11 @@ export class DialogEditUserComponent {
     this.cdr.detectChanges(); // Manuelle Auslösung der Änderungserkennung
   }
 
+
+  /**
+   * Checks if the user information is valid for saving.
+   * @returns {boolean} True if the user information is valid; otherwise, false.
+   */
   canSaveUser(): boolean {
     return (
       !this.userNameError &&
@@ -83,21 +99,20 @@ export class DialogEditUserComponent {
     );
   }
 
-  async saveUser() {
+
+  /**
+   * Saves the updated user information.
+   * @returns {void}
+   */
+  async saveUser(): Promise<void> {
     const user = this.data.user;
     user.name = this.newName;
-
     if (this.canSaveUser()) {
       const currentUser = this.auth.currentUser;
       if (currentUser) {
         try {
           await verifyBeforeUpdateEmail(currentUser, this.newEmail);
-          if (user.email !== this.newEmail) {
-            this.dialog.open(DialogErrorComponent, {
-              panelClass: ['card-round-corners'],
-              data: { errorMessage: 'Deine neue Email-Adresse wird erst wirksam, sobald du die Änderung bestätigt hast. Schaue gleich in deinem E-Mail-Postfach nach und bestätige die Änderung mit Klick auf den Link.' }
-            });
-          }  
+          if (user.email !== this.newEmail) this.openErrorDialog('Deine neue Email-Adresse wird erst wirksam, sobald du die Änderung bestätigt hast. Schaue gleich in deinem E-Mail-Postfach nach und bestätige die Änderung mit Klick auf den Link.')
         } catch (error) {
           console.error(error);
         }
@@ -106,16 +121,43 @@ export class DialogEditUserComponent {
     this.dialogRef.close(user);
   }
 
-  closeDialog() {
+
+  /**
+   * Opens a dialog to display an error message.
+   * @param {string} errorMsg - The error message to be displayed.
+   * @returns {void}
+   */
+  openErrorDialog(errorMsg: string): void {
+    this.dialog.open(DialogErrorComponent, {
+      panelClass: ['card-round-corners'],
+      data: { errorMessage: errorMsg }
+    });
+  }
+
+  /**
+   * Closes the dialog.
+   * @returns {void}
+   */
+  closeDialog(): void {
     this.dialogRef.close();
   }
 
+
+  /**
+   * Closes the dialog.
+   * @returns {void}
+   */
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  // Methode zum Setzen des Ersatzbildes
-  onImageError(event: Event) {
+
+  /**
+   * Sets a fallback image in case the user avatar image fails to load.
+   * @param {Event} event - The image load error event.
+   * @returns {void}
+   */
+  onImageError(event: Event): void {
     (event.target as HTMLImageElement).src =
       '../../assets/img/avatars/unknown.jpg';
   }

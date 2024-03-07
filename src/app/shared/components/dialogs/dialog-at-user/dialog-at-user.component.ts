@@ -47,15 +47,31 @@ export class DialogAtUserComponent {
     @Inject(MAT_DIALOG_DATA) public data: { currentMemberIDs: string[], channel: Channel },
   ) { }
 
+
+  /**
+   * Closes the dialog without sending any response.
+   * Typically used when the user closes the dialog without making a selection.
+   * @returns {void}
+   */
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  addUsers() {
+
+  /**
+   * Closes the dialog with the selected users as the response.
+   * @returns {void}
+   */
+  addUsers(): void {
     if (this.selectedUsers.length == 0) return
     this.dialogRef.close(this.selectedUsers);
   }
 
+
+  /**
+   * Determines the CSS classes to be applied based on the selected users.
+   * @returns {Object} An object containing CSS classes based on the selection state.
+   */
   setBtnClass(): any {
     return {
       'btn-disable': this.selectedUsers.length == 0,
@@ -63,17 +79,37 @@ export class DialogAtUserComponent {
     };
   }
 
-  onUserAdded(user: User) {
+
+  /**
+   * Adds a user to the selected users list.
+   * @param {User} user - The user to be added.
+   * @returns {void}
+   */
+  onUserAdded(user: User): void {
     if (!this.selectedUsers.find(u => u.id === user.id)) {
       this.selectedUsers.push(user);
     }
   }
 
-  onUserRemoved(user: User) {
+
+
+  /**
+   * Removes a user from the selected users list.
+   * @param {User} user - The user to be removed.
+   * @returns {void}
+   */
+  onUserRemoved(user: User): void {
     this.selectedUsers = this.selectedUsers.filter(u => u.id !== user.id);
   }
 
-  onSelectedUsersChanged(users: User[]) {
+
+  /**
+   * Updates the selected users list based on changes.
+   * Typically used when the user selection changes.
+   * @param {User[]} users - The updated list of selected users.
+   * @returns {void}
+   */
+  onSelectedUsersChanged(users: User[]): void {
     this.selectedUsers = users;
   }
 

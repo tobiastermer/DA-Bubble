@@ -13,11 +13,16 @@ export class DialogInfoComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogEmojiComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {info: string},
-    ){}
+    @Inject(MAT_DIALOG_DATA) public data: { info: string },
+  ) { }
 
-    onNoClick(): void {
-      this.dialogRef.close();
-    }
+
+  /**
+   * Closes the dialog without performing any action.
+   * @returns {void}
+   */
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
 }

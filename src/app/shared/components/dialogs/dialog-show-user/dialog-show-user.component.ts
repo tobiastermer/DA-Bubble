@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -55,7 +55,12 @@ export class DialogShowUserComponent {
     this.currentUser = this.DataService.currentUser;
   }
 
-  ngOnInit() {
+
+  /**
+   * Initializes the component and subscribes to user status updates if the user data is available.
+   * @returns {void}
+   */
+  ngOnInit(): void {
     if (this.data.user && this.data.user.uid) {
       this.userStatusSubscription = this.PresenceService.getUserStatus(this.data.user.uid).subscribe((status: string) => {
         this.userStatus = status;
@@ -63,72 +68,129 @@ export class DialogShowUserComponent {
     }
   }
 
-  ngOnDestroy() {
+
+  /**
+   * Unsubscribes from user status updates when the component is destroyed.
+   * @returns {void}
+   */
+  ngOnDestroy(): void {
     if (this.userStatusSubscription) {
       this.userStatusSubscription.unsubscribe();
     }
   }
 
-  sendMessage(user: User) {
+
+  /**
+   * Navigates to the message page for the specified user.
+   * @param {User} user - The user to send a message to.
+   * @returns {void}
+   */
+  sendMessage(user: User): void {
     let name = user.name.replace(/\s/g, '_');
     this.router.navigate(['/message/' + name]);
   }
 
-  closeDialog() {
+
+  /**
+   * Closes the current dialog.
+   * @returns {void}
+   */
+  closeDialog(): void {
     this.dialogRef.close();
   }
 
-  openDialogEditUser(user: User) {
+
+  /**
+   * Opens a dialog to edit user information.
+   * @param {User} user - The user to be edited.
+   * @returns {void}
+   */
+  openDialogEditUser(user: User): void {
     const userCopy = new User({ ...user });
     const dialogRef = this.dialog.open(DialogEditUserComponent, {
       panelClass: ['card-round-corners'],
       data: { user: userCopy },
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.saveUser(result);
-      }
+      if (result) this.saveUser(result);
     });
   }
 
-  async saveUser(user: User) {
+
+  /**
+   * Saves the updated user information.
+   * @param {User} user - The updated user object.
+   * @returns {Promise<void>}
+   */
+  async saveUser(user: User): Promise<void> {
     this.loading = true;
     const nameHasChanged = this.nameHasChanged(user);
     const emailHasChanged = this.emailHasChanged(user);
-    
     if (nameHasChanged || emailHasChanged) {
       try {
-        await this.UserService.updateUser(user);
-        this.currentUser = user;
-        this.data.user = user;
-        this.DataService.currentUser = user;
+        await this.updateUser(user)
       } catch (error) {
-        this.dialog.open(DialogErrorComponent, {
-          panelClass: ['card-round-corners'],
-          data: { errorMessage: 'Es gab ein Problem beim Ändern des Profils. Bitte versuche es erneut.' }
-        });
+        this.openErrorDialog('Es gab ein Problem beim Ändern des Profils. Bitte versuche es erneut.')
       }
-    } else {
-      console.log('Keine Änderungen erkannt.');
     }
     this.loading = false;
   }
 
 
-  nameHasChanged(updatedUser: User) {
+  /**
+   * Updates the user information.
+   * @param {User} user - The updated user object.
+   * @returns {Promise<void>}
+   */
+  async updateUser(user: User): Promise<void> {
+    await this.UserService.updateUser(user);
+    this.currentUser = user;
+    this.data.user = user;
+    this.DataService.currentUser = user;
+  }
+
+
+  /**
+   * Opens an error dialog with the provided error message.
+   * @param {string} errorInfo - The error message to display in the dialog.
+   */
+  openErrorDialog(errorInfo: string) {
+    this.dialog.open(DialogErrorComponent, {
+      panelClass: ['card-round-corners'],
+      data: { errorMessage: errorInfo }
+    });
+  }
+
+
+  /**
+ * Checks if the name of the updated user has changed.
+ * @param {User} updatedUser - The updated user object.
+ * @returns {boolean} - True if the name has changed, otherwise false.
+ */
+  nameHasChanged(updatedUser: User): boolean {
     return this.data.user.name != updatedUser.name;
   }
 
-  emailHasChanged(updatedUser: User) {
+
+  /**
+   * Checks if the email of the updated user has changed.
+   * @param {User} updatedUser - The updated user object.
+   * @returns {boolean} - True if the email has changed, otherwise false.
+   */
+  emailHasChanged(updatedUser: User): boolean {
     return this.data.user.email != updatedUser.email;
   }
+
 
   sendConfirmationEmail() {
 
   }
 
-  // Methode zum Setzen des Ersatzbildes
+
+  /**
+   * Handles image loading errors by setting a fallback image source.
+   * @param {Event} event - The image loading error event.
+   */
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = '../../assets/img/avatars/unknown.jpg';
   }

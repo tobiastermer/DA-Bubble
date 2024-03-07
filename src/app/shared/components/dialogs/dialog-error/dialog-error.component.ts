@@ -41,6 +41,11 @@ export class DialogErrorComponent {
     public dialog: MatDialog,
   ) { }
 
+
+  /**
+   * Closes the dialog without performing any action.
+   * @returns {void}
+   */
   onNoClick(): void {
     this.dialogRef.close();
   }
