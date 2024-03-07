@@ -287,9 +287,10 @@ a {
     margin-bottom: unset !important;
     margin-left: unset !important;
     max-width: unset !important;
-    width: calc(100% - 32px);
+    width: calc(100% - 32px) !important;
     max-height: calc(100% - 32px);
     border-radius: 30px 30px 30px 30px !important;
   }
+  
 
 }
