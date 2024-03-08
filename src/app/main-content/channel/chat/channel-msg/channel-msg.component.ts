@@ -5,7 +5,7 @@ import { User } from '../../../../shared/models/user.class';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogsService } from '../../../../shared/services/dialogs.service';
-import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-channel.component';
+import { ChannelDialogService } from '../../dialogs/channel-dialog.service';
 
 
 @Component({
@@ -29,7 +29,8 @@ export class ChannelMsgComponent implements OnDestroy {
   constructor(
     public dialog: MatDialog,
     public dataService: DataService,
-    private dialogService: DialogsService
+    private dialogService: DialogsService,
+    private channelDialog: ChannelDialogService
   ) {
 
 
@@ -58,11 +59,7 @@ export class ChannelMsgComponent implements OnDestroy {
    * @returns {void}
    */
   openDialogChannel(): void {
-    this.dialog.open(DialogChannelComponent, {
-      width: '750px',
-      panelClass: ['card-round-corners'],
-      data: { channel: this.channel, allUsers: this.allUsers },
-    });
+    this.channelDialog.showChannelDialog(this.channel, this.allUsers);
   }
 
 

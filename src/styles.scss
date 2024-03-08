@@ -171,6 +171,10 @@ $bigscreen-breakpoint: 1920px;
   overflow: hidden;
 }
 
+.mobile-card-fullscreen {
+  overflow: auto;
+}
+
 .mat-button-focus-overlay {
   background-color: transparent !important;
 }

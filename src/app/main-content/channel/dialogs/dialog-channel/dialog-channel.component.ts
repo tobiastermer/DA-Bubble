@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 import { PositionService } from '../../../../shared/services/position.service';
 import { DialogErrorComponent } from '../../../../shared/components/dialogs/dialog-error/dialog-error.component';
 import { DialogsService } from '../../../../shared/services/dialogs.service';
+import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 
 @Component({
   selector: 'app-dialog-channel',
@@ -288,12 +289,21 @@ export class DialogChannelComponent {
   }
 
 
-  /**
-   * Closes the current dialog and indicates that the user should be added.
-   * @returns {void}
-   */
+
   openAddUser(): void {
-    this.dialogRef.close(true);
+    
+    let pos = {bottom: '0'} ;
+    let currentChannelMemberIDs = this.data.members.map(user => user.id!);
+    const dialogRef = this.dialog.open(DialogAddUserComponent, {
+      position: pos, panelClass: ['mobile-card-corner'],
+      width: '100%', maxWidth: '100%',
+      data: { allUsers: this.data.allUsers, currentMemberIDs: currentChannelMemberIDs, channel: this.channel },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) console.log(result);
+      // this.saveAddedMembers(result);
+    });
+
   }
 
 }

@@ -7,7 +7,6 @@ import { DialogMembersComponent } from '../../dialogs/dialog-members/dialog-memb
 import { DialogAddUserComponent } from '../../dialogs/dialog-add-user/dialog-add-user.component';
 import { User } from '../../../../shared/models/user.class';
 import { Channel } from '../../../../shared/models/channel.class';
-import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-channel.component';
 import { MembershipService } from '../../../../shared/firebase-services/membership.service';
 import { PositionService } from '../../../../shared/services/position.service';
 import { DialogErrorComponent } from '../../../../shared/components/dialogs/dialog-error/dialog-error.component';
@@ -15,6 +14,7 @@ import { Membership } from '../../../../shared/models/membership.class';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../../../shared/services/data.service';
 import { CommonModule } from '@angular/common';
+import { ChannelDialogService } from '../../dialogs/channel-dialog.service';
 
 @Component({
   selector: 'app-header-channel',
@@ -52,6 +52,7 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
     private MembershipService: MembershipService,
     private PositionService: PositionService,
     private dataService: DataService,
+    private channelDialogs: ChannelDialogService
   ) {
 
     /**
@@ -131,14 +132,16 @@ export class HeaderChannelComponent implements OnDestroy, OnChanges {
    */
   openDialogChannel(): void {
     let pos = this.PositionService.getDialogPosWithCorner(this.channelInfo, 'left');
-    const dialogRef = this.dialog.open(DialogChannelComponent, {
-      width: '750px',
-      position: pos, panelClass: ['card-left-corner'],
-      data: { channel: this.channel, allUsers: this.allUsers, members: this.currentChannelMembers },
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) this.openDialogAddUser();
-    });
+    this.channelDialogs.showChannelDialog(this.channel, this.allUsers, this.currentChannelMembers, pos)
+
+    // const dialogRef = this.dialog.open(DialogChannelComponent, {
+    //   width: '750px',
+    //   position: pos, panelClass: ['card-left-corner'],
+    //   data: { channel: this.channel, allUsers: this.allUsers, members: this.currentChannelMembers },
+    // });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) this.openDialogAddUser();
+    // });
   }
 
 
