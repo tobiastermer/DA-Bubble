@@ -122,7 +122,7 @@ export class LoginComponent {
   navigateToChat(userId: string) {
     this.showLoginCard = false;
     setTimeout(() => {
-      this.router.navigate([`/${userId}`]);
+      this.router.navigate([`/${userId}/new/message`]);
       this.showLoginCard = true;
     }, 800);
   }
@@ -154,7 +154,7 @@ export class LoginComponent {
 
       setTimeout(() => {
         this.dataService.setCurrentUser(guestData!);
-        this.router.navigate([`/${userId}`]);
+        this.router.navigate([`/${userId}/new/message`]);
         this.showLoginCard = true;
         this.isGuestLogin = false;
       }, 800);
