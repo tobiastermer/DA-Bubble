@@ -27,14 +27,14 @@
             <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
             @for (like of sortedLikes; track $index) {
             <div class="sorted-like">
-                <div class="emoji">
+                <div class="emoji" (click)="toggelEmoji(like.emoji)" (mouseenter)="setEmojiReacOpen()" (mouseleave)="setEmojiReacClose()">
                     @if(like.usersIDs.length > 1){ <div>{{ like.emoji }}</div> <span>{{ like.usersIDs.length }}</span> }
                     @else { <div>{{ like.emoji }}</div> }
                 </div>
                 <div class="hidden-like" [style.bottom.px]="posLikesRow">
                     <div>{{ like.emoji }}</div>
                     @for (nameID of sortedLikes[$index].usersIDs; track $index) {
-                    <a>{{ data.getUserNameById(nameID) }}</a>
+                    <a (click)="getUserOfLike(nameID)">{{ data.getUserNameById(nameID) }}</a>
                     }
                     @if (sortedLikes[$index].usersIDs.length > 1) {
                     <span>haben reagiert</span>

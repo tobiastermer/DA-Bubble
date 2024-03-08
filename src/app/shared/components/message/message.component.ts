@@ -52,6 +52,7 @@ export class MessageComponent implements OnChanges {
   replaies: Reply[] = [];
 
   isEditMsg = false;
+  isEmojiReacOpen = false;
   currentUserID: string;
   oldText: string = '';
   posLikesRow = 2;
@@ -190,12 +191,44 @@ export class MessageComponent implements OnChanges {
    * Opens the emoji dialog to add a like to the message.
    */
   openDialogEmoji(): void {
-    const dialogRef = this.dialog.open(DialogEmojiComponent,  
+    const dialogRef = this.dialog.open(DialogEmojiComponent,
       this.dialogService.emojiProp());
     dialogRef.afterClosed().subscribe(result => {
       if (result && !this.isEditMsg) return this.addLike(result);
       else return
     });
+  }
+
+
+  /**
+   * Toggles an emoji reaction for the current message.
+   * If the emoji is already reacted by the user, it removes the reaction.
+   * If the emoji is not reacted by the user, it adds the reaction.
+   * @param emoji The emoji to toggle reaction for.
+   * @returns A promise that resolves once the message is updated in the database.
+   */
+  async toggelEmoji(emoji: string) {
+    if (!this.isEmojiReacOpen) return
+    let newLike = this.newLike(emoji);
+    for (let i = 0; i < this.msg.likes.length; i++) {
+      if (this.msg.likes[i].userID === newLike.userID &&
+        this.msg.likes[i].emoji === newLike.emoji) return this.deleteEmoji(i)
+    }
+    this.msg.likes.push(newLike);
+    await this.updateMessage();
+    this.sortedLikes = this.fillSortedLikes();
+  }
+
+
+  /**
+   * Deletes an emoji from the message's likes list at the specified index.
+   * @param index The index of the emoji to be deleted from the likes list.
+   * @returns A promise that resolves once the message is updated in the database.
+   */
+  async deleteEmoji(index: number) {
+    this.msg.likes.splice(index, 1);
+    this.sortedLikes = this.fillSortedLikes();
+    return await this.updateMessage();
   }
 
 
@@ -206,14 +239,8 @@ export class MessageComponent implements OnChanges {
   async addLike(emoji: string) {
     this.saveEmojiLocal(emoji);
     let newLike = this.newLike(emoji);
-    for (let i = 0; i < this.msg.likes.length; i++) {
-      if (this.msg.likes[i].userID === newLike.userID) this.msg.likes.splice(i, 1);
-    }
     this.msg.likes.push(newLike);
-    if (this.msg instanceof ChannelMessage) await this.channelMsgService.updateChannelMessage(this.msg);
-    else if (this.msg instanceof DirectMessage) await this.directMsgService.updateDirectMessage(this.msg);
-    else if (this.channelMsg instanceof ChannelMessage) await this.channelMsgService.updateChannelMessage(this.channelMsg);
-    else if (this.channelMsg instanceof DirectMessage) await this.directMsgService.updateDirectMessage(this.channelMsg);
+    await this.updateMessage()
     this.sortedLikes = this.fillSortedLikes();
   }
 
@@ -245,6 +272,17 @@ export class MessageComponent implements OnChanges {
 
 
   /**
+   * Updates the current message or channel message in the database.
+   */
+  async updateMessage(): Promise<void> {
+    if (this.msg instanceof ChannelMessage) await this.channelMsgService.updateChannelMessage(this.msg);
+    else if (this.msg instanceof DirectMessage) await this.directMsgService.updateDirectMessage(this.msg);
+    else if (this.channelMsg instanceof ChannelMessage) await this.channelMsgService.updateChannelMessage(this.channelMsg);
+    else if (this.channelMsg instanceof DirectMessage) await this.directMsgService.updateDirectMessage(this.channelMsg);
+  }
+
+
+  /**
    * Sets the position of the hidden likes row.
    */
   setHiddenLikePos() {
@@ -261,4 +299,30 @@ export class MessageComponent implements OnChanges {
     (event.target as HTMLImageElement).src = '../../../../assets/img/avatars/unknown.jpg';
   }
 
+
+  /**
+   * Retrieves the user associated with a like by their ID and displays their profile in a dialog.
+   * @param {string} id - The ID of the user associated with the like.
+   */
+  getUserOfLike(id: string) {
+    let user = this.data.getUserById(id);
+    if (!user) return
+    this.dialogService.showUserDialog(user, undefined);
+  }
+
+
+  /**
+   * Sets the state of the emoji reaction dialog to open.
+   */
+  setEmojiReacOpen() {
+    this.isEmojiReacOpen = true;
+  }
+
+
+  /**
+   * Sets the state of the emoji reaction dialog to closed.
+   */
+  setEmojiReacClose() {
+    this.isEmojiReacOpen = false;
+  }
 }
