@@ -247,23 +247,55 @@ a {
   }
 }
 
+// ::-webkit-scrollbar {
+//   width: 10px;
+//   height: 10px;
+
+//   &-track {
+//     background: #f1f1f1;
+//   }
+
+//   &-thumb {
+//     background: $lgPurple;
+//     -webkit-border-radius: 5px;
+//     border-radius: 5px;
+
+//     &:hover {
+//       background: $dkBlue;
+//     }
+//   }
+// }
+
+// Für WebKit-basierte Browser wie Chrome, Safari
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
+}
 
-  &-track {
-    background: #f1f1f1;
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $lgPurple;
+  border-radius: 5px;
+
+  &:hover {
+    background: $dkBlue;
   }
+}
 
-  &-thumb {
-    background: $lgPurple;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+// Für Firefox
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $lgPurple #f1f1f1;
+}
 
-    &:hover {
-      background: $dkBlue;
-    }
-  }
+// Optional: Hover-Effekt für Firefox hinzufügen
+// Beachten Sie, dass Firefox derzeit (bis zu meiner letzten Aktualisierung) keinen Hover-Zustand für Scrollbars unterstützt.
+// Diese Regel wird also keinen Effekt haben, aber sie ist hier als Referenz für zukünftige Kompatibilität.
+*::-webkit-scrollbar-thumb:hover {
+  background: $dkBlue;
 }
 
 .desktop-hidden {
@@ -283,6 +315,10 @@ a {
   ::-webkit-scrollbar {
     width: 0px;
     height: 0px;
+  }
+
+  * {
+    scrollbar-width: 0px;
   }
 
   // .cdk-global-overlay-wrapper {
