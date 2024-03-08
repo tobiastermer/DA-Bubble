@@ -33,18 +33,20 @@ export class DialogsService {
 
   public showUserDialog(user: User, currentUserID: String | undefined) {
     const data = { user, currentUserID };
-    this.dialog.open(DialogShowUserComponent, this.showUserProp(data));
+    let isCurrentUser = (user.id === currentUserID);
+    this.dialog.open(DialogShowUserComponent, this.showUserProp(data, isCurrentUser));
   }
 
 
-  private showUserProp(data: any) {
+  private showUserProp(data: any, isCurrentUser?: boolean) {
     let wWidth = window.innerWidth;
-    if (wWidth > 1000) return {
+    if (wWidth > 1000 && isCurrentUser) return {
       panelClass: ['card-right-corner'],
-      position: {
-        top: '90px',
-        right: '20px',
-      },
+      position: {top: '90px', right: '20px', },
+      data: data,
+    }
+    if(wWidth > 1000) return {
+      panelClass: ['card-round-corners'],
       data: data,
     }
     else return this.mobileCardCenter(data,'580px')
