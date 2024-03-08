@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { User } from '../../../../shared/models/user.class';
-import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogsService } from '../../../../shared/services/dialogs.service';
 
 @Component({
   selector: 'app-direct-msg',
@@ -16,7 +15,7 @@ export class DirectMsgComponent {
 
 
   constructor(
-    public dialog: MatDialog,
+    private dialogService: DialogsService,
   ) { }
 
 
@@ -44,10 +43,7 @@ export class DirectMsgComponent {
    * @returns {void}
    */
   openShowUserDialog(user: User): void {
-    this.dialog.open(DialogShowUserComponent, {
-      panelClass: ['card-round-corners'],
-      data: { user },
-    });
+    this.dialogService.showUserDialog(user, undefined)
   }
 
 

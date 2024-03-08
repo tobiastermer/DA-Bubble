@@ -3,9 +3,10 @@ import { Channel } from '../../../../shared/models/channel.class';
 import { DataService } from '../../../../shared/services/data.service';
 import { User } from '../../../../shared/models/user.class';
 import { Subscription } from 'rxjs';
-import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-channel.component';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
+import { DialogsService } from '../../../../shared/services/dialogs.service';
+import { DialogChannelComponent } from '../../dialogs/dialog-channel/dialog-channel.component';
+
 
 @Component({
   selector: 'app-channel-msg',
@@ -27,7 +28,8 @@ export class ChannelMsgComponent implements OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    public dataService: DataService
+    public dataService: DataService,
+    private dialogService: DialogsService
   ) {
 
 
@@ -71,11 +73,6 @@ export class ChannelMsgComponent implements OnDestroy {
    */
   openShowUserDialog(ownerId: string): void {
     let user = this.dataService.getUserById(ownerId);
-    if (!user) return
-    this.dialog.open(DialogShowUserComponent, {
-      panelClass: ['card-round-corners'],
-      data: { user },
-    });
+    if (user) this.dialogService.showUserDialog(user, undefined);
   }
-
 }

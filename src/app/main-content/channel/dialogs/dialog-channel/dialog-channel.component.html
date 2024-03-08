@@ -81,7 +81,7 @@
         </header>
         <div class="members">
             @for (member of members; track $index) {
-                <app-user-chip [user]="member" (click)="openShowUserDialog(member)"></app-user-chip>
+                <app-user-chip [user]="member" (click)="this.dialogService.showUserDialog(member, undefined)"></app-user-chip>
                 }
         </div>
         <div class="add-member" (click)="openAddUser()">

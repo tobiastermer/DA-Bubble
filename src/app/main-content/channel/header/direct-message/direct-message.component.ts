@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
-import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
-import { MatDialog } from '@angular/material/dialog';
 import { User } from '../../../../shared/models/user.class';
+import { DialogsService } from '../../../../shared/services/dialogs.service';
 
 @Component({
   selector: 'app-direct-message',
@@ -20,7 +19,7 @@ export class DirectMessageComponent {
   defaultAvatar: string = '../../../../../assets/img/avatars/unknown.jpg';
 
   constructor(
-    public dialog: MatDialog,
+    public dialogService: DialogsService,
   ) { }
 
 
@@ -39,19 +38,6 @@ export class DirectMessageComponent {
         avatar: '../../../../../assets/img/avatars/unknown.jpg'
       });
     }
-  }
-
-
-  /**
-   * Opens a dialog to show detailed information about the specified user.
-   * @param {User} user - The user whose information will be displayed in the dialog.
-   * @returns {void}
-   */
-  openShowUserDialog(user: User): void {
-    this.dialog.open(DialogShowUserComponent, {
-      panelClass: ['card-round-corners'],
-      data: { user },
-    });
   }
 
 

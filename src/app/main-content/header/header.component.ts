@@ -1,23 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from './search-bar/search-bar.component';
-import {
-  MatDialog,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import { MenuDialogComponent } from './menu-dialog/menu-dialog.component';
 import { DataService } from '../../shared/services/data.service';
 import { User } from '../../shared/models/user.class';
 import { slideInRightAnimationSlow, slideInleftAnimationSlow } from '../../shared/services/animations';
 import { PositionService } from '../../shared/services/position.service';
 import { MatCardModule } from '@angular/material/card';
+import { DialogsService } from '../../shared/services/dialogs.service';
 
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, SearchBarComponent, MatDialogModule, MatCardModule],
+  imports: [CommonModule, SearchBarComponent, MatCardModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   animations: [
@@ -38,9 +33,9 @@ export class HeaderComponent {
   isMenuVisible: Boolean = true;
 
   constructor(
-    public dialog: MatDialog,
     private DataService: DataService,
     private positionService: PositionService,
+    private dialogService: DialogsService
   ) {
     this.currentUser = this.DataService.currentUser!;
 
@@ -53,13 +48,7 @@ export class HeaderComponent {
   }
 
   openDialog() {
-    this.dialog.open(MenuDialogComponent, {
-      panelClass: ['card-right-corner'],
-      position: {
-        top: '90px',
-        right: '20px',
-      },
-    });
+    this.dialogService.headerMenuDialog()
   }
 
   toggleDropDown() {

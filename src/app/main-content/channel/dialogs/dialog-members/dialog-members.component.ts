@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { UserChipComponent } from '../../../../shared/components/user-chip/user-chip.component';
 import { User } from '../../../../shared/models/user.class';
-import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
+import { DialogsService } from '../../../../shared/services/dialogs.service';
 
 @Component({
   selector: 'app-dialog-members',
@@ -39,6 +39,7 @@ export class DialogMembersComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogMembersComponent>,
     public dialog: MatDialog,
+    public dialogService: DialogsService,
     @Inject(MAT_DIALOG_DATA) public data: { members: User[] },
   ) {
     this.members = data.members;
@@ -54,17 +55,17 @@ export class DialogMembersComponent {
   }
 
 
-  /**
-   * Opens a dialog to show detailed information about the specified user.
-   * @param {User} user - The user whose information will be displayed in the dialog.
-   * @returns {void}
-   */
-  openShowUserDialog(user: User): void {
-    this.dialog.open(DialogShowUserComponent, {
-      panelClass: ['card-round-corners'],
-      data: { user },
-    });
-  }
+  // /**
+  //  * Opens a dialog to show detailed information about the specified user.
+  //  * @param {User} user - The user whose information will be displayed in the dialog.
+  //  * @returns {void}
+  //  */
+  // openShowUserDialog(user: User): void {
+  //   this.dialog.open(DialogShowUserComponent, {
+  //     panelClass: ['card-round-corners'],
+  //     data: { user },
+  //   });
+  // }
 
 
   /**

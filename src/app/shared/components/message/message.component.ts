@@ -4,7 +4,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { ChannelMessage } from '../../models/channel-message.class';
 import { User } from '../../models/user.class';
-import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show-user.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { Reply } from '../../models/reply.class';
@@ -17,6 +16,7 @@ import { TextOutputComponent } from './text-output/text-output.component';
 import { EditMessageComponent } from './edit-message/edit-message.component';
 import { DirectMessage } from '../../models/direct-message.class';
 import { DirectMessagesService } from '../../firebase-services/direct-message.service';
+import { DialogsService } from '../../services/dialogs.service';
 
 
 @Component({
@@ -59,6 +59,7 @@ export class MessageComponent implements OnChanges {
 
   constructor(
     public dialog: MatDialog,
+    public dialogService: DialogsService,
     private channelMsgService: ChannelMessagesService,
     private directMsgService: DirectMessagesService,
     public data: DataService,
@@ -138,18 +139,6 @@ export class MessageComponent implements OnChanges {
   setTime(timestemp: number): string {
     let date = new Date(timestemp);
     return date.getHours() + ':' + date.getMinutes()
-  }
-
-
-  /**
-   * Opens a dialog to display user information.
-   * @param {User} user - The user whose information is to be displayed.
-   */
-  openShowUserDialog(user: User) {
-    this.dialog.open(DialogShowUserComponent, {
-      panelClass: ['card-round-corners'],
-      data: { user: user },
-    });
   }
 
 

@@ -11,13 +11,13 @@ import { PositionService } from '../../../shared/services/position.service';
 import { DialogEmojiComponent } from '../dialogs/dialog-emoji/dialog-emoji.component';
 import { User } from '../../models/user.class';
 import { DialogAtUserComponent } from '../dialogs/dialog-at-user/dialog-at-user.component';
-import { DialogShowUserComponent } from '../dialogs/dialog-show-user/dialog-show-user.component';
 import { AddEmojiService } from '../../services/add-emoji.service';
 import { FileService } from '../../services/file.service';
 import { DirectMessage } from '../../models/direct-message.class';
 import { DirectMessagesService } from '../../firebase-services/direct-message.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
+import { DialogsService } from '../../services/dialogs.service';
 
 
 @Component({
@@ -63,7 +63,8 @@ export class InputTextareaComponent {
     private PositionService: PositionService,
     public dialog: MatDialog,
     public addEmoji: AddEmojiService,
-    private fileService: FileService
+    private fileService: FileService,
+    public dialogService: DialogsService
   ) { }
 
 
@@ -285,12 +286,9 @@ export class InputTextareaComponent {
    * @param {User} user - The user whose details to show.
    */
   openShowUserDialog(user: User) {
-    this.dialog.open(DialogShowUserComponent, {
-      panelClass: ['card-round-corners'],
-      data: { user: user },
-    });
+    this.dialogService.showUserDialog(user, undefined)
   }
-
+  
 
   /**
    * Opens the dialog for selecting an emoji.

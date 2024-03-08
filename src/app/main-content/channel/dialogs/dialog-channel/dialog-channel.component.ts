@@ -25,7 +25,7 @@ import { DataService } from '../../../../shared/services/data.service';
 import { Router } from '@angular/router';
 import { PositionService } from '../../../../shared/services/position.service';
 import { DialogErrorComponent } from '../../../../shared/components/dialogs/dialog-error/dialog-error.component';
-import { DialogShowUserComponent } from '../../../../shared/components/dialogs/dialog-show-user/dialog-show-user.component';
+import { DialogsService } from '../../../../shared/services/dialogs.service';
 
 @Component({
   selector: 'app-dialog-channel',
@@ -71,6 +71,7 @@ export class DialogChannelComponent {
     private DataService: DataService,
     private PositionService: PositionService,
     public dialog: MatDialog,
+    public dialogService: DialogsService,
     private router: Router
   ) {
     if (!data) this.onNoClick();
@@ -284,18 +285,6 @@ export class DialogChannelComponent {
     } catch (error) {
       console.error("Fehler beim Löschen der Mitgliedschaft: ", error);
     }
-  }
-
-   /**
-   * Opens a dialog to show detailed information about the specified user.
-   * @param {User} user - The user whose information will be displayed in the dialog.
-   * @returns {void}
-   */
-   openShowUserDialog(user: User): void {
-    this.dialog.open(DialogShowUserComponent, {
-      panelClass: ['card-round-corners'],
-      data: { user },
-    });
   }
 
 
