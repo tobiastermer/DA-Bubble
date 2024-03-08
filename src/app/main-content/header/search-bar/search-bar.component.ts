@@ -111,6 +111,12 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     this.closeList();
   }
 
+  changeChannelPathByID(channelID: any) {
+    let channelName = this.DataService.getChannelNameById(channelID);
+    this.router.navigate([this.pathUserName + '/channel/' + channelName]);
+    this.closeList();
+  }
+
   filter() {
     const search = this.searchInput.nativeElement.value.toLowerCase();
     this.filterUsers(search);

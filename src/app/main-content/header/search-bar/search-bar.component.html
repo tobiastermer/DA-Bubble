@@ -20,7 +20,7 @@
         <ul class="filtered" *ngIf="showMessage">
             <span class="categoryName">Messages:</span>
             <li *ngFor="let message of filteredMessages;">
-                <div class="channelList">
+                <div class="channelList" (click)="changeChannelPathByID(message.channelID)">
                     <img class="user-avatar" [src]="DataService.getUserAvatarById(message.fromUserID)"
                         (error)="onImageError($event)" alt="Avatar">
                     <div class="messageContainer">
@@ -30,7 +30,7 @@
                                 {{setTime(message.date)}}</span>
                         </div>
                         <span> {{ message.message }}</span>
-                        <span class="message-channel-name"> #{{DataService.getChannelNameById(message.channelID)}}</span>
+                        <span class="message-channel-name" > #{{DataService.getChannelNameById(message.channelID)}}</span>
                     </div>
 
                 </div>
