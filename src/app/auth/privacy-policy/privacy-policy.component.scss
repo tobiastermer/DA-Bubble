@@ -60,6 +60,7 @@ $fontFigtree: "Figtree", sans-serif;
   margin-bottom: 16px;
   align-items: center;
   overflow: auto;
+  clip-path: inset(0 round 30px); // Wendet abgerundete Ecken auf den Inhalt an, inklusive Scrollbalken
 
   &__header {
     display: flex;
@@ -71,6 +72,7 @@ $fontFigtree: "Figtree", sans-serif;
     color: $dkBlue;
     padding-bottom: 32px;
     @include fontNunito($weight: 700, $size: 46px);
+    text-align: center;
   }
 
   &__adress {
@@ -83,16 +85,19 @@ $fontFigtree: "Figtree", sans-serif;
   h2 {
     color: $dkBlue;
     text-align: center;
+    word-wrap: break-word;
   }
 
   p {
     @include fontNunito($weight: 400, $size: 16px);
     text-align: center;
     line-height: 20px;
+    word-wrap: break-word;
   }
 
   li {
     @include fontNunito($weight: 400, $size: 14px);
+    word-wrap: break-word;
   }
 
   &__arrow-back {
@@ -117,3 +122,17 @@ $fontFigtree: "Figtree", sans-serif;
 .break {
   word-break: break-all;
 }
+
+@media (max-width: $tablet-breakpoint) {
+
+  .privacy {
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
+
+    .mat-mdc-card-content {
+      width: calc(100% - 32px) !important;
+    }
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {}
