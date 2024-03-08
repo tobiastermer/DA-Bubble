@@ -59,6 +59,7 @@ $fontFigtree: "Figtree", sans-serif;
   z-index: 100;
   margin-bottom: 16px;
   align-items: center;
+  overflow: auto;
 
   &__header {
     display: flex;
