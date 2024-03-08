@@ -13,6 +13,7 @@ import { AddEmojiService } from '../../../services/add-emoji.service';
 import { StorageService } from '../../../firebase-services/storage.service';
 import { DirectMessage } from '../../../models/direct-message.class';
 import { DirectMessagesService } from '../../../firebase-services/direct-message.service';
+import { DialogsService } from '../../../services/dialogs.service';
 
 @Component({
   selector: 'app-edit-message',
@@ -55,7 +56,8 @@ export class EditMessageComponent {
     private directMsgService: DirectMessagesService,
     public data: DataService,
     public addEmoji: AddEmojiService,
-    private storage: StorageService
+    private storage: StorageService,
+    private dialogService: DialogsService
   ) {
     data.currentUser.id ? this.currentUserID = data.currentUser.id : this.currentUserID = '';
     if (!data.lastEmojis) this.data.loadLastEmojis()
@@ -88,10 +90,8 @@ export class EditMessageComponent {
     if (selection) this.range = selection.getRangeAt(0);
     if (this.isLoading) return
     this.isLoading = true;
-    const dialogRef = this.dialog.open(DialogEmojiComponent, {
-      panelClass: ['card-round-corners'],
-      data: {},
-    });
+    const dialogRef = this.dialog.open(DialogEmojiComponent,  
+      this.dialogService.emojiProp());
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.isEditMsg) {
         this.addEmojiToText(result);

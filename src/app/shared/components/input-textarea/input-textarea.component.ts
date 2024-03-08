@@ -239,12 +239,12 @@ export class InputTextareaComponent {
    * Opens the dialog for selecting users to mention in the message text.
    */
   openDialogAtUser(): void {
-    let pos = this.PositionService.getDialogPosWithCorner(this.atUser, 'bottom');
+    let pos;
+    if (this.chat === 'reply') pos = this.PositionService.getDialogPosWithCorner(this.atUser, 'bottom-left', -100);
+    else pos = this.PositionService.getDialogPosWithCorner(this.atUser, 'bottom-left');
     this.currentMemberIDs = this.members.map(user => user.id!);
-    const dialogRef = this.dialog.open(DialogAtUserComponent, {
-      position: pos, panelClass: ['card-round-corners'], width: '350px',
-      data: { currentMemberIDs: this.currentMemberIDs, channel: this.channel },
-    });
+    const dialogRef = this.dialog.open(DialogAtUserComponent,
+      this.dialogService.atUserProp(this.currentMemberIDs, this.channel, pos));
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.addUserToMessageText(result);
     });
@@ -297,11 +297,8 @@ export class InputTextareaComponent {
     const selection = window.getSelection();
     if (selection) this.range = selection.getRangeAt(0);
     let pos = this.PositionService.getDialogPosEmojy(this.emoijBtn);
-    let classCorner = pos?.right ? 'card-right-bottom-corner' : 'card-left-bottom-corner';
-    const dialogRef = this.dialog.open(DialogEmojiComponent, {
-      position: pos, panelClass: [classCorner],
-      data: {},
-    });
+    const dialogRef = this.dialog.open(DialogEmojiComponent, 
+      this.dialogService.emojiProp(pos));
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return
       this.addEmoji.addEmoji(this.range, result, this.messageText);

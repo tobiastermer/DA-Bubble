@@ -56,7 +56,7 @@ export class PositionService {
         else return { bottom: windowH - pos.y + 'px', right: windowW - pos.x - pos.w + 'px' }
     }
 
-    getDialogPosWithCorner(element: ElementRef | undefined, cornerPos: 'right' | 'left' | 'bottom'): DialogPosition | undefined {
+    getDialogPosWithCorner(element: ElementRef | undefined, cornerPos: 'right' | 'left' | 'bottom-right' |  'bottom-left', xOffset?: number): DialogPosition | undefined {
         if (!element) return undefined
         const windowH = window.innerHeight;
         const windowW = window.innerWidth;
@@ -66,8 +66,10 @@ export class PositionService {
             let e: any = element;
             pos = this.getElementPos(e._elementRef.nativeElement)
         }
+        if (xOffset) pos.x = pos.x + xOffset;
         if (cornerPos === 'right') return { top: pos.y + pos.h + 'px', right: windowW - pos.x - pos.w + 'px' }
-        else if (cornerPos === 'bottom') return { bottom: windowH - pos.y + 'px', right: windowW - pos.x - pos.w + 'px' }
+        else if (cornerPos === 'bottom-right') return { bottom: windowH - pos.y + 'px', right: windowW - pos.x - pos.w + 'px' }
+        else if (cornerPos === 'bottom-left') return { bottom: windowH - pos.y + 'px', left: pos.x + 'px' }
         else return { top: pos.y + pos.h + 'px', left: pos.x + 'px' }
     }
 

@@ -190,10 +190,8 @@ export class MessageComponent implements OnChanges {
    * Opens the emoji dialog to add a like to the message.
    */
   openDialogEmoji(): void {
-    const dialogRef = this.dialog.open(DialogEmojiComponent, {
-      panelClass: ['card-round-corners'],
-      data: {},
-    });
+    const dialogRef = this.dialog.open(DialogEmojiComponent,  
+      this.dialogService.emojiProp());
     dialogRef.afterClosed().subscribe(result => {
       if (result && !this.isEditMsg) return this.addLike(result);
       else return
@@ -250,7 +248,7 @@ export class MessageComponent implements OnChanges {
    * Sets the position of the hidden likes row.
    */
   setHiddenLikePos() {
-    let pos = this.positionService.getDialogPosWithCorner(this.likesRow, 'bottom');
+    let pos = this.positionService.getDialogPosWithCorner(this.likesRow, 'bottom-left');
     if (pos?.bottom) this.posLikesRow = parseInt(pos.bottom);
   }
 
