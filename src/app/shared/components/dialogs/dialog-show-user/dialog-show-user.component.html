@@ -8,7 +8,7 @@
         <div class="name-container">
             <h1>{{ data.user.name }} {{ data.user.id == currentUserID ? ' (Du)' : '' }}</h1>
             <a class="mobile-hidden" (click)="openDialogEditUser(data.user)" *ngIf="data.user.id == currentUserID">Bearbeiten</a>
-            <div class="img-edit icon-btn desktop-hidden" (click)="openDialogEditUser(data.user)"></div>
+            <div class="img-edit icon-btn desktop-hidden" (click)="openDialogEditUser(data.user)" *ngIf="data.user.id == currentUserID"></div>
         </div>
         <div class="status-icon-with-label">
             <div class="status-indicator" [class.online]="userStatus === 'online'" [class.away]="userStatus === 'away'"></div>
