@@ -32,21 +32,21 @@ export const slideInUpAnimation = trigger('slideInUp', [
 export const slideInUpAnimationSlow = trigger('slideInUpSlow', [
   transition(':enter', [
     style({ transform: 'translateY(100%)', opacity: 0 }),
-    animate('1.5s ease-out', style({ transform: 'translateY(0)', opacity: 1 })),
+    animate('0.75s ease-out', style({ transform: 'translateY(0)', opacity: 1 })),
   ]),
 ]);
 
 export const slideInleftAnimationSlow = trigger('slideInLeftSlow', [
   transition(':enter', [
     style({ transform: 'translateX(100%)', opacity: 0 }),
-    animate('1.5s ease-out', style({ transform: 'translateX(0)', opacity: 1 })),
+    animate('0.75s ease-out', style({ transform: 'translateX(0)', opacity: 1 })),
   ]),
 ]);
 
 export const slideInRightAnimationSlow = trigger('slideInRightSlow', [
   transition(':enter', [
     style({ transform: 'translateX(-100%)', opacity: 0 }),
-    animate('1.5s ease-out', style({ transform: 'translateX(0)', opacity: 1 })),
+    animate('0.75s ease-out', style({ transform: 'translateX(0)', opacity: 1 })),
   ]),
 ]);
 
