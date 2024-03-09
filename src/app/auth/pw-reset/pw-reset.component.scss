@@ -23,7 +23,7 @@ $fontFigtree: "Figtree", sans-serif;
   &__legals {
     @include dFlex(row, center, center, 16px);
     position: absolute;
-    bottom: 48px;
+    bottom: 32px;
     margin-top: 10px;
     font-family: $fontFigtree;
 
@@ -50,14 +50,16 @@ $fontFigtree: "Figtree", sans-serif;
 }
 
 .pw-reset {
+  max-height: calc(100vh - 140px);
   padding: 42px;
   border-radius: 30px;
-  @include dFlex(column, center, 36px);
+  @include dFlex(column, flex-start, 36px);
   gap: 36px;
   box-shadow: $boxShadow;
-  overflow: hidden;
+  overflow: auto;
   z-index: 100;
   margin-bottom: 16px;
+  clip-path: inset(0 round 30px);
 
 
   &__header,
@@ -306,7 +308,8 @@ form {
     height: unset;
     padding: 35px 20px 35px 20px;
     overflow: unset;
-
+    max-height: unset;
+    
     &__arrow-back {
       position: absolute;
       top: 28px;

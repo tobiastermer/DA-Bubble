@@ -50,29 +50,29 @@ $fontFigtree: "Figtree", sans-serif;
 .imprint {
   width: 600px;
   height: 648px;
-  padding: 42px;
+  padding: 32px;
   border-radius: 30px ;
-  @include dFlex(column, center, 36px);
+  @include dFlex(column, start, 36px);
   gap: 36px;
   box-shadow: $boxShadow;
-  overflow: hidden;
+  overflow: auto;
   z-index: 100;
   margin-bottom: 16px;
+  margin-top: 16px;
   align-items: center;
+  clip-path: inset(0 round 30px);
 
   &__header{
     display: flex;
     align-items: center;
     flex-direction:column ;
-  
-
   }
 
   &__headline{
     color: $dkBlue;
     padding: 36px;
     @include fontNunito($weight: 700, $size: 46px);
-    
+    text-align: center;
   }
 
   &__adress{
@@ -80,7 +80,7 @@ $fontFigtree: "Figtree", sans-serif;
     padding: 36px;
     @include fontNunito($weight: 700, $size: 32px);
     padding-bottom: 0px;
-
+    text-align: center;
   }
   
   p {
@@ -88,6 +88,7 @@ $fontFigtree: "Figtree", sans-serif;
       
       text-align: center;
       line-height: 24px;
+      word-wrap: break-word;
      }
   
 
@@ -108,10 +109,24 @@ $fontFigtree: "Figtree", sans-serif;
   a{
     color: $dkBlue;
     cursor: pointer;
+    word-wrap: break-word;
   }
 }
 
-  
+@media (max-width: $tablet-breakpoint) {
+
+  .imprint {
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
+    padding: 16px;
+
+    .mat-mdc-card-content {
+      width: calc(100% - 32px) !important;
+    }
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {}
  
   
   

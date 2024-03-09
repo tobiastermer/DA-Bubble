@@ -55,9 +55,9 @@ $fontFigtree: "Figtree", sans-serif;
   @include dFlex(column, start, 36px);
   gap: 36px;
   box-shadow: $boxShadow;
-  overflow: scroll;
   z-index: 100;
   margin-bottom: 16px;
+  margin-top: 16px;
   align-items: center;
   overflow: auto;
   clip-path: inset(0 round 30px); // Wendet abgerundete Ecken auf den Inhalt an, inklusive Scrollbalken
@@ -128,6 +128,7 @@ $fontFigtree: "Figtree", sans-serif;
   .privacy {
     width: calc(100% - 32px);
     height: calc(100% - 32px);
+    padding: 16px;
 
     .mat-mdc-card-content {
       width: calc(100% - 32px) !important;

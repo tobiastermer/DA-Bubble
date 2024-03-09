@@ -21,7 +21,7 @@ $fontFigtree: "Figtree", sans-serif;
   &__legals {
     @include dFlex(row, center, center, 16px);
     position: absolute;
-    bottom: 48px;
+    bottom: 32px;
     margin-top: 10px;
     font-family: $fontFigtree;
 
@@ -86,14 +86,19 @@ $fontFigtree: "Figtree", sans-serif;
 .login {
   width: 600px;
   height: 688px;
+  max-height: calc(100vh - 140px);
   padding: 42px;
   border-radius: 30px;
-  @include dFlex(column, center, 36px);
+  @include dFlex(column, flex-start, 36px);
   gap: 36px;
   box-shadow: $boxShadow;
   z-index: 200;
   animation: backgroundFadeIn 1.5s ease-in forwards;
-  overflow: hidden;
+  overflow: auto;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  clip-path: inset(0 round 30px);
+
 
   &__header,
   &__subtitle {
@@ -427,6 +432,7 @@ form {
   .login {
     width: calc(100% - 32px);
     height: unset;
+    max-height: unset;
     padding: 35px 20px 35px 20px;
     overflow: unset;
 
