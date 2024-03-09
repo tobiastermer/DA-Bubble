@@ -56,8 +56,8 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
   filteredChannels!: Channel[];
   filteredMessages!: ChannelMessage[];
 
-  nameFromChannel:string = '';
-  userFromMessage:string = '';
+  nameFromChannel: string = '';
+  userFromMessage: string = '';
 
   selectListVisible: boolean = false;
   pathUserName: string = '';
@@ -88,7 +88,11 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
   channelMessageSubscriptionReturn() {
     return this.ChannelMessagesService.allChannelMessages$.subscribe(
       (message) => {
-        this.messages = message;
+        // this.messages = message;
+        // Filtern der Nachrichten basierend auf den Kanal-IDs, zu denen der Benutzer gehört
+        this.messages = message.filter(message =>
+          this.channels.some(channel => channel.id === message.channelID)
+        );
         this.cdr.detectChanges(); // Füge dies hinzu, um die Change Detection manuell auszulösen
       }
     );
