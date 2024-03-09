@@ -340,10 +340,12 @@ export class ChannelComponent implements OnDestroy {
    * @param {number} time - The timestamp to check.
    * @returns {boolean} A boolean indicating whether the timestamp should be displayed.
    */
-  checkTimeStemp(time: number): boolean {
-    if (this.newTimeStemp && this.channelMessages.length == 1) return true
+  checkTimeStemp(time: number,index: number , chat: 'channel' | 'message'): boolean {
+    let msgLength;
+    (chat === 'channel')? msgLength = this.channelMessages.length : msgLength = this.directMessages.length;
+    if (this.newTimeStemp &&  msgLength === 1) return true
     this.newTimeStemp = this.timeStemp.getTimeStemp(time);
-    if (this.oldTimeStemp === this.newTimeStemp) return false
+    if (this.oldTimeStemp === this.newTimeStemp && index !== 0) return false
     this.oldTimeStemp = this.newTimeStemp
     return true
   }

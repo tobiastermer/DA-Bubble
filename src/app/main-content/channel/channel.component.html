@@ -10,7 +10,7 @@
                 }
 
                 @for (message of channelMessages; track $index) {
-                @if(checkTimeStemp(message.date)){
+                @if(checkTimeStemp(message.date ,$index ,'channel')){
                 <div class="day-section">
                     <hr>
                     <div>{{ newTimeStemp }}</div>
@@ -31,7 +31,7 @@
             @if (directMessages.length <= 0) { <app-direct-msg [user]="chatUser"></app-direct-msg>}
 
                 @for (message of directMessages; track $index) {
-                @if(checkTimeStemp(message.date)){
+                @if(checkTimeStemp(message.date ,$index ,'message')){
                 <div class="day-section">
                     <hr>
                     <div>{{ newTimeStemp }}</div>
