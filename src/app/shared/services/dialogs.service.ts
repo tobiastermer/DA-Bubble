@@ -72,7 +72,7 @@ export class DialogsService {
       position: pos,
       panelClass: ['card-left-bottom-corner'],
       width: '350px',
-      data: { data },
+      data: data,
     }
     else return this.mobileCardBottom(data)
   }
