@@ -5,6 +5,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 // triggern mit animationState ( 'in' oder 'out' ) beispiel in der sign_up.
 
 
+
 export const slideAnimation = trigger('slideAnimation', [
     state('in', style({ transform: 'translateY(0)', opacity: 1 })),
     transition('void => in', [

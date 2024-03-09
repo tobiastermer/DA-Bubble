@@ -229,6 +229,10 @@ form {
   border: $dkBlue;
 }
 
+.password-icon{
+  padding-right: 30px !important ;
+}
+
 @keyframes checkboxAnimation {
   from {
     opacity: 0;

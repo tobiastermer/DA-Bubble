@@ -9,10 +9,13 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { HashLocationStrategy, PathLocationStrategy } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {provide : PathLocationStrategy , useClass : HashLocationStrategy},
     provideRouter(routes),
+
     provideClientHydration(),
     provideAnimationsAsync(),
     importProvidersFrom(

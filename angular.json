@@ -28,7 +28,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/assets/fonts/"
+              "src/assets/fonts/"    
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",

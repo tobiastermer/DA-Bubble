@@ -20,12 +20,8 @@
     <form [formGroup]="pwResetForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="pw-reset__form-field">
         <mat-icon matPrefix>lock_outlined</mat-icon>
-        <input
-          matInput
-          placeholder="Neues Passwort"
-          formControlName="password"
-          type="password"
-        />
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passwort" formControlName="password">
+        <mat-icon class="password-icon" matSuffix (click)="togglePasswordVisibility()">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         <mat-error *ngIf="pwResetForm.get('password')?.errors?.['required']">
           Passwort ist erforderlich.
         </mat-error>
@@ -36,12 +32,8 @@
 
       <mat-form-field appearance="outline" class="pw-reset__form-field">
         <mat-icon matPrefix>lock_outlined</mat-icon>
-        <input
-          matInput
-          placeholder="Passwort bestätigen"
-          formControlName="confirmPassword"
-          type="password"
-        />
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passwort" formControlName="password">
+        <mat-icon class="password-icon" matSuffix (click)="togglePasswordVisibility()">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         <mat-error *ngIf="pwResetForm.errors?.['notSame']">
           Passwörter stimmen nicht überein.
         </mat-error>

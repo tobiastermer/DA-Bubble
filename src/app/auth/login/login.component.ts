@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -13,14 +13,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { signInWithEmailAndPassword } from '@angular/fire/auth';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Auth } from '@angular/fire/auth'; // wichtig @angular/fire/auth NICHT @fire/auth
+import { Auth } from '@angular/fire/auth';
 import { AuthService } from '../../shared/firebase-services/auth.service';
 import { UserService } from '../../shared/firebase-services/user.service';
 import { PresenceService } from '../../shared/firebase-services/presence.service';
 import { DataService } from '../../shared/services/data.service';
-import { doc } from '@angular/fire/firestore';
-import { getDoc, setDoc } from 'firebase/firestore';
 import {
   errorAnimation,
   slideOutDownAnimation,
@@ -50,6 +47,7 @@ export class LoginComponent {
   guestUserId: string = 'PT4yYauqYDFGDbalSPkk';
   showLoginCard = true;
   isGuestLogin = false;
+  hidePassword = true;
 
   constructor(
     private fb: FormBuilder,
@@ -66,6 +64,10 @@ export class LoginComponent {
     });
   }
 
+  /**
+   * Submits the login form and processes the login operation.
+   * Handles guest login separately from email/password login.
+   */
   async onLoginSubmit() {
     this.formSubmitted = true;
     if (this.isGuestLogin) {
@@ -79,6 +81,12 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * Performs the login operation for a user with a specified email and password.
+   * If successful, updates user's email in Firestore if necessary and handles successful login.
+   * @param {string} email - The email address of the user attempting to log in.
+   * @param {string} password - The password for the login attempt.
+   */
   async loginUser(email: string, password: string) {
     try {
       const emailInLowerCase = email.toLowerCase();
@@ -97,6 +105,10 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * Handles the tasks after a successful login, such as updating user status and navigating to chat.
+   * @param {any} userCredential - The user credentials returned from the authentication process.
+   */
   async handleSuccessfulLogin(userCredential: any) {
     if (userCredential.user && userCredential.user.emailVerified) {
       const uid = userCredential.user.uid;
@@ -113,12 +125,20 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * Updates the online status of the user in the application.
+   * @param {string} uid - The UID of the user whose status is being updated.
+   */
   async updateUserStatus(uid: string) {
     try {
       await this.presenceService.updateOnUserLogin(uid);
     } catch (error) {}
   }
 
+  /**
+   * Navigates to the chat page for the logged-in user.
+   * @param {string} userId - The ID of the user to navigate to chat for.
+   */
   navigateToChat(userId: string) {
     this.showLoginCard = false;
     setTimeout(() => {
@@ -127,6 +147,10 @@ export class LoginComponent {
     }, 800);
   }
 
+  /**
+   * Displays an error message on the UI.
+   * @param {string} message - The error message to be displayed.
+   */
   showError(message: string) {
     this.error = true;
     this.errorMessage = message;
@@ -135,10 +159,18 @@ export class LoginComponent {
     }, 2000);
   }
 
+  /**
+   * Handles errors during the login process by displaying a relevant error message.
+   * @param {any} error - The error object containing details about the login error.
+   */
   handleError(error: any) {
     this.showError('Email oder Passwort falsch.');
   }
 
+  /**
+   * Facilitates login as a guest, including removing validators and updating presence.
+   * @param {string} userId - The user ID for the guest login operation.
+   */
   async onGuestLogin(userId: string): Promise<void> {
     this.isGuestLogin = true;
     this.removeValidators();
@@ -163,6 +195,9 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * Opens the sign-up page for new user registration.
+   */
   openSignUp() {
     this.showLoginCard = false;
     setTimeout(() => {
@@ -171,6 +206,9 @@ export class LoginComponent {
     }, 800);
   }
 
+  /**
+   * Performs sign in using Google's authentication services.
+   */
   async onGoogleSignIn() {
     try {
       const userCredential = await this.authService.signInWithGoogle();
@@ -190,6 +228,9 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * Initiates navigation to the password reset page.
+   */
   openPwReset() {
     const loginCard = document.querySelector('.login');
 
@@ -200,10 +241,20 @@ export class LoginComponent {
     }, 800);
   }
 
+  /**
+   * Removes validation from the email and password fields of the login form.
+   */
   removeValidators() {
     this.loginForm.get('email')!.clearValidators();
     this.loginForm.get('email')!.updateValueAndValidity();
     this.loginForm.get('password')!.clearValidators();
     this.loginForm.get('password')!.updateValueAndValidity();
+  }
+
+  /**
+   * Toggles the visibility of the password in the login form.
+   */
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 }
