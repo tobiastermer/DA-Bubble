@@ -108,12 +108,9 @@ export class SignUpComponent implements OnInit {
    */
   emailDomainValidator(control: AbstractControl): ValidationErrors | null {
     const email = control.value;
-    if (!email.includes('@')) {
-      return { emailAtSymbolMissing: true };
-    }
-    const domainPart = email.substring(email.lastIndexOf('@') + 1);
-    if (!domainPart.includes('.')) {
-      return { emailDomainDotMissing: true };
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailPattern.test(email)) {
+      return { emailDomainInvalid: true };
     }
     return null;
   }
@@ -180,12 +177,12 @@ export class SignUpComponent implements OnInit {
   getFirstEmailError() {
     const emailErrors = this.signUpForm.get('email')?.errors;
     if (!emailErrors) return null;
-
+  
     if (emailErrors['required']) return 'E-Mail eingeben';
     if (emailErrors['email']) return 'Bitte richtige E-Mail eingeben';
-    if (emailErrors['emailExists'])
-      return 'Diese E-Mail-Adresse wird bereits verwendet.';
-
+    if (emailErrors['emailExists']) return 'Diese E-Mail-Adresse wird bereits verwendet.';
+    if (emailErrors['emailDomainInvalid']) return 'Bitte eine gültige E-Mail-Adresse eingeben.';
+  
     return null;
   }
 
