@@ -244,4 +244,12 @@ export class SignUpComponent implements OnInit {
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
   }
+
+  openImprint() {
+    this.router.navigate(['/imprint']);
+  }
+
+  openPrivacy() {
+    this.router.navigate(['/privacy'])
+  }
 }

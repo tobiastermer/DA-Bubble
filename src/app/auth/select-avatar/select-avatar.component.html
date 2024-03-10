@@ -62,8 +62,8 @@
     </div>
   </mat-card>
   <div class="background-container__legals mobile-hidden">
-    <a href="imprint">Impressum</a>
-   <a href="">Datenschutz</a>
+    <a (click)="openImprint()">Impressum</a>
+   <a (click)="openPrivacy()">Datenschutz</a>
   </div>
 
   <mat-card *ngIf="showError" class="error-message">

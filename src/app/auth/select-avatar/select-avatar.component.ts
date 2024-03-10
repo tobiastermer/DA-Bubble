@@ -169,4 +169,12 @@ export class SelectAvatarComponent implements OnInit {
       this.avatarError = true;
     }
   }
+
+  openImprint() {
+    this.router.navigate(['/imprint']);
+  }
+
+  openPrivacy() {
+    this.router.navigate(['/privacy'])
+  }
 }

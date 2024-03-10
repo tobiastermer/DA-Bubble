@@ -73,9 +73,8 @@ export class InputTextareaComponent {
    */
   updateButtonState() {
     if (this.isLoading) return this.isButtonDisabled = true;
-    if (this.messageText && this.messageText.nativeElement.innerText.trim()) return this.isButtonDisabled = false;
-    if (this.tempFile) return this.isButtonDisabled = false;
-    return this.isButtonDisabled = true;
+    if (this.messageText.nativeElement.innerHTML === '') return this.isButtonDisabled = true;
+    return this.isButtonDisabled = false;
   }
 
 
@@ -93,7 +92,7 @@ export class InputTextareaComponent {
         if (this.fileInput) this.fileInput.nativeElement.value = '';
         this.updateButtonState();
       }
-    }, 5);
+    }, 10);
   }
 
 
@@ -164,7 +163,7 @@ export class InputTextareaComponent {
     msg.channelID = this.channel.id;
     msg.fromUserID = this.data.currentUser.id;
     msg.message = text.replace(/^\n+/, '');
-    msg.attachmentID = await this.fileService.uploadFile(this.tempFile);
+    if (this.tempFile) msg.attachmentID = await this.fileService.uploadFile(this.tempFile);
     return msg
   }
 
@@ -246,7 +245,10 @@ export class InputTextareaComponent {
     const dialogRef = this.dialog.open(DialogAtUserComponent,
       this.dialogService.atUserProp(this.currentMemberIDs, this.channel, pos));
     dialogRef.afterClosed().subscribe(result => {
-      if (result) this.addUserToMessageText(result);
+      if (!result) return
+      this.setFocus(this.messageText);
+      this.addUserToMessageText(result);
+      this.updateButtonState();
     });
   }
 
@@ -256,10 +258,12 @@ export class InputTextareaComponent {
    * @param {User[]} users - The array of users to add.
    */
   addUserToMessageText(users: User[]) {
+    const selection = window.getSelection();
+    if (selection) this.range = selection.getRangeAt(0);
     if (!this.messageText) return;
     this.appendChildForAllUsers(users)
-    if (!this.range) return
-    this.addEmoji.setCurserToEndPos(this.range);
+    if (!this.range) { return }
+    this.addEmoji.setCurserToEndPos(this.messageText);
   }
 
 
@@ -288,7 +292,7 @@ export class InputTextareaComponent {
   openShowUserDialog(user: User) {
     this.dialogService.showUserDialog(user, undefined)
   }
-  
+
 
   /**
    * Opens the dialog for selecting an emoji.
@@ -297,10 +301,11 @@ export class InputTextareaComponent {
     const selection = window.getSelection();
     if (selection) this.range = selection.getRangeAt(0);
     let pos = this.PositionService.getDialogPosEmojy(this.emoijBtn);
-    const dialogRef = this.dialog.open(DialogEmojiComponent, 
+    const dialogRef = this.dialog.open(DialogEmojiComponent,
       this.dialogService.emojiProp(pos));
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return
+      this.setFocus(this.messageText);
       this.addEmoji.addEmoji(this.range, result, this.messageText);
       this.updateButtonState();
     });
@@ -331,4 +336,14 @@ export class InputTextareaComponent {
     this.tempFile = undefined;
   }
 
+
+  /**
+   * Sets focus on the specified element.
+   * @param elementRef The element reference to set focus on.
+   */
+  setFocus(elementRef: ElementRef) {
+    if (!elementRef || !elementRef.nativeElement) return;
+    const divElement = elementRef.nativeElement as HTMLDivElement;
+    divElement.focus();
+  }
 }

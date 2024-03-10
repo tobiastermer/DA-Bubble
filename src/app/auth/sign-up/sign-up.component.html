@@ -54,7 +54,7 @@
 
       <section class="sign-up__checkbox-section">
         <mat-checkbox class="sign-up__checkbox" formControlName="termsAccepted">
-          Ich stimme den <a href="privacy">Datenschutzerklärungen</a> zu
+          Ich stimme den <a (click)="openPrivacy()">Datenschutzerklärungen</a> zu
         </mat-checkbox>
 
         <mat-error
@@ -86,7 +86,7 @@
   </mat-card>
 
   <div class="background-container__legals mobile-hidden">
-    <a href="imprint">Impressum</a>
-    <a href="privacy">Datenschutz</a>
+    <a (click)="openImprint()">Impressum</a>
+    <a (click)="openPrivacy()">Datenschutz</a>
   </div>
 </div>

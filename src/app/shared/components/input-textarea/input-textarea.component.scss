@@ -1,5 +1,7 @@
 @import './../../../../styles.scss';
 
+$message-placeholder-animation-time: 0.7s;
+
 * {
   box-sizing: border-box;
 }
@@ -31,6 +33,12 @@
     border: 1px solid $dkBlue;
   }
 
+  &:focus-within {
+    .message-placeholder {
+      display: none;
+    }
+  }
+
   &__textarea {
     border: unset;
     resize: none;
@@ -41,7 +49,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     @include fontNunito(400, 16px);
-    word-break: break-all;  
+    word-break: break-all;
 
     &:focus {
       outline: none;
@@ -91,6 +99,39 @@
   }
 }
 
+.message-placeholder {
+  position: absolute;
+
+  .dots {
+    position: absolute;
+    font-weight: 900;
+  }
+
+  .dot1 {
+    right: -6px;
+  }
+
+  .dot2 {
+    right: -12px;
+  }
+
+  .dot3 {
+    right: -18px;
+  }
+}
+
+.message-loading{
+  .dot1 {
+    animation: move-dot $message-placeholder-animation-time infinite;
+  }
+  .dot2 {
+    animation: move-dot $message-placeholder-animation-time 0.1s infinite;
+  }
+  .dot3 {
+    animation: move-dot $message-placeholder-animation-time 0.2s infinite;
+  }
+}
+
 .message-input__actions hr {
   margin: 0;
   min-height: 30px;
@@ -113,3 +154,17 @@ mat-progress-bar {
 }
 
 @media (max-width: $mobile-breakpoint) {}
+
+@keyframes move-dot {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}

@@ -60,7 +60,7 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -256,5 +256,13 @@ export class LoginComponent {
    */
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
+  }
+
+  openImprint() {
+    this.router.navigate(['/imprint']);
+  }
+
+  openPrivacy() {
+    this.router.navigate(['/privacy'])
   }
 }
