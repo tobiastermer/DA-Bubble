@@ -1,7 +1,14 @@
 <!-- INPUT FORM AREA -->
 <div class="message-input">
 
-  <div id="messageText" contenteditable="true" class="message-input__textarea" #messageText placeholder="Antworten..."
+  <div class="message-placeholder" [ngClass]="{'d-none': !isButtonDisabled, 'message-loading': isLoading}">
+    <span>Antworten </span>
+    <span class="dots dot1">.</span>
+    <span class="dots dot2">.</span>
+    <span class="dots dot3">.</span>
+  </div>
+
+  <div id="messageText" contenteditable="true" class="message-input__textarea" #messageText
     (input)="updateButtonState()" (keydown.enter)="handleEnter($event, messageText.innerText)"
     (keydown.backspace)="onDelete($event)">
   </div>

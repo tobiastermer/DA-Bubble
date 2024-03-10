@@ -27,7 +27,6 @@ export class ChannelMessagesService {
     async addChannelMessage(channelMessage: ChannelMessage): Promise<string | unknown> {
         try {
             const docRef = await addDoc(collection(this.firestore, "channelConversations"), channelMessage.toJSON());
-            console.log(docRef.id);
             return docRef.id;
         } catch (err) {
             console.error(err);
