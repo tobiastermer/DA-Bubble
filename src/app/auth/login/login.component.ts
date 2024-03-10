@@ -257,4 +257,12 @@ export class LoginComponent {
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
   }
+
+  openImprint() {
+    this.router.navigate(['/imprint']);
+  }
+
+  openPrivacy() {
+    this.router.navigate(['/privacy'])
+  }
 }
