@@ -9,6 +9,9 @@ import { DataService } from '../../../shared/services/data.service';
 import { Subscription } from 'rxjs';
 import { PositionService } from '../../../shared/services/position.service';
 
+/**
+ * Component for displaying and managing the channels inside the menu area.
+ */
 @Component({
   selector: 'app-menue-channels',
   standalone: true,
@@ -39,6 +42,9 @@ export class MenueChannelsComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+ * Initializes the component by subscribing to the current user channels.
+ */
   ngOnInit() {
     this.channelSubscription.add(
       this.dataService.currentUserChannels$.subscribe(channels => {
@@ -47,24 +53,42 @@ export class MenueChannelsComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+  * Cleans up the component by unsubscribing from the current user channels.
+  */
   ngOnDestroy() {
     this.channelSubscription.unsubscribe();
   }
 
+  /**
+ * Toggles the visibility of the channel list.
+ */
   toggleChannelsVisibility() {
     this.channelsVisible = !this.channelsVisible;
   }
 
+  /**
+  * Changes the router path to the selected channel.
+  * @param {number} activeChannelIndex - The index of the selected channel.
+  */
   changePath(activeChannelIndex: number) {
     this.positionService.setActiveResponsiveWindow('channel');
     let name = this.channels[activeChannelIndex].name
     this.router.navigate([this.pathUserName + '/channel/' + name]);
   }
 
+  /**
+  * Determines if a channel is the active channel based on the current route.
+  * @param {number} i - The index of the channel to check.
+  * @returns {boolean} True if the channel is the active channel, false otherwise.
+  */
   isActiveChannel(i: number): boolean {
     return this.pathChat == "channel" && this.pathContentName == this.channels[i].name;
   }
 
+  /**
+   * Opens the dialog to add a new channel.
+   */
   openDialogAddChannel() {
     this.dialog.open(DialogAddChannelComponent, {
       panelClass: ['card-round-corners'],

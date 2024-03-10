@@ -18,9 +18,14 @@ export class UserService {
         private dataService: DataService
     ) {
         this.getAllUsers();
-        
+
     }
 
+    /**
+ * Adds a new user to the Firestore database.
+ * @param {User} user - The user object to add.
+ * @returns {Promise<string>} - A promise that resolves with the new document ID or an error message.
+ */
     async addUser(user: User) {
         try {
             const docRef = await addDoc(collection(this.firestore, "users"), user.toJSON());
@@ -32,6 +37,10 @@ export class UserService {
         }
     }
 
+    /**
+ * Updates an existing user's data in the Firestore database.
+ * @param {User} user - The user object with updated data.
+ */
     async updateUser(user: User) {
         if (user.id) {
             const docRef = doc(collection(this.firestore, 'users'), user.id);
@@ -39,12 +48,19 @@ export class UserService {
         }
     }
 
+    /**
+ * Deletes a user from the Firestore database.
+ * @param {User} user - The user object to delete.
+ */
     async deleteUser(user: User) {
         await deleteDoc(doc(collection(this.firestore, 'users'), user.id)).catch(
             (err) => { console.log(err); }
         )
     }
 
+    /**
+ * Retrieves all users from the Firestore database and updates the local users observable.
+ */
     getAllUsers() {
         const q = query(collection(this.firestore, 'users'), orderBy('name'));
         onSnapshot(q, (snapshot) => {
@@ -61,7 +77,12 @@ export class UserService {
             this.usersSubject.next(users);
         });
     }
-
+    
+/**
+ * Retrieves a user by their unique ID from the Firestore database.
+ * @param {string} userID - The unique ID of the user to retrieve.
+ * @returns {Promise<User | null>} - A promise that resolves with the User object or null if not found.
+ */
     async getUserByID(userID: string): Promise<User | null> {
         try {
             const docRef = doc(this.firestore, 'users', userID);
@@ -83,6 +104,11 @@ export class UserService {
         }
     }
 
+    /**
+ * Retrieves a user by their authentication UID from the Firestore database.
+ * @param {string} authUid - The authentication UID of the user to retrieve.
+ * @returns {Promise<User | null>} - A promise that resolves with the User object or null if not found.
+ */
     async getUserByAuthUid(authUid: string): Promise<User | null> {
         if (!authUid) {
             console.error("authUid ist undefined.");
@@ -108,6 +134,11 @@ export class UserService {
         }
     }
 
+    /**
+ * Updates the online status of a user by their UID.
+ * @param {string} uid - The UID of the user to update.
+ * @param {string} status - The new status to set for the user.
+ */
     async updateUserStatusByUid(uid: string, status: string): Promise<void> {
         const usersRef = collection(this.firestore, "users");
         const q = query(usersRef, where("uid", "==", uid));
@@ -121,6 +152,12 @@ export class UserService {
         }
     }
 
+    /**
+ * Validates the input user name for uniqueness and format.
+ * @param {string} newUserName - The new user name to validate.
+ * @param {string} currentUserName - The current user name of the user (if any).
+ * @returns {string} - An error message if validation fails, or an empty string if validation passes.
+ */
     validateInputUserName(newUserName: string, currentUserName: string | ''): string {
         let userNameError = '';
         const trimmedUserName = newUserName.trim();
@@ -135,7 +172,13 @@ export class UserService {
         }
         return userNameError;
     }
-    
+
+    /**
+ * Validates the input user email for uniqueness and format.
+ * @param {string} newEmail - The new email to validate.
+ * @param {string} currentUserEmail - The current email of the user (if any).
+ * @returns {string} - An error message if validation fails, or an empty string if validation passes.
+ */
     validateInputUserEmail(newEmail: string, currentUserEmail: string | ''): string {
         let userEmailError = '';
         const trimmedEmail = newEmail.trim();
@@ -150,6 +193,12 @@ export class UserService {
         return userEmailError;
     }
 
+    /**
+ * Checks if a given user name is unique among all users.
+ * @param {string} name - The user name to check.
+ * @param {string} currentUserName - The current user name of the user (if any).
+ * @returns {boolean} - True if the user name is unique, false otherwise.
+ */
     userNameIsUnique(name: string, currentUserName: string | ''): boolean {
         if (name == currentUserName) {
             return true;
@@ -159,7 +208,13 @@ export class UserService {
             return !users.some(user => user.name.toLowerCase() === userNameLowerCase);
         }
     }
-    
+
+    /**
+ * Checks if a given email is unique among all users.
+ * @param {string} email - The email to check.
+ * @param {string} currentUserEmail - The current email of the user (if any).
+ * @returns {boolean} - True if the email is unique, false otherwise.
+ */
     userEmailIsUnique(email: string, currentUserEmail: string | ''): boolean {
         if (email == currentUserEmail) {
             return true;

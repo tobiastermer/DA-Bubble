@@ -19,13 +19,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../../../../shared/firebase-services/channel.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { User } from '../../../../../shared/models/user.class';
 import { MembershipService } from '../../../../../shared/firebase-services/membership.service';
 import { Router } from '@angular/router';
 import { DialogErrorComponent } from '../../../../../shared/components/dialogs/dialog-error/dialog-error.component';
 import { ChangeDetectorRef } from '@angular/core';
 import { DataService } from '../../../../../shared/services/data.service';
 
+/**
+ * DialogAddChannelComponent is responsible for handling the creation of a new channel.
+ * It provides a form for entering the channel's name and description, validates the input,
+ * and communicates with the ChannelService to add the new channel to the database.
+ * Upon successful creation, it navigates to the newly created channel's page.
+ */
 @Component({
   selector: 'app-dialog-add-channel',
   standalone: true,
@@ -68,22 +73,35 @@ export class DialogAddChannelComponent {
     this.newChannelMemberIDs.push(this.newChannel.ownerID);
   }
 
+  /**
+   * Validates the input channel name and updates the channelNameError state.
+   */
   validateInputChannelName() {
     this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, this.newChannel.name);
     this.cdr.detectChanges(); // Manuelle Auslösung der Änderungserkennung
   }
 
+   /**
+   * Validates the input channel description and updates the descriptionError state.
+   */
   validateInputChannelDescription() {
     this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.description);
     this.cdr.detectChanges(); // Manuelle Auslösung der Änderungserkennung
   }
 
+    /**
+   * Checks if the new channel can be saved based on the validation of name and description.
+   * @returns {boolean} True if the new channel can be saved, false otherwise.
+   */
   canSaveNewChannel(): boolean {
     this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, this.newChannel.name);
     this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.description);
     return !this.channelNameError && !this.descriptionError && this.newChannel.name.length > 0 && this.newChannel.description.length > 0;
   }
 
+    /**
+   * Saves the new channel and navigates to the channel page.
+   */
   async saveNewChannel() {
     this.loading = true;
     if (this.newChannel.name && this.newChannel.description) {
@@ -107,6 +125,9 @@ export class DialogAddChannelComponent {
     this.dialogRef.close();
   }
 
+   /**
+   * Saves the membership of the channel owner.
+   */
   async saveOwnerMembership() {
     const membership = this.MembershipService.createMembership(this.newChannel.ownerID, this.newChannel.id);
     try {
@@ -116,6 +137,9 @@ export class DialogAddChannelComponent {
     }
   }
 
+  /**
+   * Opens the dialog to add users to the new channel.
+   */
   openDialogAddUserToNewChannel() {
     this.dialog.open(DialogAddMembersToNewChannelComponent, {
       panelClass: ['card-round-corners'],
@@ -123,6 +147,9 @@ export class DialogAddChannelComponent {
     });
   }
 
+   /**
+   * Closes the dialog without any action.
+   */
   onNoClick(): void {
     this.dialogRef.close();
   }

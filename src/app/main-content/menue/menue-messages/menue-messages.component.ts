@@ -8,6 +8,9 @@ import { DataService } from '../../../shared/services/data.service';
 import { Subscription } from 'rxjs';
 import { PositionService } from '../../../shared/services/position.service';
 
+/**
+ * Component for displaying and managing user messages in the menu.
+ */
 @Component({
   selector: 'app-menue-messages',
   standalone: true,
@@ -39,29 +42,41 @@ export class MenueMessagesComponent implements OnDestroy {
       this.pathContentName = params['idChat'];
     });
 
-    
+
     this.usersSubscription = this.DataService.users$.subscribe(users => {
       this.users = users;
     });
   }
 
+  /**
+   * Cleans up the component by unsubscribing from user data.
+   */
   ngOnDestroy() {
     this.usersSubscription.unsubscribe();
   }
 
-
+  /**
+     * Toggles the visibility of the user list.
+     */
   toggleUsersVisibility() {
     this.usersVisible = !this.usersVisible;
   }
 
-
+  /**
+    * Changes the router path to the selected user for messaging.
+    * @param {number} activeUserIndex - The index of the selected user.
+    */
   changePath(activeUserIndex: number) {
     this.positionService.setActiveResponsiveWindow('channel');
     let name = this.users[activeUserIndex].name.replace(/\s/g, '_');
     this.router.navigate([this.pathUserName + '/message/' + name]);
   }
 
-
+  /**
+   * Determines if a user is the active user based on the current route.
+   * @param {number} i - The index of the user to check.
+   * @returns {boolean} True if the user is the active user, false otherwise.
+   */
   isActiveUser(i: number): boolean {
     return this.pathChat == "message" && this.pathContentName == this.users[i].name.replace(/\s/g, '_');
   }

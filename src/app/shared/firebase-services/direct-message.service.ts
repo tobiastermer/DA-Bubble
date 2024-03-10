@@ -3,6 +3,9 @@ import { Firestore, collection, doc, query, where, onSnapshot, addDoc, updateDoc
 import { BehaviorSubject } from 'rxjs';
 import { DirectMessage } from '../models/direct-message.class';
 
+/**
+ * Service for managing direct messages between users in a Firestore collection.
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -15,6 +18,11 @@ export class DirectMessagesService {
 
     constructor() { }
 
+    /**
+     * Adds a new direct message to the Firestore collection.
+     * @param {DirectMessage} directMessage - The direct message object to add.
+     * @returns {Promise<string>} A promise that resolves with the document ID of the added message.
+     */
     async addDirectMessage(directMessage: DirectMessage) {
         try {
             const docRef = await addDoc(collection(this.firestore, "directMessages"), directMessage.toJSON());
@@ -26,6 +34,10 @@ export class DirectMessagesService {
         }
     }
 
+    /**
+     * Updates an existing direct message in the Firestore collection.
+     * @param {DirectMessage} directMessage - The direct message object to update.
+     */
     async updateDirectMessage(directMessage: DirectMessage) {
         if (directMessage.id) {
             const docRef = doc(collection(this.firestore, 'directMessages'), directMessage.id);
@@ -33,12 +45,21 @@ export class DirectMessagesService {
         }
     }
 
+     /**
+     * Deletes a direct message from the Firestore collection.
+     * @param {DirectMessage} directMessage - The direct message object to delete.
+     */
     async deleteDirectMessage(directMessage: DirectMessage) {
         await deleteDoc(doc(collection(this.firestore, 'directMessages'), directMessage.id)).catch(
             (err) => { console.log(err); }
         )
     }
 
+      /**
+     * Retrieves direct messages involving the current user and another specified user.
+     * @param {string} currentUserID - The current user's ID.
+     * @param {string} userID2 - The other user's ID.
+     */
     getDirectMessages(currentUserID: string, userID2: string) {
         const q = query(
             collection(this.firestore, 'directMessages'),
@@ -60,9 +81,5 @@ export class DirectMessagesService {
             });
         }
     }
-
-
-    
-
 
 }

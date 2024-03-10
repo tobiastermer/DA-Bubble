@@ -15,6 +15,11 @@ import { PositionService } from '../shared/services/position.service';
 import { CommonModule } from '@angular/common';
 import { slideInUpAnimationSlow, slideInleftAnimationSlow } from '../shared/services/animations';
 
+/**
+ * Represents the main content area of the application, including the header, menu, and channel components.
+ * It manages the subscriptions to user and channel data, as well as the visibility of the menu and channel components
+ * based on the responsive window size.
+ */
 @Component({
   selector: 'app-main-content',
   standalone: true,
@@ -24,7 +29,7 @@ import { slideInUpAnimationSlow, slideInleftAnimationSlow } from '../shared/serv
   animations: [
     slideInUpAnimationSlow,
     slideInleftAnimationSlow
-    
+
   ],
 })
 export class MainContentComponent implements OnInit {
@@ -35,8 +40,7 @@ export class MainContentComponent implements OnInit {
   isMenuVisible: Boolean = true;
   isChannelVisible: Boolean = false;
 
-  // wird später dynamisiert
-  currentUserID: string = 's4vgY2BWfL0LIKBJIEOQ';
+  // currentUserID: string = 's4vgY2BWfL0LIKBJIEOQ';
   currentUser: User;
 
   // general data
@@ -53,10 +57,11 @@ export class MainContentComponent implements OnInit {
     private channelService: ChannelService,
     private dataService: DataService,
     private positionService: PositionService,
-    ) {
+  ) {
 
     this.currentUser = this.dataService.currentUser;
 
+    // Subscribe to users and channels data
     this.usersSubscription = this.userService.users$.subscribe(users => {
       this.users = users;
       this.dataService.setUsers(users);
@@ -67,6 +72,7 @@ export class MainContentComponent implements OnInit {
       this.dataService.setChannels(channels);
     });
 
+    // Subscribe to user memberships if currentUser is available
     if (this.currentUser) {
       this.membershipService.getUserMemberships(this.currentUser.id);
       this.userMembershipSubscription = this.membershipService.userMemberships$.subscribe(userMemberships => {
@@ -75,7 +81,9 @@ export class MainContentComponent implements OnInit {
     }
   }
 
-
+  /**
+* Initializes the component by subscribing to user channels and manage responsive window visibility.
+*/
   ngOnInit() {
     this.subscribeToUserChannels();
 
@@ -88,7 +96,9 @@ export class MainContentComponent implements OnInit {
     });
   }
 
-
+  /**
+     * Cleans up the component by unsubscribing from the data.
+     */
   ngOnDestroy() {
     this.usersSubscription?.unsubscribe();
     this.userMembershipSubscription?.unsubscribe();
@@ -96,7 +106,9 @@ export class MainContentComponent implements OnInit {
     this.userChannelsSubscription?.unsubscribe();
   }
 
-
+  /**
+    * Subscribes to the channels that the current user is a member of.
+    */
   private subscribeToUserChannels() {
     const subscription = combineLatest([
       this.membershipService.userMemberships$,

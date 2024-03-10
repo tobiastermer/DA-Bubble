@@ -1,6 +1,9 @@
 import { Like } from './like.class';
 import { Reply } from './reply.class';
 
+/**
+ * Represents a message within a channel, including metadata and content.
+ */
 export class ChannelMessage {
     id?: string;
     date: number;
@@ -11,6 +14,10 @@ export class ChannelMessage {
     likes: Like[];
     replies: Reply[];
 
+    /**
+ * Constructs a new ChannelMessage instance.
+ * @param {object} obj - An object containing properties to initialize a ChannelMessage instance.
+ */
     constructor(obj: any = {}) {
         this.id = obj.id;
         this.date = obj.date ?? 0;
@@ -22,8 +29,11 @@ export class ChannelMessage {
         this.replies = obj.replies ?? [];
     }
 
+    /**
+ * Converts the ChannelMessage instance to a JSON object for storage or transmission.
+ * @returns {object} A JSON representation of the ChannelMessage instance.
+ */
     public toJSON() {
-        // Bedingte Einbeziehung der ID, nur wenn sie vorhanden ist
         const json = {
             date: this.date,
             channelID: this.channelID,
@@ -36,6 +46,11 @@ export class ChannelMessage {
         return this.id ? { id: this.id, ...json } : json;
     }
 
+    /**
+ * Creates a ChannelMessage instance from Firestore document data.
+ * @param {any} doc - The Firestore document.
+ * @returns {ChannelMessage} A new ChannelMessage instance.
+ */
     static fromFirestore(doc: any): ChannelMessage {
         return new ChannelMessage({
             id: doc.id,

@@ -8,6 +8,9 @@ import { DataService } from '../services/data.service';
     providedIn: 'root'
 })
 
+/**
+ * Service for managing memberships between users and channels.
+ */
 export class MembershipService {
     private userMembershipsSubject = new BehaviorSubject<Membership[]>([]);
     public userMemberships$ = this.userMembershipsSubject.asObservable();
@@ -21,6 +24,12 @@ export class MembershipService {
         private dataService: DataService,
     ) { }
 
+    /**
+     * Creates a new Membership instance.
+     * @param {string} userID - The user ID for the membership.
+     * @param {string} channelID - The channel ID for the membership.
+     * @returns {Membership} - The new Membership instance.
+     */
     createMembership(userID: string, channelID: string): Membership {
         return new Membership({
             channelID: channelID,
@@ -28,6 +37,11 @@ export class MembershipService {
         });
     }
 
+    /**
+    * Adds a new membership to the Firestore database.
+    * @param {Membership} membership - The membership to add.
+    * @returns {Promise<string>} - A promise that resolves with the document ID of the added membership.
+    */
     async addMembership(membership: Membership) {
         try {
             const docRef = await addDoc(collection(this.firestore, "memberships"), membership.toJSON());
@@ -38,6 +52,10 @@ export class MembershipService {
         }
     }
 
+    /**
+    * Updates an existing membership in the Firestore database.
+    * @param {Membership} membership - The membership to update.
+    */
     async updateMembership(membership: Membership) {
         if (membership.id) {
             const docRef = doc(collection(this.firestore, 'memberships'), membership.id);
@@ -45,12 +63,22 @@ export class MembershipService {
         }
     }
 
+    /**
+     * Deletes a membership from the Firestore database.
+     * @param {Membership} membership - The membership to delete.
+     */
     async deleteMembership(membership: Membership) {
         await deleteDoc(doc(collection(this.firestore, 'memberships'), membership.id)).catch(
             (err) => { console.log(err); }
         )
     }
 
+    /**
+    * Retrieves memberships based on user ID and channel ID.
+    * @param {string} userID - The user ID to filter by.
+    * @param {string} channelID - The channel ID to filter by.
+    * @returns {Promise<Membership[]>} - A promise that resolves with an array of memberships.
+    */
     async getMembershipID(userID: string, channelID: string): Promise<Membership[]> {
         if (userID && channelID) {
             try {
@@ -68,6 +96,10 @@ export class MembershipService {
         }
     }
 
+    /**
+    * Retrieves all memberships for a given user ID.
+    * @param {string} [userID] - The user ID to filter by. If not provided, uses the current user's ID.
+    */
     getUserMemberships(userID?: string) {
         // Überprüfe, ob userID definiert ist, andernfalls versuche, die ID aus dataService.currentUser zu verwenden
         const effectiveUserID = userID || this.dataService.currentUser?.id;
@@ -84,7 +116,10 @@ export class MembershipService {
         });
     }
 
-
+    /**
+         * Retrieves all memberships for a given channel ID.
+         * @param {string} channelID - The channel ID to filter by.
+         */
     getChannelMemberships(channelID: string) {
         if (channelID) {
             const q = query(collection(this.firestore, 'memberships'), where("channelID", "==", channelID));

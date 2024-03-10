@@ -1,5 +1,8 @@
 import { Like } from "./like.class";
 
+/**
+ * Represents a reply to a channel message within the application.
+ */
 export class Reply {
     date: number;
     channelID: string;
@@ -8,6 +11,10 @@ export class Reply {
     attachmentID: string;
     likes: Like[];
 
+    /**
+     * Constructs a new Reply instance.
+     * @param {object} obj - An object containing properties to initialize a Reply instance.
+     */
     constructor(obj: any = {}) {
         this.date = obj.date ?? 0;
         this.channelID = obj.channelID ?? '';
@@ -17,6 +24,10 @@ export class Reply {
         this.likes = obj.likes ?? [];
     }
 
+    /**
+     * Converts the Reply instance to a JSON object for storage or transmission.
+     * @returns {object} A JSON representation of the Reply instance.
+     */
     public toJSON() {
         return {
             date: this.date,
@@ -28,6 +39,11 @@ export class Reply {
         };
     }
 
+    /**
+     * Creates a Reply instance from Firestore document data.
+     * @param {any} doc - The Firestore document.
+     * @returns {Reply} A new Reply instance.
+     */
     static fromFirestore(doc: any): Reply {
         return new Reply({
             date: doc.date,

@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { getStorage, getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
 import { DialogInfoComponent } from '../components/dialogs/dialog-info/dialog-info.component';
 
+/**
+ * Provides utility functions for uploading, deleting, and downloading files from Firebase Storage.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -14,14 +17,21 @@ export class StorageService {
     public dialog: MatDialog,
   ) { }
 
-
+  /**
+    * Uploads a file to Firebase Storage under the 'message_data' directory.
+    * @param {File} file - The file to upload.
+    * @returns {Promise<string>} - A promise that resolves with the download URL of the uploaded file.
+    */
   async uploadMsgData(file: File): Promise<string> {
     const storageRef = ref(this.storage, `message_data/${Date.now()}_${file.name}`);
     await uploadBytes(storageRef, file);
     return getDownloadURL(storageRef);
   }
 
-
+  /**
+   * Deletes a file from Firebase Storage.
+   * @param {string} url - The storage URL of the file to delete.
+   */
   async deleteDoc(url: string) {
     const desertRef = ref(this.storage, url);
     await deleteObject(desertRef).then(() => {
@@ -30,7 +40,11 @@ export class StorageService {
     });
   }
 
-
+  /**
+   * Initiates a download of a file from Firebase Storage.
+   * @param {string} url - The storage URL of the file to download.
+   * @param {string} fileName - The name of the file to save as.
+   */
   async downloadFromSorage(url: string, fileName: string) {
     const starsRef = ref(this.storage, url);
 
@@ -57,7 +71,11 @@ export class StorageService {
       });
   }
 
-
+  /**
+    * Downloads data from a given URL and saves it as a file.
+    * @param {string} url - The URL to download the data from.
+    * @param {string} fileName - The name of the file to save the data as.
+    */
   async downloadData(url: string, fileName: string) {
     try {
       const response = await fetch(url);
@@ -77,7 +95,10 @@ export class StorageService {
     }
   }
 
-
+  /**
+     * Opens a dialog with information for the user.
+     * @param {String} info - The information to display in the dialog.
+     */
   openDialogInfo(info: String): void {
     this.dialog.open(DialogInfoComponent, {
       panelClass: ['card-round-corners'],
