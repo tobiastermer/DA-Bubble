@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewPwComponent } from './new-pw.component';
+import { VerifyComponent } from './verify.component';
 
 describe('NewPwComponent', () => {
-  let component: NewPwComponent;
-  let fixture: ComponentFixture<NewPwComponent>;
+  let component: VerifyComponent;
+  let fixture: ComponentFixture<VerifyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NewPwComponent]
+      imports: [VerifyComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(NewPwComponent);
+    fixture = TestBed.createComponent(VerifyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

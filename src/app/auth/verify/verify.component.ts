@@ -32,11 +32,11 @@ import { slideInUpAnimation } from '../../shared/services/animations';
     ReactiveFormsModule,
     CommonModule,
   ],
-  templateUrl: './new-pw.component.html',
-  styleUrl: './new-pw.component.scss',
+  templateUrl: './verify.component.html',
+  styleUrl: './verify.component.scss',
   animations: [slideInUpAnimation],
 })
-export class NewPwComponent implements OnInit {
+export class VerifyComponent implements OnInit {
   pwResetForm: FormGroup;
   oobCode: string | null = null;
   showSuccessPopup = false;
