@@ -77,7 +77,7 @@ export class DialogAddChannelComponent {
    * Validates the input channel name and updates the channelNameError state.
    */
   validateInputChannelName() {
-    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, this.newChannel.name);
+    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, '');
     this.cdr.detectChanges(); // Manuelle Auslösung der Änderungserkennung
   }
 
@@ -94,7 +94,7 @@ export class DialogAddChannelComponent {
    * @returns {boolean} True if the new channel can be saved, false otherwise.
    */
   canSaveNewChannel(): boolean {
-    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, this.newChannel.name);
+    this.channelNameError = this.ChannelService.validateInputChannelName(this.newChannel.name, '');
     this.descriptionError = this.ChannelService.validateInputChannelDescription(this.newChannel.description);
     return !this.channelNameError && !this.descriptionError && this.newChannel.name.length > 0 && this.newChannel.description.length > 0;
   }
