@@ -21,7 +21,7 @@ import { DataService } from '../../shared/services/data.service';
 import { slideInUpAnimation } from '../../shared/services/animations';
 
 @Component({
-  selector: 'app-new-pw',
+  selector: 'app-verify',
   standalone: true,
   imports: [
     MatInputModule,
@@ -115,7 +115,7 @@ export class VerifyComponent implements OnInit {
    * @param {FormGroup} group - The form group that contains the password fields.
    * @returns {Object|null} - An object indicating the validation error, or null if passwords match.
    */
-  checkPasswords(group: FormGroup) {
+  checkPasswords(group: FormGroup): { notSame: boolean } | null {
     const pass = group.get('password')?.value;
     const confirmPass = group.get('confirmPassword')?.value;
     return pass === confirmPass ? null : { notSame: true };

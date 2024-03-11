@@ -32,7 +32,7 @@
 
       <mat-form-field appearance="outline" class="pw-reset__form-field">
         <mat-icon matPrefix>lock_outlined</mat-icon>
-        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passwort" formControlName="password">
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passwort bestätigen" formControlName="confirmPassword">
         <mat-icon class="password-icon" matSuffix (click)="togglePasswordVisibility()">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         <mat-error *ngIf="pwResetForm.errors?.['notSame']">
           Passwörter stimmen nicht überein.

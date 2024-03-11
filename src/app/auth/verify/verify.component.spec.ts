@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VerifyComponent } from './verify.component';
 
-describe('NewPwComponent', () => {
+describe('VerifyComponent', () => {
   let component: VerifyComponent;
   let fixture: ComponentFixture<VerifyComponent>;
 
