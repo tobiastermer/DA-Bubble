@@ -318,6 +318,12 @@ form {
       margin: 30px;
     }
 
+    &__legals {
+      position: unset;
+      margin-bottom: 32px;
+      margin-top: unset;
+    }
+
   }
 
   .pw-reset {

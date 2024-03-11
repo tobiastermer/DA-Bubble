@@ -406,6 +406,12 @@ $fontFigtree: "Figtree", sans-serif;
       margin: 30px;
     }
 
+    &__legals {
+      position: unset;
+      margin-bottom: 32px;
+      margin-top: unset;
+    }
+
   }
 
   .avatar {

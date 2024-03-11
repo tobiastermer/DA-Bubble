@@ -360,8 +360,8 @@ form {
   }
 }
 
-.password-icon{
-  padding-right: 30px !important ;
+.password-icon {
+  padding-right: 30px !important;
 }
 
 @keyframes slideOutDown {
@@ -426,6 +426,12 @@ form {
         border: 1px solid #797ef3;
       }
     }
+
+    &__legals {
+      position: unset;
+      margin-bottom: 32px;
+      margin-top: unset;
+    }
   }
 
 
@@ -447,9 +453,6 @@ form {
     padding: 0;
   }
 
-  .mat-mdc-card-header-text {
-    width: 100%;
-  }
 
 }
 

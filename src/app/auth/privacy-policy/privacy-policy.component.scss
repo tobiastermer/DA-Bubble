@@ -125,6 +125,14 @@ $fontFigtree: "Figtree", sans-serif;
 
 @media (max-width: $tablet-breakpoint) {
 
+  .background-container {
+    &__legals {
+      position: unset;
+      margin-bottom: 32px;
+      margin-top: unset;
+    }
+  }
+  
   .privacy {
     width: calc(100% - 32px);
     height: calc(100% - 32px);
