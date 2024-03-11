@@ -131,6 +131,7 @@ export class InputTextareaComponent {
   unsetLoading() {
     this.isLoading = false;
     this.updateButtonState();
+    this.tempFile = undefined;
   }
 
 
