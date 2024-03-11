@@ -20,6 +20,9 @@ import { Channel } from '../../../shared/models/channel.class';
 import { ChannelMessagesService } from '../../../shared/firebase-services/channel-message.service';
 import { ChannelMessage } from '../../../shared/models/channel-message.class';
 
+/**
+ * Komponente zur Darstellung einer Suchleiste, die es ermöglicht, nach Benutzern, Kanälen und Nachrichten zu suchen.
+ */
 @Component({
   selector: 'app-search-bar',
   standalone: true,
@@ -64,13 +67,18 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
   showChannels: boolean = false;
   showMessages: boolean = false;
 
+  /**
+ * Initialisiert die Komponente nachdem die Ansicht initialisiert wurde.
+ */
   ngAfterViewInit() {
-    // Initialisieren Sie die Users-Subscription
     this.usersSubscription = this.usersSubscriptionReturn();
     this.channelsSubscription = this.channelSubscriptionReturn();
     this.channelMessagesSubscription = this.channelMessageSubscriptionReturn();
   }
 
+  /**
+   * Abonniert Benutzerdaten vom DataService.
+   */
   usersSubscriptionReturn() {
     return this.DataService.users$.subscribe((users) => {
       this.users = users;
@@ -78,6 +86,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+  * Abonniert Kanaldaten vom DataService.
+  */
   channelSubscriptionReturn() {
     return this.DataService.currentUserChannels$.subscribe((channels) => {
       this.channels = channels;
@@ -85,6 +96,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+  * Abonniert Nachrichtendaten vom ChannelMessagesService und filtert diese basierend auf den Kanal-IDs.
+  */
   channelMessageSubscriptionReturn() {
     return this.ChannelMessagesService.allChannelMessages$.subscribe(
       (message) => {
@@ -98,29 +112,44 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     );
   }
 
+  /**
+   * Schließt die Liste der Suchergebnisse.
+   */
   closeList() {
     this.searchInput.nativeElement.value = '';
     this.selectListVisible = false;
   }
 
+  /**
+   * Ändert den Pfad zur Benutzerseite.
+   */
   changeUserPath(user: any) {
     let name = user.name.replace(/\s/g, '_');
     this.router.navigate([this.pathUserName + '/message/' + name]);
     this.closeList();
   }
 
+  /**
+  * Ändert den Pfad zur Kanalseite.
+  */
   changeChannelPath(channel: any) {
     let channelName = channel.name;
     this.router.navigate([this.pathUserName + '/channel/' + channelName]);
     this.closeList();
   }
 
+  /**
+  * Ändert den Pfad zur Kanalseite anhand der Kanal-ID.
+  */
   changeChannelPathByID(channelID: any) {
     let channelName = this.DataService.getChannelNameById(channelID);
     this.router.navigate([this.pathUserName + '/channel/' + channelName]);
     this.closeList();
   }
 
+  /**
+  * Filtert Benutzer, Kanäle und Nachrichten basierend auf dem Suchbegriff.
+  */
   filter() {
     const search = this.searchInput.nativeElement.value.toLowerCase();
     this.filterUsers(search);
@@ -130,6 +159,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     this.showMessage();
   }
 
+  /**
+ * Zeigt Kanäle basierend auf dem Filterergebnis an.
+ */
   showChannel() {
     if (this.filteredChannels.length > 0) {
       this.showChannels = true;
@@ -138,6 +170,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Zeigt Nachrichten basierend auf dem Filterergebnis an.
+   */
   showMessage() {
     if (this.filterMessages.length > 0) {
       this.showMessages = true;
@@ -146,6 +181,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Filtert Benutzer basierend auf dem Suchbegriff.
+   */
   filterUsers(inputID: any) {
     this.filteredUsers = this.users.filter(
       (user) => user.name && user.name.toLowerCase().includes(inputID)
@@ -153,6 +191,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     this.selectListVisible = !!inputID && this.filteredUsers.length > 0;
   }
 
+  /**
+  * Filtert Kanäle basierend auf dem Suchbegriff.
+  */
   filterChannels(inputID: any) {
     this.filteredChannels = this.channels.filter(
       (channel) => channel.name && channel.name.toLowerCase().includes(inputID)
@@ -162,6 +203,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       (!!inputID && this.filteredChannels.length > 0);
   }
 
+  /**
+   * Filtert Nachrichten basierend auf dem Suchbegriff.
+   */
   filterMessages(inputID: any) {
     this.filteredMessages = this.messages.filter(
       (messages) =>
@@ -174,8 +218,10 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       (!!inputID && this.filteredMessages.length > 0);
   }
 
+  /**
+   * Bereinigt Abonnements beim Zerstören der Komponente.
+   */
   ngOnDestroy() {
-    // Vergessen Sie nicht, die Subscription aufzuräumen, wenn die Komponente zerstört wird
     if (this.usersSubscription) {
       this.usersSubscription.unsubscribe();
       this.channelsSubscription.unsubscribe();
@@ -183,7 +229,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-
+  /**
+  * Konvertiert einen Zeitstempel in ein lesbares Datum.
+  */
   getDateOfTimestemp(time: number | undefined): string {
     if (!time) return '';
     else {
@@ -209,11 +257,17 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+ * Konvertiert einen Zeitstempel in eine Uhrzeit.
+ */
   setTime(timestemp: number): string {
     let date = new Date(timestemp);
     return date.getHours() + ':' + date.getMinutes()
   }
 
+  /**
+ * Behandelt Bildladefehler, indem ein Standard-Avatarbild gesetzt wird.
+ */
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = './../../assets/img/avatars/unknown.jpg';
   }

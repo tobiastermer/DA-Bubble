@@ -8,6 +8,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DialogsService } from '../../../shared/services/dialogs.service';
 
+/**
+ * Represents the menu dialog component.
+ */
 @Component({
   selector: 'app-menu-dialog',
   standalone: true,
@@ -18,6 +21,15 @@ import { DialogsService } from '../../../shared/services/dialogs.service';
 export class MenuDialogComponent {
   @Input() dropDown: boolean = false;
 
+   /**
+   * Initializes a new instance of the MenuDialogComponent class.
+   * @param dialogRef Reference to the dialog opened.
+   * @param data Service for data operations.
+   * @param router Service to navigate among views.
+   * @param dialogService Service to manage dialog components.
+   * @param presenceService Service to manage user presence.
+   * @param platformId Identifier for the platform being used.
+   */
   constructor(
     public dialogRef: MatDialogRef<MenuDialogComponent>,
     public data: DataService,
@@ -27,15 +39,26 @@ export class MenuDialogComponent {
     @Inject(PLATFORM_ID) private platformId: any
   ) { }
 
+   /**
+   * Closes the dialog.
+   */
   closeDialog() {
     this.dialogRef.close();
   }
 
+   /**
+   * Opens a dialog to show user details.
+   * @param user The user whose details to show.
+   * @param currentUserID The ID of the current user.
+   */
   openDialog(user: User, currentUserID: String | undefined) {
     this.dialogService.showUserDialog(user, currentUserID);
     this.closeDialog();
   }
 
+  /**
+   * Logs out the current user, updates their presence status to offline, and navigates to the login page.
+   */
   async logOut() {
     this.presenceService.updateOnDisconnect().then(() => {
       this.presenceService.updateGuestStatus("t8WOIhqo9BYogI9FmZhtCHP7K3t1", 'offline');
