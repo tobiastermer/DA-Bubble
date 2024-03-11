@@ -138,7 +138,7 @@ $bigscreen-breakpoint: 1920px;
 /////////// global classes /////////////
 
 .d-none {
-  display: none;
+  display: none !important;
 }
 
 .card-right-corner {
@@ -205,8 +205,10 @@ $bigscreen-breakpoint: 1920px;
 
 .file-overview {
   @include dFlex($fd: column);
-  width: 200px;
-  height: 50px;
+  min-width: 200px;
+  max-width: 250px;
+  min-height: 50px;
+  max-height: 250px;
   padding: 2px 8px;
   margin-left: calc(50% - 100px - 5px);
   background-color: $bgGrey;
@@ -218,6 +220,11 @@ $bigscreen-breakpoint: 1920px;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+  }
+
+  img {
+    max-width: 200px;
+    max-height: 200px;
   }
 }
 

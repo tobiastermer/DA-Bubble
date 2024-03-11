@@ -1,13 +1,27 @@
 @if (!isFileAttached) {
 <p class="message">{{msg?.message}}</p>
 } @else {
-<div class="download" [ngClass]="{'current-user': isUserCurrentUser, 'edit': isEdit}" contenteditable="false">
-    <img src="./.. /../../../../../../assets/img/icons/download_file.png" alt="download_file"
-    (click)="downloadDocument(msg?.attachmentID, fileName)">
+<div class="download" [ngClass]="{'current-user': isUserCurrentUser, 'edit': isEdit, 'img-overview':isFileAImage}"
+    contenteditable="false">
+    @if(isFileAImage){
+    <img src="{{fileSrc}}" alt="download_file">
     @if (!isEdit) {
-        <a href="{{ msg?.attachmentID }}" target="_blank">{{ fileName }}</a>
-    } @else {
-        <a>{{ fileName }}</a>
+    <div class="hidden-options">
+        <mat-icon (click)="downloadDocument(msg?.attachmentID, fileName)">download</mat-icon>
+        <a href="{{ msg?.attachmentID }}" target="_blank"><mat-icon>open_in_new</mat-icon></a>
+    </div>
+    }
+
+    }@else{
+    <img src="./.. /../../../../../../assets/img/icons/pdf.svg" alt="pdf_file"
+        (click)="downloadDocument(msg?.attachmentID, fileName)">
+    <span>{{ fileName }}</span>
+    @if (!isEdit) {
+        <div class="hidden-options">
+            <mat-icon (click)="downloadDocument(msg?.attachmentID, fileName)">download</mat-icon>
+            <a href="{{ msg?.attachmentID }}" target="_blank"><mat-icon>open_in_new</mat-icon></a>
+        </div>
+        }
     }
 </div>
 <p class="message">{{ message }}</p>

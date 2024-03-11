@@ -89,6 +89,10 @@ main {
   margin-right: 16px;
 }
 
+app-message {
+  width: 100%;
+}
+
 @media (max-width: $tablet-breakpoint) {
 
   .thread-panel {

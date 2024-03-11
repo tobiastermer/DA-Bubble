@@ -7,13 +7,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { isPlatformBrowser } from '@angular/common';
 import { StorageService } from '../../../firebase-services/storage.service';
 import { DirectMessage } from '../../../models/direct-message.class';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-text-output',
   standalone: true,
   imports: [
     CommonModule,
-    DialogInfoComponent
+    DialogInfoComponent,
+    MatIcon
   ],
   templateUrl: './text-output.component.html',
   styleUrl: './text-output.component.scss'
@@ -32,9 +34,11 @@ export class TextOutputComponent implements OnChanges {
   @Output() msgChanged = new EventEmitter<string>();
 
   isFileAttached: boolean = false;
+  isFileAImage: boolean = false;
 
   public message: string = "";
   fileName: string = "";
+  fileSrc: string = './.. /../../../../../../assets/img/icons/download_file.png';
 
 
   constructor(
@@ -80,6 +84,7 @@ export class TextOutputComponent implements OnChanges {
     this.message = msg[1].replace(/^\n+/, '');
     this.emitValue(this.message);
     this.isFileAttached = true;
+    this.setFileImg(file)
   }
 
 
@@ -89,6 +94,18 @@ export class TextOutputComponent implements OnChanges {
    */
   emitValue(message: string) {
     this.msgChanged.emit(message);
+  }
+
+
+  setFileImg(file: string) {
+    if (file !== '.pdf' && this.msg?.attachmentID) {
+      this.fileSrc = this.msg.attachmentID;
+      this.isFileAImage = true;
+    }
+    else {
+      this.fileSrc = './.. /../../../../../../assets/img/icons/download_file.png'
+      this.isFileAImage = false;
+    }
   }
 
 

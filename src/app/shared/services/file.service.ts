@@ -79,12 +79,17 @@ export class FileService {
 
   /**
     * Creates an image element based on the file type.
-    * @param {File} file - The file for which to create the image element.
+    * @param {Blob} file - The file for which to create the image element.
     * @returns {Element} - The created image element.
     */
-  getImgByFileType(file: File): Element {
+  getImgByFileType(file: Blob): Element {
     let img = document.createElement('img');
-    img.src = 'assets/img/icons/upload_file.png';
+    if (file.type.startsWith('image/') && FileReader) {
+      let url = URL.createObjectURL(file);
+      img.src = url;
+    } else {
+      img.src = 'assets/img/icons/pdf.svg';
+    }
     img.alt = file.type;
     return img
   }

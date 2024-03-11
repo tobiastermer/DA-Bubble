@@ -11,7 +11,7 @@
                 <mat-icon>delete</mat-icon>
             </button>
             <button class="icon-btn safe-btn" mat-fab extended color="primary" (click)="saveMsg()"
-                [ngClass]="{'btn-disable': !isSaveEnable}">
+                [ngClass]="{'btn-disable': !isSaveEnable, 'd-none': (msg.attachmentID !== '')}">
                 <mat-icon>save</mat-icon>
             </button>
         </div>

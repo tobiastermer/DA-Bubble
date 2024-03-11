@@ -131,7 +131,9 @@
   }
 
   app-text-output{
-    height: 60px;
+    min-height: 60px;
+    max-height: 300px;
+    overflow: auto;
     margin-bottom: 10px;
     display: block;
   }
