@@ -1,0 +1,95 @@
+@import "./../../../../styles.scss";
+
+.user {
+  @include dFlex($jc: flex-start, $gap: 15px);
+  border-radius: 30px;
+  padding: 4px 20px 4px 20px;
+  font-size: 18px;
+  position: relative;
+
+  .user-avatar {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .user-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    display: block;
+  }
+
+  &:hover {
+    background-color: $bgGrey;
+    cursor: pointer;
+
+    .user-name {
+      color: $dkBlue;
+      font-weight: 700;
+    }
+  }
+}
+
+.smaleUser {
+  @include dFlex($jc: flex-start, $gap: 8px);
+  border-radius: 30px;
+  padding: 4px 8px;
+  background-color: $bgGrey;
+  width: max-content;
+  font-size: 18px;
+
+  .user-avatar {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+  }
+
+  mat-icon {
+    transform: scale(0.7);
+    margin-left: -8px;
+
+    &:hover {
+      transform: scale(1);
+      color: $dkBlue;
+      cursor: pointer;
+    }
+  }
+}
+
+.active {
+  background-color: $bgGrey;
+
+  .user-name {
+    color: $dkBlue;
+    font-weight: 700;
+  }
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  margin-top: 32px;
+  left: 60px;
+  border: 2px solid white;
+  border-radius: 100%;
+  background: radial-gradient( circle at -2px -1px, white, red);
+}
+
+.status-indicator.online {
+  width: 14px;
+  height: 14px;
+  background: radial-gradient( circle at -2px -1px, white, $lgGreen);
+}
+
+.status-indicator.away {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient( circle at -2px -1px, white, yellow);
+}

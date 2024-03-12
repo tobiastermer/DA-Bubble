@@ -1,0 +1,95 @@
+@import '../../../../../styles.scss';
+
+.download {
+    @include dFlex($gap: 8px, $fd: column);
+    width: fit-content;
+    min-height: 30px;
+    border: 1px solid $dkGrey;
+    border-radius: 10px;
+    padding-bottom: 2px;
+    margin-bottom: 5px;
+    padding: 8px;
+    overflow: hidden;
+    position: relative;
+    max-width: 250px;
+
+    &:hover {
+        img{
+            transform: scale(1.1);
+        }
+
+        .hidden-options{
+            @include dFlex($gap: 20px);
+        }
+    }
+
+    img{
+        max-width: 250px;
+        max-height: 250px;
+        transition: transform 0.3s ease;
+        
+    }
+
+    span {
+        font-weight: 700;
+        color: black;
+    }
+
+    .hidden-options{
+        display: none;
+        position: absolute;
+        bottom: 10px;
+
+        mat-icon{
+            @include dFlex();
+            background: #00000082;
+            color: white;
+            border-radius: 100%;
+            height: 40px;
+            width: 40px;
+
+            &:hover{
+                cursor: pointer;
+                background: #000000b9;
+            }
+        }
+    }
+}
+
+.img-overview{
+    padding: unset;
+    min-width: 120px;
+    min-height: 120px;
+    width: 100%;
+}
+
+.current-user {
+    border-color: $bgGrey;
+
+    span {
+        color: white;
+    }
+}
+
+.edit {
+    background-color: $dkGrey;
+
+    img:hover {
+        cursor: unset;
+        transform: scale(1);
+    }
+
+    a {
+        font-weight: 700;
+        color: black;
+
+        &:hover {
+            cursor: unset;
+            transform: scale(1);
+        }
+    }
+}
+
+.message {
+    margin: 0;
+}

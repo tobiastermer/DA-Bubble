@@ -1,0 +1,124 @@
+@import './../../../styles.scss';
+
+.channel-row {
+    @include dFlex($jc: normal, $ai: normal);
+    height: calc(100vh - 40px - 90px); // 40px padding 90px height header
+    transition: margin-left 0.7s;
+
+    &.threads-visible {
+        @include dFlex($jc: normal, $ai: normal, $gap: 20px);
+    }
+}
+
+.channel-card {
+    @include dFlex($fd: column, $jc: space-between, $ai: normal);
+    height: 100%;
+    width: 100%;
+    border-radius: 30px;
+}
+
+.header-channel {
+    @include dFlex($jc: space-between);
+    padding: 25px 45px;
+    box-shadow: $boxShadow;
+    border-radius: 30px 30px 0px 0px;
+}
+
+.chat-space {
+    padding: 20px 0px;
+    height: 100%;
+    overflow-y: auto;
+
+    app-channel-msg,
+    app-direct-msg {
+        width: calc(100% - 30px);
+    }
+
+    app-message {
+        width: 100%;
+    }
+}
+
+.day-section {
+    @include dFlex($gap: 8px);
+    padding: 8px 20px;
+
+    hr {
+        width: 100%;
+        height: 1px;
+        border: none;
+        background-color: $lgPurple;
+    }
+
+    div {
+        border: 1px solid $lgPurple;
+        border-radius: 20px;
+        padding: 10px 20px;
+        white-space: nowrap;
+    }
+}
+
+.chat-space-empty {
+    @include dFlex($fd: column, $jc: flex-end);
+}
+
+.icon-button {
+    height: 40px;
+    width: 40px;
+    background-color: $bgGrey;
+    padding: 8px;
+
+    &:hover {
+        background-color: $bgGrey;
+
+        mat-icon {
+            color: $dkBlue;
+        }
+    }
+}
+
+.menu-opened {
+    margin-left: 0px;
+}
+
+.menu-closed {
+    margin-left: -366px;
+    /* Breite des Menüs */
+
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+    .header-channel {
+        padding: 16px;
+        border-radius: 0px;
+    }
+
+    .channel-card {
+        border-radius: 0px;
+    }
+
+    .channel-row {
+        height: calc(100vh - 80px - 30px);
+    }
+
+    .mat-mdc-card {
+        box-shadow: none !important;
+    }
+
+    .chat-space {
+        padding: 16px 0px;
+    }
+
+    .day-section {
+        padding: 8px 16px;
+    }
+
+    app-threads {
+        width: 100%;
+    }
+
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

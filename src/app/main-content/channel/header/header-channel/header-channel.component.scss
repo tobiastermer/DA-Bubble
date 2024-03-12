@@ -1,0 +1,97 @@
+@import './../../channel.component.scss';
+
+.channel-info {
+    @include dFlex($gap: 10px);
+    padding-inline: 10px;
+    height: 40px;
+
+    mat-card-title {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        border-radius: 30px;
+        color: $dkBlue;
+    }
+
+    .hash-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+}
+
+.users-info {
+    @include dFlex();
+
+    .users {
+        @include dFlex($gap: 10px);
+        padding-inline: 10px;
+        margin-right: 10px;
+        height: 40px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $bgGrey;
+            border-radius: 30px;
+        }
+
+        span {
+            font-size: 20px;
+            font-weight: 600;
+        }
+    }
+
+}
+
+.users-list {
+    display: flex;
+
+    .user-avatar {
+        margin-left: -10px;
+
+        &:first-child {
+            margin: 0;
+        }
+    }
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border: 2px solid white;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.additional-members {
+    background-color: $lgPurple;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+}
+
+
+@media (max-width: $tablet-breakpoint) {
+
+    .channel-info {
+        mat-card-title {
+            font-size: 20px;
+        }
+
+        .hash-icon {
+            width: 17px;
+            height: 17px;
+        }
+    }
+}
+
+@media (max-width: $mobile-breakpoint) {}

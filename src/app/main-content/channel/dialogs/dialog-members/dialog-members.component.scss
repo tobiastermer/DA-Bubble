@@ -1,0 +1,64 @@
+@import './../../channel.component.scss';
+
+mat-card {
+    padding: 40px;
+    width: 100%;
+    min-width: 450px;
+    height: 100%;
+
+    @include dFlex($fd: column, $ai: flex-start, $gap: 20px);
+
+}
+
+.card-header {
+    @include dFlex($jc: space-between);
+    width: 100%;
+
+    mat-card-title {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    button {
+        @include iButton($bgC: unset, $hBgIC: #000);
+    }
+}
+
+.members {
+    @include dFlex($fd: column, $ai: flex-start, $gap: 10px, $jc: unset);
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.add-member {
+    @include dFlex($gap: 15px);
+    border-radius: 30px;
+    padding: 12px 20px;
+    font-size: 18px;
+
+    button {
+        @include iButton($w: 32px, $h: 32px, $p: 3px, $hBgIC: $dkBlue)
+    }
+
+    &:hover{
+        cursor: pointer;
+        background-color: $bgGrey;
+        color: $dkBlue;
+
+        button {
+            @include iButton($w: 32px, $h: 32px, $p: 3px, $iC:$dkBlue, $hBgIC: $dkBlue)
+        }
+    }
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+    mat-card {
+        padding: 40px 20px;
+        min-width: unset;
+    }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

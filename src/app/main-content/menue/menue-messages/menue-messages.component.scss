@@ -1,0 +1,96 @@
+@import './../menue.component.scss';
+
+.menu-users-container {
+    @include dFlex($fd: column, $ai: flex-start, $gap: 25px);
+    width: 100%;
+
+    .menu-users-header {
+        @include dFlex($jc: space-between);
+        width: 100%;
+        padding: 3px 0px 3px 0px;
+
+        .menu-users-header-left {
+            @include dFlex($jc: flex-start, $gap: 15px);
+
+            .img-expand-users {
+                position: relative;
+                height: 30px;
+                width: 30px;
+                background-image: url('../../../../assets/img/icons/arrow_drop_down_bk.png');
+            }
+
+            mat-card-title {
+                @include dFlex($jc: flex-start, $gap: 15px);
+
+                .img-account-circle {
+                    height: 30px;
+                    width: 30px;
+                    background-image: url('../../../../assets/img/icons/account_circle_bk.png');
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                .img-expand-users {
+                    background-image: url('../../../../assets/img/icons/arrow_drop_down_bl.png');
+                }
+
+                mat-card-title{
+                    color: $dkBlue;
+
+                    .img-account-circle {
+                        background-image: url('../../../../assets/img/icons/account_circle_bl.png');
+                    }
+                }
+                
+            }
+        }
+    }
+
+    .menu-users-content {
+        @include dFlex($fd: column, $ai: flex-start, $gap: 13px);
+        font-size: 18px;
+        font-weight: 400;
+        padding-left: 25px;
+
+        .user {
+            @include dFlex($jc: flex-start, $gap: 15px);
+            border-radius: 20px;
+            padding: 4px 20px 4px 20px;
+
+            .user-avatar {
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+            }
+
+            &:hover {
+                background-color: $bgGrey;
+                cursor: pointer;
+
+                .img-channel-hash {
+                    background-image: url('../../../../assets/img/icons/hash_bl_16.png');
+                }
+
+                .user-name {
+                    color: $dkBlue;
+                    font-weight: 700;
+                }
+            }
+        }
+
+        .active {
+            background-color: $bgGrey;
+            
+            .img-channel-hash {
+                background-image: url('../../../../assets/img/icons/hash_bl_16.png');
+            }
+
+            .user-name {
+                color: $dkBlue;
+                font-weight: 700;
+            }
+        }
+    }
+}

@@ -1,0 +1,8 @@
+<div [class.user]="!smale" [class.smaleUser]="smale" [class.active]="active" >
+    <img class="user-avatar" [src]="user.avatar" (error)="onImageError($event)" alt="Avatar">
+    <span class="user-name">{{ user.name }} {{ user.id == currentUserID ? ' (Du)' : '' }}</span>
+    <span class="status-indicator" [class.online]="userStatus === 'online'" [class.away]="userStatus === 'away'"></span>
+    @if (smale) {
+    <mat-icon (click)="onUserChipDelet()">close</mat-icon>
+    }
+</div>

@@ -1,0 +1,18 @@
+<!-- The menu itself -->
+<mat-card class="menu-card" [class.menu-open]="isMenuOpen" [class.menu-closed]="!isMenuOpen"
+    [ngStyle]="{'display': hideMenu ? 'none' : 'flex'}">
+    <app-menue-header [pathUserName]="pathUserName" class="mobile-hidden"></app-menue-header>
+    <app-menue-channels [pathUserName]="pathUserName"></app-menue-channels>
+    <app-menue-messages [pathUserName]="pathUserName"></app-menue-messages>
+</mat-card>
+
+<!-- The overlay-button for toggling visibility -->
+<mat-card class="menu-overlay-close mobile-hidden" (click)="toggleMenu()" (mouseenter)="onMouseEnter()"
+    (mouseleave)="onMouseLeave()">
+    <mat-card-title>
+        {{ isMenuOpen ? 'Workspace-Menü schließen' : 'Workspace-Menü öffnen' }}
+        <img [src]="getIconSource()" alt="menu-icon">
+    </mat-card-title>
+</mat-card>
+
+<div class="img-new-msg icon-btn desktop-hidden" (click)="changePath()"></div>

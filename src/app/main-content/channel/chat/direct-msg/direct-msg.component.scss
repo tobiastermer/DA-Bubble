@@ -1,0 +1,60 @@
+@import './../../channel.component.scss';
+
+
+.direct-message {
+
+    @include dFlex($fd: column, $ai: normal, $jc: flex-end, $gap: 20px);
+    padding: 0px 20px;
+    height: 100%;
+
+    div {
+        @include dFlex($jc: flex-start, $ai: flex-end, $gap: 20px);
+
+        img {
+            width: 70px;
+            height: 70px;
+            border-radius: 100%;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        h3 {
+            font-family: "nunito";
+            font-weight: 700;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            h3 {
+                color: $dkBlue;
+            }
+        }
+    }
+
+    span {
+        color: $bgdGrey;
+
+        a {
+            color: $lgBlue;
+            text-decoration: none;
+
+            &:hover {
+                color: $dkBlue;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+
+@media (max-width: $tablet-breakpoint) {
+
+    .direct-message {
+        padding: 0px 16px;
+    }
+}
+
+@media (max-width: $mobile-breakpoint) {}

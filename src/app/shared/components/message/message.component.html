@@ -1,0 +1,83 @@
+<div class="message" [ngClass]="{'current-user': (user.id == currentUserID)}">
+    <img class="avatar" [src]="user.avatar" (error)="onImageError($event)" (click)="dialogService.showUserDialog(user, undefined)" alt="Avatar">
+
+    <!-- Message Info / Edit -->
+    <div class="details">
+        @if (!isEditMsg) { <!-- Message Info Part -->
+        <div class="name-timestamp">
+            <h3 (click)="dialogService.showUserDialog(user, undefined)">{{ user.name }}</h3>
+            <span>{{ setTime(msg.date) }} Uhr</span>
+        </div>
+        <mat-card class="message-card">
+            <mat-card-content>
+                <app-text-output [msg]="msg" [isUserCurrentUser]="(user.id == currentUserID)"
+                    (msgChanged)="setMsgText($event)"></app-text-output>
+            </mat-card-content>
+        </mat-card>
+        <!-- Replay Part -->
+        @if(isChannelMsg && replaies.length > 0){
+        <div class="reply">
+            <a (click)="setThreadOutput()">{{ replaies.length }} Antworten</a>
+            <span>Letzte Antwort {{ setTime(replaies[replaies.length-1].date) }}</span>
+        </div>
+        }
+        <!-- Emoji Reaction Part -->
+        @if(sortedLikes.length > 0){
+        <div #likesRow class="likes-row" (mousemove)="setHiddenLikePos()">
+            <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
+            @for (like of sortedLikes; track $index) {
+            <div class="sorted-like">
+                <div class="emoji" (click)="toggelEmoji(like.emoji)" (mouseenter)="setEmojiReacOpen()" (mouseleave)="setEmojiReacClose()">
+                    @if(like.usersIDs.length > 1){ <div>{{ like.emoji }}</div> <span>{{ like.usersIDs.length }}</span> }
+                    @else { <div>{{ like.emoji }}</div> }
+                </div>
+                <div class="hidden-like" [style.bottom.px]="posLikesRow">
+                    <div>{{ like.emoji }}</div>
+                    @for (nameID of sortedLikes[$index].usersIDs; track $index) {
+                    <a (click)="getUserOfLike(nameID)">{{ data.getUserNameById(nameID) }}</a>
+                    }
+                    @if (sortedLikes[$index].usersIDs.length > 1) {
+                    <span>haben reagiert</span>
+                    }@else { <span>hat reagiert</span> }
+                </div>
+            </div>
+            }
+        </div>
+        }
+
+        }
+        @else { 
+        <app-edit-message [msg]="msg" [index]="index" [channelMsg]="channelMsg" [isUserCurrentUser]="true"
+            [isEditMsg]="isEditMsg" (closeEvent)="toggleEditMsg()"></app-edit-message>
+        }
+
+    </div>
+
+    <!-- Slidin Emoji options -->
+    @if(!isEditMsg){
+    <mat-card class="emoji-popup">
+        <mat-card-content>
+            @if (isChannelMsg) {
+            @for (emoji of data.lastEmojis; track $index) {
+            <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
+            }
+            <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
+            @if (true) {
+                <mat-icon class="action-btn" (click)="setThreadOutput()">comment</mat-icon>
+            }
+            @if (editPossible()){
+            <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
+            }
+            } @else {
+            @for (emoji of data.lastEmojis; track $index) {
+            <div class="action-btn-emoji" (click)="addLike(emoji)">{{ emoji }}</div>
+            }
+            <mat-icon class="action-btn" (click)="openDialogEmoji()">add_reaction</mat-icon>
+            @if (editPossible()){
+            <mat-icon class="action-btn" (click)="toggleEditMsg()">more_vert</mat-icon>
+            }
+            }
+        </mat-card-content>
+    </mat-card>
+    }
+</div>

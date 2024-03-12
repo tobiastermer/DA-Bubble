@@ -1,0 +1,340 @@
+@import "../../../styles.scss";
+
+$fontFigtree: "Figtree", sans-serif;
+
+
+.background-container {
+  @include dFlex(column, center, center);
+  width: 100vw;
+  max-width: 1920px;
+  height: 100vh;
+  margin: 0 auto;
+  z-index: 100;
+  background-color: $bgGrey;
+  position: relative;
+  animation: backgroundFadeIn 1s ease-in forwards;
+  overflow: hidden;
+
+  &__logo {
+    @include pAbsolute(32px, unset, unset, 32px, unset);
+  }
+
+  &__legals {
+    @include dFlex(row, center, center, 16px);
+    position: absolute;
+    bottom: 32px;
+    margin-top: 10px;
+    font-family: $fontFigtree;
+
+    a {
+      color: $bgBlue;
+      border-radius: 20px;
+      padding: 2px 8px;
+      transition: ease-in-out 0.3s;
+      border: 1px solid transparent;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $dkBlue;
+        color: $dkBlue;
+        font-weight: 400;
+        transition: ease-in-out 0.3s;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+.sign-up {
+  max-height: calc(100vh - 140px);
+  padding: 42px;
+  border-radius: 30px;
+  @include dFlex(column, flex-start, 36px);
+  gap: 36px;
+  box-shadow: $boxShadow;
+  overflow: auto;
+  z-index: 100;
+  margin-bottom: 16px;
+  margin-top: 16px;
+  clip-path: inset(0 round 30px);
+
+  &__header,
+  &__subtitle {
+    text-align: center;
+  }
+
+  &__header {
+    color: $dkBlue;
+    padding: 36px;
+    @include fontNunito($weight: 700, $size: 46px);
+  }
+
+  &__subtitle {
+    @include fontNunito($weight: 400, $size: 20px);
+    max-width: 500px;
+  }
+
+  &__form-field {
+    display: flex;
+    flex-direction: column;
+
+    mat-icon {
+      color: grey;
+      padding-left: 30px;
+    }
+
+    input {
+      padding-left: 8px;
+      @include fontNunito($weight: 500, $size: 18px);
+    }
+  }
+
+  &__checkbox-section {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    padding-bottom: 40px;
+    // margin-bottom: 32px;
+  }
+
+  &__checkbox {
+    color: $dkBlue;
+    @include dFlex(row, center, center);
+    @include fontNunito($weight: 400, $size: 16px);
+
+    a {
+      text-decoration: none;
+      color: $bgBlue;
+      @include fontNunito($weight: 400, $size: 18px);
+
+      &:hover {
+        color: $dkBlue;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__checkbox-error {
+    position: absolute;
+    bottom: 104px;
+    left: 82px;
+    animation: checkboxAnimation 0.3s ease-in forwards;
+    @include fontNunito($weight: 400, $size: 14px);
+  }
+
+  &__next-button {
+    // @include pAbsolute(unset, 53px, 40px, unset, unset);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      transition: background-color 0.3s ease-in-out;
+      background-color: grey;
+      width: 107px;
+      height: 49px;
+      border: none;
+      color: $bgGrey;
+      border-radius: 28px;
+      @include fontNunito($weight: 700, $size: 18px);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .valid-form {
+      background-color: $dkBlue;
+      animation: buttonFadeIn 0.3s ease-in-out;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $bgBlue;
+        background-color: $bgBlue;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  &__arrow-back {
+    position: absolute;
+    top: 48px;
+    left: 18px;
+    cursor: pointer;
+    display: flex;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+
+
+
+    button {
+      padding-top: 3px;
+      border: unset;
+      background-color: transparent;
+      border-radius: 100%;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        color: $dkBlue;
+        transform: scale(1.01);
+
+
+        transition: ease-in-out 0.3s;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+
+  mat-icon {
+    color: grey;
+    padding-left: 30px;
+  }
+
+  input {
+    padding-left: 8px;
+    @include fontNunito($weight: 500, $size: 18px);
+  }
+}
+
+:host ::ng-deep .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px;
+  background-color: $bgGrey;
+  border-radius: 28px;
+  border: transparent;
+}
+
+:host ::ng-deep .mdc-form-field>label {
+  @include fontNunito($weight: 400, $size: 18px);
+}
+
+:host ::ng-deep .mat-mdc-form-field-bottom-align {
+  height: 36px !important;
+}
+
+:host ::ng-deep .mdc-checkbox .mdc-checkbox__native-control:enabled:focus:checked~.mdc-checkbox__background {
+  background-color: $dkBlue;
+  border: $dkBlue;
+}
+
+.password-icon{
+  padding-right: 30px !important ;
+}
+
+@keyframes checkboxAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes buttonFadeIn {
+  from {
+    background-color: grey;
+  }
+
+  to {
+    background-color: $dkBlue;
+  }
+}
+
+.valid-form {
+  background-color: $dkBlue !important;
+  animation: buttonFadeIn 0.3s ease-in-out;
+
+  &:hover {
+    background-color: darken($dkBlue, 5%);
+  }
+}
+
+
+
+/* ENTFERNT BORDER ABER DANN IN ALLEN ZUSTÄNDEN 
+:host ::ng-deep .mdc-notched-outline__trailing,
+:host ::ng-deep .mdc-notched-outline__leading {
+  border-color: transparent !important ;
+}*/
+
+
+@media (max-width: $tablet-breakpoint) {
+
+  .background-container {
+    justify-content: safe center;
+    overflow-y: auto;
+
+    &__logo {
+      position: unset;
+      top: unset;
+      left: unset;
+      margin: 30px;
+    }
+
+    &__legals {
+      position: unset;
+      margin-bottom: 32px;
+      margin-top: unset;
+    }
+    
+  }
+
+  .sign-up {
+    width: calc(100% - 32px);
+    max-height: unset;
+    height: unset;
+    padding: 35px 20px 35px 20px;
+    overflow: unset;
+
+    &__header {
+      padding: 0px 0px 24px;
+      font-size: 32px;
+    }
+
+    &__arrow-back {
+      position: absolute;
+      top: 28px;
+      left: 12px;
+    }
+
+    &__checkbox-error {
+      bottom: 87px;
+      left: 60px;
+    }
+
+  }
+
+  .mat-mdc-card-header {
+    display: flex;
+    padding: 0;
+  }
+
+  .mat-mdc-card-header-text {
+    width: 100%;
+  }
+
+}
+
+@media (max-width: $mobile-breakpoint) {
+
+
+
+}

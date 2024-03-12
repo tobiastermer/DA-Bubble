@@ -1,0 +1,42 @@
+@import './../../styles.scss';
+
+main {
+    width: calc(100vw - 40px);
+    height: calc(100vh - 40px - 90px);
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+
+    app-menue {
+        overflow: hidden;
+    }
+
+    app-channel {
+        flex: 2;
+        width: calc(100% - 40px);
+    }
+
+    overflow: hidden;
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+    main {
+        height: calc(100vh - 172px - 30px);
+        background-color: white;
+        padding: 0px 0px 30px 0px;
+        width: 100%;
+
+        app-menue {
+            width: 100%;
+        }
+        
+    }
+
+    main.channelActive {
+        height: calc(100vh - 80px - 30px);
+    }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

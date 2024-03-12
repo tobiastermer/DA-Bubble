@@ -1,0 +1,126 @@
+@import "../channel.component.scss";
+
+@mixin buttonHover {
+  &:not(:disabled):hover {
+    cursor: pointer;
+    transform: scale(1.02);
+    color: $dkBlue;
+  }
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 72px);
+  background-color: white;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 400px;
+}
+
+.thread-panel {
+  width: 400px;
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 30px;
+}
+
+.thread-header {
+  @include dFlex($jc: space-between);
+  position: relative;
+  z-index: 1;
+  background-color: white;
+  padding: 25px 45px;
+  border-radius: 24px 24px 0 0;
+  box-shadow: $boxShadow;
+}
+
+.header-title {
+  @include dFlex($gap: 8px);
+  height: 40px;
+
+  h2 {
+    @include fontNunito(700, 24px);
+    margin: 0;
+  }
+
+  p {
+    margin-bottom: -2px;
+    font-size: 14px;
+    color: $lgBlue;
+    @include fontNunito(400, 14px);
+  }
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    color: $dkBlue;
+
+    .mat-icon {
+      cursor: pointer;
+      background-color: $bgGrey;
+      border-radius: 100%;
+    }
+  }
+}
+
+.close-icon {
+  margin-top: 2px;
+}
+
+.response-counter {
+  @include dFlex($gap: 4px);
+  padding: 8px 16px;
+  color: rgba(173, 176, 217, 1);
+}
+
+.mat-divider {
+  width: calc(100% - 20px);
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+app-message {
+  width: 100%;
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+  .thread-panel {
+    width: 100%;
+    border-radius: 0px;
+  }
+
+  main {
+    width: 100%;
+    padding: 16px 0px;
+  }
+
+  .thread-header {
+    padding: 16px;
+    border-radius: 0px;
+  }
+
+  .header-title {
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .mat-divider {
+    margin-right: 0px;
+  }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

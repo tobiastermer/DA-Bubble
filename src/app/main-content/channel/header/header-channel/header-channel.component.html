@@ -1,0 +1,24 @@
+<header class="header-channel">
+    <div class="channel-info" #channleInfo (mouseover)="changeImg('blue')"
+    (mouseleave)="changeImg('black')" (click)="openDialogChannel()">
+        <img class="hash-icon" src="./../../../../../assets/img/icons/hash_bk_22.png" alt="hash">
+        <mat-card-title>{{ channel.name }}</mat-card-title>
+        <img src="./../../../../../assets/img/icons/expand_more_bk.png" alt="hash">
+    </div>
+    <div class="users-info">
+        <div class="users mobile-hidden" #membersInfo (click)="openDialogMembers()">
+            <div class="users-list">
+                <ng-container *ngFor="let member of displayMembers; let i = index">
+                    <img class="user-avatar" [src]="member.avatar" (error)="onImageError($event)" alt="userName">
+                </ng-container>
+                <ng-container *ngIf="additionalMembersCount > 0">
+                    <div class="user-avatar additional-members">+{{additionalMembersCount}}</div>
+                </ng-container>
+            </div>
+            <span>{{ currentChannelMembers.length }}</span>
+        </div>
+        <button mat-icon-button class="icon-button" #addUser (click)="openDialogAddUser()">
+            <mat-icon>person_add_alt</mat-icon>
+        </button>
+    </div>
+</header>

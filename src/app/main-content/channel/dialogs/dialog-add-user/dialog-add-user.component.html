@@ -1,0 +1,22 @@
+<mat-card>
+
+    <div class="card-header">
+        <mat-card-title>Leute hinzufügen</mat-card-title>
+        <button mat-icon-button disableRipple (click)="onNoClick()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="channel-name">
+        <img src="./../../../../../assets/img/icons/hash_bl_18.png" alt="">
+        <span>{{ data.channel.name }}</span>
+    </div>
+
+    <app-input-add-user [currentMemberIDs]="data.currentMemberIDs"
+        (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved($event)"
+        (selectedUsersChanged)="onSelectedUsersChanged($event)">
+    </app-input-add-user>
+
+    <button class="btn" [ngClass]="setBtnClass()" (click)="addUsers()">Hinzufügen</button>
+
+</mat-card>

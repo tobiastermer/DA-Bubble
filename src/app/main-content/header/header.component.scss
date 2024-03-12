@@ -1,0 +1,111 @@
+@import "./../../../styles.scss";
+
+* {
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.header-content {
+  position: relative;
+  padding: 20px 20px 0px 20px;
+  @include dFlex($gap: 20px, $jc: space-between);
+  z-index: 2;
+}
+
+.logo {
+  min-width: 366px;
+  height: 70px;
+  padding-left: 25px;
+  flex: 1;
+}
+
+.menu-header-left {
+  @include dFlex($jc: flex-start, $gap: 15px);
+  display: flex !important;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .expand-icon {
+    transform: rotate(90deg);
+    margin-left: 10px;
+  }
+
+  .workspace-logo {
+      height: 50px;
+      width: auto;
+  }
+
+  mat-card-title{
+      font-size: 18px;
+      font-weight: 700;
+  }
+}
+
+.search-bar {
+  width: 100%;
+}
+
+.user-head {
+  flex: 1;
+  @include dFlex($gap: 10px, $jc: flex-end);
+  height: 70px;
+  cursor: pointer;
+
+  .name {
+    white-space: nowrap;
+    font-size: 22px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    display: block;
+  }
+
+  .avater {
+    @include dFlex();
+
+    img {
+      width: 66px;
+      height: 66px;
+      border-radius: 40px;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+}
+
+
+@media (max-width: $tablet-breakpoint) {
+
+  .header-content {
+    padding: 5px 16px 5px 16px;
+  }
+
+  .logo {
+    min-width: unset;
+    height: unset;
+    padding-left: unset;
+
+    img {
+      height: 45px;
+      width: auto;
+    }
+  }
+
+  .avater {
+    img {
+      width: 50px !important;
+      height: 50px !important;
+      border-radius: 50%;
+    }
+  }
+
+  app-search-bar {
+    padding: 20px 0px;
+  }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

@@ -1,0 +1,52 @@
+@import './../../channel.component.scss';
+
+
+.channel-message {
+
+    @include dFlex($fd: column, $ai: normal, $jc: flex-start, $gap: 20px);
+
+    div {
+        @include dFlex($jc: flex-start, $gap: 10px);
+
+        .hash {
+            background-image: url('../../../../../assets/img/icons/hash_bk_18.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 18px;
+            height: 18px;
+        }
+
+        h3 {
+            font-family: "nunito";
+            font-weight: 700;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            .hash {
+                background-image: url('../../../../../assets/img/icons/hash_bl_24.png');
+            }
+
+            h3 {
+                color: $dkBlue;
+            }
+        }
+    }
+
+    span {
+        color: $bgdGrey;
+
+        a {
+            color: $lgBlue;
+            text-decoration: none;
+
+            &:hover {
+                color: $dkBlue;
+                font-weight: 500;
+            }
+        }
+    }
+}

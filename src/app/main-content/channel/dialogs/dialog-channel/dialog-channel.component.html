@@ -1,0 +1,96 @@
+<mat-card>
+
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+    <header>
+        <div>
+            <img src="./../../../../../assets/img/icons/hash_bk_22.png" alt="hash">
+            <mat-card-title>{{ channel?.name }}</mat-card-title>
+        </div>
+        <button mat-icon-button disableRipple (click)="onNoClick()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+
+    <div class="section" [ngClass]="{'section-box': !editName}">
+        @if (!editName){
+        <header>
+            <span class="section-title">Channel-Name</span>
+            <a class="mobile-hidden" (click)="editChannelName()">Bearbeiten</a>
+            <div class="img-edit icon-btn desktop-hidden" (click)="editChannelName()"></div>
+        </header>
+        <div class="channel-name">
+            <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
+            <span>{{ channel?.name }}</span>
+        </div>
+        }@else {
+        <header>
+            <span class="section-title">Channel-Name</span>
+            <a class="mobile-hidden" (click)="saveChannelName()">Speichern</a>
+            <div class="img-save icon-btn desktop-hidden" (click)="saveChannelName()"></div>
+        </header>
+        <!-- <div class="channel-edit-inp">
+            <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
+            <input type="text" placeholder="{{ channel?.name }}">
+        </div> -->
+        <div class="channel-edit-inp">
+            <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
+            <input type="text" [(ngModel)]="newName" placeholder="Channel-Name" (ngModelChange)="validateInputChannelName()">
+        </div>
+        <span class="error-message" style="color: red;">{{ channelNameError }}</span>
+
+        }
+    </div>
+
+    <div class="section" [ngClass]="{'section-box': !editDesc}">
+        @if (!editDesc){
+        <header>
+            <span class="section-title">Beschreibung</span>
+            <a class="mobile-hidden" (click)="editChannelDescr()">Bearbeiten</a>
+            <div class="img-edit icon-btn desktop-hidden" (click)="editChannelDescr()"></div>
+        </header>
+        <p>{{ channel?.description }}</p>
+        <hr>
+        <span class="section-title">Erstellt von</span>
+        <span class="des-owner-name">{{ getUserNameFromChannelOwnerID() }}</span>
+        }@else {
+        <header>
+            <span class="section-title">Beschreibung</span>
+            <a class="mobile-hidden" (click)="saveChannelDescr()">Speichern</a>
+            <div class="img-save icon-btn desktop-hidden" (click)="saveChannelDescr()"></div>
+        </header>
+        <!-- <div class="channel-edit-inp">
+            <textarea placeholder="Beschreibung" cols="30" rows="3"></textarea>
+        </div> -->
+        <div class="channel-edit-inp">
+            <img src="./../../../../../assets/img/icons/hash_bk_18.png" alt="">
+            <textarea [(ngModel)]="newDescription" placeholder="Channel-Name" cols="30" rows="3" (ngModelChange)="validateInputChannelDescription()"></textarea>
+        </div>
+        <span class="error-message" style="color: red;">{{ channelDescrError }}</span>
+
+        <hr>
+        <span class="section-title">Erstellt von</span>
+        <span class="des-owner-name">{{ getUserNameFromChannelOwnerID() }}</span>
+        
+        }
+    </div>
+
+    <div class="section section-box desktop-hidden">
+        <header>
+            <span class="section-title">Mitglieder</span>
+        </header>
+        <div class="members">
+            @for (member of members; track $index) {
+                <app-user-chip [user]="member" (click)="this.dialogService.showUserDialog(member, undefined)"></app-user-chip>
+                }
+        </div>
+        <div class="add-member" (click)="openAddUser()">
+            <button mat-icon-button disableRipple>
+                <mat-icon>person_add_alt</mat-icon>
+            </button>
+            <span>Mitglieder hinzufügen</span>
+        </div>
+    </div>
+
+    <button class="btn" (click)="openLeaveChannelDialog()">Channel verlassen</button>
+</mat-card>

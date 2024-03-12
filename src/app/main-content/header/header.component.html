@@ -1,0 +1,30 @@
+<div @slideInRightSlow class="header-content">
+
+    <div *ngIf="isMenuVisible" class="logo">
+        <img src="./../../../assets/img/logo_+_text.png" alt="Logo">
+    </div>
+
+    <div *ngIf="!isMenuVisible" class="menu-header-left desktop-hidden" (click)="goToMenu()">
+        <img src="../../../../assets/img/icons/expand_more_bk.png" class="expand-icon" alt="expand-icon">
+        <img src="../../../../assets/img/workspace-logo.png" class="workspace-logo" alt="workspace-logo">
+        <mat-card-title>Code learning</mat-card-title>
+    </div>
+
+    <app-search-bar class="search-bar mobile-hidden"></app-search-bar>
+
+    <div class="user-head" (click)="openDialog()">
+        <span class="name mobile-hidden">{{currentUser.name}}</span>
+        <div class="avater">
+            <img src={{currentUser.avatar}} (error)="onImageError($event)">
+        </div>
+        <div class="menu-btn mobile-hidden">
+            <img src="./../../../assets/img/icons/expand_more_bk.png">
+        </div>
+    </div>
+</div>
+
+<div @slideInLeftSlow class="desktop-hidden" *ngIf="isMenuVisible">
+    <div class="header-content bg-white">
+        <app-search-bar class="search-bar"></app-search-bar>
+    </div>
+</div>

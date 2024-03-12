@@ -1,0 +1,43 @@
+@if(chatMsg){
+
+<mat-card class="thread-panel">
+  <header class="thread-header">
+    <div class="header-title">
+      <h2>Thread</h2>
+      @if(channel?.name){
+        <p>#{{ channel?.name }}</p>
+      }
+      
+      <!--Channel-->
+    </div>
+    <button class="close-button" (click)="setCloseTread()">
+      <mat-icon class="close-icon">close</mat-icon>
+    </button>
+  </header>
+  <main>
+    <!-- MESSAGE OF THE THREAD -->
+    <app-message [msg]="chatMsg"
+      [user]="data.getUserFromMessage(chatMsg)" [isEditDisabled]="true"></app-message>
+
+    <!-- REPLY COUNTER -->
+    <div class="response-counter">
+      <div>{{ chatMsg.replies.length }}</div>
+      <div>Antworten</div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <!-- REPLY MESSAGE -->
+    @for (reply of chatMsg.replies ; track $index) {
+    <app-message [msg]="reply" [user]="data.getUserFromReply(reply)"
+    [index]="$index" [channelMsg]="chatMsg"></app-message>
+    }
+
+  </main>
+
+  <app-input-textarea [channel]="channel" [msg]="chatMsg" [chat]="'reply'"
+   [members]="currentChannelMembers"></app-input-textarea>
+
+</mat-card>
+
+
+}

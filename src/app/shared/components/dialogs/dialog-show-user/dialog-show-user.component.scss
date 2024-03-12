@@ -1,0 +1,182 @@
+@import './../../../../../styles.scss';
+
+h2,
+h1,
+span,
+a {
+    font-family: 'Nunito';
+    margin-block-start: 0;
+    margin-block-end: 0;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.dialog-container {
+    position: relative;
+    padding: 40px;
+    @include dFlex($fd: column, $ai: flex-start, $jc: flex-start, $gap: 45px);
+    border-radius: 30px !important;
+    width: 500px;
+
+    mat-progress-bar {
+        @include pAbsolute($t: 0px, $l: -15px);
+        width: 100%;
+    }
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.avatar-container {
+    @include dFlex($jc: center);
+    width: 100%;
+
+    img {
+        height: 200px;
+        width: 200px;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+    }
+}
+
+.name-status-container {
+    @include dFlex($fd: column, $ai: flex-start, $jc: flex-start, $gap: 15px);
+    width: 100%;
+
+    .name-container {
+        @include dFlex($jc: space-between, $ai: center);
+        width: 100%;
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        a {
+            font-size: 18px;
+            font-weight: 600;
+        }
+    }
+
+    .status-icon-with-label {
+        @include dFlex($jc: flex-start, $ai: center, $gap: 15px);
+        position: relative;
+
+
+        .status-indicator {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            border: 1px solid white;
+            background: radial-gradient(circle at -2px -1px, white, red);
+        }
+
+        .status-indicator.online {
+            background: radial-gradient(circle at -2px -1px, white, $lgGreen);
+        }
+
+        .status-indicator.away {
+            background: radial-gradient(circle at -2px -1px, white, yellow);
+        }
+
+        .status-label {
+            font-size: 20px;
+            font-weight: 400;
+            color: red;
+        }
+
+        .status-label.online {
+            color: $lgGreen;
+        }
+
+        .status-label.away {
+            color: yellow;
+        }
+
+    }
+}
+
+.mail-container {
+    @include dFlex($jc: flex-start, $ai: flex-start, $gap: 20px);
+
+    img {
+        margin-top: 4px;
+    }
+
+    .mail {
+        @include dFlex($fd: column, $ai: flex-start, $jc: flex-start, $gap: 15px);
+
+        span {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        a {
+            font-size: 18px;
+            font-weight: 400;
+        }
+    }
+}
+
+.button-container {
+    @include dFlex($jc: center);
+    width: 100%;
+
+    .mat-mdc-unelevated-button {
+        font-family: 'Nunito';
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 25px;
+        letter-spacing: 0em;
+        text-align: left;
+        background-color: $dkPurple;
+        padding: 12px 25px 12px 25px;
+        border-radius: 50px;
+        @include dFlex($jc: flex-start, $ai: center, $gap: 0px);
+    }
+
+}
+
+.btn-close {
+    @include pAbsolute($t: 50px, $r: 40px);
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.icon-btn {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: $bgGrey;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $lgPurple;
+    }
+}
+
+.img-edit {
+    background-image: url('../../../../../assets/img/icons/edit.png');
+}
+
+
+@media (max-width: $tablet-breakpoint) {
+
+    .dialog-container {
+        border-radius: 30px !important;
+        width: unset;
+        padding: 40px 20px 40px 20px;
+
+    }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

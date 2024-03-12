@@ -1,0 +1,377 @@
+@import "../../../styles.scss";
+
+$fontFigtree: "Figtree", sans-serif;
+
+.background-container {
+  @include dFlex(column, center, center);
+  width: 100vw;
+  max-width: 1920px;
+  height: 100vh;
+  margin: 0 auto;
+  z-index: 100;
+  background-color: $bgGrey;
+  position: relative;
+  animation: backgroundFadeIn 1s ease-in forwards;
+  overflow: hidden;
+
+  &__logo {
+    @include pAbsolute(32px, unset, unset, 32px, unset);
+  }
+
+  &__legals {
+    @include dFlex(row, center, center, 16px);
+    position: absolute;
+    bottom: 32px;
+    margin-top: 10px;
+    font-family: $fontFigtree;
+
+    a {
+      color: $bgBlue;
+      border-radius: 20px;
+      padding: 2px 8px;
+      transition: ease-in-out 0.3s;
+      border: 1px solid transparent;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $dkBlue;
+        color: $dkBlue;
+        font-weight: 400;
+        transition: ease-in-out 0.3s;
+      }
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+.pw-reset {
+  max-height: calc(100vh - 140px);
+  padding: 42px;
+  border-radius: 30px;
+  @include dFlex(column, flex-start, 36px);
+  gap: 36px;
+  box-shadow: $boxShadow;
+  overflow: auto;
+  animation: slideInUp 0.5s ease-in forwards;
+  margin-bottom: 16px;
+  clip-path: inset(0 round 30px);
+
+  &__header,
+  &__subtitle {
+    text-align: center;
+  }
+
+  &__header {
+    color: $dkBlue;
+    padding: 36px;
+    @include fontNunito($weight: 700, $size: 46px);
+  }
+
+  &__subtitle {
+    @include fontNunito($weight: 400, $size: 20px);
+  }
+
+  &__form-field {
+    display: flex;
+    flex-direction: column;
+
+    mat-icon {
+      color: grey;
+      padding-left: 30px;
+    }
+
+    input {
+      padding-left: 8px;
+      @include fontNunito($weight: 500, $size: 18px);
+    }
+  }
+
+  &__next-button {
+    // @include pAbsolute(unset, 142px, 40px, unset, unset);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      transition: background-color 0.3s ease-in-out;
+      background-color: grey;
+      width: 170px;
+      height: 49px;
+      border: none;
+      color: $bgGrey;
+      border-radius: 28px;
+      @include fontNunito($weight: 700, $size: 18px);
+      margin-right: 100px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .valid-form {
+      background-color: $dkBlue;
+      animation: buttonFadeIn 0.3s ease-in-out;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $bgBlue;
+        background-color: $bgBlue;
+      }
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  &__arrow-back {
+    position: absolute;
+    top: 51px;
+    left: 29px;
+    cursor: pointer;
+    display: flex;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      padding-top: 3px;
+      border: unset;
+      background-color: transparent;
+      border-radius: 100%;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        color: $dkBlue;
+        transform: scale(1.01);
+
+        transition: ease-in-out 0.3s;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  &__footer {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    // margin-bottom: 82px;
+    margin-bottom: 0px;
+    color: grey;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+
+  mat-icon {
+    color: grey;
+    padding-left: 30px;
+  }
+
+  input {
+    padding-left: 8px;
+    @include fontNunito($weight: 500, $size: 18px);
+  }
+}
+
+.success-popup {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  max-width: 530px;
+  gap: 12px;
+  height: 150px;
+  min-width: 300px;
+  padding: 8px;
+  position: absolute;
+  top: 30%;
+  background-color: $dkBlue;
+  color: white;
+  border-radius: 30px 30px 0px 30px;
+  margin-top: 8px;
+  @include fontNunito($weight: 700, $size: 36px);
+
+  img {
+    padding-left: 16px;
+    margin-top: -16px;
+  }
+}
+
+.mb-40 {
+  margin-bottom: 50px;
+}
+
+:host ::ng-deep .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px;
+  background-color: $bgGrey;
+  border-radius: 28px;
+  border: transparent;
+}
+
+:host ::ng-deep .mdc-form-field > label {
+  @include fontNunito($weight: 400, $size: 18px);
+}
+
+:host ::ng-deep .mat-mdc-form-field-bottom-align {
+  height: 32px !important;
+}
+
+.mat-mdc-form-field {
+  padding: 0px 100px;
+}
+
+@keyframes buttonFadeIn {
+  from {
+    background-color: grey;
+  }
+  to {
+    background-color: $dkBlue;
+  }
+}
+
+.valid-form {
+  background-color: $dkBlue !important; 
+  animation: buttonFadeIn 0.3s ease-in-out;
+
+  &:hover {
+    background-color: darken($dkBlue, 5%);
+  }
+}
+
+.email-verify{
+  z-index: 500;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  max-width: 530px;
+  gap: 12px;
+  height: 150px;
+  min-width: 300px;
+  padding: 8px;
+  position: absolute;
+  top: 30%;
+  background-color: $dkBlue;
+  color: white;
+  border-radius: 30px 30px 0px 30px;
+  margin-top: 8px;
+  @include fontNunito($weight: 700, $size: 36px);
+
+
+}
+
+.password-icon{
+  padding-right: 30px !important ;
+}
+
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(150%);
+  }
+}
+
+.slide-out-down {
+  animation: slideOutDown 0.8s ease forwards;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.5s ease forwards;
+}
+
+
+:host ::ng-deep .mat-mdc-card-header-text {
+  width: 100% !important;
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+  .background-container {
+    justify-content: safe center;
+    overflow-y: auto;
+
+    &__logo {
+      position: unset;
+      top: unset;
+      left: unset;
+      margin: 30px;
+    }
+
+    &__legals {
+      position: unset;
+      margin-bottom: 32px;
+      margin-top: unset;
+    }
+
+  }
+
+  .pw-reset {
+    width: calc(100% - 32px);
+    height: unset;
+    padding: 35px 20px 35px 20px;
+    overflow: unset;
+    max-height: unset;
+
+    &__arrow-back {
+      position: absolute;
+      top: 28px;
+      left: 12px;
+    }
+
+    &__header {
+      padding: 0px 0px 24px;
+      font-size: 32px;
+    }
+
+    .mat-mdc-card-header {
+      padding: 0;
+
+      mat-card-title {
+        width: 100%;
+      }
+    }
+
+    &__form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+    &__next-button {
+      button {
+        margin-right: 0px;
+      }
+    }
+
+
+
+    .mat-mdc-form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+  }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

@@ -1,0 +1,81 @@
+<div class="background-container">
+  <div class="background-container__logo">
+    <img src="./assets/img/logo_+_text.png" />
+  </div>
+
+  <mat-card class="avatar" @slideInUp >
+    <mat-card-header>
+      <mat-card-title class="avatar__header"
+        >Wähle deinen Avatar</mat-card-title
+      >
+    </mat-card-header>
+
+    <div class="avatar__content-box">
+      <mat-card class="avatar__profile-image" [ngClass]="animationClass">
+        <img [src]="currentAvatar" />
+      </mat-card>
+      <mat-card class="avatar__new-user">{{ userName }}</mat-card>
+      <!---USER NAME/CLASS-->
+      <mat-card class="avatar__info-container">Aus der Liste wählen</mat-card>
+      <mat-card class="avatar__select-pic">
+        <div *ngFor="let avatar of avatars" (click)="selectAvatar(avatar)">
+          <img [src]="'./assets/img/avatars/' + avatar" />
+        </div>
+      </mat-card>
+      <mat-card class="avatar__my-upload">
+        <span class="mobile-hidden">Eigenes Bild anwenden</span>
+        <span class="desktop-hidden">Oder</span>
+        <div class="form-group">
+          <button class="mobile-hidden" (click)="fileInput.click()">Datei Hochladen</button>
+          <button class="desktop-hidden" (click)="fileInput.click()">Eigenes Bild hochladen</button>
+          <input
+            type="file"
+            #fileInput
+            style="display: none"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+          />
+        </div>
+      </mat-card>
+
+      <div class="avatar__next-button">
+        <button
+          type="submit"
+          mat-fab
+          extended
+          color="primary"
+          [ngClass]="{ 'valid-form': formIsValid }"
+          (click)="registerAccount()"
+        >
+          Weiter
+        </button>
+      </div>
+
+      <mat-card class="arrow-back">
+        <button (click)="backToSignUp()"class="basic-button close-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </mat-card>
+      <mat-card *ngIf="avatarError" class="error-message">
+        Bitte wählen Sie einen Avatar.
+      </mat-card>
+    </div>
+  </mat-card>
+  <div class="background-container__legals">
+    <a (click)="openImprint()">Impressum</a>
+   <a (click)="openPrivacy()">Datenschutz</a>
+  </div>
+
+  <mat-card *ngIf="showError" class="error-message">
+    <p>Ihr Bild ist zu groß.<br />Maximale Größe beträgt 1MB.</p>
+    <button (click)="closeError()">Schließen</button>
+  </mat-card>
+
+  <mat-card class="success-popup" @slideInUp *ngIf="registrationSuccess">
+    <mat-card-content>
+      Konto erfolgreich erstellt
+      <br>
+      <p>Vor der Anmeldung ist eine Bestätigung Ihrer E-Mail erforderlich.</p>
+    </mat-card-content>
+  </mat-card>
+</div>

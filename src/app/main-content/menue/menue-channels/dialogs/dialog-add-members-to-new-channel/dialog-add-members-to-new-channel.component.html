@@ -1,0 +1,25 @@
+<mat-card>
+
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+    <header>
+        <mat-card-title>Leute hinzufügen</mat-card-title>
+        <button mat-icon-button disableRipple (click)="onNoClick()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+
+    <mat-radio-group [(ngModel)]="radioSelection" aria-label="Select an option">
+        <mat-radio-button value="all">Alle Benutzer hinzufügen</mat-radio-button>
+        <mat-radio-button value="specific">Bestimmte Leute hinzufügen</mat-radio-button>
+    </mat-radio-group>
+
+    <app-input-add-user *ngIf="radioSelection === 'specific'"
+        [currentMemberIDs]="data.currentMemberIDs" (userAdded)="onUserAdded($event)" (userRemoved)="onUserRemoved($event)"
+        (selectedUsersChanged)="onSelectedUsersChanged($event)"> <!-- Neu -->
+    </app-input-add-user>
+
+    <button class="btn" [ngClass]="setBtnClass()" (click)="saveMemberships()" [disabled]="!canSubmit()">Channel
+        erstellen</button>
+
+</mat-card>

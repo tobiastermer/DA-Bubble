@@ -1,0 +1,84 @@
+@import './../../../../../../styles.scss';
+
+mat-card {
+    padding: 40px;
+    width: 100%;
+    width: 550px;
+    height: 100%;
+    @include dFlex($fd: column, $ai: flex-end, $gap: 20px);
+
+    mat-progress-bar {
+        @include pAbsolute($t: 0px, $l: -15px);
+        width: 100%;
+    }
+
+    header {
+        @include dFlex($jc: space-between);
+        width: 100%;
+
+        mat-card-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        button {
+            @include iButton($bgC: unset, $hBgIC: #000);
+        }
+    }
+
+    mat-radio-group {
+        @include dFlex($ai: flex-start, $fd: column, $gap: 10px);
+        width: 100%;
+    }
+
+    app-input-add-user {
+        width: 100%;
+    }
+
+    .btn {
+        font-size: 18px;
+        font-weight: 700;
+        height: 49px;
+        border: none;
+        border-radius: 28px;
+        font-weight: 700;
+        padding: 12px 25px;
+        color: white;
+        background-color: $dkBlue;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $lgBlue;
+        }
+    }
+
+    .btn-disable {
+        background-color: $dkGrey;
+
+        &:hover {
+            background-color: $dkGrey;
+            cursor: unset;
+        }
+    }
+
+    .btn-enable {
+        background-color: $dkBlue;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $lgBlue;
+        }
+    }
+
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+    mat-card {
+        padding: 40px 20px;
+        width: unset;
+    }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

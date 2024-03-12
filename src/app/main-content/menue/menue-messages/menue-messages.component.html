@@ -1,0 +1,16 @@
+<section class="menu-users-container">
+    <div class="menu-users-header">
+        <div class="menu-users-header-left" (click)="toggleUsersVisibility();">
+            <div class="img-expand-users icon" [ngClass]="{'rotated': !usersVisible}"></div>
+            <mat-card-title>
+                <div class="img-account-circle icon"></div>
+                Direktnachrichten
+            </mat-card-title>
+        </div>
+    </div>
+    <div class="menu-users-content" *ngIf="usersVisible">
+        @for (user of users; track $index) {
+        <app-user-chip [user]="user" [active]="isActiveUser($index)" (click)="changePath($index)"></app-user-chip>
+        }
+    </div>
+</section>

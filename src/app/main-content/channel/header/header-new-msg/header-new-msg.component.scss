@@ -1,0 +1,85 @@
+@import './../../channel.component.scss';
+
+
+.header-channel {
+    @include dFlex($fd: column, $ai: flex-start, $gap: 20px);
+    position: relative;
+
+    h2 {
+        margin: 0;
+    }
+}
+
+.search-container {
+    position: absolute;
+    top: 119px;
+    left: 66px;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background: white;
+    border: 1px solid #ADB0D9;
+    border-radius: 0 30px 30px 30px;
+    overflow-y: auto;
+    width: calc(100% - 145px);
+    max-height: 300px;
+    clip-path: inset(0px round 0px 30px 30px);
+
+    ul {
+        padding: 0;
+        list-style-type: none;
+
+        li {
+            margin-top: 10px;
+        }
+
+        .categoryName {
+            margin-left: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+    }
+}
+
+.channelList {
+    @include dFlex($jc: flex-start, $gap: 15px);
+    border-radius: 20px;
+    padding: 4px 20px 4px 20px;
+
+    .img-channel-hash {
+        height: 16px;
+        width: 16px;
+        background-image: url("../../../../../assets/img/icons/hash_bk_16.png");
+    }
+
+    .channel-name {
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    &:hover {
+        background-color: $bgGrey;
+        cursor: pointer;
+
+        .img-channel-hash {
+            background-image: url("../../../../../assets/img/icons/hash_bl_16.png");
+        }
+
+        .channel-name {
+            color: $dkBlue;
+            font-weight: 700;
+        }
+    }
+}
+
+.user-input {
+    width: calc(100% - 42px);
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: 1px solid $lgPurple;
+    outline: none;
+
+    &:focus-visible {
+        border-color: $bgBlue;
+    }
+}

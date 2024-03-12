@@ -1,0 +1,71 @@
+<div class="background-container">
+  <div class="background-container__logo">
+    <img src="./assets/img/logo_+_text.png" />
+  </div>
+
+  <mat-card class="email-verify" @slideInUp *ngIf="isEmailVerify">
+    <h1>Super! Deine E-Mail wurde erfolgreich verifiziert.</h1>
+  </mat-card>
+
+  <mat-card class="email-verify" @slideInUp *ngIf="newEmailVerify">
+    <h1>Super! Deine E-Mail wurde erfolgreich geändert.</h1>
+  </mat-card>
+
+  <mat-card class="pw-reset" *ngIf="isPasswordReset" @slideInUp>
+    <mat-card-header>
+      <mat-card-title class="pw-reset__header"
+        >Passwort zurücksetzen</mat-card-title
+      >
+    </mat-card-header>
+    <form [formGroup]="pwResetForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="pw-reset__form-field">
+        <mat-icon matPrefix>lock_outlined</mat-icon>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passwort" formControlName="password">
+        <mat-icon class="password-icon" matSuffix (click)="togglePasswordVisibility()">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="pwResetForm.get('password')?.errors?.['required']">
+          Passwort ist erforderlich.
+        </mat-error>
+        <mat-error *ngIf="pwResetForm.get('password')?.errors?.['minlength']">
+          Passwort muss mindestens 6 Zeichen lang sein.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="pw-reset__form-field">
+        <mat-icon matPrefix>lock_outlined</mat-icon>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passwort bestätigen" formControlName="confirmPassword">
+        <mat-icon class="password-icon" matSuffix (click)="togglePasswordVisibility()">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="pwResetForm.errors?.['notSame']">
+          Passwörter stimmen nicht überein.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="pw-reset__next-button">
+        <button
+          type="submit"
+          mat-fab
+          extended
+          color="primary"
+          [class.valid-form]="pwResetForm.valid"
+          [disabled]="!pwResetForm.valid"
+        >
+          Passwort ändern
+        </button>
+      </div>
+    </form>
+
+    <div class="pw-reset__arrow-back">
+      <button (click)="openLogin()" class="basic-button close-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card class="success-popup" *ngIf="showSuccessPopup" @slideInUp>
+    <mat-card-content> Passwort geändert </mat-card-content>
+  </mat-card>
+
+  <div class="background-container__legals">
+    <a href="">Impressum</a>
+    <a href="">Datenschutz</a>
+  </div>
+</div>

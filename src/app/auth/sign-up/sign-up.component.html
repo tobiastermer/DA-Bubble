@@ -1,0 +1,92 @@
+<div class="background-container">
+  <div class="background-container__logo">
+    <img src="./assets/img/logo_+_text.png" />
+  </div>
+
+  <mat-card class="sign-up" [@slideAnimation]="animationState">
+    <mat-card-header>
+      <mat-card-title class="sign-up__header">Konto erstellen</mat-card-title>
+      <mat-card-subtitle class="sign-up__subtitle">
+        <!-- Mit deinem Namen und deiner E-mail-Adresse hast <br /> -->
+        Mit deinem Namen und deiner E-mail-Adresse hast 
+        du dein neues DABubble-Konto.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="sign-up__form-field" appearance="outline">
+        <mat-icon matIconPrefix>person_outlined</mat-icon>
+        <input
+          matInput
+          placeholder="Name"
+          formControlName="name"
+          type="text"
+          (blur)="signUpForm.controls['name'].markAsTouched()"
+        />
+        <mat-error *ngIf="signUpForm.get('name')?.hasError('required')"
+          >Name eingeben</mat-error
+        >
+        <mat-error *ngIf="signUpForm.get('name')?.hasError('minlength')"
+          >Mindestens 3 Zeichen eingeben</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="sign-up__form-field">
+        <mat-icon matIconPrefix>mail_outlined</mat-icon>
+        <input
+          matInput
+          placeholder="beispiel@email.com"
+          formControlName="email"
+          type="email"
+          (blur)="signUpForm.controls['email'].markAsTouched()"
+        />
+        <mat-error *ngIf="signUpForm.get('email')?.errors">
+          {{ getFirstEmailError() }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="sign-up__form-field">
+        <mat-icon matIconPrefix>lock_outlined</mat-icon>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passwort" formControlName="password" (blur)="signUpForm.controls['password'].markAsTouched()">
+        <mat-icon class="password-icon" matSuffix (click)="togglePasswordVisibility()">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>       
+        
+        <mat-error *ngIf="signUpForm.get('password')?.invalid">
+          {{ getFirstPasswordError() }}
+        </mat-error>
+      </mat-form-field>
+
+      <section class="sign-up__checkbox-section">
+        <mat-checkbox class="sign-up__checkbox" formControlName="termsAccepted">
+          Ich stimme den <a (click)="openPrivacy()">Datenschutzerklärungen</a> zu
+        </mat-checkbox>
+
+        <mat-error
+          class="sign-up__checkbox-error"
+          *ngIf="formSubmitted && signUpForm.controls['termsAccepted'].errors?.['required']"
+        >
+          Bitte bestätigen Sie die Datenschutzerklärungen
+        </mat-error>
+      </section>
+
+      <div class="sign-up__next-button">
+        <button
+          type="submit"
+          mat-fab
+          extended
+          color="primary"
+          [ngClass]="{ 'valid-form': signUpForm.valid }"
+        >
+          Weiter
+        </button>
+      </div>
+    </form>
+
+    <div class="sign-up__arrow-back">
+      <button (click)="openLogin()" class="basic-button close-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+
+  <div class="background-container__legals">
+    <a (click)="openImprint()">Impressum</a>
+    <a (click)="openPrivacy()">Datenschutz</a>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="searchBar-container" #searchBarContainer>
+    <input #searchInput type="text" (input)="filter()" matInput placeholder="DABubble durchsuchen">
+    <mat-icon>search</mat-icon>
+    <div class="search-container" [class.d-none]="!selectListVisible">
+        <ul class="filtered" *ngIf="filteredUsers.length > 0">
+            <span class="categoryName">Users:</span>
+            <li *ngFor="let user of filteredUsers;">
+                <app-user-chip (click)="changeUserPath(user)" [user]="user" class="user-chip"></app-user-chip>
+            </li>
+        </ul>
+        <ul class="filtered" *ngIf="showChannels">
+            <span class="categoryName">Channels:</span>
+            <li *ngFor="let channel of filteredChannels;">
+                <div class="channelList" (click)="changeChannelPath(channel)">
+                    <div class="img-channel-hash"></div>
+                    <span class="channel-name">{{ channel.name }}</span>
+                </div>
+            </li>
+        </ul>
+        <ul class="filtered" *ngIf="showMessage">
+            <span class="categoryName">Messages:</span>
+            <li *ngFor="let message of filteredMessages;">
+                <div class="channelList" (click)="changeChannelPathByID(message.channelID)">
+                    <img class="user-avatar" [src]="DataService.getUserAvatarById(message.fromUserID)"
+                        (error)="onImageError($event)" alt="Avatar">
+                    <div class="messageContainer">
+                        <div class="messageHeader">
+                            <span class="user-name">{{ DataService.getUserNameById(message.fromUserID) }}</span>
+                            <span class="message-time">{{ getDateOfTimestemp(message.date) }}
+                                {{setTime(message.date)}}</span>
+                        </div>
+                        <span> {{ message.message }}</span>
+                        <span class="message-channel-name" > #{{DataService.getChannelNameById(message.channelID)}}</span>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

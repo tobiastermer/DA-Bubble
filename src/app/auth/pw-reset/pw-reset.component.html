@@ -1,0 +1,73 @@
+<div class="background-container">
+  <div class="background-container__logo">
+    <img src="./assets/img/logo_+_text.png" />
+  </div>
+
+  <mat-card class="pw-reset" @slideInUp>
+    <mat-card-header>
+      <mat-card-title class="pw-reset__header"
+        >Passwort zurücksetzen</mat-card-title
+      >
+      <mat-card-subtitle class="pw-reset__subtitle">
+        Bitte geben Sie Ihre E-mail-Adresse ein.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <form [formGroup]="pwResetForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="sign-up__form-field">
+            <mat-icon matIconPrefix>mail_outlined</mat-icon>
+            <input 
+              matInput
+              placeholder="beispiel@email.com"
+              formControlName="email"
+              type="email" 
+              (blur)="pwResetForm.controls['email'].markAsTouched()"
+            />
+            <mat-error *ngIf="pwResetForm.get('email')?.errors">
+              {{ getFirstEmailError() }}
+            </mat-error>
+      
+          </mat-form-field>
+   
+      <mat-card-title class="pw-reset__footer"
+      >Wir senden Ihnen eine E-Mail, über die 
+      Sie Ihr Passwort ändern können</mat-card-title
+      >
+   
+      <div class="pw-reset__next-button">
+        <button
+          type="submit"
+          mat-fab
+          extended
+          color="primary"
+          [ngClass]="{ 'valid-form': pwResetForm.valid }"
+        >
+          E-Mail senden
+        </button>
+      </div>
+    </form>
+
+    <div class="pw-reset__arrow-back">
+      <button (click)="openLogin()" class="basic-button close-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card class="success-popup" @slideInUp *ngIf="sendSuccess">
+   <img src="./assets/img/icons/send.png" >
+    <mat-card-content>
+      E-Mail gesendet
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="errorMessage" @slideInUp class="success-popup">
+    <mat-card-content>
+    Diese Email existiert nicht in DA-Bubble
+  </mat-card-content>
+  </mat-card>
+
+  <div class="background-container__legals">
+    <a href="imprint">Impressum</a>
+    <a href="privacy">Datenschutz</a>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<!-- INPUT FORM AREA -->
+<div class="message-input">
+
+  <div class="message-placeholder" [ngClass]="{'d-none': !isButtonDisabled, 'message-loading': isLoading}">
+    <span>Antworten </span>
+    <span class="dots dot1">.</span>
+    <span class="dots dot2">.</span>
+    <span class="dots dot3">.</span>
+  </div>
+
+  <div id="messageText" contenteditable="true" class="message-input__textarea" #messageText
+    (input)="updateButtonState()" (keydown.enter)="handleEnter($event, messageText.innerText)"
+    (keydown.backspace)="onDelete($event)">
+  </div>
+
+  <div class="message-input__controls">
+    <div class="message-input__actions">
+      <div class="message-input__file-upload">
+        <mat-icon class="message-input__action-btn message-input__file-btn" (click)="fileInput.click()">add</mat-icon>
+        <input type="file" class="message-input__file-input" type="file" #fileInput style="display: none"
+          (change)="selectFile($event)" accept="image/jpeg,image/png,application/pdf" />
+      </div>
+      <hr />
+      <mat-icon class="message-input__action-btn" #emoijBtn (click)="openDialogEmoji()">sentiment_satisfied</mat-icon>
+      <mat-icon class="message-input__action-btn" #atUser (click)="openDialogAtUser()"
+        appClickOutside>alternate_email</mat-icon>
+    </div>
+
+    <mat-progress-bar mode="indeterminate" [ngClass]="{'d-none': !isLoading }" ></mat-progress-bar>
+
+    <button class="message-input__send-btn" (click)="addNewMsg(messageText.innerText); messageText.innerText = ''"
+      [disabled]="isButtonDisabled">
+      <mat-icon>send</mat-icon>
+    </button>
+
+  </div>
+</div>

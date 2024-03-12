@@ -1,0 +1,35 @@
+<div class="dialog-container">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    <h2>Profil</h2>
+    <div class="avatar-container">
+        <img [src]="data.user.avatar" (error)="onImageError($event)" alt="Avatar">
+    </div>
+    <div class="name-status-container">
+        <div class="name-container">
+            <h1>{{ data.user.name }} {{ data.user.id == currentUserID ? ' (Du)' : '' }}</h1>
+            <a class="mobile-hidden" (click)="openDialogEditUser(data.user)" *ngIf="data.user.id == currentUserID">Bearbeiten</a>
+            <div class="img-edit icon-btn desktop-hidden" (click)="openDialogEditUser(data.user)" *ngIf="data.user.id == currentUserID"></div>
+        </div>
+        <div class="status-icon-with-label">
+            <div class="status-indicator" [class.online]="userStatus === 'online'" [class.away]="userStatus === 'away'"></div>
+            <span class="status-label" [class.online]="userStatus === 'online'" [class.away]="userStatus === 'away'">{{ userStatus }}</span>
+        </div>
+    </div>
+    <div class="mail-container">
+        <img src="../../../../../assets/img/icons/mail.png" alt="">
+        <div class="mail">
+            <span>Email-Adresse</span>
+            <a href="mailto:noah-braun@web.de">{{ data.user.email }}</a>
+        </div>
+    </div>
+    <div class="button-container" *ngIf="data.user.id !== currentUserID">
+        <div mat-dialog-actions>
+            <button mat-flat-button color="primary" (click)="sendMessage(data.user)">
+                <!-- <img src="../../../../../assets/img/icons/comment.png" alt=""> -->
+                <mat-icon>mode_comment</mat-icon>
+                <span>Nachricht</span>
+            </button>
+        </div>
+    </div>
+    <img src="../../../../../assets/img/icons/close.png" class="btn-close" (click)="closeDialog()" alt="close">
+</div>

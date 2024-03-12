@@ -1,0 +1,19 @@
+<mat-card>
+    <div class="card-header">
+        <mat-card-title>Mitglieder</mat-card-title>
+        <button mat-icon-button disableRipple (click)="onNoClick()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="members">
+        @for (member of members; track $index) {
+            <app-user-chip [user]="member" (click)="this.dialogService.showUserDialog(member, undefined)"></app-user-chip>
+            }
+    </div>
+    <div class="add-member" (click)="openAddUser()">
+        <button mat-icon-button disableRipple>
+            <mat-icon>person_add_alt</mat-icon>
+        </button>
+        <span>Mitglieder hinzufügen</span>
+    </div>
+</mat-card>

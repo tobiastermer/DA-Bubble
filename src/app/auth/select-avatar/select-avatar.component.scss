@@ -1,0 +1,474 @@
+@import "../../../styles.scss";
+
+// Fonts
+$fontFigtree: "Figtree", sans-serif;
+
+.background-container {
+  @include dFlex(column, center, center);
+  width: 100vw;
+  max-width: 1920px;
+  height: 100vh;
+  margin: 0 auto;
+  z-index: 100;
+  background-color: $bgGrey;
+  position: relative;
+  animation: backgroundFadeIn 1s ease-in forwards;
+  overflow: hidden;
+
+  &__logo {
+    @include pAbsolute(32px, unset, unset, 32px, unset);
+  }
+
+  &__legals {
+    @include dFlex(row, center, center, 16px);
+    position: absolute;
+    bottom: 32px;
+    margin-top: 10px;
+    font-family: $fontFigtree;
+
+    a {
+      color: $bgBlue;
+      border-radius: 20px;
+      padding: 2px 8px;
+      transition: ease-in-out 0.3s;
+      border: 1px solid transparent;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid $dkBlue;
+        color: $dkBlue;
+        font-weight: 400;
+        transition: ease-in-out 0.3s;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+.avatar {
+  max-height: calc(100vh - 140px);
+  padding: 46px;
+  border-radius: 30px;
+  @include dFlex(column, flex-start, 36px);
+  gap: 36px;
+  box-shadow: $boxShadow;
+  margin-bottom: 16px;
+  overflow: auto;
+  clip-path: inset(0 round 30px);
+
+  &__header {
+    text-align: center;
+    color: $dkBlue;
+    padding: 0px;
+    @include fontNunito($weight: 700, $size: 46px);
+  }
+
+  &__content-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+  }
+
+  &__profile-image {
+    box-shadow: unset;
+
+    img {
+      width: 136px;
+      height: 136px;
+      border-radius: 100%;
+      object-fit: cover;
+      border: 8px solid transparent;
+      transition: ease-in-out 0.3s;
+
+      &:hover {
+        transition: ease-in-out 0.3s;
+        border: 8px solid #80808033;
+      }
+    }
+  }
+
+  &__new-user {
+    @include fontNunito($weight: 700, $size: 32px);
+    box-shadow: unset;
+  }
+
+  &__info-container {
+    text-align: left;
+    font-size: 20px;
+    font-weight: 400;
+    width: 90%;
+    box-shadow: unset;
+  }
+
+  &__select-pic {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: unset;
+
+    img {
+      width: 72px;
+      height: 72px;
+      border-radius: 100%;
+
+      &:hover {
+        cursor: pointer;
+        transform: translateY(-2px);
+        transition: ease 0.3s;
+      }
+    }
+  }
+
+  &__my-upload {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: baseline;
+    margin-bottom: 0px;
+    gap: 24px;
+    font-size: 20px;
+    box-shadow: unset;
+
+    button {
+      border: 1px solid $dkBlue;
+      color: $dkBlue;
+      background-color: white;
+      width: 180px;
+      height: 50px;
+      border-radius: 25px;
+      font-size: 18px;
+      font-weight: 700;
+      transition: ease-in 0.2s;
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid white;
+        background-color: $dkBlue;
+        color: white;
+        transition: ease-in-out 0.3s;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  &__next-button {
+    // @include pAbsolute(unset, 53px, 10px, unset, unset);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      transition: background-color 0.3s ease-in-out;
+      background-color: grey;
+      width: 107px;
+      height: 49px;
+      border: none;
+      color: $bgGrey;
+      border-radius: 28px;
+      @include fontNunito($weight: 700, $size: 18px);
+      margin-right: 20px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &__next-button .valid-form {
+      background-color: $dkBlue;
+      animation: buttonFadeIn 0.3s ease-in-out;
+
+
+    }
+  }
+
+  .valid-form {
+    background-color: $dkBlue;
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid $bgBlue;
+      background-color: $bgBlue;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+.arrow-back {
+  position: absolute;
+  top: 54px;
+  left: 10px;
+  cursor: pointer;
+  display: flex;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  box-shadow: unset;
+
+
+
+  button {
+    padding-top: 3px;
+    border: unset;
+    background-color: transparent;
+    border-radius: 100%;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $bgGrey;
+      color: $dkBlue;
+      transform: scale(1.01);
+
+
+      transition: ease-in-out 0.3s;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+.error-message {
+  position: fixed;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  bottom: 48%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: $bgGrey;
+  padding: 20px;
+  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  animation: slideUp 1s forwards;
+
+  p {
+    @include fontNunito($weight: 600, $size: 14px);
+    margin: 0 0 10px 0;
+  }
+
+  button {
+    transition: background-color 0.3s ease-in-out;
+    background-color: $dkBlue;
+    width: 107px;
+    height: 49px;
+    border: none;
+    color: white;
+    border-radius: 28px;
+    @include fontNunito($weight: 700, $size: 18px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-top: 8px;
+  @include fontNunito($weight: 400, $size: 14px);
+}
+
+.success-popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 530px;
+  height: 150px;
+  min-width: 300px;
+  padding: 8px;
+  position: absolute;
+  top: 30%;
+  background-color: $dkBlue;
+  color: white;
+  border-radius: 30px 30px 0px 30px;
+  margin-top: 8px;
+  @include fontNunito($weight: 700, $size: 36px);
+
+  p {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+.slide-up {
+  animation: slideUp 1s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.5s ease forwards;
+}
+
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+
+  }
+
+  to {
+    transform: translateY(150%);
+  }
+}
+
+.slide-out-down {
+  animation: slideOutDown 0.8s ease forwards;
+}
+
+
+:host ::ng-deep .mat-mdc-card-header-text {
+  width: 100% !important;
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+  .background-container {
+    justify-content: safe center;
+    overflow-y: auto;
+
+    &__logo {
+      position: unset;
+      top: unset;
+      left: unset;
+      margin: 30px;
+    }
+
+    &__legals {
+      position: unset;
+      margin-bottom: 32px;
+      margin-top: unset;
+    }
+
+  }
+
+  .avatar {
+    width: calc(100% - 32px);
+    height: unset;
+    padding: 35px 20px 35px 20px;
+    overflow: unset;
+    gap: 0px !important;
+    max-height: unset;
+
+    .arrow-back {
+      position: absolute;
+      top: 28px;
+      left: 12px;
+    }
+
+    &__header {
+      padding: 0px 0px 24px;
+      font-size: 32px;
+    }
+
+    .mat-mdc-card-header {
+      padding: 0;
+
+      mat-card-title {
+        width: 100%;
+      }
+    }
+
+    &__form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+    &__next-button {
+      button {
+        margin-right: 0px;
+      }
+    }
+
+    &__select-pic {
+      overflow-x: auto;
+    }
+
+    .mat-mdc-form-field {
+      padding: 0;
+      width: 100%;
+    }
+
+    &__my-upload {
+      button {
+        width: unset;
+      }
+    }
+
+  }
+
+}
+
+@media (max-width: $mobile-breakpoint) {}

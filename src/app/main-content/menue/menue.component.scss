@@ -1,0 +1,115 @@
+@import './../../../styles.scss';
+
+.icon-btn {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $bgGrey;
+        border-radius: 50%;
+    }
+}
+
+.icon {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.menu-card {
+    @include dFlex($fd: column, $ai: flex-start, $jc: flex-start, $gap: 25px);
+    // width: 366px;
+    height: 100%;
+    border-radius: 30px;
+    padding: 32px 30px 32px 30px;
+    transition: transform 0.5s ease-in-out;
+    overflow-x: hidden;
+    overflow-y: auto;
+    clip-path: inset(0 round 30px); // Wendet abgerundete Ecken auf den Inhalt an, inklusive Scrollbalken
+    scrollbar-gutter: stable;
+    transition: transform 0.5s ease-in-out;
+}
+
+app-menue-header,
+app-menue-channels,
+app-menue-messages {
+    width: 279.44px; //sonst sorgt Scrollbalken - wenn er ein- oder ausgeblendet ist - für unschönen Sprung
+}
+
+.menu-open {
+    transform: translateX(0);
+}
+
+.menu-closed {
+    transform: translateX(-100%);
+}
+
+.menu-overlay-close {
+    @include dFlex($ai: center, $gap: 0px);
+    @include pAbsolute($t: 50%, $l: -148px, $z: 1);
+    width: 338px !important;
+    height: unset !important;
+    transform: rotate(270deg);
+    border-radius: 0px 0px 30px 30px;
+    padding: 8px 20px 8px 20px;
+    z-index: 10;
+    box-shadow: 4px 4px 7px 0px rgba(0, 0, 0, 0.2);
+
+    mat-card-title {
+        @include dFlex($ai: center, $jc: space-between, $gap: 10px);
+        font-size: 20px;
+        width: 100%;
+        text-align: center;
+
+        img {
+            transform: rotate(90deg);
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 4px 4px 7px 1px rgba(0, 0, 0, 0.3);
+
+        mat-card-title {
+            color: $dkBlue;
+        }
+    }
+}
+
+.rotated {
+    transform: rotate(270deg);
+}
+
+.img-new-msg {
+    @include pAbsolute($b: 32px, $r: 16px, $z: 1);
+    background-image: url('../../../assets/img/icons/edit_square_wh.png');
+    background-position: center;
+    background-color: $dkPurple;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+
+    &:hover {
+        background-color: $lgPurple;
+        cursor: pointer;
+    }
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+    .menu-card {
+        padding: 0px 36px;
+        clip-path: unset;
+        box-shadow: none !important;
+    }
+
+    app-menue-header,
+    app-menue-channels,
+    app-menue-messages {
+        width: 100%;
+    }
+}
+
+@media (max-width: $mobile-breakpoint) {}

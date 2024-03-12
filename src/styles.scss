@@ -1,0 +1,325 @@
+/////////// global colors /////////////
+
+$bgGrey: #eceefe;
+$bgBlue: #797ef3;
+
+$dkGrey: #686868; //also for status icon 'abwesend'
+$lgGreen: #92c83e; //also for status icon 'aktiv'
+
+$dkBlue: #535AF1;
+$lgBlue: #6E73DD;
+$lgBlueLinks: #1381ff; // for links
+
+$lgPurple: #ADB0D9;
+$dkPurple: #444df2; // for buttons
+
+$bgdGrey: #686868; // ******!!doppelt!!*******
+
+.bg-white {
+  background-color: white;
+}
+
+/////////// border + shadows /////////////
+
+$boxShadow: 0px 2px 10px 0px #00000014;
+
+/////////// responsive /////////////
+
+$mobile-breakpoint: 400px; // muss analog dem position.service sein!!!
+$tablet-breakpoint: 1000px;
+$wide-breakpoint: 1250px;
+$bigscreen-breakpoint: 1920px;
+
+/////////// global mixings /////////////
+
+@mixin dFlex($fd: row, $jc: center, $ai: center, $gap: 0) {
+  display: flex;
+  flex-direction: $fd;
+  justify-content: $jc;
+  align-items: $ai;
+  gap: $gap;
+}
+
+@mixin pAbsolute($t: unset, $r: unset, $b: unset, $l: unset, $z: unset) {
+  position: absolute;
+  top: $t;
+  right: $r;
+  bottom: $b;
+  left: $l;
+  z-index: $z;
+}
+
+@mixin iButton($h: 40px, $w: 40px, $bgC: $bgGrey, $iC: #000, $p: 8px, $hBgC: $bgGrey, $hBgIC: $bgGrey) {
+  height: $h;
+  width: $w;
+  background-color: $bgC;
+  padding: $p;
+
+  mat-icon {
+    color: $iC;
+  }
+
+  &:hover {
+    background-color: $hBgC;
+
+    mat-icon {
+      color: $hBgIC;
+    }
+  }
+
+  &:focus,
+  &:active {
+    background-color: $bgC;
+  }
+}
+
+@mixin transition($properties: all, $duration: 0.3s, $ease: ease) {
+  transition: $properties $duration $ease;
+}
+
+/////////// global keyframes /////////////
+
+@keyframes emojiPopup {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes emojiPopupRev {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/////////// global fonts /////////////
+
+@mixin fontNunito($weight: 400, $size: 14px) {
+  font-family: "nunito";
+  font-weight: $weight;
+  font-size: $size;
+}
+
+@each $weight in (200, 300, 400, 500, 600, 700, 800, 900) {
+  @font-face {
+    font-display: swap;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: $weight;
+    src: url("/assets/fonts/nunito-v26-latin-#{$weight}.woff2") format("woff2");
+  }
+}
+
+@each $weight in (300, 500, 400, 600, 700, 800, 900) {
+  @font-face {
+    font-display: swap;
+    font-family: "Figtree";
+    font-style: normal;
+    font-weight: $weight;
+    src: url("/assets/fonts/figtree-v5-latin-#{$weight}.woff2") format("woff2");
+  }
+}
+
+/////////// global imports /////////////
+
+@import '@ctrl/ngx-emoji-mart/picker';
+
+/////////// global classes /////////////
+
+.d-none {
+  display: none !important;
+}
+
+.card-right-corner {
+  border-radius: 30px 0 30px 30px;
+  overflow: hidden;
+}
+
+.card-right-bottom-corner {
+  border-radius: 30px 30px 0 30px;
+  overflow: hidden;
+}
+
+.card-left-corner {
+  border-radius: 0 30px 30px 30px;
+  overflow: hidden;
+}
+
+.card-left-bottom-corner {
+  border-radius: 30px 30px 30px 0;
+  overflow: hidden;
+}
+
+.card-round-corners {
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.mobile-card-corner {
+  border-radius: 30px 30px 0 0;
+  overflow: hidden;
+}
+
+.mobile-card-fullscreen {
+  overflow: auto;
+}
+
+.mat-button-focus-overlay {
+  background-color: transparent !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 0px !important;
+}
+
+.mat-mdc-unelevated-button {
+  font-family: Nunito, "Helvetica Neue", sans-serif;
+}
+
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  opacity: 0 !important;
+  /*click effect color change*/
+  background-color: $dkPurple !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: $dkPurple !important;
+  /*inner circle color change*/
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: $dkPurple !important;
+  /*outer ring color change*/
+}
+
+.file-overview {
+  @include dFlex($fd: column);
+  min-width: 200px;
+  max-width: 250px;
+  min-height: 50px;
+  max-height: 250px;
+  padding: 2px 8px;
+  margin-left: calc(50% - 100px - 5px);
+  background-color: $bgGrey;
+  border: 1px solid $lgPurple;
+  border-radius: 10px;
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  img {
+    max-width: 200px;
+    max-height: 200px;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Nunito, "Helvetica Neue", sans-serif;
+  background-color: #ECEEFE;
+}
+
+a {
+  text-decoration: none;
+  color: $lgBlueLinks;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+// ::-webkit-scrollbar {
+//   width: 10px;
+//   height: 10px;
+
+//   &-track {
+//     background: #f1f1f1;
+//   }
+
+//   &-thumb {
+//     background: $lgPurple;
+//     -webkit-border-radius: 5px;
+//     border-radius: 5px;
+
+//     &:hover {
+//       background: $dkBlue;
+//     }
+//   }
+// }
+
+// Für WebKit-basierte Browser wie Chrome, Safari
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $lgPurple;
+  border-radius: 5px;
+
+  &:hover {
+    background: $dkBlue;
+  }
+}
+
+// Für Firefox
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $lgPurple #f1f1f1;
+}
+
+// Optional: Hover-Effekt für Firefox hinzufügen
+// Beachten Sie, dass Firefox derzeit (bis zu meiner letzten Aktualisierung) keinen Hover-Zustand für Scrollbars unterstützt.
+// Diese Regel wird also keinen Effekt haben, aber sie ist hier als Referenz für zukünftige Kompatibilität.
+*::-webkit-scrollbar-thumb:hover {
+  background: $dkBlue;
+}
+
+.desktop-hidden {
+  display: none !important;
+}
+
+@media (max-width: $tablet-breakpoint) {
+
+  .mobile-hidden {
+    display: none !important;
+  }
+
+  .desktop-hidden {
+    display: unset !important;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+
+  * {
+    scrollbar-width: 0px;
+  } 
+
+}

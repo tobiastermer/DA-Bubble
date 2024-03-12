@@ -1,0 +1,67 @@
+<div class="background-container">
+
+  <div class="background-container__logo">
+    <img src="./assets/img/logo_+_text.png" />
+  </div>
+
+  <mat-card class="login" *ngIf="showLoginCard" @slideOutDown>
+    <mat-card-header>
+      <mat-card-title class="login__header">Anmelden</mat-card-title>
+      <mat-card-subtitle class="login__subtitle">
+        Melde dich mit deiner E-Mail-Adresse und deinem Passwort an.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+      <mat-form-field appearance="outline" class="login__form-field">
+        <mat-icon matIconPrefix>mail_outlined</mat-icon>
+        <input matInput placeholder="beispiel@email.com" formControlName="email" type="email" />
+        <mat-error *ngIf="!isGuestLogin && loginForm.get('email')?.hasError('required')">Email eingeben</mat-error>
+        <mat-error *ngIf="!isGuestLogin &&loginForm.get('email')?.hasError('email')">Richtige Email eingeben</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="login__form-field">
+        <mat-icon matPrefix>lock_outline</mat-icon>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Passwort" formControlName="password">
+        <mat-icon class="password-icon" matSuffix (click)="togglePasswordVisibility()">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Passwort eingeben</mat-error>
+      </mat-form-field>
+
+      <mat-card class="login__forgot-password"><a (click)="openPwReset()">Passwort vergessen?</a></mat-card>
+
+      <div class="divider">
+        <div class="line"></div>
+        <div class="text">ODER</div>
+        <div class="line"></div>
+      </div>
+      <button type="button" (click)="onGoogleSignIn()" class="input-field-container">
+        <div class="google-login-btn">
+          <img src="./assets/img/icons/Google.png">
+          <span>Anmelden mit Google</span>
+        </div>
+      </button>
+      <mat-card class="login__bottom-container">
+
+        <div class="login__sign-in">
+          <button type="submit" mat-fab extended color="primary" [disabled]="!loginForm.valid">Anmelden</button>
+        </div>
+        <div class="login__guest">
+          <button type="submit" mat-fab extended color="primary"
+            (click)="onGuestLogin(guestUserId)">Gäste-login</button>
+        </div>
+      </mat-card>
+    </form>
+  </mat-card>
+  <mat-card class="error-popup" @errorAnimation *ngIf="!isGuestLogin && error">
+    <mat-card-content>
+      {{ errorMessage }}
+
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="background-container__sign-up-box">
+    <span>Neu bei Bubble?</span>
+    <p (click)="openSignUp()">Konto Erstellen</p>
+  </mat-card>
+  <div class="background-container__legals">
+    <a (click)="openImprint()">Impressum</a>
+    <a (click)="openPrivacy()">Datenschutz</a>
+  </div>
+</div>

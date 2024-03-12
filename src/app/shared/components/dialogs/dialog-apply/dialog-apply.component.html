@@ -1,0 +1,17 @@
+<mat-card>
+
+    <header>
+        <mat-card-title>{{ data.labelHeader }}</mat-card-title>
+        <button mat-icon-button disableRipple (click)="answerNo()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+
+    <span>{{ data.labelDescription }}</span>
+
+    <div class="buttons-container">
+        <button class="btn btn-cancel" (click)="answerNo()">{{ data.labelBtnNo }}</button>
+        <button class="btn" (click)="answerYes()">{{ data.labelBtnYes }}</button>
+    </div>
+    
+</mat-card>

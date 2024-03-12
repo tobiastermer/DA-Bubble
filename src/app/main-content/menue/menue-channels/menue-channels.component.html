@@ -1,0 +1,25 @@
+<section class="menu-channel-container">
+    <div class="menu-channel-header">
+        <div class="menu-channel-header-left" (click)="toggleChannelsVisibility();">
+            <div class="img-expand-channels icon" [ngClass]="{'rotated': !channelsVisible}"></div>
+            <mat-card-title>
+                <div class="img-workspaces icon"></div>
+                Channels
+            </mat-card-title>
+        </div>
+        <div class="img-add-channel icon-btn" (click)="openDialogAddChannel()"></div>
+    </div>
+    <div class="menu-channel-content" *ngIf="channelsVisible">
+        <div class="channel" *ngFor="let channel of channels; let i = index" [ngClass]="{'active': isActiveChannel(i)}"
+            (click)="changePath(i)">
+            <div class="img-channel-hash icon-btn"></div>
+            <span class="channel-name">{{ channel.name }}</span>
+        </div>
+    </div>
+    <div class="menu-channel-add-container" *ngIf="channelsVisible">
+        <div class="menu-channel-add" (click)="openDialogAddChannel()">
+            <div class="img-channel-add icon-btn"></div>
+            <span class="channel-add-text">Channel hinzufügen</span>
+        </div>
+    </div>
+</section>
