@@ -13,7 +13,7 @@ import { HashLocationStrategy, PathLocationStrategy } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    {provide : PathLocationStrategy , useClass : HashLocationStrategy},
+    { provide: PathLocationStrategy, useClass: HashLocationStrategy },
     provideRouter(routes),
 
     provideClientHydration(),
@@ -21,14 +21,14 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       provideFirebaseApp(() =>
         initializeApp({
-          projectId: 'da-bubble-6e91a',
-          appId: '1:435601506485:web:dd5dd78a239840fbb7fefc',
-          storageBucket: 'da-bubble-6e91a.appspot.com',
-          apiKey: 'AIzaSyCrYeJXl3oqlWCfl7NjrLX9lDvHzhuPg5I',
-          authDomain: 'da-bubble-6e91a.firebaseapp.com',
-          messagingSenderId: '435601506485',
+          apiKey: "AIzaSyCKCP3bAPvIbnc9CgLehl0BJXeSsvIouS4",
+          authDomain: "da-bubble-own-dbdab.firebaseapp.com",
+          projectId: "da-bubble-own-dbdab",
+          storageBucket: "da-bubble-own-dbdab.appspot.com",
+          messagingSenderId: "334173287276",
+          appId: "1:334173287276:web:4d295db0d16232500eb949",      
           databaseURL:
-            'https://da-bubble-6e91a-default-rtdb.europe-west1.firebasedatabase.app',
+            'https://da-bubble-own-dbdab-default-rtdb.europe-west1.firebasedatabase.app',
         })
       )
     ),
