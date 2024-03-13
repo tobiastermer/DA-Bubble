@@ -16,10 +16,7 @@ import { slideAnimation, slideInUpAnimation, slideOutDownAnimation } from '../..
 export class ImprintComponent {
   animationState = 'in';
 
-  constructor(
-private router: Router
-    
-  ){}
+  constructor(private router: Router){}
 
   openLogin() {
     this.animationState = 'out';
