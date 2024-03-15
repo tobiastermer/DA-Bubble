@@ -47,8 +47,11 @@ export class DataService {
     if (isPlatformBrowser(this.platformId)) {
       const userJson = localStorage.getItem('currentUser');
       if (userJson) {
-        this.currentUser = JSON.parse(userJson);
-        this.currentUser.id = this.currentUser.id!;
+        const user = JSON.parse(userJson);
+        if (user && user.id) {
+          this.currentUser = user;
+        } else {
+        }
       }
     }
   }
